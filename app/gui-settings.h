@@ -27,7 +27,8 @@
 #include "tracker.h" /* To know the number of colors */
 
 typedef struct gui_prefs {
-    gchar tracker_line_format[10];
+    gchar tracker_line_format[11];
+    gchar tracker_font[256];
     gboolean tracker_hexmode;
     gboolean tracker_upcase;
     gboolean highlight_rows;

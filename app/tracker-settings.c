@@ -1,6 +1,6 @@
 
 /*
- * The Real SoundTracker - GTK+ Tracker widget settings
+ * The Real SoundTracker - GTK+ Tracker widget font settings
  *
  * Copyright (C) 2001 Michael Krause
  * Copyright (C) 2005 Yury Aliaev
@@ -29,6 +29,7 @@
 #include "tracker-settings.h"
 #include "i18n.h"
 #include "gui-subs.h"
+#include "gui-settings.h"
 #include "preferences.h"
 
 /* A global font list is kept here, so that when (at some time in the
@@ -85,23 +86,29 @@ trackersettings_gui_exchange_font (TrackerSettings *ts,
        return;
 
     gtk_list_store_swap(list_store, &iter1, &iter2);
-    gtk_tree_selection_select_iter(sel, &iter1);// Minor bug with selection determining is here...
+    gtk_tree_selection_select_iter(sel, &iter1);
+    ts->clist_selected_row = p2;
 }
 
-static void
+static guint
 trackersettings_gui_populate_clist (TrackerSettings *ts)
 {
     gchar *insertbuf;
     GList *l;
     GtkListStore *list_store;
     GtkTreeIter iter;
+    guint i = 0, ret = 0;
 
     list_store = GUI_GET_LIST_STORE(ts->list);
     for(l = trackersettings_fontlist; l != NULL; l = l->next) {
 	insertbuf = (gchar*)l->data;
 	gtk_list_store_append(list_store, &iter);
 	gtk_list_store_set(list_store, &iter, 0, insertbuf,  -1);
+	if(!strcmp(insertbuf, gui_settings.tracker_font))
+		ret = i;
+	i++;
     }
+    return ret;
 }
 
 static void
@@ -165,14 +172,15 @@ trackersettings_delete_font (GtkWidget *widget,
     }
 }
 
-static void
-trackersettings_apply_font (GtkWidget *widget,
-			    TrackerSettings *ts)
+void
+trackersettings_apply_font (TrackerSettings *ts)
 {
     int sel = ts->clist_selected_row;
 
     if(sel != -1) {
-	tracker_set_font(ts->tracker, g_list_nth_data(trackersettings_fontlist, sel));
+    gchar *font = g_list_nth_data(trackersettings_fontlist, sel);
+	tracker_set_font(ts->tracker, font);
+	strcpy(gui_settings.tracker_font, font);
     }
 }
 
@@ -260,6 +268,7 @@ trackersettings_new (void)
     TrackerSettings *ts;
     gchar *clisttitles[] = { _("Font list") };
     GtkWidget *hbox1, *thing;
+    guint selected;
 
     ts = g_object_new(trackersettings_get_type(), NULL);
     GTK_BOX(ts)->spacing = 2;
@@ -272,7 +281,8 @@ trackersettings_new (void)
     gui_list_handle_selection(ts->list, 
 			      G_CALLBACK(trackersettings_clist_selected), ts);
 
-    trackersettings_gui_populate_clist(ts);
+	selected = trackersettings_gui_populate_clist(ts);
+    gui_list_select(ts->list, selected, TRUE, 0.5);
 
     hbox1 = gtk_hbox_new(TRUE, 4);
     gtk_box_pack_start(GTK_BOX(ts), hbox1, FALSE, TRUE, 0);
@@ -293,7 +303,7 @@ trackersettings_new (void)
     thing = ts->apply_button = gtk_button_new_with_label(_("Apply font"));
     gtk_box_pack_start(GTK_BOX(hbox1), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
-    g_signal_connect(thing, "clicked",
+    g_signal_connect_swapped(thing, "clicked",
 			G_CALLBACK(trackersettings_apply_font), ts);
 
     hbox1 = gtk_hbox_new(TRUE, 4);
@@ -312,6 +322,7 @@ trackersettings_new (void)
 			G_CALLBACK(trackersettings_add_font_ok), ts);
     g_signal_connect(GTK_FONT_SELECTION_DIALOG(ts->fontsel_dialog)->cancel_button, "clicked",
 			G_CALLBACK(trackersettings_add_font_cancel), ts);
+	g_signal_connect_swapped(ts->list, "row-activated", G_CALLBACK(trackersettings_apply_font), ts);
 
     return GTK_WIDGET(ts);
 }
@@ -339,11 +350,12 @@ trackersettings_read_fontlist (void)
 	f = prefs_get_file_pointer(p);
 	while(!feof(f)) {
 	    buf[0] = 0;
-	    fgets(buf, 255, f);
-	    buf[255] = 0;
-	    if(strlen(buf) > 0) {
-		buf[strlen(buf) - 1] = 0;
-		trackersettings_fontlist = g_list_append(trackersettings_fontlist, g_strdup(buf));
+	    if(fgets(buf, 255, f)) {//!!! Error handling
+		    buf[255] = 0;
+		    if(strlen(buf) > 0) {
+			buf[strlen(buf) - 1] = 0;
+			trackersettings_fontlist = g_list_append(trackersettings_fontlist, g_strdup(buf));
+		    }
 	    }
 	}
 	prefs_close(p);

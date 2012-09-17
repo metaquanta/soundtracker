@@ -1,6 +1,6 @@
 
 /*
- * The Real SoundTracker - GTK+ Tracker widget settings (header)
+ * The Real SoundTracker - GTK+ Tracker widget font settings (header)
  *
  * Copyright (C) 2001 Michael Krause
  *
@@ -60,4 +60,5 @@ void                                  trackersettings_set_tracker_widget   (Trac
 
 void                                  trackersettings_cycle_font_forward   (TrackerSettings *t);
 void                                  trackersettings_cycle_font_backward  (TrackerSettings *t);
+void                                  trackersettings_apply_font           (TrackerSettings *ts);
 #endif /* _TRACKER_SETTINGS_H */

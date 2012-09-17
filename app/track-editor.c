@@ -408,6 +408,7 @@ tracker_page_create (GtkNotebook *nb)
     gtk_container_border_width(GTK_CONTAINER(vbox), 10);
 
     memset(&block_buffer, 0, sizeof(block_buffer));
+    trackersettings_apply_font(TRACKERSETTINGS(trackersettings));
 
 #ifdef USE_GNOME
     /* Create popup menu */

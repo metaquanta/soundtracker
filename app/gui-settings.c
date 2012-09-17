@@ -41,6 +41,7 @@
 
 gui_prefs gui_settings = {
     "---0000000",
+    "fixed",
     1,
     0,
     1,
@@ -689,6 +690,7 @@ gui_settings_load_config (void)
 	prefs_get_int(f, "gui-advance-cursor-in-fx-columns", &gui_settings.advance_cursor_in_fx_columns);
 	prefs_get_int(f, "gui-asynchronous-editing", &gui_settings.asynchronous_editing);
 	prefs_get_string(f, "gui-tracker-line-format", gui_settings.tracker_line_format);
+	prefs_get_string(f, "tracker-font", gui_settings.tracker_font);
 	prefs_get_int(f, "gui-tempo-bpm-update", &gui_settings.tempo_bpm_update);
 	prefs_get_int(f, "gui-auto-switch", &gui_settings.auto_switch);
 	prefs_get_int(f, "gui-display-scopes", &gui_settings.gui_display_scopes);
@@ -768,6 +770,7 @@ gui_settings_save_config (void)
     prefs_put_int(f, "gui-advance-cursor-in-fx-columns", gui_settings.advance_cursor_in_fx_columns);
     prefs_put_int(f, "gui-asynchronous-editing", gui_settings.asynchronous_editing);
     prefs_put_string(f, "gui-tracker-line-format", gui_settings.tracker_line_format);
+	prefs_put_string(f, "tracker-font", gui_settings.tracker_font);
     prefs_put_int(f, "gui-tempo-bpm-update", gui_settings.tempo_bpm_update);
     prefs_put_int(f, "gui-auto-switch", gui_settings.auto_switch);
     prefs_put_int(f, "gui-display-scopes", gui_settings.gui_display_scopes);
