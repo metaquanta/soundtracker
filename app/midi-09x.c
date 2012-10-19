@@ -190,6 +190,15 @@ static gint midi_add_to_main_loop( snd_seq_t *handle)
  * Finally we setup a callback function to handle MIDI events.
  */
 
+static void
+midi_warning(const gchar *format, int rc) {
+	gchar *converted;
+
+	converted = g_locale_to_utf8(snd_strerror(rc), -1, NULL, NULL, NULL);
+	g_warning(gettext(format), converted);
+	g_free(converted);
+}
+
 void midi_init() {
     int rc;
     snd_seq_port_subscribe_t *port_sub = NULL;
@@ -221,10 +230,7 @@ void midi_init() {
     rc = snd_seq_open( &midi_handle, "default", SND_SEQ_OPEN_INPUT, 0);
 
     if (rc < 0) {
-	gchar *converted;
-	converted = g_locale_to_utf8(snd_strerror(rc), -1, NULL, NULL, NULL);
-	g_warning(_("error opening ALSA MIDI input stream (%s)\n"), converted);
-	g_free(converted);
+	midi_warning(N_("error opening ALSA MIDI input stream (%s)\n"), rc);
 	return;
     }
 
@@ -241,7 +247,7 @@ void midi_init() {
 
     if (client < 0) {
       close_handle( midi_handle);
-      g_warning("Get client info error: %s\n", snd_strerror(rc));
+      midi_warning(N_("Get client info error: %s\n"), rc);
       return;
     }
 
@@ -249,9 +255,10 @@ void midi_init() {
 
     str = g_strdup_printf("SoundTracker-%d", getpid());
     rc = snd_seq_set_client_name(midi_handle, str);
+    g_free(str);
     if (rc < 0) {
 	close_handle( midi_handle);
-	g_warning("Set client info error: %s\n", snd_strerror(rc));
+	midi_warning(N_("Set client info error: %s\n"), rc);
 	return;
     }
 
@@ -264,11 +271,12 @@ void midi_init() {
     port = snd_seq_create_simple_port( midi_handle, str,
 				     SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE,
 				     SND_SEQ_PORT_TYPE_APPLICATION);
+	g_free(str);
 
     if (port < 0) {
 	close_handle( midi_handle);
 	midi_handle = NULL;
-	g_warning( "error creating sequencer port (%s)\n",  snd_strerror(port));
+	midi_warning(N_("error creating sequencer port (%s)\n"),  port);
 	return;
     }
 
@@ -313,7 +321,7 @@ void midi_init() {
       if (rc < 0) {
 	close_handle( midi_handle);
 	midi_handle = NULL;
-	g_warning( "error subscribing sequencer port (%s)\n",  snd_strerror(rc));
+	midi_warning(N_("error subscribing sequencer port (%s)\n"),  rc);
 	return;
       }
     }
@@ -421,7 +429,7 @@ static void close_handle(snd_seq_t *handle)
 
     rc = snd_seq_close( handle);
     if (rc < 0) {
-	g_print( "error closing handle (%s)\n",  snd_strerror(rc));
+	midi_warning(N_("error closing handle (%s)\n"), rc);
     }
 
     return;
