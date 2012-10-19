@@ -51,7 +51,7 @@
 #define ALSA_PCM_NEW_SW_PARAMS_API
 
 typedef struct _device_capabilities {
-    guint minfreq, maxfreq;
+    gint minfreq, maxfreq;
     snd_pcm_uframes_t minbufsize, maxbufsize;
 } device_capabilities;
 
@@ -71,16 +71,16 @@ typedef struct _alsa_driver {
     GtkWidget *prefs_resolution_w[2];
     GtkWidget *prefs_channels_w[2];
     GtkWidget *prefs_mixfreq;
-    GtkWidget *bufsizespin, *bufsizelabel, *periodspin, *periodlabel, *estimatelabel;
+    GtkWidget *bufsizespin, *bufsizelabel, *periodspin, *periodlabel;
 
     GtkTreeModel *model;
 
-    guint playrate;
-    guint stereo;
-    guint bits;
-    guint buffer_size; /* The exponent of 2: real_buffer_size = 2 ^ buffer_size */
+    gint playrate;
+    gint stereo;
+    gint bits;
+    gint buffer_size; /* The exponent of 2: real_buffer_size = 2 ^ buffer_size */
     snd_pcm_uframes_t persizemin, persizemax;
-    guint num_periods; /* The exponent of 2, see buffer_size */
+    gint num_periods; /* The exponent of 2, see buffer_size */
 
     gchar *device;
     device_capabilities devcap[NUM_FORMATS];
@@ -99,12 +99,11 @@ typedef struct _alsa_driver {
     snd_pcm_uframes_t p_fragsize;
     guint mf;
 
-    double outtime;
-    double playtime;
+    double starttime;
 
     gboolean verbose;
     gboolean hwtest;
-    guint minfreq_old, maxfreq_old, address_old, bufsize_old;
+    gint minfreq_old, maxfreq_old, address_old, bufsize_old;
 } alsa_driver;
 
 static const int mixfreqs[] = { 8000, 11025, 16000, 22050, 32000, 44100, 48000, 64000, 88200, 96000 };
@@ -122,8 +121,13 @@ static void
 alsa_error (const gchar *msg, gint err)
 {
     static char buf[256];
-    g_sprintf(buf, "%s: %s\n", _(msg), snd_strerror(err));
+	gchar *converted;
+
+	converted = g_locale_to_utf8(snd_strerror(err), -1, NULL, NULL, NULL);
+
+    g_sprintf(buf, "%s: %s\n", _(msg), converted);
     error_error(buf);
+    g_free(converted);
 }
 
 static inline void
@@ -328,18 +332,6 @@ update_periods_range (alsa_driver *d)
 }
 
 static void
-update_estimate (alsa_driver *d)
-{
-    char *buf;
-    snd_pcm_uframes_t periodsize = (1 << d->buffer_size) / (1 << d->num_periods);
-
-    buf = g_strdup_printf(_("Estimated audio delay: %f milliseconds"), 1000 * (double)periodsize / (double)d->playrate);
-    gtk_label_set_text(GTK_LABEL(d->estimatelabel), buf);
-
-    g_free(buf);
-}
-
-static void
 update_controls (alsa_driver *d)
 {
     gtk_widget_set_sensitive(d->prefs_resolution_w[0], d->can8);
@@ -379,6 +371,7 @@ update_controls_a (alsa_driver *d)
 
     update_periods_range(d);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(d->periodspin), d->num_periods);
+    prefs_periods_changed(d->periodspin, d);
 }
 
 static gint
@@ -455,7 +448,6 @@ check_period_sizes (alsa_driver *d)
     }
 
     update_periods_range(d);
-    update_estimate(d);
 
     d->address_old = address;
     d->bufsize_old = d->buffer_size;
@@ -670,7 +662,6 @@ prefs_mixfreq_changed (GtkWidget *w, alsa_driver *d)
     if(!gtk_combo_box_get_active_iter(GTK_COMBO_BOX(d->prefs_mixfreq), &iter))
 	return;
     gtk_tree_model_get(d->model, &iter, 0, &d->playrate, -1);
-    update_estimate(d);
 }
 
 static void
@@ -698,8 +689,6 @@ prefs_periods_changed (GtkWidget *w, alsa_driver *d)
     expression = g_strdup_printf(_(" = %u"), 1 << d->num_periods);
     gtk_label_set_text(GTK_LABEL(d->periodlabel), expression);
     g_free(expression);
-
-    update_estimate(d);
 }
 
 static void
@@ -835,10 +824,6 @@ alsa_make_config_widgets (alsa_driver *d)
     box2 = gtk_hbox_new(FALSE, 4);
     gtk_widget_show(box2);
     gtk_box_pack_start(GTK_BOX(mainbox), box2, FALSE, TRUE, 0);
-
-    d->estimatelabel = thing = gtk_label_new("");
-    gtk_box_pack_end(GTK_BOX(box2), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
 }
 
 static GtkWidget *
@@ -858,7 +843,6 @@ alsa_poll_ready_playing (gpointer data,
 {
     alsa_driver * const d = data;
     snd_pcm_sframes_t w;
-    struct timeval tv;
 
     if(!d->firstpoll) {
         w = snd_pcm_writei(d->soundfd, d->sndbuf, d->p_fragsize);
@@ -872,12 +856,17 @@ alsa_poll_ready_playing (gpointer data,
 	    }
 	}
     
-	gettimeofday(&tv, NULL);
-	d->outtime = tv.tv_sec + tv.tv_usec / 1e6;
-        d->playtime += (double) d->p_fragsize / d->p_mixfreq;//!!!
-    }
+    } else {
+		snd_pcm_status_t *status;
+		snd_timestamp_t tstamp;
 
-    d->firstpoll = FALSE;
+		snd_pcm_status_alloca(&status);
+		snd_pcm_status(d->soundfd, status);
+		snd_pcm_status_get_tstamp(status, &tstamp);
+		d->starttime = (double)tstamp.tv_sec + (double)tstamp.tv_usec / 1e6;
+
+		d->firstpoll = FALSE;
+	}
 
     audio_mix(d->sndbuf, d->p_fragsize, d->p_mixfreq, d->mf);
 }
@@ -973,16 +962,11 @@ static gboolean
 alsa_open (void *dp)
 {
     alsa_driver * const d = dp;
-    gint mf, err, pers;
+    gint mf, err;
+    guint pers;
 
     if(pcm_open_and_load_hwparams(d) < 0)
 	goto out;
-
-    // ---
-    // Set non-blocking mode.
-    // ---
-
-    d->outtime = 0;
 
     // --
     // Set channel parameters
@@ -1058,7 +1042,7 @@ alsa_open (void *dp)
             alsa_error(N_("Unable to determine current swparams for playback"), err);
 	    goto out;
     }
-    /* start the transfer when the buffer is full */
+    /* start the transfer when the first fragment is filled */
     err = snd_pcm_sw_params_set_start_threshold(d->soundfd, d->swparams, d->p_fragsize);
     if (err < 0) {
             alsa_error(N_("Unable to set start threshold mode for playback"), err);
@@ -1068,12 +1052,6 @@ alsa_open (void *dp)
     err = snd_pcm_sw_params_set_avail_min(d->soundfd, d->swparams, d->p_fragsize);
     if (err < 0) {
             alsa_error(N_("Unable to set avail min for playback"), err);
-	    goto out;
-    }
-    /* align all transfers to 1 sample */
-    err = snd_pcm_sw_params_set_xfer_align(d->soundfd, d->swparams, 1);
-    if (err < 0) {
-            alsa_error(N_("Unable to set transfer align for playback"), err);
 	    goto out;
     }
     /* write the parameters to the playback device */
@@ -1104,7 +1082,6 @@ alsa_open (void *dp)
 
     d->polltag = audio_poll_add(d->pfd->fd, GDK_INPUT_WRITE, alsa_poll_ready_playing, d);
 
-    d->playtime = 0;
     d->firstpoll = TRUE;
 
     return TRUE;
@@ -1117,19 +1094,15 @@ alsa_open (void *dp)
 static double
 alsa_get_play_time (void *dp)
 {
-    alsa_driver * const d = dp;
-    struct timeval tv;
-    double curtime;
+	alsa_driver * const d = dp;
+	snd_pcm_status_t *status;
+	snd_timestamp_t tstamp;
 
-    //    snd_pcm_channel_status_t status;
-    //    snd_pcm_channel_status(d->soundfd, &status);
-    //    curtime = status.stime.tv_sec + status.stime.tv_usec / 1e6;
+	snd_pcm_status_alloca(&status);
+	snd_pcm_status(d->soundfd, status);
+	snd_pcm_status_get_tstamp(status, &tstamp);
 
-    gettimeofday(&tv, NULL);
-    curtime = tv.tv_sec + tv.tv_usec / 1e6;
-
-    return d->playtime + curtime - d->outtime - d->num_periods * ((double) d->p_fragsize / d->p_mixfreq);
-    //!!! This has a lotsa problems!!!
+	return (double)tstamp.tv_sec + (double)tstamp.tv_usec / 1e6 - d->starttime;
 }
 
 static inline int
