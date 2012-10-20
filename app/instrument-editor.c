@@ -145,22 +145,26 @@ instrument_editor_clavierkey_leave_event (GtkWidget *widget,
 static void
 instrument_editor_load_instrument (gchar *fn)
 {
+	gchar *localname = gui_filename_from_utf8(fn);
     STInstrument *instr = current_instrument;
     FILE *f;
 
     g_assert(instr != NULL);
+    if(!localname)
+		return;
 
+	file_selection_save_path(fn, gui_settings.loadinstr_path);
     // Instead of locking the instrument and samples, we simply stop playing.
     gui_play_stop();
 
-    f = fopen(fn, "rb");
+    f = fopen(localname, "rb");
     if(f) {
         statusbar_update(STATUS_LOADING_INSTRUMENT, TRUE);
         xm_load_xi(instr, f);
        statusbar_update(STATUS_INSTRUMENT_LOADED, FALSE);
 	fclose(f);
     } else {
-	error_error(_("Can't open file."));
+	error_error(_("Can't open file."));//!!! Not error_error, but usual ST error dialog!
     }
 
     current_instrument = NULL;
@@ -171,19 +175,24 @@ instrument_editor_load_instrument (gchar *fn)
 static void
 instrument_editor_save_instrument (gchar *fn)
 {
+	gchar *localname = gui_filename_from_utf8(fn);
     STInstrument *instr = current_instrument;
     FILE *f;
 
     g_assert(instr != NULL);
+    if(!localname)
+		return;
 
-    f = fopen(fn, "wb");
+	file_selection_save_path(fn, gui_settings.saveinstr_path);
+    f = fopen(localname, "wb");
+    g_free(localname);
     if(f) {
         statusbar_update(STATUS_SAVING_INSTRUMENT, TRUE);
 	xm_save_xi(instr, f);
         statusbar_update(STATUS_INSTRUMENT_SAVED, FALSE);
 	fclose(f);
     } else {
-	error_error(_("Can't open file."));
+	error_error(_("Can't open file."));//!!! Not error_error, but usual ST error dialog!, fn
     }
 }
 
@@ -197,29 +206,6 @@ instrument_editor_clear_current_instrument (void)
     instrument_editor_update();
     sample_editor_update();
     modinfo_update_all();
-}
-
-static void
-instrument_editor_file_selected (GtkWidget *w,
-				 GtkFileSelection *fs)
-{
-    gchar *fn = gtk_file_selection_get_filename(GTK_FILE_SELECTION(fs));
-
-    gtk_widget_hide(GTK_WIDGET(fs));
-
-    if(!file_selection_is_valid(fn)) {
-	/* No file was actually selected. */
-	gnome_error_dialog(_("No file selected."));
-	return;
-    }
-
-    if(fs == GTK_FILE_SELECTION(fileops_dialogs[DIALOG_LOAD_INSTRUMENT])) {
-	file_selection_save_path(fn, gui_settings.loadinstr_path);
-	instrument_editor_load_instrument(fn);
-    } else {
-	file_selection_save_path(fn, gui_settings.saveinstr_path);
-	instrument_editor_save_instrument(fn);
-    }
 }
 
 void
@@ -264,9 +250,8 @@ instrument_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(box), box2, TRUE, TRUE, 0);
     gtk_widget_show(box2);
 
-    fileops_dialogs[DIALOG_LOAD_INSTRUMENT] = file_selection_create(_("Load Instrument..."), instrument_editor_file_selected);
-    gtk_file_selection_set_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_LOAD_INSTRUMENT]), gui_settings.loadinstr_path);
-    fileops_dialogs[DIALOG_SAVE_INSTRUMENT] = file_selection_create(_("Save Instrument..."), instrument_editor_file_selected);
+    file_selection_create(DIALOG_LOAD_INSTRUMENT, _("Load Instrument"), gui_settings.loadinstr_path, instrument_editor_load_instrument, 5, TRUE, FALSE, TRUE);
+    file_selection_create(DIALOG_SAVE_INSTRUMENT, _("Save Instrument"), gui_settings.saveinstr_path, instrument_editor_save_instrument, 6, FALSE, TRUE, TRUE);
 
     thing = gtk_button_new_with_label(_("Load XI"));
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);

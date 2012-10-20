@@ -84,6 +84,7 @@ static GtkWidget *gui_splash_label;
 static GtkWidget *gui_splash_close_button;
 
 static gint pipetag = -1;
+static gchar *current_filename = NULL;
 static GtkWidget *mainwindow_upper_hbox, *mainwindow_second_hbox;
 static GtkWidget *notebook;
 static GtkWidget *spin_editpat, *spin_patlen, *spin_numchans;
@@ -97,12 +98,6 @@ static Playlist *playlist;
 guint statusbar_context_id;
 GtkWidget *status_bar;
 GtkWidget *st_clock;
-
-struct f_n_l
-{
-    FILE *file;
-    int length;
-};
 
 struct measure
 {
@@ -154,7 +149,6 @@ static int editing_pat = 0;
 static int gui_ewc_startstop = 0;
 
 /* gui event handlers */
-static void file_selected(GtkWidget *w, GtkFileSelection *fs);
 static void current_instrument_changed(GtkSpinButton *spin);
 static void current_instrument_name_changed(void);
 static void current_sample_changed(GtkSpinButton *spin);
@@ -360,6 +354,10 @@ gui_update_title (const gchar *filename)
     title = g_strdup_printf("SoundTracker "VERSION": %s", g_basename(filename));
     gtk_window_set_title(GTK_WINDOW(mainwindow), title);
     g_free(title);
+
+	if(current_filename)
+		g_free(current_filename);
+	current_filename = g_strdup(filename);
 }
 
 static void
@@ -398,63 +396,56 @@ gui_mixer_set_pattern (int pattern)
 }
 
 static void
-gui_load_callback (gint reply,
-		   gpointer data)
+gui_save (gchar *data, gboolean save_smpls)
 {
-    if(reply == 0) {
-	gui_load_xm((gchar*)data);
-        gui_auto_switch_page();
-    }
-}
+	gchar *localname = gui_filename_from_utf8(data);
 
-static void
-gui_save_callback (gint reply,
-		   gpointer data)
-{
-    if(reply == 0) {
+	if(!localname)
+		return;
+
 	statusbar_update(STATUS_SAVING_MODULE, TRUE);
-	if(XM_Save(xm, (gchar*)data, FALSE)) {
+	if(XM_Save(xm, localname, save_smpls)) {
 	    xm->modified = 0;
 	    gui_auto_switch_page();
 	    statusbar_update(STATUS_MODULE_SAVED, FALSE);
-	    gui_update_title ((gchar*)data);
+	    gui_update_title (data);
 	} else {
 	    statusbar_update(STATUS_IDLE, FALSE);
 	}
-    }
+
+	g_free(localname);
+}
+
+void
+gui_save_current (void)
+{
+	if(current_filename)
+		gui_save(current_filename, TRUE);
+	else
+		fileops_open_dialog(NULL, (void *)1);
 }
 
 static void
-gui_save_song_callback (gint reply,
-	                gpointer data)
+save_wav (gchar *fn)
 {
-    if(reply == 0) {
-	statusbar_update(STATUS_SAVING_SONG, TRUE);
-	if(XM_Save(xm, (gchar*)data, TRUE)) {
-	    gui_auto_switch_page();
-	    statusbar_update(STATUS_SONG_SAVED, FALSE);
-	    gui_update_title ((gchar*)data);
-	} else {
-	    statusbar_update(STATUS_IDLE, FALSE);
-	}
-    }
-}
+	int l;
+	gchar *path = gui_filename_from_utf8(fn);
 
-static void
-gui_save_wav_callback (gint reply,
-		       gpointer data)
-{
-    if(reply == 0) {
-	int l = strlen(data);
+	if(!path)
+		return;
+
+	l = strlen(path);
+
+	file_selection_save_path(fn, gui_settings.savemodaswav_path);
 	audio_ctlpipe_id i = AUDIO_CTLPIPE_RENDER_SONG_TO_FILE;
 
 	gui_play_stop();
 
 	write(audio_ctlpipe, &i, sizeof(i));
 	write(audio_ctlpipe, &l, sizeof(l));
-	write(audio_ctlpipe, data, l + 1);
+	write(audio_ctlpipe, path, l + 1);
 	wait_for_player();
-    }
+	g_free(path);
 }
 
 static void
@@ -516,18 +507,15 @@ gui_expand_pattern ()
 }
 
 static void
-gui_pattern_length_correct (gint reply, gpointer data)
+gui_pattern_length_correct (FILE *f, int length, gint reply)
 {
     XMPattern *patt = tracker->curpattern;
-    struct f_n_l *ddata = (struct f_n_l*) data;
-    int length = ddata->length;
-    FILE *f = ddata->file;
 
     switch (reply) {
-    case 0: /* Yes! */
+    case GTK_RESPONSE_YES: /* Yes! */
 	st_set_pattern_length (patt, length);
-	gui_update_pattern_data ();
-    case 1: /* No! */
+	gui_update_pattern_data ();/* Falling through */
+    case GTK_RESPONSE_NO: /* No! */
 	if (xm_xp_load (f, length, patt, xm)) {
 	    tracker_set_pattern (tracker, NULL);
 	    tracker_set_pattern (tracker, patt);
@@ -537,126 +525,112 @@ gui_pattern_length_correct (gint reply, gpointer data)
     default:
 	break;
     }
-    fclose (f);
 }
 
 static void
-file_selected (GtkWidget *w,
-	       GtkFileSelection *fs)
+load_xm (const gchar *fn)
 {
-    static    struct f_n_p fnp; /* we need static here 'cause we pass these */
-    static    struct f_n_l fnl; /* structures to callback functions */
-    int length;
+	static GtkWidget *dialog = NULL;
 
-    gchar *fn = gtk_file_selection_get_filename(GTK_FILE_SELECTION(fs));
-
-    gtk_widget_hide(GTK_WIDGET(fs));
-
-    if(!file_selection_is_valid(fn)) {
-	/* No file was actually selected. */
-	gnome_error_dialog(_("No file selected."));
-	return;
-    }
-
-    if(fs == GTK_FILE_SELECTION(fileops_dialogs[DIALOG_LOAD_MOD])) {
 	file_selection_save_path(fn, gui_settings.loadmod_path);
 	if(xm->modified) {
-	    gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
-				      _("Are you sure you want to free the current project?\nAll changes will be lost!"),
-				      gui_load_callback,
-				      fn);
-	} else {
-	    gui_load_callback(0, fn);
-	}
-    } else if(fs == GTK_FILE_SELECTION(fileops_dialogs[DIALOG_SAVE_MOD])) {
-	FILE *f = fopen(fn, "r");
+		gint response;
 
+		if(!dialog)
+			dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
+			                                _("Are you sure you want to free the current project?\nAll changes will be lost!"));
+
+		response = gtk_dialog_run(GTK_DIALOG(dialog));
+		gtk_widget_hide(dialog);
+		if(response == GTK_RESPONSE_OK) {
+			gui_load_xm(fn);
+			gui_auto_switch_page();
+		}
+	} else {
+		gui_load_xm(fn);
+		gui_auto_switch_page();
+	}
+}
+
+static void
+save_song (gchar *fn)
+{
 	file_selection_save_path(fn, gui_settings.savemod_path);
+	gui_save(fn, TRUE); /* with samples */
+}
 
-	if(f != NULL) {
-	    fclose(f);
-	    gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
-				      _("Are you sure you want to overwrite the file?"),
-				      gui_save_callback,
-				      fn);
-	} else {
-	    gui_save_callback(0, fn);
-		fileops_refresh_list(fs, FALSE);
-	}
-    } else if(fs == GTK_FILE_SELECTION(fileops_dialogs[DIALOG_SAVE_SONG_AS_XM])) {
-	FILE *f = fopen(fn, "r");
-
+static void
+save_xm (gchar *fn)
+{
 	file_selection_save_path(fn, gui_settings.savesongasxm_path);
+	gui_save(fn, FALSE); /* without samples */
+}
 
-	if(f != NULL) {
-	    fclose(f);
-	    gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
-				      _("Are you sure you want to overwrite the file?"),
-				      gui_save_song_callback,
-				      fn);
-	} else {
-	    gui_save_song_callback(0, fn);
-		fileops_refresh_list(fs, FALSE);
-	}
-    } else if(fs == GTK_FILE_SELECTION(fileops_dialogs[DIALOG_SAVE_MOD_AS_WAV])) {
-	FILE *f = fopen(fn, "r");
+static void
+save_pat (gchar *fn)
+{
+	gchar *localname = gui_filename_from_utf8(fn);
 
-	file_selection_save_path(fn, gui_settings.savemodaswav_path);
+	if(!localname)
+		return;
 
-	if(f != NULL) {
-	    fclose(f);
-	    gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
-				      _("Are you sure you want to overwrite the file?"),
-				      gui_save_wav_callback,
-				      fn);
-	} else {
-	    gui_save_wav_callback(0, fn);
-		fileops_refresh_list(fs, FALSE);
-	}
-    } else if(fs == GTK_FILE_SELECTION(fileops_dialogs[DIALOG_SAVE_PATTERN])) {
-	FILE *f = fopen (fn, "r");
-	
 	file_selection_save_path(fn, gui_settings.savepat_path);
-	
-	fnp.name = fn;
-	fnp.pattern = tracker->curpattern;
-	fnp.xm = xm;
-	if(f != NULL) {
-	    fclose(f);
-		gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
-                    			_("Are you sure you want to overwrite the file?"),
-                    			xm_xp_save,
-                                 	&fnp);
-	    } else {
-    		xm_xp_save (0, &fnp);
-			fileops_refresh_list(fs, FALSE);
-	    }
-    } else if(fs == GTK_FILE_SELECTION(fileops_dialogs[DIALOG_LOAD_PATTERN])) {
+	xm_xp_save (localname, tracker->curpattern, xm);
+	g_free(localname);
+}
+
+static void
+load_pat (const gchar *fn)
+{
+	int length;
+	FILE *f;
+	static GtkWidget *dialog = NULL, *dialog1 = NULL;
+
 	XMPattern *patt = tracker->curpattern;
-	FILE *f = fopen (fn, "r");
+	gchar *localname = gui_filename_from_utf8(fn);
+
+	if(!localname)
+		return;
+
+	f = fopen(localname, "r");
+	g_free(localname);
 
 	file_selection_save_path(fn, gui_settings.loadpat_path);
-	
-	if (!f) gnome_error_dialog (_("Error when opening pattern file!"));
-	else { if (xm_xp_load_header (f, &length)) {
-	    if (length == patt->length) {
-		if (xm_xp_load (f, length, patt, xm)) {
-		    tracker_set_pattern (tracker, NULL);
-		    tracker_set_pattern (tracker, patt);
-		    xm_set_modified(1);
+
+	if (!f){
+		gint response;
+
+		if(!dialog)
+			dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
+			                                _("Error when opening pattern file %s!"), fn);
+
+		response = gtk_dialog_run(GTK_DIALOG(dialog));
+		gtk_widget_hide(dialog);
+
+		return;
+	}
+	if (xm_xp_load_header (f, &length)) {
+		if (length == patt->length) {
+			if (xm_xp_load (f, length, patt, xm)) {
+				tracker_set_pattern (tracker, NULL);
+				tracker_set_pattern (tracker, patt);
+				xm_set_modified(1);
+			}
+		} else {
+			gint response;
+
+			if(!dialog1)
+				dialog1 = gtk_dialog_new_with_buttons(_("The length of the pattern being loaded doesn't match with that of current pattern in module.\n"
+				                                      "Do you want to change the current pattern length?"), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
+				                                      GTK_STOCK_YES, GTK_RESPONSE_YES, GTK_STOCK_NO, GTK_RESPONSE_NO,
+				                                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
+
+			response = gtk_dialog_run(GTK_DIALOG(dialog1));
+			gtk_widget_hide(dialog1);
+			gui_pattern_length_correct(f, length, response);
 		}
-		fclose (f);
-	    } else {
-		fnl.file = f;
-		fnl.length = length;
-		gui_yes_no_cancel_modal (GTK_WIDGET(mainwindow),
-                                	_("The length of the pattern being loaded doesn't match with that of current pattern in module.\nDo you want to change the current pattern length?"),
-                            		gui_pattern_length_correct,
-                                	&fnl);
-	    }
-	} else fclose (f); }
-    }
-    
+	}
+	fclose (f);
 }
 
 static void
@@ -898,8 +872,10 @@ keyevent (GtkWidget *widget,
     } else {
 	if(pressed) {
 	    switch(event->keyval) {
-	    case GDK_Tab:
 	    case GDK_Return:
+	    if(notebook_current_page == NOTEBOOK_PAGE_FILE) /* Saving file by enter pressing in filename entry */
+			break;
+	    case GDK_Tab:
 		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key-press-event");
 		gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
 		break;
@@ -1076,6 +1052,10 @@ notebook_page_switched (GtkNotebook *notebook,
 			int page_num)
 {
     notebook_current_page = page_num;
+    if(page_num != NOTEBOOK_PAGE_FILE)
+		fileops_restore_subpage();
+	else
+		fileops_focus_entry();
 }
 
 /* gui_update_player_pos() is responsible for updating various GUI
@@ -1359,10 +1339,15 @@ gui_new_xm (void)
 void
 gui_load_xm (const char *filename)
 {
+	gchar *newname;
     statusbar_update(STATUS_LOADING_MODULE, TRUE);
 
     gui_free_xm();
-    xm = File_Load(filename);
+    newname = gui_filename_from_utf8(filename);
+    if(newname) {
+		xm = File_Load(newname);
+		g_free(newname);
+	}
 
     if(!xm) {
 	gui_new_xm();
@@ -1659,6 +1644,13 @@ gui_go_to_fileops_page (void)
 }
 
 void
+gui_go_to_page (gint page)
+{
+	gtk_notebook_set_page(GTK_NOTEBOOK(notebook),
+                         page);
+}
+
+void
 gui_auto_switch_page (void)
 {
     if(gui_settings.auto_switch)
@@ -1699,7 +1691,7 @@ gui_splash_set_label (const gchar *text,
     char buf[256];
 
     strcpy(buf, "SoundTracker v" VERSION " - ");
-    strncat(buf, text, 255-sizeof(buf));
+    strncat(buf, text, 255 - strlen(buf));
 
     gtk_label_set_text(GTK_LABEL(gui_splash_label), buf);
 
@@ -1884,20 +1876,15 @@ gui_final (int argc,
 				  gui_settings.st_window_y);
     }
 
-    fileops_dialogs[DIALOG_LOAD_MOD] = file_selection_create(_("Load XM..."), file_selected);
-    gtk_file_selection_set_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_LOAD_MOD]), gui_settings.loadmod_path);
-    fileops_dialogs[DIALOG_SAVE_MOD] = file_selection_create(_("Save XM..."), file_selected);
-    gtk_file_selection_set_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_SAVE_MOD]), gui_settings.savemod_path);
+//!!! TODO pop-up tooltip hints: Render module as WAV etc.
+	file_selection_create(DIALOG_LOAD_MOD, _("Load Module"), gui_settings.loadmod_path, load_xm, 0, TRUE, FALSE, FALSE);
+	file_selection_create(DIALOG_SAVE_MOD, _("Save Module"), gui_settings.savemod_path, save_song, 1, FALSE, TRUE, FALSE);
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
-    fileops_dialogs[DIALOG_SAVE_MOD_AS_WAV] = file_selection_create(_("Render module as WAV..."), file_selected);
-    gtk_file_selection_set_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_SAVE_MOD_AS_WAV]), gui_settings.savemodaswav_path);
+	file_selection_create(DIALOG_SAVE_MOD_AS_WAV, _("Render WAV"), gui_settings.savemodaswav_path, save_wav, 2, FALSE, TRUE, TRUE);
 #endif
-    fileops_dialogs[DIALOG_SAVE_SONG_AS_XM] = file_selection_create(_("Save song as XM..."), file_selected);
-    gtk_file_selection_set_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_SAVE_SONG_AS_XM]), gui_settings.savesongasxm_path);
-    fileops_dialogs[DIALOG_LOAD_PATTERN] = file_selection_create(_("Load current pattern..."), file_selected);
-    gtk_file_selection_set_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_LOAD_PATTERN]), gui_settings.loadpat_path);
-    fileops_dialogs[DIALOG_SAVE_PATTERN] = file_selection_create(_("Save current pattern..."), file_selected);
-    gtk_file_selection_set_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_SAVE_PATTERN]), gui_settings.savepat_path);
+	file_selection_create(DIALOG_SAVE_SONG_AS_XM, _("Save XM without samples..."), gui_settings.savesongasxm_path, save_xm, -1, FALSE, TRUE, FALSE);
+	file_selection_create(DIALOG_LOAD_PATTERN, _("Load current pattern..."), gui_settings.loadpat_path, load_pat, -1, FALSE, FALSE, FALSE);
+	file_selection_create(DIALOG_SAVE_PATTERN, _("Save current pattern..."), gui_settings.savepat_path, save_pat, -1, FALSE, TRUE, FALSE);
 
     mainvbox0 = gtk_vbox_new(FALSE, 0);
     gtk_container_border_width(GTK_CONTAINER(mainvbox0), 0);
@@ -2378,6 +2365,7 @@ gui_final (int argc,
     }
 
     menubar_init_prefs();
+    fileops_page_post_create();
 
     gtk_widget_show (mainwindow);
 

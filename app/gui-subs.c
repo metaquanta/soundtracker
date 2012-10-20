@@ -187,32 +187,6 @@ gui_put_labelled_spin_button (GtkWidget *destbox,
 		       GTK_SIGNAL_FUNC(callback), callbackdata);
 }
 
-GtkWidget*
-file_selection_create (const gchar *title,
-		       void(*clickfunc)())
-{
-    GtkWidget *window;
-
-    window = gtk_file_selection_new (title);
-    gtk_window_position (GTK_WINDOW (window), GTK_WIN_POS_MOUSE);
-	
-    g_signal_connect(window, "destroy",
-		       G_CALLBACK(gtk_main_quit),
-		       NULL);
-    g_signal_connect(GTK_FILE_SELECTION (window)->ok_button,
-		       "clicked", G_CALLBACK(clickfunc),
-		       window);
- 
-    g_signal_connect(window, "delete_event",
-		       G_CALLBACK(gtk_widget_hide),
-		       window);
-    g_signal_connect_swapped(GTK_FILE_SELECTION (window)->cancel_button,
-			      "clicked", G_CALLBACK(gtk_widget_hide),
-			      GTK_OBJECT (window));
-
-    return window;
-}
-
 void
 file_selection_save_path (const gchar *fn,
 			  gchar *store)
@@ -223,16 +197,6 @@ file_selection_save_path (const gchar *fn,
     strncat(store, "/", 127);
 
     g_free(dn);
-}
-
-/* Return TRUE if there is a non-empty basename in the given
- * filename. */
-gboolean
-file_selection_is_valid (const gchar *fn)
-{
-    gchar *basename = g_basename(fn);
-
-    return basename != NULL && strlen(basename) > 0;
 }
 
 static void
@@ -747,3 +711,44 @@ gnome_error_dialog (gchar *text)
 }
 
 #endif /* USE_GNOME */
+
+gchar*
+gui_filename_from_utf8 (const gchar *old_name)
+{
+	GtkWidget *dialog;
+
+	GError *error = NULL;
+	gchar *name = g_filename_from_utf8(old_name, -1, NULL, NULL, &error);
+
+	if(!name) {
+		dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, GTK_MESSAGE_WARNING, GTK_BUTTONS_CLOSE,
+		                               _("An error occured when filename character set conversion:\n%s\n"
+		                               "The file operation probably failed."), error->message);
+		gtk_dialog_run(GTK_DIALOG(dialog));
+		gtk_widget_destroy(dialog);
+		g_error_free(error);
+	}
+
+	return name;
+}
+
+gchar*
+gui_filename_to_utf8 (const gchar *old_name)
+{
+	GtkWidget *dialog;
+
+	GError *error = NULL;
+	gchar *name = g_filename_to_utf8(old_name, -1, NULL, NULL, &error);
+
+	if(!name) {
+		dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, GTK_MESSAGE_WARNING, GTK_BUTTONS_CLOSE,
+		                               _("An error occured when filename character set conversion:\n%s\n"
+		                               "The file operation probably failed."), error->message);
+		gtk_dialog_run(GTK_DIALOG(dialog));
+		gtk_widget_destroy(dialog);
+		g_error_free(error);
+	}
+
+	return name;
+}
+

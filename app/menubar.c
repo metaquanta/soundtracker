@@ -381,8 +381,10 @@ typedef struct GnomeUIInfo {
 static GnomeUIInfo file_menu[] = {
     { GNOME_APP_UI_ITEM, N_("_Open..."), NULL, fileops_open_dialog, (gpointer)DIALOG_LOAD_MOD, NULL,
       GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_OPEN, 'O', GDK_CONTROL_MASK, NULL },
+    { GNOME_APP_UI_ITEM, N_("_Save"), NULL, gui_save_current, NULL, NULL,
+      GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_SAVE, 'S', GDK_CONTROL_MASK, NULL },
     { GNOME_APP_UI_ITEM, N_("Save _as..."), NULL, fileops_open_dialog, (gpointer)DIALOG_SAVE_MOD, NULL,
-      GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_SAVE_AS, 'A', GDK_CONTROL_MASK, NULL },
+      GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_SAVE_AS, 'S', GDK_CONTROL_MASK | GDK_SHIFT_MASK, NULL },
 
     GNOMEUIINFO_SEPARATOR,
 
@@ -608,7 +610,7 @@ static GnomeUIInfo settings_tracker_menu[] = {
     GNOMEUIINFO_SEPARATOR,
 
     { GNOME_APP_UI_ITEM, N_("Change preferred _accidental type"), 0, gui_accidentals_clicked, 0, 0,
-      GNOME_APP_PIXMAP_NONE, 0, 'S', GDK_CONTROL_MASK, NULL },
+      GNOME_APP_PIXMAP_NONE, 0, 'A', GDK_CONTROL_MASK, NULL },
     { GNOME_APP_UI_ITEM, N_("Change effect column editing _direction"), 0, gui_direction_clicked, 0, 0,
       GNOME_APP_PIXMAP_NONE, 0, 'D', GDK_CONTROL_MASK, NULL },
 

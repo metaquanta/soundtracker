@@ -53,12 +53,8 @@ extern GtkWidget *st_clock;
 void                 statusbar_update                 (int message,
 						       gboolean force_gui_update);
 
-GtkWidget*           file_selection_create            (const gchar *title,
-						       void(*clickfunc)());
 void                 file_selection_save_path         (const gchar *fn,
 						       gchar *store);
-/* Return TRUE if there is a non-empty basename in the given filename */
-gboolean             file_selection_is_valid          (const gchar *fn);
 
 int                  find_current_toggle              (GtkWidget **widgets,
 						       int count);
@@ -196,5 +192,8 @@ void                 gnome_warning_dialog             (gchar *text);
 void                 gnome_error_dialog               (gchar *text);
 
 #endif
+
+gchar *              gui_filename_to_utf8             (const gchar *old_name);
+gchar *              gui_filename_from_utf8           (const gchar *old_name);
 
 #endif /* _GUI_SUBS_H */

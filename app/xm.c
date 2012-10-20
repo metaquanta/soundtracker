@@ -658,7 +658,7 @@ xm_save_xi (STInstrument *instr,
 static void
 xm_save_xm_instrument (STInstrument *instr,
                        FILE *f,
-                       gboolean mode)
+                       gboolean save_smpls)
 {
     guint8 h[48];
     int num_samples;
@@ -669,7 +669,7 @@ xm_save_xm_instrument (STInstrument *instr,
     strncpy((char*)h + 4, instr->name, 22);
     recode_latin1_to_ibmpc((char*)h + 4, 22);
 
-    if(mode==FALSE)
+    if(!save_smpls)
 	num_samples = 0;
 
     h[27] = num_samples;
@@ -717,7 +717,7 @@ xm_save_xm_instrument (STInstrument *instr,
     
     fwrite(&h, 1, 38, f);
 
-    if (mode==TRUE) xm_save_xm_samples(instr->samples, f, num_samples);
+    if (save_smpls) xm_save_xm_samples(instr->samples, f, num_samples);
 }
 
 static void
@@ -1025,7 +1025,7 @@ XM_Load (const char *filename,int *status)
 int
 XM_Save (XM *xm,
 	 const char *filename,
-	 gboolean song)
+	 gboolean save_smpls)
 {
     FILE *f;
     int i;
@@ -1062,10 +1062,7 @@ XM_Save (XM *xm,
 	xm_save_xm_pattern(&xm->patterns[i], xm->num_channels, f);
 
     for(i = 0; i < num_instruments; i++)
-        if(song==TRUE)
-            xm_save_xm_instrument(&xm->instruments[i], f, FALSE);
-        else
-            xm_save_xm_instrument(&xm->instruments[i], f, TRUE);
+        xm_save_xm_instrument(&xm->instruments[i], f, save_smpls);
    
     if(ferror(f)) {
 	fclose(f);
@@ -1455,31 +1452,28 @@ xm_xp_load (FILE *f, int length, XMPattern *patt, XM *xm)
 }
 
 void
-xm_xp_save (gint reply, gpointer data)
+xm_xp_save (gchar *name, XMPattern *pattern, XM *xm)
 {
-    struct f_n_p *fnp = (struct f_n_p*) data;
-
     FILE *f;
     int i, j, bp;
     guint8 pheader[4];
     static guint8 buf[32*256*5];
     
-    if (reply == 0){
-	if ( !(f = fopen (fnp->name, "wb"))) 
+	if ( !(f = fopen (name, "wb"))) 
 	    error_error (_("Error during saving pattern!"));
 	else {
 	    put_le_16 (pheader+0, 01);//version
-	    put_le_16 (pheader+2, fnp->pattern->length);//length
+	    put_le_16 (pheader+2, pattern->length);//length
 	    
 	    bp = 0;
-	    for (j = 0; j <= fnp->pattern->length - 1; j++)//row
+	    for (j = 0; j <= pattern->length - 1; j++)//row
 		for (i = 0; i <= 31; i++){//ch
-		    if ( i <= fnp->xm->num_channels - 1){
-			buf[bp + 0] = fnp->pattern->channels[i][j].note;
-			buf[bp + 1] = fnp->pattern->channels[i][j].instrument;
-			buf[bp + 2] = fnp->pattern->channels[i][j].volume;
-			buf[bp + 3] = fnp->pattern->channels[i][j].fxtype;
-			buf[bp + 4] = fnp->pattern->channels[i][j].fxparam;
+		    if ( i <= xm->num_channels - 1){
+			buf[bp + 0] = pattern->channels[i][j].note;
+			buf[bp + 1] = pattern->channels[i][j].instrument;
+			buf[bp + 2] = pattern->channels[i][j].volume;
+			buf[bp + 3] = pattern->channels[i][j].fxtype;
+			buf[bp + 4] = pattern->channels[i][j].fxparam;
 		    } else {
 			buf[bp + 0] = 0;
 			buf[bp + 1] = 0;
@@ -1494,5 +1488,4 @@ xm_xp_save (gint reply, gpointer data)
 	    fwrite (buf, 1, bp, f);
 	    fclose (f);
 	}
-    }
 }

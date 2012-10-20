@@ -134,18 +134,12 @@ typedef struct XM {
     STInstrument instruments[128];
 } XM;
 
-struct f_n_p {
-    gchar *name;
-    XMPattern *pattern;
-    XM *xm;
-};
-
 #define XM_FLAGS_AMIGA_FREQ               1
 #define XM_FLAGS_IS_MOD                   2
 
 XM*           File_Load                                (const char *filename);
 XM*           XM_Load                                  (const char *filename,int *status);
-int           XM_Save                                  (XM *xm, const char *filename, gboolean song);
+int           XM_Save                                  (XM *xm, const char *filename, gboolean save_smpls);
 XM*           XM_New                                   (void);
 void          XM_Free                                  (XM*);
 
@@ -156,7 +150,7 @@ gboolean      xm_save_xi                               (STInstrument *instr,
 gboolean      xm_xp_load_header			       (FILE *f, int *length);
 gboolean      xm_xp_load			       (FILE *f, int length,
 							XMPattern *patt, XM *xm);
-void          xm_xp_save			       (gint reply, gpointer data);
+void          xm_xp_save			       (gchar *name, XMPattern *pattern, XM *xm);
 
 static inline int
 xm_get_modified (void)

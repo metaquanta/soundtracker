@@ -191,9 +191,9 @@ void sample_editor_paste_clicked(void);
 static void sample_editor_zoom_to_selection_clicked(void);
 
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
-static void sample_editor_load_wav(void);
-static void sample_editor_save_wav(void);
-static void sample_editor_save_region_wav(void);
+static void sample_editor_load_wav(const gchar *name);
+static void sample_editor_save_wav(const gchar *name);
+static void sample_editor_save_region_wav(const gchar *name);
 #endif
 
 static void sample_editor_open_volume_ramp_dialog(void);
@@ -368,12 +368,9 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
 
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
-    fileops_dialogs[DIALOG_LOAD_SAMPLE] = file_selection_create(_("Load Sample..."), sample_editor_load_wav);
-    gtk_file_selection_set_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_LOAD_SAMPLE]), gui_settings.loadsmpl_path);
-    fileops_dialogs[DIALOG_SAVE_SAMPLE] = file_selection_create(_("Save WAV..."), sample_editor_save_wav);
-    gtk_file_selection_set_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_SAVE_SAMPLE]), gui_settings.savesmpl_path);
-    fileops_dialogs[DIALOG_SAVE_RGN_SAMPLE] = file_selection_create(_("Save region as WAV..."), sample_editor_save_region_wav);
-    gtk_file_selection_set_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_SAVE_RGN_SAMPLE]), gui_settings.savesmpl_path);
+    file_selection_create(DIALOG_LOAD_SAMPLE, _("Load Sample"), gui_settings.loadsmpl_path, sample_editor_load_wav, 3, TRUE, FALSE, TRUE);
+    file_selection_create(DIALOG_SAVE_SAMPLE, _("Save Sample"), gui_settings.savesmpl_path, sample_editor_save_wav, 4, FALSE, TRUE, TRUE);
+    file_selection_create(DIALOG_SAVE_RGN_SAMPLE, _("Save region as WAV..."), gui_settings.savesmpl_path, sample_editor_save_region_wav, -1, FALSE, TRUE, FALSE);
 #endif
 
     thing = gtk_button_new_with_label(_("Load Sample"));
@@ -1635,23 +1632,17 @@ sample_editor_open_raw_sample_dialog (const gchar *filename)
 }
 
 static void
-sample_editor_load_wav (void)
+sample_editor_load_wav (const gchar *fn)
 {
-    gchar *fn = gtk_file_selection_get_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_LOAD_SAMPLE]));
 
 #if USE_SNDFILE != 1
     int sampleFormat;
 #endif
-
-    gtk_widget_hide(fileops_dialogs[DIALOG_LOAD_SAMPLE]);
-
-    if(!file_selection_is_valid(fn)) {
-	/* No file was actually selected. */
-	gnome_error_dialog(_("No file selected."));
-	return;
-    }
+	gchar *localname = gui_filename_from_utf8(fn);
 
     g_return_if_fail(current_sample != NULL);
+    if(!localname)
+		return;
 
     file_selection_save_path(fn, gui_settings.loadsmpl_path);
 
@@ -1668,7 +1659,8 @@ sample_editor_load_wav (void)
     wavload_file = afOpenFile(fn, "r", NULL);
 #endif
     if(!wavload_file) {
-	FILE *f = fopen(fn, "r");
+	FILE *f = fopen(localname, "r");
+	g_free(localname);
 	if(f) {
 	    fseek(f, 0, SEEK_END);
 	    wavload_frameCount = ftell(f);
@@ -1750,10 +1742,14 @@ sample_editor_save_wav_main (const gchar *fn,
     AFfilesetup outfilesetup;
     double rate = 44100.0;
 #endif
+	gchar *localname = gui_filename_from_utf8(fn);
+
+	if(!localname)
+		return;
 
     statusbar_update(STATUS_SAVING_SAMPLE, TRUE);
 
-    file_selection_save_path(fn, gui_settings.savesmpl_path);
+    file_selection_save_path(localname, gui_settings.savesmpl_path);
 
 #if USE_SNDFILE
     if(current_sample->treat_as_8bit) {
@@ -1780,12 +1776,13 @@ sample_editor_save_wav_main (const gchar *fn,
 	afInitSampleFormat(outfilesetup, AF_DEFAULT_TRACK, AF_SAMPFMT_TWOSCOMP, 16);
     }
     afInitRate(outfilesetup, AF_DEFAULT_TRACK, rate);
-    outfile = afOpenFile(fn, "w", outfilesetup);
+    outfile = afOpenFile(localname, "w", outfilesetup);
     afFreeFileSetup(outfilesetup);
 #endif
+	g_free(localname);
 
     if(!outfile) {
-	error_error(_("Can't open file for writing."));
+	error_error(_("Can't open file for writing."));//!!!, fn
 	return;
     }
 
@@ -1822,96 +1819,30 @@ sample_editor_save_wav_main (const gchar *fn,
 }
 
 static void
-sample_editor_save_wav_callback (gint reply,
-		   gpointer data)
+sample_editor_save_wav (const gchar *fn)
 {
-    if(reply == 0) {
-		// save entire sample
-		sample_editor_save_wav_main((gchar*)data, 0, current_sample->sample.length);
-    }
-}
-
-static void
-sample_editor_save_wav (void)
-{
-    gchar *fn;
-	FILE *f;
-
-    fn = gtk_file_selection_get_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_SAVE_SAMPLE]));
-
-    gtk_widget_hide(fileops_dialogs[DIALOG_SAVE_SAMPLE]);
-
-    if(!file_selection_is_valid(fn)) {
-	/* No file was actually selected. */
-	gnome_error_dialog(_("No file selected."));
-	return;
-    }
-
     g_return_if_fail(current_sample != NULL);
     if(current_sample->sample.data == NULL) {
 	return;
     }
-
-    f = fopen(fn, "r");
-
-    if(f != NULL) {
-	fclose(f);
-	gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
-				      _("Are you sure you want to overwrite the file?"),
-				      sample_editor_save_wav_callback, fn);
-    } else {
-	sample_editor_save_wav_callback(0, fn);
-    }
+	sample_editor_save_wav_main(fn, 0, current_sample->sample.length);
 }
 
 static void
-sample_editor_save_region_callback (gint reply,
-		   gpointer data)
+sample_editor_save_region_wav (const gchar *fn)
 {
     int rss = sampledisplay->sel_start, rse = sampledisplay->sel_end;
-
-    if(reply == 0) {
-        // save region
-	sample_editor_save_wav_main((gchar*)data, rss, rse - rss);
-    }
-}
-
-static void
-sample_editor_save_region_wav (void)
-{
-    gchar *fn;
-    FILE *f;
-
-    fn = gtk_file_selection_get_filename(GTK_FILE_SELECTION(fileops_dialogs[DIALOG_SAVE_RGN_SAMPLE]));
-
-    gtk_widget_hide(fileops_dialogs[DIALOG_SAVE_RGN_SAMPLE]);
-
-    if(!file_selection_is_valid(fn)) {
-	/* No file was actually selected. */
-	gnome_error_dialog(_("No file selected."));
-	return;
-    }
 
     g_return_if_fail(current_sample != NULL);
     if(current_sample->sample.data == NULL) {
 	return;
     }
     
-    if(sampledisplay->sel_start == -1) {
-        error_error(_("Please select region first."));
+    if(rss == -1) {
+        error_error(_("Please select region first."));//!!!
 	return;
     }
-
-	f = fopen(fn, "r");
-
-	if(f != NULL) {
-	    fclose(f);
-	    gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
-				      _("Are you sure you want to overwrite the file?"),
-				      sample_editor_save_region_callback, fn);
-	} else {
-	    sample_editor_save_region_callback(0, fn);
-    }
+	sample_editor_save_wav_main(fn, rss, rse - rss);
 }
 
 #endif /* USE_SNDFILE || !defined (NO_AUDIOFILE) */

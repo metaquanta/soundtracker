@@ -1,3 +1,24 @@
+2012-10-21  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/file-operations.c, app/file-operations.h, app/gui-subs.c, app/gui-subs.h,
+	app/gui.c, app/gui.h, app/instrument-editor.c, app/menubar.c,
+	app/sample-editor.c, app/xm.c, app/xm.h: FileChooser is used for file operations
+	instead of FileSelection. Ctrl + S is now used for current module saving. Single
+	click for opening now works.
+
+2012-10-10  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/drivers/alsa1x-output.c: fixed wrong time estimation + code cleanups.
+
+2012-10-10  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/tracker.[ch]: separation bars between tracks are now being drawn correctly.
+
+2012-10-09  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/midi-09x.c: memory leaks are fixed.
+
+2012-08-15  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui-settings.c, app/gui-settings.c, app/tracker-settings.[ch],
+	app/track-editor.c: implemented current font saving,
+	fixed bug with font raising/lowering.
+
 2011-04-20  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/sample-editor.c: dialogs are cleaned up from obsolete code and
 	fully converted to gtk+-2;

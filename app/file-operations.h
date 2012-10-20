@@ -44,9 +44,15 @@ enum {
     DIALOG_LAST
 };
 
-extern GtkWidget *fileops_dialogs[DIALOG_LAST];
+#define MIN_ALLOC 1024
 
 void            fileops_page_create                (GtkNotebook *nb);
+
+void            fileops_page_post_create           (void);
+
+void            file_selection_create              (guint index, const gchar *title, const gchar *path,
+                                                    void(*clickfunc)(), gint order,
+                                                    gboolean is_single_click, gboolean is_save, gboolean need_return);
 
 gboolean        fileops_page_handle_keys           (int shift,
 						    int ctrl,
@@ -61,5 +67,8 @@ void		fileops_refresh_list 		   (GtkFileSelection *fs,
 						    gboolean grab);
 
 void		fileops_tmpclean                   (void);
-						    
+
+void            fileops_restore_subpage            (void);
+
+void            fileops_focus_entry                (void);
 #endif /* _FILE_OPERATIONS_H */

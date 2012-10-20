@@ -82,6 +82,7 @@ void                 gui_get_text_entry               (int length,
 						       GtkWidget **widget);
 
 void                 gui_go_to_fileops_page           (void);
+void                 gui_go_to_page                   (gint page);
 
 void                 gui_set_current_instrument       (int);
 void                 gui_set_current_sample           (int);
@@ -113,5 +114,6 @@ void		     gui_shrink_pattern		      (void);
 void		     gui_expand_pattern		      (void);	
 void		     play_song			      (void);
 
+void                 gui_save_current                 (void);
 GtkStyle*	     gui_get_style		      (void);
 #endif /* _GUI_H */
