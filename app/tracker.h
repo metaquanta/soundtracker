@@ -65,7 +65,7 @@ struct _Tracker
     PangoLayout *layout;
     PangoContext *context;
 
-    GdkGC *bg_gc, *bg_cursor_gc, *bg_majhigh_gc, *bg_minhigh_gc, *notes_gc, *misc_gc;
+    GdkGC *bg_gc, *bg_cursor_gc, *bg_majhigh_gc, *bg_minhigh_gc, *notes_gc, *misc_gc, *bars_gc;
     GdkColor colors[TRACKERCOL_LAST];
     int enable_backing_store;
     GdkPixmap *pixmap;

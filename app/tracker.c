@@ -640,13 +640,11 @@ print_notes_and_bars (GtkWidget *widget,
     }
 
     /* Draw the separation bars */
-    gdk_gc_set_foreground(t->misc_gc, &t->colors[TRACKERCOL_BARS]);
     x1 = t->disp_startx - 2;
-//    y1 = t->disp_starty + n1 * t->fonth - t->fonth;
     y1 = t->disp_starty + n1 * t->fonth;
     h = (n2 - n1 + 2) * t->fonth;
     for(i = 0; i <= t->disp_numchans; i++, x1 += t->disp_chanwidth) {
-	gdk_draw_line(win, t->misc_gc, x1, y1, x1, y1+h);
+	gdk_draw_line(win, t->bars_gc, x1, y1, x1, y1+h - t->fonth);
     }
 }
 
@@ -654,26 +652,28 @@ static void
 print_channel_numbers (GtkWidget *widget,
 		       GdkDrawable *win)
 {
-    int x, y, i;
+    int x, x1, y, i;
     char buf[5];
     Tracker *t = TRACKER(widget);
-
-    if(0 /* !gui_settings.channel_numbering */) {
-	return;
-    }
 
     gdk_gc_set_foreground(t->misc_gc, &t->colors[TRACKERCOL_CHANNUMS]);
 
     x = t->disp_startx + (t->disp_chanwidth - (2 * t->fontw)) / 2; 
     y = t->disp_starty + t->baselineskip - t->fonth;
     gdk_draw_rectangle(win, t->bg_gc, TRUE, 0, t->disp_starty - t->fonth - 1, widget->allocation.width, t->fonth + 1);
-    for(i = 1; i <= t->disp_numchans; i++, x += t->disp_chanwidth) {
+
+    x1 = t->disp_startx - 2;
+
+    for(i = 1; i <= t->disp_numchans; i++, x += t->disp_chanwidth, x1 += t->disp_chanwidth) {
 	g_sprintf(buf, "%2d", i + t->leftchan);
 	if(gui_settings.permanent_channels & (1 << (i + t->leftchan - 1)))
 	    strcat(buf, "*");
 	pango_layout_set_text(t->layout, buf, -1);
 	gdk_draw_layout(win, t->misc_gc, x, y, t->layout);
+	/* The beginnings of the separation bars */
+	gdk_draw_line(win, t->bars_gc, x1, t->disp_starty - t->fonth - 1, x1, t->disp_starty);
     }
+	gdk_draw_line(win, t->bars_gc, x1, t->disp_starty - t->fonth - 1, x1, t->disp_starty);
 }
 
 static void
@@ -965,6 +965,7 @@ tracker_apply_colors (Tracker *t)
     gdk_gc_set_foreground(t->bg_majhigh_gc, &t->colors[TRACKERCOL_BG_MAJHIGH]);
     gdk_gc_set_foreground(t->bg_minhigh_gc, &t->colors[TRACKERCOL_BG_MINHIGH]);
     gdk_gc_set_foreground(t->notes_gc, &t->colors[TRACKERCOL_NOTES]);
+    gdk_gc_set_foreground(t->bars_gc, &t->colors[TRACKERCOL_BARS]);
 }
 
 static void
@@ -1004,6 +1005,7 @@ tracker_realize (GtkWidget *widget)
     t->bg_minhigh_gc = gdk_gc_new(widget->window);
     t->notes_gc = gdk_gc_new(widget->window);
     t->misc_gc = gdk_gc_new(widget->window);
+    t->bars_gc = gdk_gc_new(widget->window);
     if(gui_settings_colors.ok) {
 	guint i;
 
