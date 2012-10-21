@@ -1,9 +1,9 @@
 2012-10-21  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/file-operations.c, app/file-operations.h, app/gui-subs.c, app/gui-subs.h,
 	app/gui.c, app/gui.h, app/instrument-editor.c, app/menubar.c,
-	app/sample-editor.c, app/xm.c, app/xm.h: FileChooser is used for file operations
-	instead of FileSelection. Ctrl + S is now used for current module saving. Single
-	click for opening now works.
+	app/sample-editor.c, app/xm.c, app/xm.h, configure.in: FileChooser is used for
+	file operations instead of FileSelection. Ctrl + S is now used for current
+	module saving. Single click for opening now works.
 
 2012-10-10  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/drivers/alsa1x-output.c: fixed wrong time estimation + code cleanups.

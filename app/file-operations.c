@@ -37,9 +37,11 @@
 #include "gui.h"
 #include "errors.h"
 
+#ifdef GTK_HACKS
 #define GTK_FILE_CHOOSER_ENABLE_UNSUPPORTED
 #define GTK_FILE_SYSTEM_ENABLE_UNSUPPORTED
 #include <gtk/gtkfilechooserprivate.h>
+#endif
 
 struct file_op_tmp {
 	gint order, index;
@@ -321,7 +323,9 @@ foreach_fn(gpointer lm, gpointer data)
 	GtkWidget *widget, *box, *buttonbox, *fc;
 	struct file_op_tmp *elem = (struct file_op_tmp*)lm;
 	gint index;
+#ifdef GTK_HACKS
 	struct _GtkFileChooserDefault* hack;
+#endif
 
 	if(!lm)
 		return;
@@ -372,10 +376,13 @@ foreach_fn(gpointer lm, gpointer data)
 
 	gtk_notebook_append_page(GTK_NOTEBOOK(rightnb), box, NULL);
 	gtk_widget_show_all(box);
+
+#ifdef GTK_HACKS /* Create Directory button */
 	if(elem->is_save) {
 		hack = (struct _GtkFileChooserDefault*) (GTK_FILE_CHOOSER_WIDGET(fc)->priv->impl);
 		gtk_widget_set_visible (hack->browse_new_folder_button, TRUE);
 	}
+#endif
 
 	typeradio_changed((gpointer)0);
 }

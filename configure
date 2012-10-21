@@ -638,6 +638,8 @@ ac_includes_default="\
 gt_needs=
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+GTK_HACKS_FALSE
+GTK_HACKS_TRUE
 RANLIB
 DRIVER_SDL_FALSE
 DRIVER_SDL_TRUE
@@ -817,6 +819,7 @@ enable_sdl
 with_sdl_prefix
 with_sdl_exec_prefix
 enable_sdltest
+enable_hacks
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1484,6 +1487,7 @@ Optional Features:
   --disable-sun           Disable Sun driver (default = try)
   --disable-sdl           Disable SDL driver (default = try)
   --disable-sdltest       Do not try to compile and run a test SDL program
+  --disable-hacks           Disable Gtk+ hacks (default = yes)
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -10862,6 +10866,31 @@ $as_echo "$as_me: error: unknown endianness
  esac
 
 
+# Check whether --enable-hacks was given.
+if test "${enable_hacks+set}" = set; then
+  enableval=$enable_hacks; gtk_hacks=no
+fi
+
+
+if test x$gtk_hacks != xno; then
+
+cat >>confdefs.h <<\_ACEOF
+#define GTK_HACKS 1
+_ACEOF
+
+fi
+
+
+
+if test x$gtk_hacks = xyes; then
+  GTK_HACKS_TRUE=
+  GTK_HACKS_FALSE='#'
+else
+  GTK_HACKS_TRUE='#'
+  GTK_HACKS_FALSE=
+fi
+
+
 if test "x${prefix}" = "xNONE"; then
 
 cat >>confdefs.h <<_ACEOF
@@ -11074,6 +11103,13 @@ Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
 
+if test -z "${GTK_HACKS_TRUE}" && test -z "${GTK_HACKS_FALSE}"; then
+  { { $as_echo "$as_me:$LINENO: error: conditional \"GTK_HACKS\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+$as_echo "$as_me: error: conditional \"GTK_HACKS\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
 
 : ${CONFIG_STATUS=./config.status}
 ac_write_fail=0

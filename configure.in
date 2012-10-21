@@ -358,6 +358,17 @@ AC_PROG_RANLIB
 
 AC_C_BIGENDIAN
 
+dnl Check if gtk+ tweaks are used (may cause problems with compilation).
+AC_ARG_ENABLE(hacks,
+[  --disable-hacks           Disable Gtk+ hacks (default = yes)],
+gtk_hacks=no)
+
+if test x$gtk_hacks != xno; then
+  AC_DEFINE([GTK_HACKS], 1, [Set if gtk hacks are used])
+fi
+
+AM_CONDITIONAL(GTK_HACKS, test x$gtk_hacks = xyes)
+
 dnl Set PREFIX in config.h.
 if test "x${prefix}" = "xNONE"; then
   AC_DEFINE_UNQUOTED(PREFIX, "${ac_default_prefix}", [Kein Mensch weiss, warum])

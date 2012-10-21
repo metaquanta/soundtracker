@@ -34,6 +34,9 @@
    language is requested. */
 #undef ENABLE_NLS
 
+/* Set if gtk hacks are used */
+#undef GTK_HACKS
+
 /* Define to 1 if you have the MacOS X function CFLocaleCopyCurrent in the
    CoreFoundation framework. */
 #undef HAVE_CFLOCALECOPYCURRENT
