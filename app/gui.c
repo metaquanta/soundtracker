@@ -1856,8 +1856,6 @@ gui_final (int argc,
     GtkWidget *thing, *mainvbox, *table, *hbox, *frame, *mainvbox0, *pmw, *vbox, *list, *entry;
     GdkColormap *colormap;
     GtkStyle *style;
-    GdkPixmap *pm;
-    GdkBitmap *mask;
     gint i, wdth, cur, selected;
     GList *glist;
     gchar *other;
@@ -1977,10 +1975,7 @@ gui_final (int argc,
     gtk_table_attach_defaults(GTK_TABLE(table), hbox, 0, 2, 0, 1);
     gtk_widget_show(hbox);
 
-    pm = gdk_pixmap_create_from_xpm(mainwindow->window,
-	&mask, &style->bg[GTK_STATE_NORMAL],
-	PREFIX"/share/soundtracker/play.xpm");
-    pmw = gtk_pixmap_new(pm, mask);
+    pmw = gtk_image_new_from_file(PREFIX"/share/soundtracker/play.xpm");
     pbutton = thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
     g_signal_connect(thing, "clicked",
@@ -1989,10 +1984,7 @@ gui_final (int argc,
     gui_hang_tooltip(thing, _("Play Song"));
     gtk_widget_show_all(thing);
 
-    pm = gdk_pixmap_create_from_xpm(mainwindow->window,
-	&mask, &style->bg[GTK_STATE_NORMAL],
-	PREFIX"/share/soundtracker/play_cur.xpm");
-    pmw = gtk_pixmap_new(pm, mask);
+    pmw = gtk_image_new_from_file(PREFIX"/share/soundtracker/play_cur.xpm");
     thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
     g_signal_connect(thing, "clicked",
@@ -2001,10 +1993,7 @@ gui_final (int argc,
     gui_hang_tooltip(thing, _("Play Pattern"));
     gtk_widget_show_all(thing);
 
-    pm = gdk_pixmap_create_from_xpm(mainwindow->window,
-	&mask, &style->bg[GTK_STATE_NORMAL],
-	PREFIX"/share/soundtracker/stop.xpm");
-    pmw = gtk_pixmap_new(pm, mask);
+    pmw = gtk_image_new_from_file(PREFIX"/share/soundtracker/stop.xpm");
     thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
     g_signal_connect(thing, "clicked",
@@ -2027,10 +2016,7 @@ gui_final (int argc,
     g_signal_connect(spin_editpat, "value-changed",
 		     G_CALLBACK(gui_editpat_changed), NULL);
 		       
-    pm = gdk_pixmap_create_from_xpm(mainwindow->window,
-	&mask, &style->bg[GTK_STATE_NORMAL],
-	PREFIX"/share/soundtracker/lock.xpm");
-    pmw = gtk_pixmap_new(pm, mask);
+    pmw = gtk_image_new_from_file(PREFIX"/share/soundtracker/lock.xpm");
     toggle_lock_editpat = thing = gtk_toggle_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE,0);		
@@ -2085,16 +2071,10 @@ gui_final (int argc,
     gtk_widget_show(hbox);
     
     vbox = gtk_vbox_new(FALSE, 0);
-    pm = gdk_pixmap_create_from_xpm(mainwindow->window,
-	&mask, &style->bg[GTK_STATE_NORMAL],
-	PREFIX"/share/soundtracker/sharp.xpm");
-    alt[0] = gtk_pixmap_new(pm, mask);
+    alt[0] = gtk_image_new_from_file(PREFIX"/share/soundtracker/sharp.xpm");
     gtk_box_pack_start(GTK_BOX(vbox), alt[0], FALSE, FALSE, 0);
     
-    pm = gdk_pixmap_create_from_xpm(mainwindow->window,
-	&mask, &style->bg[GTK_STATE_NORMAL],
-	PREFIX"/share/soundtracker/flat.xpm");
-    alt[1] = gtk_pixmap_new(pm, mask);
+    alt[1] = gtk_image_new_from_file(PREFIX"/share/soundtracker/flat.xpm");
     gtk_widget_show(alt[gui_settings.sharp ? 0 : 1]);
     gtk_box_pack_start(GTK_BOX(vbox), alt[1], FALSE, FALSE, 0);
     gtk_widget_show(vbox);
@@ -2156,16 +2136,10 @@ gui_final (int argc,
     add_empty_hbox(hbox);
     
     vbox = gtk_vbox_new(FALSE, 0);
-    pm = gdk_pixmap_create_from_xpm(mainwindow->window,
-	&mask, &style->bg[GTK_STATE_NORMAL],
-	PREFIX"/share/soundtracker/downarrow.xpm");
-    arrow[0] = gtk_pixmap_new(pm, mask);
+    arrow[0] = gtk_image_new_from_file(PREFIX"/share/soundtracker/downarrow.xpm");
     gtk_box_pack_start(GTK_BOX(vbox), arrow[0], FALSE, FALSE, 0);
     
-    pm = gdk_pixmap_create_from_xpm(mainwindow->window,
-	&mask, &style->bg[GTK_STATE_NORMAL],
-	PREFIX"/share/soundtracker/rightarrow.xpm");
-    arrow[1] = gtk_pixmap_new(pm, mask);
+    arrow[1] = gtk_image_new_from_file(PREFIX"/share/soundtracker/rightarrow.xpm");
     gtk_box_pack_start(GTK_BOX(vbox), arrow[1], FALSE, FALSE, 0);
     gtk_widget_show(arrow[gui_settings.advance_cursor_in_fx_columns ? 1 : 0]);
     gtk_widget_show(vbox);
