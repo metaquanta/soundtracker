@@ -1,3 +1,12 @@
+2012-11-02  Yury Aliaev  <mutab0r@rambler.ru>
+	* Makefile.am, soundtracker.xml, app/audioconfig.c, app/cheat-sheet.c,
+	app/file-operations.c, app/file-operations.h, app/gui-settings.c,
+	app/gui-subs.c, app/gui-subs.h, app/gui.c, app/gui.h, app/instrument-editor.c,
+	app/keys.c, app/main.c, app/menubar.c, app/menubar.h, app/module-info.c,
+	app/preferences.c, app/sample-editor.c, app/track-editor.c, app/track-editor.h,
+	app/transposition.c: Gnome menus are removed in favor of GtkBuilder. GtkPixmap
+	is changed into GtkImage.
+
 2012-10-21  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/file-operations.c, app/file-operations.h, app/gui-subs.c, app/gui-subs.h,
 	app/gui.c, app/gui.h, app/instrument-editor.c, app/menubar.c,
