@@ -44,8 +44,8 @@ void      track_editor_do_the_note_key     (int note,
 					    guint32 xkeysym,
 					    int modifiers);
 
-void      track_editor_toggle_jazz_edit    (void);
-void	  track_editor_toggle_insert_noteoff (void);
+void      track_editor_toggle_jazz_edit    (GtkCheckMenuItem *b);
+void	  track_editor_toggle_insert_noteoff (GtkCheckMenuItem *b);
 
 void      track_editor_set_num_channels    (int n);
 
@@ -59,22 +59,22 @@ void      tracker_set_update_freq     (int);
 
 /* c'n'p operations */
 
-void      track_editor_copy_pattern        (Tracker *t);
-void      track_editor_cut_pattern         (Tracker *t);
-void      track_editor_paste_pattern       (Tracker *t);
-void      track_editor_copy_track          (Tracker *t);
-void      track_editor_cut_track           (Tracker *t);
-void      track_editor_paste_track         (Tracker *t);
-void      track_editor_delete_track        (Tracker *t);
-void      track_editor_insert_track        (Tracker *t);
-void      track_editor_kill_notes_track    (Tracker *t);
+void      track_editor_copy_pattern        (GtkWidget *w, Tracker *t);
+void      track_editor_cut_pattern         (GtkWidget *w, Tracker *t);
+void      track_editor_paste_pattern       (GtkWidget *w, Tracker *t);
+void      track_editor_copy_track          (GtkWidget *w, Tracker *t);
+void      track_editor_cut_track           (GtkWidget *w, Tracker *t);
+void      track_editor_paste_track         (GtkWidget *w, Tracker *t);
+void      track_editor_delete_track        (GtkWidget *w, Tracker *t);
+void      track_editor_insert_track        (GtkWidget *w, Tracker *t);
+void      track_editor_kill_notes_track    (GtkWidget *w, Tracker *t);
 void      track_editor_mark_selection      (Tracker *t);
-void      track_editor_clear_mark_selection(Tracker *t);
+void      track_editor_clear_mark_selection(GtkWidget *w, Tracker *t);
 void      track_editor_copy_selection      (Tracker *t);
 void      track_editor_cut_selection       (Tracker *t);
 void      track_editor_paste_selection     (Tracker *t);
 
-void      track_editor_interpolate_fx      (Tracker *t);
+void      track_editor_interpolate_fx      (GtkWidget *w, Tracker *t);
 
 void      track_editor_cmd_mvalue (Tracker *t, gboolean mode);
 

@@ -50,7 +50,6 @@
 #include "gui-subs.h"
 #include "gui.h"
 #include "gui-settings.h"
-#include "menubar.h"
 #include "preferences.h"
 
 enum { BLACK, WHITE };
@@ -530,22 +529,14 @@ keys_dialog (void)
 	return;
     }
     
-#ifdef USE_GNOME
-    configwindow = gnome_app_new("SoundTracker", _("Keyboard Configuration"));
-#else
-    configwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    configwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);//!!!Dialog
     gtk_window_set_title(GTK_WINDOW(configwindow), _("Keyboard Configuration"));
-#endif
     g_signal_connect(configwindow, "delete_event",
 			G_CALLBACK(keys_cancel), NULL);
 
     mainbox = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-#ifdef USE_GNOME
-    gnome_app_set_contents(GNOME_APP(configwindow), mainbox);
-#else
     gtk_container_add(GTK_CONTAINER(configwindow), mainbox);
-#endif
     gtk_widget_show(mainbox);
 
     keys_initialize_editing();
@@ -1064,8 +1055,8 @@ keys_init (void)
 	   || !keys_try_automatic_config('s', 0, 7, 1, BLACK, keys2 + 1)
 	   || !keys_ch_try_automatic_config ('E', -2, 8, keys3 + 3, ENCODE_MODIFIERS(1, 0, 0))
 	   || !keys_ch_try_automatic_config ('S', -1, 8, keys3 + 11, ENCODE_MODIFIERS(1, 0, 0))
-	   || !keys_ch_try_automatic_config ('E', -2, 8, keys3 + 19, ENCODE_MODIFIERS(1, 1, 0))
-	   || !keys_ch_try_automatic_config ('S', -1, 8, keys3 + 27, ENCODE_MODIFIERS(1, 1, 0))) {
+	   || !keys_ch_try_automatic_config ('E', -2, 8, keys3 + 19, ENCODE_MODIFIERS(1, 0, 1))
+	   || !keys_ch_try_automatic_config ('S', -1, 8, keys3 + 27, ENCODE_MODIFIERS(1, 0, 1))) {
 	    // Automatic key configuration unsuccessful. Popup requester.
 	    gnome_warning_dialog(_("Automatic key configuration unsuccessful.\nPlease use the Keyboard Configuration dialog\n"
 				 "in the Settings menu."));
@@ -1134,7 +1125,6 @@ keys_is_key_pressed (guint32 keysym,
 #include "keys.h"
 #include "gui-subs.h"
 #include "gui.h"
-#include "menubar.h"
 #include "preferences.h"
 
 char *lowkey="<>aAyYsSxXcCfFvVgGbBhHnNmMkK,;lL.:";

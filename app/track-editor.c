@@ -35,11 +35,11 @@
 #include "audio.h"
 #include "xm-player.h"
 #include "main.h"
+#include "menubar.h"
 #include "gui-settings.h"
 #include "gui-subs.h"
 #include "preferences.h"
 #include "tracker-settings.h"
-#include "menubar.h"
 #include "scope-group.h"
 
 Tracker *tracker;
@@ -71,7 +71,8 @@ static GtkWidget *jazzbox;
 static GtkWidget *jazztable;
 static GtkToggleButton *jazztoggles[32];
 static int jazz_numshown = 0;
-static int jazz_enabled = FALSE;
+static gboolean jazz_enabled = FALSE;
+static gboolean insert_noteoff;
 
 static void vscrollbar_changed(GtkAdjustment *adj);
 static void hscrollbar_changed(GtkAdjustment *adj);
@@ -86,17 +87,12 @@ static struct {
     int chn;
     gboolean act;
 } reckey[32];
-static gboolean insert_noteoff;
 
 static gint
 track_editor_editmode_status_idle_function (void)
 {
-#ifdef USE_GNOME
-    gnome_appbar_set_status(GNOME_APPBAR(status_bar), track_editor_editmode_status_ed_buf);
-#else
     gtk_statusbar_pop(GTK_STATUSBAR(status_bar), statusbar_context_id);
     gtk_statusbar_push(GTK_STATUSBAR(status_bar), statusbar_context_id, track_editor_editmode_status_ed_buf);
-#endif
 
     gtk_idle_remove(track_editor_editmode_status_idle_handler);
     track_editor_editmode_status_idle_handler = 0;
@@ -410,11 +406,8 @@ tracker_page_create (GtkNotebook *nb)
     memset(&block_buffer, 0, sizeof(block_buffer));
     trackersettings_apply_font(TRACKERSETTINGS(trackersettings));
 
-#ifdef USE_GNOME
-    /* Create popup menu */
-    thing = gnome_popup_menu_new(track_editor_popup_menu);
-    gnome_popup_menu_attach(thing, &tracker->widget, (gpointer)thing);
-#endif
+    thing = gui_get_widget("track_editor_popup_menu");
+    gui_popup_menu_attach(thing, &tracker->widget, NULL);
 }
 
 static void
@@ -461,27 +454,17 @@ hscrollbar_changed (GtkAdjustment *adj)
 }
 
 void
-track_editor_toggle_jazz_edit (void)
+track_editor_toggle_jazz_edit (GtkCheckMenuItem *b)
 {
-    if(!jazz_enabled) {
-	gtk_widget_show(jazzbox);
-	jazz_enabled = TRUE;
-    } else {
-	gtk_widget_hide(jazzbox);
-	jazz_enabled = FALSE;
-    }
+	jazz_enabled = gtk_check_menu_item_get_active(b);
+	(jazz_enabled ? gtk_widget_show : gtk_widget_hide)(jazzbox);
 }
 
 void
-track_editor_toggle_insert_noteoff (void)
+track_editor_toggle_insert_noteoff (GtkCheckMenuItem *b)
 {
-    if(!insert_noteoff)
-	insert_noteoff = TRUE;
-    else
-	insert_noteoff = FALSE;
+	insert_noteoff = gtk_check_menu_item_get_active(b);
 }
-
-
 
 static gboolean
 track_editor_is_channel_playing (int ch)
@@ -905,7 +888,7 @@ fin_note:
 }
 
 void
-track_editor_copy_pattern (Tracker *t)
+track_editor_copy_pattern (GtkWidget *w, Tracker *t)
 {
     XMPattern *p = t->curpattern;
 
@@ -918,7 +901,7 @@ track_editor_copy_pattern (Tracker *t)
 }
 
 void
-track_editor_cut_pattern (Tracker *t)
+track_editor_cut_pattern (GtkWidget *w, Tracker *t)
 {
     XMPattern *p = t->curpattern;
 
@@ -933,7 +916,7 @@ track_editor_cut_pattern (Tracker *t)
 }
 
 void
-track_editor_paste_pattern (Tracker *t)
+track_editor_paste_pattern (GtkWidget *w, Tracker *t)
 {
     XMPattern *p = t->curpattern;
     int i;
@@ -956,7 +939,7 @@ track_editor_paste_pattern (Tracker *t)
 }
 
 void
-track_editor_copy_track (Tracker *t)
+track_editor_copy_track (GtkWidget *w, Tracker *t)
 {
     int l = t->curpattern->length;
     XMNote *n = t->curpattern->channels[t->cursor_ch];
@@ -970,7 +953,7 @@ track_editor_copy_track (Tracker *t)
 }
 
 void
-track_editor_cut_track (Tracker *t)
+track_editor_cut_track (GtkWidget *w, Tracker *t)
 {
     int l = t->curpattern->length;
     XMNote *n = t->curpattern->channels[t->cursor_ch];
@@ -986,7 +969,7 @@ track_editor_cut_track (Tracker *t)
 }
 
 void
-track_editor_paste_track (Tracker *t)
+track_editor_paste_track (GtkWidget *w, Tracker *t)
 {
     int l = t->curpattern->length;
     XMNote *n = t->curpattern->channels[t->cursor_ch];
@@ -1004,7 +987,7 @@ track_editor_paste_track (Tracker *t)
 }
 
 void
-track_editor_delete_track (Tracker *t)
+track_editor_delete_track (GtkWidget *w, Tracker *t)
 {
     st_pattern_delete_track(t->curpattern, t->cursor_ch);
     xm->modified = 1;
@@ -1012,7 +995,7 @@ track_editor_delete_track (Tracker *t)
 }
 
 void
-track_editor_insert_track (Tracker *t)
+track_editor_insert_track (GtkWidget *w, Tracker *t)
 {
     st_pattern_insert_track(t->curpattern, t->cursor_ch);
     xm->modified = 1;
@@ -1020,7 +1003,7 @@ track_editor_insert_track (Tracker *t)
 }
 
 void
-track_editor_kill_notes_track (Tracker *t)
+track_editor_kill_notes_track (GtkWidget *w, Tracker *t)
 {
     int i;
     XMNote *note;
@@ -1078,7 +1061,7 @@ track_editor_mark_selection (Tracker *t)
 }
 
 void
-track_editor_clear_mark_selection (Tracker *t)
+track_editor_clear_mark_selection (GtkWidget *w, Tracker *t)
 {
     tracker_clear_mark_selection(t);
     menubar_block_mode_set(FALSE);
@@ -1159,7 +1142,7 @@ track_editor_paste_selection (Tracker *t)
 }
 
 void
-track_editor_interpolate_fx (Tracker *t)
+track_editor_interpolate_fx (GtkWidget *w, Tracker *t)
 {
     int height, width, chStart, rowStart;
     int xmnote_offset;

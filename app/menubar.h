@@ -27,22 +27,20 @@
 #include <gtk/gtk.h>
 
 void
-menubar_create (GtkWidget *window, GtkWidget *destbox);
+menubar_init_prefs                  ();
 
 void
-menubar_quit_requested (void);
+menubar_block_mode_set              (gboolean state);
 
 void
-menubar_init_prefs ();
+menubar_clear_clicked               (GtkWidget *w, gpointer b);
 
 void
-menubar_write_accels ();
+menubar_handle_cutcopypaste         (GtkWidget *p, gpointer a);
 
 void
-menubar_block_mode_set(gboolean state);
+menubar_handle_edit_menu            (GtkWidget *p, gpointer a);
 
-#ifdef USE_GNOME
-extern GnomeUIInfo track_editor_popup_menu[];
-#endif
-
+void
+menubar_toggle_perm_wrapper         (GtkWidget *w, gpointer all);
 #endif /* ST_MENUBAR_H */

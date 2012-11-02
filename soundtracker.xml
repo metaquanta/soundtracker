@@ -1,0 +1,1146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkMenu" id="track_editor_popup_menu">
+    <property name="visible">True</property>
+    <property name="ubuntu_local">True</property>
+    <child>
+      <object class="GtkMenuItem" id="menuitem5">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Pattern</property>
+        <property name="use_underline">True</property>
+        <child type="submenu">
+          <object class="GtkMenu" id="menu6">
+            <property name="visible">True</property>
+            <property name="ubuntu_local">True</property>
+            <child>
+              <object class="GtkImageMenuItem" id="popup_cut_pattern">
+                <property name="label">gtk-cut</property>
+                <property name="visible">True</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="popup_copy_pattern">
+                <property name="label">gtk-copy</property>
+                <property name="visible">True</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="popup_paste_pattern">
+                <property name="label">gtk-paste</property>
+                <property name="visible">True</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="menuitem6">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Track</property>
+        <property name="use_underline">True</property>
+        <child type="submenu">
+          <object class="GtkMenu" id="menu1">
+            <property name="visible">True</property>
+            <property name="ubuntu_local">True</property>
+            <child>
+              <object class="GtkImageMenuItem" id="popup_cut_track">
+                <property name="label">gtk-cut</property>
+                <property name="visible">True</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="popup_copy_track">
+                <property name="label">gtk-copy</property>
+                <property name="visible">True</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="popup_paste_track">
+                <property name="label">gtk-paste</property>
+                <property name="visible">True</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="menuitem1">
+                <property name="visible">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="popup_kill_notes">
+                <property name="label" translatable="yes">_Kill notes</property>
+                <property name="visible">True</property>
+                <property name="use_underline">True</property>
+                <property name="image">image1</property>
+                <property name="use_stock">False</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="menuitem2">
+                <property name="visible">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="popup_insert_track">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Insert track</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="popup_delete_track">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Delete track</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="menuitem3">
+                <property name="visible">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="popup_increment_cmd">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Increment cmd value</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="popup_decrement_cmd">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Decrement cmd value</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="menuitem7">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Selection</property>
+        <property name="use_underline">True</property>
+        <child type="submenu">
+          <object class="GtkMenu" id="menu2">
+            <property name="visible">True</property>
+            <property name="ubuntu_local">True</property>
+            <child>
+              <object class="GtkMenuItem" id="popup_clear_block">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">C_lear block marks</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="track_editor_clear_mark_selection"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="popup_cut_selection">
+                <property name="label">gtk-cut</property>
+                <property name="visible">True</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="popup_copy_selection">
+                <property name="label">gtk-copy</property>
+                <property name="visible">True</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="popup_paste_selection">
+                <property name="label">gtk-paste</property>
+                <property name="visible">True</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="popup_interpolate">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Interpolate effects</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="stock">gtk-new</property>
+  </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="yalign">0.52999997138977051</property>
+    <property name="stock">gtk-save-as</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="stock">gtk-save-as</property>
+  </object>
+  <object class="GtkWindow" id="mainwindow">
+    <signal name="delete_event" handler="quit_requested"/>
+    <child>
+      <object class="GtkVBox" id="mainvbox0">
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkMenuBar" id="main_menu">
+            <property name="visible">True</property>
+            <property name="ubuntu_local">True</property>
+            <child>
+              <object class="GtkMenuItem" id="menuitem4">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_File</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu3">
+                    <property name="visible">True</property>
+                    <property name="ubuntu_local">True</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="file_open">
+                        <property name="label">_Open…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image6</property>
+                        <property name="use_stock">False</property>
+                        <accelerator key="o" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="imagemenuitem2">
+                        <property name="label">gtk-save</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <accelerator key="s" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="gui_save_current"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="file_save_as">
+                        <property name="label">Save _as…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image7</property>
+                        <property name="use_stock">False</property>
+                        <accelerator key="s" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="imagemenuitem4">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="file_save_wav">
+                        <property name="label" translatable="yes">Save Module as _WAV…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image2</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="file_save_xm">
+                        <property name="label" translatable="yes">Save _XM without samples…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image3</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="imagemenuitem5">
+                        <property name="label">gtk-quit</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <accelerator key="q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="quit_requested"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="menuitem14">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Module</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu7">
+                    <property name="visible">True</property>
+                    <property name="ubuntu_local">True</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="module_clear_all">
+                        <property name="label" translatable="yes">Clear _All</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image8</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="module_clear_patterns">
+                        <property name="label" translatable="yes">Clear _Patterns Only</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image9</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem13">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem15">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Optimize Module</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="modinfo_optimize_module"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="menuitem8">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Edit</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu4">
+                    <property name="visible">True</property>
+                    <property name="ubuntu_local">True</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="edit_cut">
+                        <property name="label">gtk-cut</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <accelerator key="x" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="edit_copy">
+                        <property name="label">gtk-copy</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <accelerator key="c" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="edit_paste">
+                        <property name="label">gtk-paste</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <accelerator key="v" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem11">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="menuitem12">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Jazz edit mode</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="space" signal="activate" modifiers="GDK_SHIFT_MASK"/>
+                        <signal name="toggled" handler="track_editor_toggle_jazz_edit"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="edit_record_keyreleases">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Record keyreleases</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="track_editor_toggle_insert_noteoff"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem20">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem21">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Transp_osition…</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="transposition_dialog"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem22">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem23">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Pattern</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu8">
+                            <property name="visible">True</property>
+                            <property name="ubuntu_local">True</property>
+                            <child>
+                              <object class="GtkImageMenuItem" id="menuitem26">
+                                <property name="label">gtk-cut</property>
+                                <property name="visible">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
+                                <accelerator key="F3" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                                <signal name="activate" handler="track_editor_cut_pattern"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="copy_pattern">
+                                <property name="label">gtk-copy</property>
+                                <property name="visible">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
+                                <accelerator key="F4" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                                <signal name="activate" handler="track_editor_copy_pattern"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="paste_pattern">
+                                <property name="label">gtk-paste</property>
+                                <property name="visible">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
+                                <accelerator key="F5" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                                <signal name="activate" handler="track_editor_paste_pattern"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem24">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Track</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu9">
+                            <property name="visible">True</property>
+                            <property name="ubuntu_local">True</property>
+                            <child>
+                              <object class="GtkImageMenuItem" id="menuitem27">
+                                <property name="label">gtk-cut</property>
+                                <property name="visible">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
+                                <accelerator key="F3" signal="activate" modifiers="GDK_SHIFT_MASK"/>
+                                <signal name="activate" handler="track_editor_cut_track"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="copy_track">
+                                <property name="label">gtk-copy</property>
+                                <property name="visible">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
+                                <accelerator key="F4" signal="activate" modifiers="GDK_SHIFT_MASK"/>
+                                <signal name="activate" handler="track_editor_copy_track"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="paste_track">
+                                <property name="label">gtk-paste</property>
+                                <property name="visible">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
+                                <accelerator key="F5" signal="activate" modifiers="GDK_SHIFT_MASK"/>
+                                <signal name="activate" handler="track_editor_paste_track"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="menuitem28">
+                                <property name="visible">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="kill_notes">
+                                <property name="label" translatable="yes">_Kill notes</property>
+                                <property name="visible">True</property>
+                                <property name="use_underline">True</property>
+                                <property name="image">image10</property>
+                                <property name="use_stock">False</property>
+                                <accelerator key="k" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <signal name="activate" handler="track_editor_kill_notes_track"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="menuitem29">
+                                <property name="visible">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="insert_track">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">_Insert track</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="track_editor_insert_track"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="delete_track">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">_Delete track</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="track_editor_delete_track"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="menuitem30">
+                                <property name="visible">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="edit_track_increment_cmd">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Increment cmd value</property>
+                                <accelerator key="equal" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="edit_track_decrement_cmd">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Decrement cmd value</property>
+                                <property name="use_underline">True</property>
+                                <accelerator key="minus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem25">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Selection</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu10">
+                            <property name="visible">True</property>
+                            <property name="ubuntu_local">True</property>
+                            <child>
+                              <object class="GtkCheckMenuItem" id="edit_selection_mark_mode">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">_Mark mode</property>
+                                <property name="use_underline">True</property>
+                                <accelerator key="b" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <signal name="toggled" handler="menubar_mark_mode_toggled"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="menuitem32">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">C_lear block marks</property>
+                                <property name="use_underline">True</property>
+                                <accelerator key="b" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                                <signal name="activate" handler="track_editor_clear_mark_selection"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="menuitem33">
+                                <property name="visible">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="menuitem34">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">_Interpolate effects</property>
+                                <property name="use_underline">True</property>
+                                <accelerator key="i" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <signal name="activate" handler="track_editor_interpolate_fx"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="menuitem35">
+                                <property name="visible">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="edit_selection_transpose_up">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Transpose half-note up</property>
+                                <property name="use_underline">True</property>
+                                <accelerator key="q" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="edit_selection_transpose_down">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Transpose half-note down</property>
+                                <property name="use_underline">True</property>
+                                <accelerator key="a" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="edit_selection_transpose_12up">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Transpose octave up</property>
+                                <property name="use_underline">True</property>
+                                <accelerator key="q" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_MOD1_MASK"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="edit_selection_transpose_12down">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Transpose octave down</property>
+                                <property name="use_underline">True</property>
+                                <accelerator key="a" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_MOD1_MASK"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="menuitem9">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Pattern</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu11">
+                    <property name="visible">True</property>
+                    <property name="ubuntu_local">True</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pattern_load">
+                        <property name="label" translatable="yes">_Load Pattern…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image11</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pattern_save">
+                        <property name="label" translatable="yes">_Save Current Pattern…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image12</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem36">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem37">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Find Unused Pattern</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="f" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="modinfo_find_unused_pattern"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem38">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Copy Current to Unused Pattern</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="g" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="modinfo_copy_to_unused_pattern"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem39">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem40">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">C_lear Unused Patterns</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="modinfo_clear_unused_patterns"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem41">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Pack Patterns</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="modinfo_pack_patterns"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem42">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem43">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">S_hrink Current Pattern</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="gui_shrink_pattern"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem44">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Expand Current Pattern</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="gui_expand_pattern"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="menuitem17">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Track</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu12">
+                    <property name="visible">True</property>
+                    <property name="ubuntu_local">True</property>
+                    <child>
+                      <object class="GtkMenuItem" id="track_current_permanent">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Toggle Current Track Permanentness</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="p" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="track_all_permanent">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Toggle _All Tracks Permanentness</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="p" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="menuitem18">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Instrument</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu13">
+                    <property name="visible">True</property>
+                    <property name="ubuntu_local">True</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="instrument_load">
+                        <property name="label" translatable="yes">_Load XI…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image13</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="instrument_save">
+                        <property name="label" translatable="yes">_Save XI…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image14</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem49">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menuitem50">
+                        <property name="label" translatable="yes">_Clear Current</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image15</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="instrument_editor_clear_current_instrument"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem51">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menuitem52">
+                        <property name="label" translatable="yes">_Delete Unused Instruments</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image16</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="modinfo_delete_unused_instruments"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="menuitem19">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Settings</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu14">
+                    <property name="visible">True</property>
+                    <property name="ubuntu_local">True</property>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="settings_display_scopes">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Display _Oscilloscopes</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="menubar_scopes_toggled"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem54">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Tracker</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu15">
+                            <property name="visible">True</property>
+                            <property name="ubuntu_local">True</property>
+                            <child>
+                              <object class="GtkCheckMenuItem" id="settings_tracker_flicker_free">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">_Flicker-free Scrolling</property>
+                                <property name="use_underline">True</property>
+                                <signal name="toggled" handler="menubar_backing_store_toggled"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="menuitem65">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">_Previous Font</property>
+                                <property name="use_underline">True</property>
+                                <accelerator key="comma" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <signal name="activate" handler="menubar_settings_tracker_prev_font"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="menuitem66">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">_Next Font</property>
+                                <property name="use_underline">True</property>
+                                <accelerator key="period" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <signal name="activate" handler="menubar_settings_tracker_next_font"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="menuitem67">
+                                <property name="visible">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="menuitem68">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Change Preferred _Accidental Type</property>
+                                <property name="use_underline">True</property>
+                                <accelerator key="a" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <signal name="activate" handler="gui_accidentals_clicked"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="menuitem69">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Change Effect Column _Editing Direction</property>
+                                <property name="use_underline">True</property>
+                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <signal name="activate" handler="gui_direction_clicked"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem55">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menuitem56">
+                        <property name="label" translatable="yes">_Keyboard Configuration…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image17</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="keys_dialog"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menuitem57">
+                        <property name="label" translatable="yes">_Audio Configuration…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image18</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="audioconfig_dialog"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menuitem58">
+                        <property name="label" translatable="yes">_GUI Configuration…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image19</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="gui_settings_dialog"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="settings_midi">
+                        <property name="label" translatable="yes">_MIDI Configuration…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image20</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="midi_settings_dialog"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem60">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="settings_disable_splash">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Disable Splash Screen</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="menubar_splash_toggled"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menuitem62">
+                        <property name="label" translatable="yes">_Save Settings Now</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image21</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="menubar_save_settings_now"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="settings_save_on_exit">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Save Settings on _Exit</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="menubar_save_settings_on_exit_toggled"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="menuitem10">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Help</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu5">
+                    <property name="visible">True</property>
+                    <property name="ubuntu_local">True</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="imagemenuitem10">
+                        <property name="label">_About…</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image22</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="about_dialog"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem70">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menuitem71">
+                        <property name="label" translatable="yes">Show _Tips…</property>
+                        <property name="visible">True</property>
+                        <property name="image">image23</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="tips_dialog_open"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menuitem72">
+                        <property name="label" translatable="yes">_XM Effects</property>
+                        <property name="visible">True</property>
+                        <property name="image">image24</property>
+                        <property name="use_stock">False</property>
+                        <accelerator key="h" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="cheat_sheet_dialog"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="yalign">0.52999997138977051</property>
+    <property name="stock">gtk-save-as</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="yalign">0.46000000834465027</property>
+    <property name="stock">gtk-save-as</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="xalign">0.43999999761581421</property>
+    <property name="stock">gtk-open</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image7">
+    <property name="visible">True</property>
+    <property name="stock">gtk-save-as</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image8">
+    <property name="visible">True</property>
+    <property name="stock">gtk-new</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image9">
+    <property name="visible">True</property>
+    <property name="stock">gtk-new</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image10">
+    <property name="visible">True</property>
+    <property name="stock">gtk-new</property>
+  </object>
+  <object class="GtkImage" id="image11">
+    <property name="visible">True</property>
+    <property name="stock">gtk-open</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image12">
+    <property name="visible">True</property>
+    <property name="stock">gtk-save-as</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image13">
+    <property name="visible">True</property>
+    <property name="stock">gtk-open</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image14">
+    <property name="visible">True</property>
+    <property name="stock">gtk-save-as</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image15">
+    <property name="visible">True</property>
+    <property name="stock">gtk-new</property>
+  </object>
+  <object class="GtkImage" id="image16">
+    <property name="visible">True</property>
+    <property name="stock">gtk-clear</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image17">
+    <property name="visible">True</property>
+    <property name="stock">gtk-preferences</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image18">
+    <property name="visible">True</property>
+    <property name="stock">gtk-preferences</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image19">
+    <property name="visible">True</property>
+    <property name="stock">gtk-preferences</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image20">
+    <property name="visible">True</property>
+    <property name="stock">gtk-preferences</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image21">
+    <property name="visible">True</property>
+    <property name="stock">gtk-save</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image22">
+    <property name="visible">True</property>
+    <property name="stock">gtk-about</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image23">
+    <property name="visible">True</property>
+    <property name="yalign">0.4699999988079071</property>
+    <property name="stock">gtk-help</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="image24">
+    <property name="visible">True</property>
+    <property name="stock">gtk-help</property>
+    <property name="icon-size">1</property>
+  </object>
+</interface>

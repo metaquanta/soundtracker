@@ -5,7 +5,7 @@
 	file operations instead of FileSelection. Ctrl + S is now used for current
 	module saving. Single click for opening now works.
 
-2012-10-10  Yury Aliaev  <mutab0r@rambler.ru>
+2012-10-19  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/drivers/alsa1x-output.c: fixed wrong time estimation + code cleanups.
 
 2012-10-10  Yury Aliaev  <mutab0r@rambler.ru>

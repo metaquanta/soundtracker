@@ -95,7 +95,7 @@ int                  gui_get_current_pattern          (void);
 
 int                  gui_get_current_jump_value       (void);
 int                  gui_get_current_octave_value     (void);
-void		     gui_set_jump_value		      (int value);
+void                 gui_set_jump_value               (int value);
 
 void                 gui_update_player_pos            (const audio_player_pos *p);
 void                 gui_clipping_indicator_update    (double songtime);
@@ -105,15 +105,18 @@ void                 gui_free_xm                      (void);
 void                 gui_new_xm                       (void);
 void                 gui_load_xm                      (const char *filename);
 
-void		     gui_direction_clicked 	      (GtkWidget *widget,
-						       gpointer data);
-void		     gui_accidentals_clicked 	      (GtkWidget *widget,
-						       gpointer data);
+void                 gui_direction_clicked            (GtkWidget *widget,
+                                                       gpointer data);
+void                 gui_accidentals_clicked          (GtkWidget *widget,
+                                                       gpointer data);
 
-void		     gui_shrink_pattern		      (void);
-void		     gui_expand_pattern		      (void);	
-void		     play_song			      (void);
+void                 gui_shrink_pattern               (void);
+void                 gui_expand_pattern               (void);
+void                 play_song                        (void);
 
 void                 gui_save_current                 (void);
-GtkStyle*	     gui_get_style		      (void);
+GtkStyle*            gui_get_style                    (void);
+
+GtkWidget*           gui_get_widget                   (const gchar *name);
+void                 gui_popup_menu_attach            (GtkWidget *menu, GtkWidget *widget, gpointer *user_data);
 #endif /* _GUI_H */

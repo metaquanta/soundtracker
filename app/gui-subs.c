@@ -56,12 +56,9 @@ static gpointer aaccallbackdata;
 void
 statusbar_update (int message, gboolean force_update)
 {
-#ifdef USE_GNOME
-    gnome_appbar_set_status(GNOME_APPBAR(status_bar), _(status_messages[message]));
-#else
     gtk_statusbar_pop(GTK_STATUSBAR(status_bar), statusbar_context_id);
     gtk_statusbar_push(GTK_STATUSBAR(status_bar), statusbar_context_id, _(status_messages[message]));
-#endif
+
     /* Take care here... GUI callbacks can be called at this point. */
     if(force_update) {
 	while (gtk_events_pending())
@@ -545,7 +542,7 @@ aacdialog_close (gpointer data)
     aaccallback((gint)data, aaccallbackdata);
 }
 
-void
+void //!!! gtk_dialog
 gui_yes_no_cancel_modal (GtkWidget *window,
 			   const gchar *text,
 			   void (*callback)(gint, gpointer),
@@ -616,47 +613,6 @@ dialog_close (gpointer data)
     gtk_widget_destroy(data);
 }
 
-void
-gnome_app_ok_cancel_modal (GtkWidget *window,
-			   const gchar *text,
-			   void (*callback)(gint, gpointer),
-			   gpointer data)
-{
-    GtkWidget *label, *button;
-
-    g_return_if_fail(cdialog == NULL);
-
-    ccallback = callback;
-    ccallbackdata = data;
-    
-    cdialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_position (GTK_WINDOW(cdialog), GTK_WIN_POS_CENTER);
-    gtk_window_set_title(GTK_WINDOW(cdialog), _("Question"));
-    gtk_window_set_modal(GTK_WINDOW(cdialog), TRUE);
-    gtk_window_set_transient_for(GTK_WINDOW(cdialog), GTK_WINDOW(window));
-
-    label = gtk_label_new(text);
-    gtk_container_border_width(GTK_CONTAINER(GTK_DIALOG(cdialog)->vbox), 10);
-    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(cdialog)->vbox), label, TRUE, TRUE, 10);
-    gtk_widget_show(label);
-    
-    button = gtk_button_new_with_label ("Ok");
-    GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(cdialog)->action_area), button, TRUE, TRUE, 10);
-    g_signal_connect_swapped(button, "clicked",
-                               G_CALLBACK(cdialog_close), (gpointer)0);
-    gtk_widget_grab_default (button);
-    gtk_widget_show (button);
-    
-    button = gtk_button_new_with_label (_("Cancel"));
-    GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(cdialog)->action_area), button, TRUE, TRUE, 10);
-    g_signal_connect_swapped(button, "clicked",
-                               G_CALLBACK(cdialog_close), (gpointer)1);
-    gtk_widget_show (button);
-    
-    gtk_widget_show(cdialog);
-}
 
 void
 gnome_warning_dialog (gchar *text)
@@ -711,6 +667,23 @@ gnome_error_dialog (gchar *text)
 }
 
 #endif /* USE_GNOME */
+
+gboolean
+gui_ok_cancel_modal (GtkWidget *parent, const gchar *text)
+{
+	gint response;
+	static GtkWidget *dialog = NULL;
+
+	if(!dialog) {
+		dialog = gtk_message_dialog_new(GTK_WINDOW(parent), GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
+		                                NULL);
+	}
+	gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), text);
+	response = gtk_dialog_run(GTK_DIALOG(dialog));
+	gtk_widget_hide(dialog);
+
+	return (response == GTK_RESPONSE_OK);
+}
 
 gchar*
 gui_filename_from_utf8 (const gchar *old_name)

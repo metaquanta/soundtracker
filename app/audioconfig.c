@@ -260,22 +260,14 @@ audioconfig_dialog (void)
 	return;
     }
     
-#ifdef USE_GNOME
-    configwindow = gnome_app_new("SoundTracker", _("Audio Configuration"));
-#else
-    configwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    configwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);//!!! Dialog
     gtk_window_set_title(GTK_WINDOW(configwindow), _("Audio Configuration"));
-#endif
     g_signal_connect_swapped (configwindow, "delete_event",
 			G_CALLBACK (audioconfig_close_requested), configwindow);
 
     mainbox = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-#ifdef USE_GNOME
-    gnome_app_set_contents(GNOME_APP(configwindow), mainbox);
-#else
     gtk_container_add(GTK_CONTAINER(configwindow), mainbox);
-#endif
     gtk_widget_show(mainbox);
 
     // Each driver (playback,capture,editing,etc...) occupies the notebook page

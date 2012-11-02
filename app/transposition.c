@@ -34,7 +34,7 @@ static GtkWidget *transposition_window = NULL,
     *transposition_instrument_w[2];
 
 static void
-transposition_close_requested (void)
+transposition_close_requested (void)//!!! Widget show/hide
 {
     gtk_widget_destroy(transposition_window);
     transposition_window = NULL;
@@ -222,12 +222,8 @@ transposition_dialog (void)
 	return;
     }
     
-#ifdef USE_GNOME
-    transposition_window = gnome_app_new("SoundTracker", _("Transposition Tools"));
-#else
-    transposition_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    transposition_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);//!!! Dialog?
     gtk_window_set_title(GTK_WINDOW(transposition_window), _("Transposition Tools"));
-#endif
     g_signal_connect(transposition_window, "delete_event",
 			G_CALLBACK(transposition_close_requested), NULL);
 
@@ -236,11 +232,7 @@ transposition_dialog (void)
 
     mainbox = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-#ifdef USE_GNOME
-    gnome_app_set_contents(GNOME_APP(transposition_window), mainbox);
-#else
     gtk_container_add(GTK_CONTAINER(transposition_window), mainbox);
-#endif
     gtk_widget_show(mainbox);
 
     box1 = gtk_hbox_new(FALSE, 4);

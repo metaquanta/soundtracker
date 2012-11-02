@@ -375,7 +375,7 @@ sample_editor_page_create (GtkNotebook *nb)
 
     thing = gtk_button_new_with_label(_("Load Sample"));
     g_signal_connect(thing, "clicked",
-		       G_CALLBACK(fileops_open_dialog), (void*)DIALOG_LOAD_SAMPLE);
+		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_LOAD_SAMPLE);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 #if USE_SNDFILE == 0 && defined (NO_AUDIOFILE)
@@ -384,7 +384,7 @@ sample_editor_page_create (GtkNotebook *nb)
 
     thing = gtk_button_new_with_label(_("Save WAV"));
     g_signal_connect(thing, "clicked",
-		       G_CALLBACK(fileops_open_dialog), (void*)DIALOG_SAVE_SAMPLE);
+		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_SAVE_SAMPLE);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     savebutton = thing;
@@ -394,7 +394,7 @@ sample_editor_page_create (GtkNotebook *nb)
 
     thing = gtk_button_new_with_label(_("Save Region"));
     g_signal_connect(thing, "clicked",
-		       G_CALLBACK(fileops_open_dialog), (void*)DIALOG_SAVE_RGN_SAMPLE);
+		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_SAVE_RGN_SAMPLE);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     savebutton_rgn = thing;
@@ -1912,22 +1912,14 @@ sample_editor_monitor_clicked (void)
 	return;
     }
     
-#ifdef USE_GNOME
-    samplingwindow = gnome_app_new("SoundTracker", _("Sampling Window"));
-#else
     samplingwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(samplingwindow), _("Sampling Window"));
-#endif
     g_signal_connect(samplingwindow, "delete_event",
 			G_CALLBACK(sample_editor_stop_sampling), NULL);
 
     mainbox = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-#ifdef USE_GNOME
-    gnome_app_set_contents(GNOME_APP(samplingwindow), mainbox);
-#else
     gtk_container_add(GTK_CONTAINER(samplingwindow), mainbox);
-#endif
     gtk_widget_show(mainbox);
 
     thing = sample_editor_create_sampling_widgets();
@@ -2110,12 +2102,8 @@ sample_editor_open_volume_ramp_dialog (void)
 	return;
     }
     
-#ifdef USE_GNOME
-    volrampwindow = gnome_app_new("SoundTracker", _("Volume Ramping"));
-#else
-    volrampwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    volrampwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);//!!! Dialog
     gtk_window_set_title(GTK_WINDOW(volrampwindow), _("Volume Ramping"));
-#endif
     g_signal_connect(volrampwindow, "delete_event",
 			G_CALLBACK(sample_editor_close_volume_ramp_dialog), NULL);
 
@@ -2123,11 +2111,7 @@ sample_editor_open_volume_ramp_dialog (void)
 
     mainbox = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-#ifdef USE_GNOME
-    gnome_app_set_contents(GNOME_APP(volrampwindow), mainbox);
-#else
     gtk_container_add(GTK_CONTAINER(volrampwindow), mainbox);
-#endif
     gtk_widget_show(mainbox);
 
     thing = gtk_label_new(_("Perform linear volume fade on Selection"));

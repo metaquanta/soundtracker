@@ -56,9 +56,9 @@
 #include "sample-editor.h"
 #include "track-editor.h"
 #include "scope-group.h"
+#include "menubar.h"
 #include "module-info.h"
 #include "preferences.h"
-#include "menubar.h"
 #include "time-buffer.h"
 #include "tips-dialog.h"
 #include "gui-settings.h"
@@ -66,6 +66,8 @@
 #include "playlist.h"
 #include "extspinbutton.h"
 #include "clock.h"
+
+#define XML_FILE PREFIX"/share/soundtracker/soundtracker.xml"
 
 int gui_playing_mode = 0;
 int notebook_current_page = NOTEBOOK_PAGE_FILE;
@@ -94,6 +96,7 @@ static GtkAdjustment *adj_amplification, *adj_pitchbend;
 static GtkWidget *spin_jump, *curins_spin, *spin_octave;
 static GtkWidget *toggle_lock_editpat;
 static Playlist *playlist;
+static GtkBuilder *builder;
 
 guint statusbar_context_id;
 GtkWidget *status_bar;
@@ -123,6 +126,13 @@ static struct measure measure_msr[] = {
     {"9/8", 18, 2},
     {"12/8", 24, 2},
     {NULL}
+};
+
+struct menu_callback
+{
+	const gchar *widget_name;
+	void (*fn)(GtkWidget*, gpointer);
+	gpointer data;
 };
 
 #define MAXMEASURE (sizeof(measure_msr) / sizeof(struct measure) - 1)
@@ -422,7 +432,7 @@ gui_save_current (void)
 	if(current_filename)
 		gui_save(current_filename, TRUE);
 	else
-		fileops_open_dialog(NULL, (void *)1);
+		fileops_open_dialog(NULL, (gpointer)1);
 }
 
 static void
@@ -449,61 +459,54 @@ save_wav (gchar *fn)
 }
 
 static void
-gui_shrink_callback (gint reply,
-		     gpointer data)
+gui_shrink_callback (XMPattern *data)
 {
-    if(!reply) {
-	st_shrink_pattern((XMPattern *)data);
+	st_shrink_pattern(data);
 	gui_update_pattern_data();
 	tracker_set_pattern(tracker, NULL);
-	tracker_set_pattern(tracker, (XMPattern *)data);
+	tracker_set_pattern(tracker, data);
 	xm_set_modified(1);
-    }
 }
 
 void
 gui_shrink_pattern ()
 {
-    XMPattern *patt = tracker->curpattern;
+	XMPattern *patt = tracker->curpattern;
 
-    if(st_check_if_odd_are_not_empty(patt)) {
-	gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
-	    _("Odd pattern rows contain data which will be lost after shrinking.\n"
-	      "Do you want to continue anyway?"),
-	    gui_shrink_callback,
-	    patt);
-    } else {
-	gui_shrink_callback(0, patt);
-    }
+	if(st_check_if_odd_are_not_empty(patt)) {
+		if(gui_ok_cancel_modal(mainwindow,
+		                       _("Odd pattern rows contain data which will be lost after shrinking.\n"
+		                         "Do you want to continue anyway?")))
+			gui_shrink_callback(patt);
+	} else {
+		gui_shrink_callback(patt);
+	}
 }
 
 static void
-gui_expand_callback (gint reply, gpointer data)
+gui_expand_callback (XMPattern *data)
 {
-    if(!reply) {
-	st_expand_pattern((XMPattern *)data);
+	st_expand_pattern(data);
 	gui_update_pattern_data();
 	tracker_set_pattern(tracker, NULL);
-	tracker_set_pattern(tracker, (XMPattern *)data);
+	tracker_set_pattern(tracker, data);
 	xm_set_modified(1);
-    }
 }
 
 void
 gui_expand_pattern ()
 {
-    XMPattern *patt = tracker->curpattern;
+	XMPattern *patt = tracker->curpattern;
 
-    if(patt->length > 128) {
-	gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
-	    _("The pattern is too long for expanding.\n"
-	      "Some data at the end of the pattern will be lost.\n"
-	      "Do you want to continue anyway?"),
-	    gui_expand_callback,
-	    patt);
-    } else {
-	gui_expand_callback(0, patt);
-    }
+	if(patt->length > 128) {
+		if(gui_ok_cancel_modal(mainwindow,
+		                       _("The pattern is too long for expanding.\n"
+		                       "Some data at the end of the pattern will be lost.\n"
+		                       "Do you want to continue anyway?")))
+			gui_expand_callback(patt);
+	} else {
+		gui_expand_callback(patt);
+	}
 }
 
 static void
@@ -1834,6 +1837,18 @@ gui_get_style(void)
     return style;
 }
 
+void
+quit_requested (void)
+{
+	if(xm->modified) {
+		if(gui_ok_cancel_modal(mainwindow,
+		                       _("Are you sure you want to quit?\nAll changes will be lost!")))
+			gtk_main_quit();
+	} else {
+		gtk_main_quit();
+	}
+}
+
 int
 gui_final (int argc,
 	   char *argv[])
@@ -1846,21 +1861,47 @@ gui_final (int argc,
     gint i, wdth, cur, selected;
     GList *glist;
     gchar *other;
-#ifdef USE_GNOME
-    GtkWidget *dockitem;
-#endif
+    GError *error = NULL;
+
+	struct menu_callback cb[] = {
+		{"file_open", fileops_open_dialog, (gpointer)DIALOG_LOAD_MOD},
+		{"file_save_as", fileops_open_dialog, (gpointer)DIALOG_SAVE_MOD},
+		{"file_save_wav", fileops_open_dialog, (gpointer)DIALOG_SAVE_MOD_AS_WAV},
+		{"file_save_xm", fileops_open_dialog, (gpointer)DIALOG_SAVE_SONG_AS_XM},
+		{"module_clear_all", menubar_clear_clicked, (gpointer)1},
+		{"module_clear_patterns", menubar_clear_clicked, (gpointer)0},
+		{"edit_cut", menubar_handle_cutcopypaste, (gpointer)0},
+		{"edit_copy", menubar_handle_cutcopypaste, (gpointer)1},
+		{"edit_paste", menubar_handle_cutcopypaste, (gpointer)2},
+		{"edit_track_increment_cmd", menubar_handle_edit_menu, (gpointer)0},
+		{"edit_track_decrement_cmd", menubar_handle_edit_menu, (gpointer)1},
+		{"edit_selection_transpose_up", menubar_handle_edit_menu, (gpointer)2},
+		{"edit_selection_transpose_down", menubar_handle_edit_menu, (gpointer)3},
+		{"edit_selection_transpose_12up", menubar_handle_edit_menu, (gpointer)4},
+		{"edit_selection_transpose_12down", menubar_handle_edit_menu, (gpointer)5},
+		{"pattern_load", fileops_open_dialog, (gpointer)DIALOG_LOAD_PATTERN},
+		{"pattern_save", fileops_open_dialog, (gpointer)DIALOG_SAVE_PATTERN},
+		{"track_current_permanent", menubar_toggle_perm_wrapper, (gpointer)0},
+		{"track_all_permanent", menubar_toggle_perm_wrapper, (gpointer)1},
+		{"instrument_load", fileops_open_dialog, (gpointer)DIALOG_LOAD_INSTRUMENT},
+		{"instrument_save", fileops_open_dialog, (gpointer)DIALOG_SAVE_INSTRUMENT},
+		{NULL}
+	};
 
     pipetag = gdk_input_add(audio_backpipe, GDK_INPUT_READ, read_mixer_pipe, NULL);
 
-#ifdef USE_GNOME
-    mainwindow = gnome_app_new("SoundTracker", "SoundTracker " VERSION);
-#else
-    mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title (GTK_WINDOW (mainwindow), "SoundTracker " VERSION);
-#endif
+	builder = gtk_builder_new();
+	if(!gtk_builder_add_from_file(builder, XML_FILE, &error)) {
+		fprintf(stderr, _("%s.\n"PACKAGE" startup is aborted\nFailed GUI description file: %s\n"),
+		                  error->message, XML_FILE);
+		g_error_free(error);
+		return 0;
+	}
 
-    g_signal_connect(mainwindow, "delete_event",
-			G_CALLBACK(menubar_quit_requested), NULL);
+	mainwindow = gui_get_widget("mainwindow");
+	if(!mainwindow)
+		return 0;
+    gtk_window_set_title (GTK_WINDOW (mainwindow), "SoundTracker " VERSION);
 
     if(gui_splash_window) {
 	gtk_window_set_transient_for(GTK_WINDOW(gui_splash_window),
@@ -1886,17 +1927,10 @@ gui_final (int argc,
 	file_selection_create(DIALOG_LOAD_PATTERN, _("Load current pattern..."), gui_settings.loadpat_path, load_pat, -1, FALSE, FALSE, FALSE);
 	file_selection_create(DIALOG_SAVE_PATTERN, _("Save current pattern..."), gui_settings.savepat_path, save_pat, -1, FALSE, TRUE, FALSE);
 
-    mainvbox0 = gtk_vbox_new(FALSE, 0);
-    gtk_container_border_width(GTK_CONTAINER(mainvbox0), 0);
-#ifdef USE_GNOME
-    gnome_app_set_contents(GNOME_APP(mainwindow), mainvbox0);
-#else
-    gtk_container_add(GTK_CONTAINER(mainwindow), mainvbox0);
-#endif
-    gtk_widget_show(mainvbox0);
+	mainvbox0 = gui_get_widget("mainvbox0");
+	if(!mainvbox0)
+		return 0;
 
-    menubar_create(mainwindow, mainvbox0);
-	
     mainvbox = gtk_vbox_new(FALSE, 4);
     gtk_container_border_width(GTK_CONTAINER(mainvbox), 4);
     gtk_box_pack_start(GTK_BOX(mainvbox0), mainvbox, TRUE, TRUE, 0);
@@ -2088,7 +2122,7 @@ gui_final (int argc,
     entry = GTK_COMBO(thing)->entry;
     gui_hang_tooltip(entry, _("Row highlighting configuration"));
     style = gtk_widget_get_style(entry);
-    
+
     glist = NULL;
     wdth = 0;
     selected = -1;
@@ -2143,7 +2177,7 @@ gui_final (int argc,
     gtk_widget_show(thing);
     g_signal_connect(thing, "clicked",
 		       G_CALLBACK(gui_direction_clicked), NULL);
-    
+
     /* Scopes Group or Instrument / Sample Listing */
 
     thing = gtk_vseparator_new();
@@ -2151,7 +2185,6 @@ gui_final (int argc,
     gtk_widget_show(thing);
 
 #ifndef NO_GDK_PIXBUF
-    GError *error = NULL;
     scopegroup = SCOPE_GROUP(scope_group_new(gdk_pixbuf_new_from_file(PREFIX"/share/soundtracker/muted.png", &error)));
 #else
     scopegroup = SCOPE_GROUP(scope_group_new());
@@ -2309,26 +2342,24 @@ gui_final (int argc,
 
 #define WELCOME_MESSAGE _("Welcome to SoundTracker!")
 
-#ifdef USE_GNOME
-    dockitem = bonobo_dock_item_new("Status Bar", (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL));
-    gnome_app_add_dock_item(GNOME_APP(mainwindow), BONOBO_DOCK_ITEM(dockitem),
-		   BONOBO_DOCK_BOTTOM, 0, 0, 0);
-    gtk_widget_show(dockitem);
-
     hbox = gtk_hbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(hbox), 2);
-    gtk_container_add(GTK_CONTAINER(dockitem), hbox);
+    gtk_box_pack_start(GTK_BOX(mainvbox), hbox, FALSE, TRUE, 0);
     gtk_widget_show(hbox);
 
-    status_bar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);
+    thing = gtk_frame_new (NULL);
+    gtk_widget_show (thing);
+    gtk_box_pack_start (GTK_BOX (hbox), thing, TRUE, TRUE, 0);
+    gtk_frame_set_shadow_type (GTK_FRAME (thing), GTK_SHADOW_IN);
+
+    status_bar = gtk_statusbar_new();
+    gtk_statusbar_set_has_resize_grip(GTK_STATUSBAR(status_bar), FALSE);
     gtk_widget_show (status_bar);
-    gtk_box_pack_start (GTK_BOX (hbox), status_bar, TRUE, TRUE, 0);
-    gtk_widget_set_size_request (status_bar, 300 , 20); /* so that it doesn't vanish when undocked */
+    gtk_container_add (GTK_CONTAINER (thing), status_bar);
 
     thing = gtk_frame_new (NULL);
     gtk_widget_show (thing);
     gtk_box_pack_start (GTK_BOX (hbox), thing, FALSE, FALSE, 0);
-    gtk_widget_set_size_request (thing, 48, 20);
     gtk_frame_set_shadow_type (GTK_FRAME (thing), GTK_SHADOW_IN);
 
     st_clock = clock_new ();
@@ -2338,25 +2369,23 @@ gui_final (int argc,
     clock_set_format (CLOCK (st_clock), _("%M:%S"));
     clock_set_seconds(CLOCK (st_clock), 0);
 
-    gnome_appbar_set_status(GNOME_APPBAR(status_bar), WELCOME_MESSAGE);
-#else
-    thing = gtk_hbox_new(FALSE, 1);
-    gtk_box_pack_start(GTK_BOX(mainvbox), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
-
-    status_bar = gtk_statusbar_new();
-    gtk_box_pack_start(GTK_BOX (thing), status_bar, TRUE, TRUE, 0);
-    gtk_widget_show(status_bar);
-    gtk_widget_set_size_request(status_bar, -1, 20);
-
     statusbar_context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(status_bar), "ST Statusbar");
     gtk_statusbar_push(GTK_STATUSBAR(status_bar), statusbar_context_id, WELCOME_MESSAGE);
-#endif
     
     /* capture all key presses */
     gtk_widget_add_events(GTK_WIDGET(mainwindow), GDK_KEY_RELEASE_MASK);
     g_signal_connect(mainwindow, "key-press-event", G_CALLBACK(keyevent), (gpointer)1);
     g_signal_connect(mainwindow, "key_release_event", G_CALLBACK(keyevent), (gpointer)0);
+
+	/* All widgets and main data structures are created, now it's possible to connect signals */
+	gtk_builder_connect_signals(builder, tracker);
+	/* Connect handlers to "activate" signals to individual widgets got by names if the case is not standard (data is not 'tracker') */
+	for(i = 0; cb[i].widget_name; i++) {
+		GtkWidget *w = gui_get_widget(cb[i].widget_name);
+
+		if(w)
+			g_signal_connect(w, "activate", G_CALLBACK(cb[i].fn), cb[i].data);
+	}
 
     if(argc == 2) {
 	gui_load_xm(argv[1]);
@@ -2402,4 +2431,34 @@ gui_final (int argc,
 
     gtk_widget_grab_focus(pbutton);
     return 1;
+}
+
+GtkWidget*
+gui_get_widget (const gchar *name)
+{
+	GtkWidget *w = GTK_WIDGET(gtk_builder_get_object(builder, name));
+
+	if(!w)
+		fprintf(stderr, _("GUI creation error: Widget '%s' is not found in %s file.\n"), name, XML_FILE);
+
+	return w;
+}
+
+static gboolean
+call_menu(GtkWidget *widget, GdkEventButton *event, GtkMenu *menu)
+{
+	if(event->button == 3) {
+		gtk_menu_popup(menu, NULL, NULL, NULL, NULL, event->button, event->time);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+void
+gui_popup_menu_attach (GtkWidget *menu, GtkWidget *widget, gpointer *user_data)
+{
+	gtk_menu_attach_to_widget(GTK_MENU(menu), widget, NULL);
+	g_signal_connect(menu, "deactivate", G_CALLBACK(gtk_widget_hide), NULL);
+	g_signal_connect(widget, "button-press-event", G_CALLBACK(call_menu), menu);
 }

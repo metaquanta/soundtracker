@@ -93,22 +93,14 @@ cheat_sheet_dialog (void)
 	return;
     }
 
-#ifdef USE_GNOME
-    cheat_sheet_window = gnome_app_new("SoundTracker", _("XM Effects Cheat Sheet"));
-#else
     cheat_sheet_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(cheat_sheet_window), _("XM Effects Cheat Sheet"));
-#endif
     g_signal_connect (GTK_OBJECT (cheat_sheet_window), "delete_event",
 			GTK_SIGNAL_FUNC (cheat_sheet_close_requested), NULL);
 
     mainbox = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-#ifdef USE_GNOME
-    gnome_app_set_contents(GNOME_APP(cheat_sheet_window), mainbox);
-#else
     gtk_container_add(GTK_CONTAINER(cheat_sheet_window), mainbox);
-#endif
     gtk_widget_show(mainbox);
 
     scrolled_window = gtk_scrolled_window_new (NULL, NULL);

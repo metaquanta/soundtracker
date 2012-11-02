@@ -371,18 +371,6 @@ modinfo_clear_unused_patterns (void)
 
 // Optimize -- clear everything unused
 
-static void
-modinfo_optimize_module_callback (gint reply,
-		   gpointer data)
-{
-    if(reply == 0) {
-	modinfo_clear_unused_patterns();
-    	modinfo_delete_unused_instruments();
-	modinfo_reorder_patterns();
-    	xm_set_modified(1);
-    }
-}
-
 void
 modinfo_optimize_module (void)
 {
@@ -402,8 +390,10 @@ modinfo_optimize_module (void)
     g_sprintf(infbuf, _("Unused patterns: %d (used: %d)\nUnused instruments: %d (used: %d)\n\nClear unused and reorder playlist?\n"),
 					b, d-b, c, e-c);
 
-    gnome_app_ok_cancel_modal(GNOME_APP(mainwindow),
-			      infbuf, modinfo_optimize_module_callback, NULL);
-
+	if(gui_ok_cancel_modal(mainwindow, infbuf)) {
+		modinfo_clear_unused_patterns();
+		modinfo_delete_unused_instruments();
+		modinfo_reorder_patterns();
+		xm_set_modified(1);
+	}
 }
-

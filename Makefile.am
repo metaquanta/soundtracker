@@ -16,7 +16,7 @@ utildir = $(datadir)/gnome/apps/Multimedia
 endif
 
 st_DATA = soundtracker_splash.png flat.xpm sharp.xpm muted.png downarrow.xpm \
-	rightarrow.xpm play.xpm play_cur.xpm stop.xpm lock.xpm
+	rightarrow.xpm play.xpm play_cur.xpm stop.xpm lock.xpm soundtracker.xml
 stdir = $(pkgdatadir)
 
 bindist:

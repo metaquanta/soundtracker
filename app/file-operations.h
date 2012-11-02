@@ -60,8 +60,7 @@ gboolean        fileops_page_handle_keys           (int shift,
 						    guint32 keyval,
 						    gboolean pressed);
 
-void            fileops_open_dialog                (void *dummy,
-						    void *index);
+void            fileops_open_dialog                (GtkWidget *w, gpointer index);
 
 void		fileops_refresh_list 		   (GtkFileSelection *fs,
 						    gboolean grab);

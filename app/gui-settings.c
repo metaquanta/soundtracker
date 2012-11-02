@@ -458,23 +458,15 @@ gui_settings_dialog (void)
 	return;
     }
 
-#ifdef USE_GNOME
-    configwindow = gnome_app_new("SoundTracker", _("GUI Configuration"));
-#else
-    configwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    configwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);//!!! dialog
     gtk_window_set_title(GTK_WINDOW(configwindow), _("GUI Configuration"));
-#endif
     g_signal_connect (configwindow, "delete_event",
 			G_CALLBACK(gui_settings_close_requested), NULL);
 //    gtk_window_set_policy(GTK_WINDOW(configwindow), FALSE, FALSE, FALSE);
 
     mainbox = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-#ifdef USE_GNOME
-    gnome_app_set_contents(GNOME_APP(configwindow), mainbox);
-#else
     gtk_container_add(GTK_CONTAINER(configwindow), mainbox);
-#endif
     gtk_widget_show(mainbox);
 
     mainhbox = gtk_hbox_new(FALSE, 4);

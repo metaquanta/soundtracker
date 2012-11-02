@@ -180,14 +180,13 @@ gui_yes_no_cancel_modal (GtkWidget *window,
 			   const gchar *text,
 			   void (*callback)(gint, gpointer),
 			   gpointer data);
+
+gboolean             gui_ok_cancel_modal              (GtkWidget *window, const gchar *text);
+
 #ifndef USE_GNOME
 
 #define GNOME_APP(x) x
 
-void                 gnome_app_ok_cancel_modal        (GtkWidget *window,
-						       const gchar *text,
-						       void (*callback)(gint, gpointer),
-						       gpointer data);
 void                 gnome_warning_dialog             (gchar *text);
 void                 gnome_error_dialog               (gchar *text);
 

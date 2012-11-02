@@ -413,8 +413,8 @@ fileops_page_handle_keys (int shift,
 }
 
 void
-fileops_open_dialog (void *dummy,
-		     void *index)
+fileops_open_dialog (GtkWidget *w,
+		     gpointer index)
 {
 	gint response;
 	int n = GPOINTER_TO_INT(index);

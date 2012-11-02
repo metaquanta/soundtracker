@@ -257,13 +257,13 @@ instrument_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing, "clicked",
-		       G_CALLBACK(fileops_open_dialog), (void*)DIALOG_LOAD_INSTRUMENT);
+		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_LOAD_INSTRUMENT);
 
     disableboxes[3] = thing = gtk_button_new_with_label(_("Save XI"));
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing, "clicked",
-		       G_CALLBACK(fileops_open_dialog), (void*)DIALOG_SAVE_INSTRUMENT);
+		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_SAVE_INSTRUMENT);
 
     thing = gtk_vseparator_new();
     gtk_box_pack_start(GTK_BOX(box), thing, FALSE, TRUE, 0);

@@ -36,7 +36,6 @@
 #include "gui-settings.h"
 #include "audioconfig.h"
 #include "tips-dialog.h"
-#include "menubar.h"
 #include "track-editor.h"
 #include "midi.h"
 #include "midi-settings.h"
@@ -261,8 +260,6 @@ main (int argc,
 	gtk_main();
 
 	gui_play_stop(); /* so that audio driver is shut down correctly. */
-
-	menubar_write_accels();
 
 	if(gui_settings.save_settings_on_exit) {
 	    keys_save_config();
