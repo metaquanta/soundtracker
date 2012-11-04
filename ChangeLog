@@ -1,3 +1,6 @@
+2012-11-04  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui.c: crash at window closing by "x" button is fixed.
+
 2012-11-02  Yury Aliaev  <mutab0r@rambler.ru>
 	* Makefile.am, soundtracker.xml, app/audioconfig.c, app/cheat-sheet.c,
 	app/file-operations.c, app/file-operations.h, app/gui-settings.c,

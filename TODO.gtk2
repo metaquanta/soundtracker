@@ -1,6 +1,4 @@
 6) Huge CPU overhead (partially fixed);
-7) Is very unstable (partially fixed). File->exit works good, but closing the 
-main window leads to the crash;
 9) Contains a lot of obsolete code.
 14) some CPU-consuming code in the instrument list selection callback (really 
 in the callback);

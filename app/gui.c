@@ -1837,7 +1837,7 @@ gui_get_style(void)
     return style;
 }
 
-void
+gboolean
 quit_requested (void)
 {
 	if(xm->modified) {
@@ -1847,6 +1847,7 @@ quit_requested (void)
 	} else {
 		gtk_main_quit();
 	}
+	return TRUE;
 }
 
 int
