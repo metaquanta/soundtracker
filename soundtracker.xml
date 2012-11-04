@@ -4,7 +4,6 @@
   <!-- interface-naming-policy project-wide -->
   <object class="GtkMenu" id="track_editor_popup_menu">
     <property name="visible">True</property>
-    <property name="ubuntu_local">True</property>
     <child>
       <object class="GtkMenuItem" id="menuitem5">
         <property name="visible">True</property>
@@ -13,7 +12,6 @@
         <child type="submenu">
           <object class="GtkMenu" id="menu6">
             <property name="visible">True</property>
-            <property name="ubuntu_local">True</property>
             <child>
               <object class="GtkImageMenuItem" id="popup_cut_pattern">
                 <property name="label">gtk-cut</property>
@@ -50,7 +48,6 @@
         <child type="submenu">
           <object class="GtkMenu" id="menu1">
             <property name="visible">True</property>
-            <property name="ubuntu_local">True</property>
             <child>
               <object class="GtkImageMenuItem" id="popup_cut_track">
                 <property name="label">gtk-cut</property>
@@ -138,7 +135,6 @@
         <child type="submenu">
           <object class="GtkMenu" id="menu2">
             <property name="visible">True</property>
-            <property name="ubuntu_local">True</property>
             <child>
               <object class="GtkMenuItem" id="popup_clear_block">
                 <property name="visible">True</property>
@@ -204,7 +200,6 @@
         <child>
           <object class="GtkMenuBar" id="main_menu">
             <property name="visible">True</property>
-            <property name="ubuntu_local">True</property>
             <child>
               <object class="GtkMenuItem" id="menuitem4">
                 <property name="visible">True</property>
@@ -213,7 +208,6 @@
                 <child type="submenu">
                   <object class="GtkMenu" id="menu3">
                     <property name="visible">True</property>
-                    <property name="ubuntu_local">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="file_open">
                         <property name="label">_Open…</property>
@@ -294,7 +288,6 @@
                 <child type="submenu">
                   <object class="GtkMenu" id="menu7">
                     <property name="visible">True</property>
-                    <property name="ubuntu_local">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="module_clear_all">
                         <property name="label" translatable="yes">Clear _All</property>
@@ -338,7 +331,6 @@
                 <child type="submenu">
                   <object class="GtkMenu" id="menu4">
                     <property name="visible">True</property>
-                    <property name="ubuntu_local">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="edit_cut">
                         <property name="label">gtk-cut</property>
@@ -414,7 +406,6 @@
                         <child type="submenu">
                           <object class="GtkMenu" id="menu8">
                             <property name="visible">True</property>
-                            <property name="ubuntu_local">True</property>
                             <child>
                               <object class="GtkImageMenuItem" id="menuitem26">
                                 <property name="label">gtk-cut</property>
@@ -457,7 +448,6 @@
                         <child type="submenu">
                           <object class="GtkMenu" id="menu9">
                             <property name="visible">True</property>
-                            <property name="ubuntu_local">True</property>
                             <child>
                               <object class="GtkImageMenuItem" id="menuitem27">
                                 <property name="label">gtk-cut</property>
@@ -557,7 +547,6 @@
                         <child type="submenu">
                           <object class="GtkMenu" id="menu10">
                             <property name="visible">True</property>
-                            <property name="ubuntu_local">True</property>
                             <child>
                               <object class="GtkCheckMenuItem" id="edit_selection_mark_mode">
                                 <property name="visible">True</property>
@@ -643,7 +632,6 @@
                 <child type="submenu">
                   <object class="GtkMenu" id="menu11">
                     <property name="visible">True</property>
-                    <property name="ubuntu_local">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="pattern_load">
                         <property name="label" translatable="yes">_Load Pattern…</property>
@@ -739,7 +727,6 @@
                 <child type="submenu">
                   <object class="GtkMenu" id="menu12">
                     <property name="visible">True</property>
-                    <property name="ubuntu_local">True</property>
                     <child>
                       <object class="GtkMenuItem" id="track_current_permanent">
                         <property name="visible">True</property>
@@ -768,7 +755,6 @@
                 <child type="submenu">
                   <object class="GtkMenu" id="menu13">
                     <property name="visible">True</property>
-                    <property name="ubuntu_local">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="instrument_load">
                         <property name="label" translatable="yes">_Load XI…</property>
@@ -829,7 +815,6 @@
                 <child type="submenu">
                   <object class="GtkMenu" id="menu14">
                     <property name="visible">True</property>
-                    <property name="ubuntu_local">True</property>
                     <child>
                       <object class="GtkCheckMenuItem" id="settings_display_scopes">
                         <property name="visible">True</property>
@@ -846,7 +831,6 @@
                         <child type="submenu">
                           <object class="GtkMenu" id="menu15">
                             <property name="visible">True</property>
-                            <property name="ubuntu_local">True</property>
                             <child>
                               <object class="GtkCheckMenuItem" id="settings_tracker_flicker_free">
                                 <property name="visible">True</property>
@@ -988,7 +972,6 @@
                 <child type="submenu">
                   <object class="GtkMenu" id="menu5">
                     <property name="visible">True</property>
-                    <property name="ubuntu_local">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem10">
                         <property name="label">_About…</property>
