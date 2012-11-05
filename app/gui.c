@@ -1891,8 +1891,8 @@ gui_final (int argc,
 
 	builder = gtk_builder_new();
 	if(!gtk_builder_add_from_file(builder, XML_FILE, &error)) {
-		fprintf(stderr, _("%s.\n"PACKAGE" startup is aborted\nFailed GUI description file: %s\n"),
-		                  error->message, XML_FILE);
+		g_critical(_("%s.\n"PACKAGE" startup is aborted\nFailed GUI description file: %s\n"),
+		           error->message, XML_FILE);
 		g_error_free(error);
 		return 0;
 	}
