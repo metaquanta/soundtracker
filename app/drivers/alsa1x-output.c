@@ -379,7 +379,7 @@ pcm_open_and_load_hwparams(alsa_driver *d)
 {
     gint err;
 
-    if((err = snd_pcm_open(&(d->soundfd), d->device, SND_PCM_STREAM_PLAYBACK, 0)) < 0) {
+    if((err = snd_pcm_open(&(d->soundfd), d->device, SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK)) < 0) {
 	alsa_error(N_("ALSA device opening error"), err);
 	return -1;
     }
