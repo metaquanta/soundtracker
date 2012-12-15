@@ -329,34 +329,42 @@ gui_mixer_play_pattern (int pattern,
 			int row,
 			int stop_after_row)
 {
-    audio_ctlpipe_id i = AUDIO_CTLPIPE_PLAY_PATTERN;
-    write(audio_ctlpipe, &i, sizeof(i));
-    write(audio_ctlpipe, &pattern, sizeof(pattern));
-    write(audio_ctlpipe, &row, sizeof(row));
-    write(audio_ctlpipe, &stop_after_row, sizeof(stop_after_row));
+	audio_ctlpipe_id i = AUDIO_CTLPIPE_PLAY_PATTERN;
+
+	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) ||
+	   write(audio_ctlpipe, &pattern, sizeof(pattern)) != sizeof(pattern) ||
+	   write(audio_ctlpipe, &row, sizeof(row)) != sizeof(row) ||
+	   write(audio_ctlpipe, &stop_after_row, sizeof(stop_after_row)) != sizeof(stop_after_row))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
 }
 
 static void
 gui_mixer_stop_playing (void)
 {
-    audio_ctlpipe_id i = AUDIO_CTLPIPE_STOP_PLAYING;
-    write(audio_ctlpipe, &i, sizeof(i));
+	audio_ctlpipe_id i = AUDIO_CTLPIPE_STOP_PLAYING;
+
+	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
 }
 
 static void
 gui_mixer_set_songpos (int songpos)
 {
-    audio_ctlpipe_id i = AUDIO_CTLPIPE_SET_SONGPOS;
-    write(audio_ctlpipe, &i, sizeof(i));
-    write(audio_ctlpipe, &songpos, sizeof(songpos));
+	audio_ctlpipe_id i = AUDIO_CTLPIPE_SET_SONGPOS;
+
+	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) ||
+	   write(audio_ctlpipe, &songpos, sizeof(songpos)) != sizeof(songpos))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
 }
 
 static void
 gui_mixer_set_pattern (int pattern)
 {
-    audio_ctlpipe_id i = AUDIO_CTLPIPE_SET_PATTERN;
-    write(audio_ctlpipe, &i, sizeof(i));
-    write(audio_ctlpipe, &pattern, sizeof(pattern));
+	audio_ctlpipe_id i = AUDIO_CTLPIPE_SET_PATTERN;
+
+	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) ||
+	   write(audio_ctlpipe, &pattern, sizeof(pattern)) !=sizeof(pattern))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
 }
 
 static void
@@ -405,9 +413,10 @@ save_wav (gchar *fn)
 
 	gui_play_stop();
 
-	write(audio_ctlpipe, &i, sizeof(i));
-	write(audio_ctlpipe, &l, sizeof(l));
-	write(audio_ctlpipe, path, l + 1);
+	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) ||
+	   write(audio_ctlpipe, &l, sizeof(l)) != sizeof(l) ||
+	   write(audio_ctlpipe, path, l + 1) != l + 1)
+		gui_error_dialog(N_("Connection with audio thread failed!"));
 	wait_for_player();
 	g_free(path);
 }
@@ -959,8 +968,9 @@ gui_tempo_changed (int value)
 	event_waiter_start(audio_tempo_ew);
     }
     i = AUDIO_CTLPIPE_SET_TEMPO;
-    write(audio_ctlpipe, &i, sizeof(i));
-    write(audio_ctlpipe, &value, sizeof(value));
+	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) ||
+	   write(audio_ctlpipe, &value, sizeof(value)) != sizeof(value))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
 }
 
 static void
@@ -973,8 +983,9 @@ gui_bpm_changed (int value)
 	event_waiter_start(audio_bpm_ew);
     }
     i = AUDIO_CTLPIPE_SET_BPM;
-    write(audio_ctlpipe, &i, sizeof(i));
-    write(audio_ctlpipe, &value, sizeof(value));
+	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) ||
+	   write(audio_ctlpipe, &value, sizeof(value)) != sizeof(value))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
 }
 
 static void
@@ -983,8 +994,9 @@ gui_adj_amplification_changed (GtkAdjustment *adj)
     audio_ctlpipe_id a = AUDIO_CTLPIPE_SET_AMPLIFICATION;
     float b = 8.0 - adj->value;
 
-    write(audio_ctlpipe, &a, sizeof(a));
-    write(audio_ctlpipe, &b, sizeof(b));
+	if(write(audio_ctlpipe, &a, sizeof(a)) != sizeof(a) ||
+	   write(audio_ctlpipe, &b, sizeof(b)) != sizeof(b))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
 }
 
 static void
@@ -993,8 +1005,9 @@ gui_adj_pitchbend_changed (GtkAdjustment *adj)
     audio_ctlpipe_id a = AUDIO_CTLPIPE_SET_PITCHBEND;
     float b = adj->value;
 
-    write(audio_ctlpipe, &a, sizeof(a));
-    write(audio_ctlpipe, &b, sizeof(b));
+	if(write(audio_ctlpipe, &a, sizeof(a)) != sizeof(a) ||
+	   write(audio_ctlpipe, &b, sizeof(b)) != sizeof(b))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
 }
 
 static void
@@ -1103,7 +1116,8 @@ read_mixer_pipe (gpointer data,
     if(poll(&pfd, 1, 0) <= 0)
 	return;
 
-    read(source, &a, sizeof(a));
+	if(read(source, &a, sizeof(a)) != sizeof(a))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
 //    printf("read %d\n", a);
 
     switch(a) {
@@ -1209,9 +1223,10 @@ play_song (void)
 
     gui_play_stop();
 
-    write(audio_ctlpipe, &i, sizeof(i));
-    write(audio_ctlpipe, &sp, sizeof(sp));
-    write(audio_ctlpipe, &pp, sizeof(pp));
+	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) ||
+	   write(audio_ctlpipe, &sp, sizeof(sp)) != sizeof(sp) ||
+	   write(audio_ctlpipe, &pp, sizeof(pp)) != sizeof(pp))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
     wait_for_player();
 }
 
@@ -1245,7 +1260,8 @@ gui_init_xm (int new_xm, gboolean updatechspin)
     audio_ctlpipe_id i;
 
     i = AUDIO_CTLPIPE_INIT_PLAYER;
-    write(audio_ctlpipe, &i, sizeof(i));
+	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
     tracker_reset(tracker);
     if(new_xm) {
 	gui_playlist_initialize();
@@ -1323,10 +1339,11 @@ gui_play_note (int channel,
     int instrument = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin));
     audio_ctlpipe_id a = AUDIO_CTLPIPE_PLAY_NOTE;
 
-    write(audio_ctlpipe, &a, sizeof(a));
-    write(audio_ctlpipe, &channel, sizeof(channel));
-    write(audio_ctlpipe, &note, sizeof(note));
-    write(audio_ctlpipe, &instrument, sizeof(instrument));
+	if(write(audio_ctlpipe, &a, sizeof(a)) != sizeof(a) ||
+	   write(audio_ctlpipe, &channel, sizeof(channel)) != sizeof(channel) ||
+	   write(audio_ctlpipe, &note, sizeof(note)) != sizeof(note) ||
+	   write(audio_ctlpipe, &instrument, sizeof(instrument)) != sizeof(instrument))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
     gui_ewc_startstop++;
 }
 
@@ -1338,16 +1355,19 @@ gui_play_note_full (unsigned channel,
 		    guint32 count)
 {
     int x;
+    gboolean result;
     audio_ctlpipe_id a = AUDIO_CTLPIPE_PLAY_NOTE_FULL;
 
     g_assert(sizeof(int) == sizeof(unsigned));
 
-    write(audio_ctlpipe, &a, sizeof(a));
-    write(audio_ctlpipe, &channel, sizeof(channel));
-    write(audio_ctlpipe, &note, sizeof(note));
-    write(audio_ctlpipe, &sample, sizeof(sample));
-    x = offset; write(audio_ctlpipe, &x, sizeof(x));
-    x = count; write(audio_ctlpipe, &x, sizeof(x));
+	result = write(audio_ctlpipe, &a, sizeof(a)) != sizeof(a) ||
+	         write(audio_ctlpipe, &channel, sizeof(channel)) != sizeof(channel) ||
+	         write(audio_ctlpipe, &note, sizeof(note)) != sizeof(note) ||
+	         write(audio_ctlpipe, &sample, sizeof(sample)) != sizeof(sample);
+    x = offset; result |= write(audio_ctlpipe, &x, sizeof(x)) != sizeof(x);
+    x = count; result |= write(audio_ctlpipe, &x, sizeof(x)) != sizeof(x);
+	if(result)
+		gui_error_dialog(N_("Connection with audio thread failed!"));
     gui_ewc_startstop++;
 }
 
@@ -1355,8 +1375,10 @@ void
 gui_play_note_keyoff (int channel)
 {
     audio_ctlpipe_id a = AUDIO_CTLPIPE_PLAY_NOTE_KEYOFF;
-    write(audio_ctlpipe, &a, sizeof(a));
-    write(audio_ctlpipe, &channel, sizeof(channel));
+
+	if(write(audio_ctlpipe, &a, sizeof(a)) != sizeof(a) ||
+	   write(audio_ctlpipe, &channel, sizeof(channel)) != sizeof(channel))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
 }
 
 static void
@@ -1853,6 +1875,16 @@ gui_final (int argc,
 		{NULL}
 	};
 
+	static const gchar *xm_f[] = {N_("FastTracker modules (*.xm)"), "*.[xX][mM]", NULL};
+	static const gchar *mod_f[] = {N_("Original SoundTracker modules (*.mod)"), "*.[mM][oO][dD]", NULL};
+	static const gchar **mod_formats[] = {xm_f, mod_f, NULL};
+	static const gchar *save_mod_f[] = {N_("FastTracker modules (*.xm)"), "*.[xX][mM]", NULL};
+	static const gchar **save_mod_formats[] = {save_mod_f, NULL};
+	static const gchar *wav_f[] = {N_("Microsoft RIFF (*.wav)"), "*.[wW][aA][wW]", NULL};
+	static const gchar **wav_formats[] = {wav_f, NULL};
+	static const gchar *xp_f[] = {N_("Extended pattern (*.xp)"), "*.[xX][pP]", NULL};
+	static const gchar **xp_formats[] = {xp_f, NULL};
+
     pipetag = gdk_input_add(audio_backpipe, GDK_INPUT_READ, read_mixer_pipe, NULL);
 
 	builder = gtk_builder_new();
@@ -1883,14 +1915,14 @@ gui_final (int argc,
     }
 
 //!!! TODO pop-up tooltip hints: Render module as WAV etc.
-	file_selection_create(DIALOG_LOAD_MOD, _("Load Module"), gui_settings.loadmod_path, load_xm, 0, TRUE, FALSE, FALSE);
-	file_selection_create(DIALOG_SAVE_MOD, _("Save Module"), gui_settings.savemod_path, save_song, 1, FALSE, TRUE, FALSE);
+	file_selection_create(DIALOG_LOAD_MOD, _("Load Module"), gui_settings.loadmod_path, load_xm, 0, TRUE, FALSE, FALSE, mod_formats);
+	file_selection_create(DIALOG_SAVE_MOD, _("Save Module"), gui_settings.savemod_path, save_song, 1, FALSE, TRUE, FALSE, save_mod_formats);
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
-	file_selection_create(DIALOG_SAVE_MOD_AS_WAV, _("Render WAV"), gui_settings.savemodaswav_path, save_wav, 2, FALSE, TRUE, TRUE);
+	file_selection_create(DIALOG_SAVE_MOD_AS_WAV, _("Render WAV"), gui_settings.savemodaswav_path, save_wav, 2, FALSE, TRUE, TRUE, wav_formats);
 #endif
-	file_selection_create(DIALOG_SAVE_SONG_AS_XM, _("Save XM without samples..."), gui_settings.savesongasxm_path, save_xm, -1, FALSE, TRUE, FALSE);
-	file_selection_create(DIALOG_LOAD_PATTERN, _("Load current pattern..."), gui_settings.loadpat_path, load_pat, -1, FALSE, FALSE, FALSE);
-	file_selection_create(DIALOG_SAVE_PATTERN, _("Save current pattern..."), gui_settings.savepat_path, save_pat, -1, FALSE, TRUE, FALSE);
+	file_selection_create(DIALOG_SAVE_SONG_AS_XM, _("Save XM without samples..."), gui_settings.savesongasxm_path, save_xm, -1, FALSE, TRUE, FALSE, save_mod_formats);
+	file_selection_create(DIALOG_LOAD_PATTERN, _("Load current pattern..."), gui_settings.loadpat_path, load_pat, -1, FALSE, FALSE, FALSE, xp_formats);
+	file_selection_create(DIALOG_SAVE_PATTERN, _("Save current pattern..."), gui_settings.savepat_path, save_pat, -1, FALSE, TRUE, FALSE, xp_formats);
 
 	mainvbox0 = gui_get_widget("mainvbox0");
 	if(!mainvbox0)

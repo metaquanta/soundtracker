@@ -92,7 +92,7 @@ xm_freq_note_to_relnote_finetune (float frequency,
     *relnote = rn;
 }
 
-static void
+static gboolean
 xm_load_xm_note (XMNote *note,
 		 FILE *f)
 {
@@ -118,13 +118,15 @@ xm_load_xm_note (XMNote *note,
 	if(c & 0x10)
 	    note->fxparam = fgetc(f);
     } else {
-	fread(d, 1, sizeof(d), f);
+	if(fread(d, 1, sizeof(d), f) != sizeof(d))
+		return FALSE;
 	note->note = c;
 	note->instrument = d[0];
 	note->volume = d[1];
 	note->fxtype = d[2];
 	note->fxparam = d[3];
     }
+    return TRUE;
 }
 
 static int
@@ -189,12 +191,15 @@ xm_load_xm_pattern (XMPattern *pat,
     guint32 hdr_len, datasize;
     unsigned long position;
 
-    fread(ph, 1, sizeof(ph), f);
+	if(fread(ph, 1, sizeof(ph), f) != sizeof(ph)) {
+		gui_error_dialog(N_("Pattern header reading error."));
+		return 0;
+	}
 
     len = get_le_16(ph + 5);
     if(len > 256) {
 	char buf[128];
-	g_sprintf(buf, _("Pattern length out of range: %d.\n"), len);
+	g_sprintf(buf, _("Pattern length out of range: %d."), len);
 	gui_error_dialog(buf);
 	return 0;
     }
@@ -213,11 +218,14 @@ xm_load_xm_pattern (XMPattern *pat,
 	return 1;
 
     /* Read channel data */
-    for(j = 0; j < len; j++) {
-	for(i = 0; i < num_channels; i++) {
-	    xm_load_xm_note(&pat->channels[i][j], f);
+	for(j = 0; j < len; j++) {
+		for(i = 0; i < num_channels; i++) {
+			if(!xm_load_xm_note(&pat->channels[i][j], f)) {
+				gui_error_dialog(N_("Error loading notes."));
+				return 0;
+			}
+		}
 	}
-    }
 
     fseek(f, position + datasize, SEEK_SET); /* error-proof positioning to the next pattern */
     return 1;
@@ -278,7 +286,7 @@ xm_save_xm_pattern (XMPattern *p,
     }
 }
 
-static void
+static gboolean
 xm_load_xm_samples (STSample samples[],
 		    int num_samples,
 		    FILE *f)
@@ -292,21 +300,24 @@ xm_load_xm_samples (STSample samples[],
 
     g_assert(num_samples <= 128);
 
-    for(i = 0; i < num_samples; i++) {
-	s = &samples[i];
-	fread(sh, 1, sizeof(sh), f);
-	s->sample.length = get_le_32(sh + 0);
-	s->sample.loopstart = get_le_32(sh + 4);
-	s->sample.loopend = get_le_32(sh + 8); /* this is really the loop _length_ */
-	s->volume = sh[12];
-	s->finetune = sh[13];
-	s->sample.looptype = sh[14];
-	s->panning = sh[15];
-	s->relnote = sh[16];
-	strncpy(s->name, (char*)sh + 18, 22);
-	s->name[22] = '\0';
-	recode_ibmpc_to_latin1(s->name, 22);
-    }
+	for(i = 0; i < num_samples; i++) {
+		s = &samples[i];
+		if(fread(sh, 1, sizeof(sh), f) != sizeof(sh)) {
+			gui_error_dialog(N_("Sample header reading error"));
+			return FALSE;
+		}
+		s->sample.length = get_le_32(sh + 0);
+		s->sample.loopstart = get_le_32(sh + 4);
+		s->sample.loopend = get_le_32(sh + 8); /* this is really the loop _length_ */
+		s->volume = sh[12];
+		s->finetune = sh[13];
+		s->sample.looptype = sh[14];
+		s->panning = sh[15];
+		s->relnote = sh[16];
+		strncpy(s->name, (char*)sh + 18, 22);
+		s->name[22] = '\0';
+		recode_ibmpc_to_latin1(s->name, 22);
+	}
 
     for(i = 0; i < num_samples; i++) {
 	s = &samples[i];
@@ -322,14 +333,17 @@ xm_load_xm_samples (STSample samples[],
 	s->sample.looptype &= 3;
 
 	if(!s->treat_as_8bit) {
-	    /* 16 bit sample */
-	    s->treat_as_8bit = FALSE;
-	    s->sample.length >>= 1;
-	    s->sample.loopstart >>= 1;
-	    s->sample.loopend >>= 1;
+		/* 16 bit sample */
+		s->treat_as_8bit = FALSE;
+		s->sample.length >>= 1;
+		s->sample.loopstart >>= 1;
+		s->sample.loopend >>= 1;
 
-	    d16 = s->sample.data = malloc(2 * s->sample.length);
-	    fread(d16, 1, 2 * s->sample.length, f);
+		d16 = s->sample.data = malloc(2 * s->sample.length);
+		if(fread(d16, 1, 2 * s->sample.length, f) != 2 * s->sample.length) {
+			gui_error_dialog(N_("Sample data reading error"));
+			return FALSE;
+		}
 	    le_16_array_to_host_order(d16, s->sample.length);
 
 	    for(j = s->sample.length, p = 0; j; j--) {
@@ -337,12 +351,15 @@ xm_load_xm_samples (STSample samples[],
 		*d16++ = p;
 	    }
 	} else {
-	    s->treat_as_8bit = TRUE;
+		s->treat_as_8bit = TRUE;
 
-	    d16 = s->sample.data = malloc(2 * s->sample.length);
-	    d8 = (gint8*)d16;
-	    d8 += s->sample.length;
-	    fread(d8, 1, s->sample.length, f);
+		d16 = s->sample.data = malloc(2 * s->sample.length);
+		d8 = (gint8*)d16;
+		d8 += s->sample.length;
+		if(fread(d8, 1, s->sample.length, f) != s->sample.length) {
+			gui_error_dialog(N_("Sample data reading error"));
+			return FALSE;
+		}
 
 	    for(j = s->sample.length, p = 0; j; j--) {
 		p += *d8++;
@@ -361,6 +378,7 @@ xm_load_xm_samples (STSample samples[],
 	    s->sample.loopend = 1;
 	}
     }
+    return TRUE;
 }
 
 static void
@@ -460,7 +478,10 @@ xm_load_xm_instrument (STInstrument *instr,
 
     st_clean_instrument(instr, NULL);
 
-    fread(a, 1, sizeof(a), f);
+	if(fread(a, 1, sizeof(a), f) != sizeof(a)) {
+		gui_error_dialog(N_("Instrument header reading error"));
+		return 0;
+	}
     iheader_size = get_le_32(a);
     strncpy(instr->name, (char*)a + 4, 22);
     recode_ibmpc_to_latin1(instr->name, 22);
@@ -471,7 +492,7 @@ xm_load_xm_instrument (STInstrument *instr,
 
     num_samples = get_le_16(a + 27);
    if(num_samples > 128) {
-	gui_error_dialog("XM Load Error: Number of samples in instrument > 128.\n");
+	gui_error_dialog(N_("XM Load Error: Number of samples in instrument > 128.\n"));
 	return 0;
     }
 
@@ -479,18 +500,33 @@ xm_load_xm_instrument (STInstrument *instr,
 	/* Skip rest of header */
 	fseek(f, iheader_size - sizeof(a), SEEK_CUR);
     } else {
-	fread(a, 1, 4, f);
+	if(fread(a, 1, 4, f) != 4) {
+		gui_error_dialog(N_("Instrument header reading error"));
+		return 0;
+	}
 	if(get_le_32(a) != 40) {
-	    gui_error_dialog("XM Load Error: Sample header size != 40.\n");
+	    gui_error_dialog(N_("XM Load Error: Sample header size != 40.\n"));
 	    return 0;
 	}
-	fread(instr->samplemap, 1, 96, f);
-	fread(instr->vol_env.points, 1, 48, f);
+	if(fread(instr->samplemap, 1, 96, f) != 96) {
+		gui_error_dialog(N_("Sample map reading error"));
+		return 0;
+	}
+	if(fread(instr->vol_env.points, 1, 48, f) != 48) {
+		gui_error_dialog(N_("Volume envelope points reading error"));
+		return 0;
+	}
 	le_16_array_to_host_order((gint16*)instr->vol_env.points, 24);
-	fread(instr->pan_env.points, 1, 48, f);
+	if(fread(instr->pan_env.points, 1, 48, f) != 48) {
+		gui_error_dialog(N_("Panning envelope points reading error"));
+		return 0;
+	}
 	le_16_array_to_host_order((gint16*)instr->pan_env.points, 24);
 
-	fread(b, 1, sizeof(b), f);
+	if(fread(b, 1, sizeof(b), f) != sizeof(b)) {
+		gui_error_dialog(N_("Envelope parameters reading error"));
+		return 0;
+	}
 	instr->vol_env.num_points = b[0];
 	instr->vol_env.sustain_point = b[2];
 	instr->vol_env.loop_start = b[3];
@@ -509,7 +545,7 @@ xm_load_xm_instrument (STInstrument *instr,
 	if(instr->vibtype >= 4) {
 	    char buf[128];
 	    instr->vibtype = 0;
-	    g_sprintf(buf, "XM Load Warning: Invalid vibtype %d, using Sine.\n", instr->vibtype);
+	    g_sprintf(buf, _("XM Load Warning: Invalid vibtype %d, using Sine.\n"), instr->vibtype);
 	    gui_warning_dialog(buf);
 	}
 	instr->vibrate = b[13];
@@ -523,7 +559,8 @@ xm_load_xm_instrument (STInstrument *instr,
 	    fseek(f, iheader_size - 241, SEEK_CUR);
 	}
 
-	xm_load_xm_samples(instr->samples, num_samples, f);
+	if(!xm_load_xm_samples(instr->samples, num_samples, f))
+		return 0;
     }
 
     return 1;
@@ -542,31 +579,52 @@ xm_load_xi (STInstrument *instr,
 
     st_clean_instrument(instr, NULL);
 
-    fread(a, 1, 21, f);
+	if(fread(a, 1, 21, f) != 21) {
+		gui_error_dialog(N_("Instrument header reading error"));
+		return FALSE;
+	}
     a[21] = 0;
     if(strcmp((char*)a, "Extended Instrument: ")) {
-	gui_error_dialog(_("File is no XI instrument."));
+	gui_error_dialog(N_("File is no XI instrument."));
 	return 0;
     }
 
-    fread(a, 1, 22, f);
+	if(fread(a, 1, 22, f) != 22) {
+		gui_error_dialog(N_("Instrument header reading error"));
+		return FALSE;
+	}
     strncpy(instr->name, (char*)a, 22);
     recode_ibmpc_to_latin1(instr->name, 22);
 
-    fread(a, 1, 23, f);
+	if(fread(a, 1, 23, f) != 23) {
+		gui_error_dialog(N_("Instrument header reading error"));
+		return FALSE;
+	}
     if(get_le_16(a + 21) != 0x0102) {
 	g_sprintf((char*)b, _("Unknown XI version 0x%x\n"), get_le_16(a+21));
 	gui_error_dialog((char*)b);
 	return 0;
     }
 
-    fread(instr->samplemap, 1, 96, f);
-    fread(instr->vol_env.points, 1, 48, f);
+	if(fread(instr->samplemap, 1, 96, f) != 96) {
+		gui_error_dialog(N_("Instrument sample map reading error"));
+		return FALSE;
+	}
+	if(fread(instr->vol_env.points, 1, 48, f) != 48) {
+		gui_error_dialog(N_("Instrument volume envelope points reading error"));
+		return FALSE;
+	}
     le_16_array_to_host_order((gint16*)instr->vol_env.points, 24);
-    fread(instr->pan_env.points, 1, 48, f);
+	if(fread(instr->pan_env.points, 1, 48, f) != 48) {
+		gui_error_dialog(N_("Instrument panning envelope points reading error"));
+		return FALSE;
+	}
     le_16_array_to_host_order((gint16*)instr->pan_env.points, 24);
 
-    fread(b, 1, 16, f);
+	if(fread(b, 1, 16, f) != 16) {
+		gui_error_dialog(N_("Instrument envelope parameters reading error"));
+		return FALSE;
+	}
     instr->vol_env.num_points = b[0];
     instr->vol_env.sustain_point = b[2];
     instr->vol_env.loop_start = b[3];
@@ -594,7 +652,10 @@ xm_load_xi (STInstrument *instr,
 	
     instr->volfade = get_le_16(b + 14);
 
-    fread(a, 1, 24, f);
+	if(fread(a, 1, 24, f) != 24) {
+		gui_error_dialog(N_("Instrument header reading error"));
+		return FALSE;
+	}
     num_samples = get_le_16(a + 22);
     xm_load_xm_samples(instr->samples, num_samples, f);
 
@@ -720,14 +781,15 @@ xm_save_xm_instrument (STInstrument *instr,
     if (save_smpls) xm_save_xm_samples(instr->samples, f, num_samples);
 }
 
-static void
+static gboolean
 xm_load_mod_note (XMNote *dest,
 		  FILE *f)
 {
     guint8 c[4];
     int note, period;
 
-    fread(c, 1, 4, f);
+	if(fread(c, 1, 4, f) != 4)
+		return FALSE;
 
     period = ((c[0] & 0x0f) << 8) | c[1];
     note = 0;
@@ -746,6 +808,8 @@ xm_load_mod_note (XMNote *dest,
     dest->volume = 0;
     dest->fxtype = c[2] & 0x0f;
     dest->fxparam = c[3];
+
+    return TRUE;
 }
 
 static int
@@ -763,11 +827,12 @@ xm_load_mod_pattern (XMPattern *pat,
 	return 0;
 
     /* Read channel data */
-    for(j = 0; j < len; j++) {
-	for(i = 0; i < num_channels; i++) {
-	    xm_load_mod_note(&pat->channels[i][j], f);
+	for(j = 0; j < len; j++) {
+		for(i = 0; i < num_channels; i++) {
+			if(!xm_load_mod_note(&pat->channels[i][j], f))
+				return 0;
+		}
 	}
-    }
 
     return 1;
 }
@@ -797,23 +862,41 @@ xm_load_mod (FILE *f,int *status)
     if(!xm)
 	goto fileerr;
 
-    fread(xm->name, 1, 20, f);
+    if(fread(xm->name, 1, 20, f) != 20) {
+	gui_error_dialog(N_("Module header reading error."));
+	goto ende;
+    }
 
     xm_init_locks(xm);
 
     for(i = 0; i < 31; i++) {
 	char buf[25];
-	fread(buf, 1, 22, f);
+	if(fread(buf, 1, 22, f) != 22) {
+		gui_error_dialog(N_("Instrument header reading error."));
+		goto ende;
+	}
 	buf[22] = 0;
 	st_clean_instrument(&xm->instruments[i], buf);
-	fread(sh[i], 1, 8, f);
+	if(fread(sh[i], 1, 8, f) != 8) {
+		gui_error_dialog(N_("Sample header reading error."));
+		goto ende;
+	}
     }
 
-    fread(mh, 1, 2, f);
+    if(fread(mh, 1, 2, f) != 2) {
+	gui_error_dialog(N_("Module header reading error."));
+	goto ende;
+    }
     xm->song_length = mh[0];
 
-    fread(xm->pattern_order_table, 1, 128, f);
-    fread(mh, 1, 4, f);
+    if(fread(xm->pattern_order_table, 1, 128, f) != 128) {
+	gui_error_dialog(N_("Pattern order table reading error."));
+	goto ende;
+    }
+    if(fread(mh, 1, 4, f) != 4) {
+	gui_error_dialog(N_("Module header reading error."));
+	goto ende;
+    }
 
     *status = LFSTAT_IS_MODULE;
     if ((!memcmp("M.K.", mh, 4)) ||
@@ -857,7 +940,7 @@ xm_load_mod (FILE *f,int *status)
     xm->flags = XM_FLAGS_IS_MOD | XM_FLAGS_AMIGA_FREQ;
 
     if(!xm_load_patterns(xm->patterns, n + 1, xm->num_channels, f, xm_load_mod_pattern)) {
-	gui_error_dialog(_("Error while loading patterns."));
+	gui_error_dialog(N_("Error while loading patterns."));
 	goto ende;
     }
 
@@ -884,7 +967,7 @@ xm_load_mod (FILE *f,int *status)
 		s->sample.looptype = 0;
 	    } else if(s->sample.loopstart > s->sample.loopend) {
 		char buf[128];
-		g_sprintf(buf, "%d: Wrong loop start parameter. Don't know how to handle this. %04x %04x %04x\n", i, get_be_16(sh[i] + 0), get_be_16(sh[i] + 4), get_be_16(sh[i] + 6));
+		g_sprintf(buf, _("%d: Wrong loop start parameter. Don't know how to handle this. %04x %04x %04x\n"), i, get_be_16(sh[i] + 0), get_be_16(sh[i] + 4), get_be_16(sh[i] + 6));
 		gui_warning_dialog(buf);
 		s->sample.loopstart = 0;
 		s->sample.loopend = 1;
@@ -892,10 +975,13 @@ xm_load_mod (FILE *f,int *status)
 	    }
 
 	    s->sample.data = malloc(2 * s->sample.length);
-	    if(!s->sample.data) {
-		goto ende;
-	    }
-	    fread((char*)s->sample.data + s->sample.length, 1, s->sample.length, f);
+		if(!s->sample.data) {
+			goto ende;
+		}
+		if(fread((char*)s->sample.data + s->sample.length, 1, s->sample.length, f) != s->sample.length) {
+			gui_error_dialog(N_("Sample data reading error."));
+			goto ende;
+		}
 	    st_convert_sample((char*)s->sample.data + s->sample.length,
 			      s->sample.data,
 			      8,
@@ -925,7 +1011,7 @@ XM_Load (const char *filename,int *status)
     *status = 0;
     f = fopen(filename, "rb");
     if(!f) {
-        gui_error_dialog(_("Can't open file"));
+        gui_error_dialog(N_("Can't open file"));
 	return NULL;
     }
 
@@ -939,11 +1025,11 @@ XM_Load (const char *filename,int *status)
     }
 
     if(get_le_32(xh + 60) != 276) {
-	gui_warning_dialog("XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n");
+	gui_warning_dialog(N_("XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n"));
     }
 
     if(get_le_16(xh + 58) != 0x0104) { /* In future -- replace with confirmation dialog */
-	gui_warning_dialog("Version != 0x0104. The results may be unpredictable");
+	gui_warning_dialog(N_("Version != 0x0104. The results may be unpredictable"));
 //	goto fileerr;
     }
 
@@ -966,7 +1052,7 @@ XM_Load (const char *filename,int *status)
 
     xm->num_channels = get_le_16(xh + 68);
     if(xm->num_channels > 32 || xm->num_channels < 1) {
-	gui_error_dialog("Invalid number of channels in XM (only 1..32 allowed).");
+	gui_error_dialog(N_("Invalid number of channels in XM (only 1..32 allowed)."));
 	goto ende;
     }
 
@@ -979,16 +1065,19 @@ XM_Load (const char *filename,int *status)
     xm->bpm = get_le_16(xh + 78);
     player_tempo = xm->tempo;
     player_bpm = xm->bpm;
-    fread(xm->pattern_order_table, 1, 256, f);
+	if(fread(xm->pattern_order_table, 1, 256, f) != 256) {
+		gui_error_dialog(N_("Error while loading pattern order table."));
+		goto ende;
+	}
 
     if(!xm_load_patterns(xm->patterns, num_patterns, xm->num_channels, f, xm_load_xm_pattern)) {
-	gui_error_dialog(_("Error while loading patterns."));
+	gui_error_dialog(N_("Error while loading patterns."));
 	goto ende;
     }
     
     for(i = 0; i < num_instruments; i++) {
 	if(!xm_load_xm_instrument(&xm->instruments[i], f)) {
-	    gui_error_dialog(_("Error while loading instruments."));
+	    gui_error_dialog(N_("Error while loading instruments."));
 	    goto ende;
 	}
     }
@@ -1394,7 +1483,7 @@ File_Load (const char *filename)
      * mod file is eventually found in a compressed archive. -- jsno
      */
     if (!(status & LFSTAT_IS_MODULE))
-        gui_error_dialog (_("Not FastTracker XM and not supported MOD format!"));
+        gui_error_dialog(N_("Not FastTracker XM and not supported MOD format!"));
 
     g_free(str);
     g_free(filename_esc);
@@ -1409,15 +1498,15 @@ xm_xp_load_header (FILE *f, int *length)
     int version;
     
     if ( fread (pheader, 1, sizeof(pheader), f) != 4) {
-	gui_error_dialog (_("Error when file reading or unexpected end of file"));
+	gui_error_dialog(N_("Error when file reading or unexpected end of file"));
 	return FALSE;
     }
     if ((version = pheader[0] + (pheader[1] << 8)) != 1) {
-	gui_error_dialog (_("Incorrect or unsupported version of pattern file!"));
+	gui_error_dialog(N_("Incorrect or unsupported version of pattern file!"));
 	return FALSE;
     }
     if (((*length = pheader[2] + (pheader[3] << 8)) < 0) || (*length > 256)){
-	gui_error_dialog (_("Incorrect pattern length!"));
+	gui_error_dialog(N_("Incorrect pattern length!"));
 	return FALSE;
     }
     return TRUE;
@@ -1430,7 +1519,7 @@ xm_xp_load (FILE *f, int length, XMPattern *patt, XM *xm)
     int i, j, bp;
     
     if (fread (buf, 1, length * 32 * 5, f) != length*32*5) {
-	gui_error_dialog (_("Error when file reading or unexpected end of file"));
+	gui_error_dialog(N_("Error when file reading or unexpected end of file"));
 	return FALSE;
     }
     for (j = 0; j <= MIN (length, patt->length) - 1; j++) {
@@ -1460,7 +1549,7 @@ xm_xp_save (gchar *name, XMPattern *pattern, XM *xm)
     static guint8 buf[32*256*5];
     
 	if ( !(f = fopen (name, "wb"))) 
-	    gui_error_dialog (_("Error during saving pattern!"));
+	    gui_error_dialog(N_("Error during saving pattern!"));
 	else {
 	    put_le_16 (pheader+0, 01);//version
 	    put_le_16 (pheader+2, pattern->length);//length
