@@ -135,10 +135,8 @@ struct menu_callback
 	gpointer data;
 };
 
-#define MAXMEASURE (sizeof(measure_msr) / sizeof(struct measure) - 1)
-
 static GtkWidget *measurewindow = NULL;
-static gint measure_chosen;
+//static gint measure_chosen;
     
 static void gui_tempo_changed (int value);
 static void gui_bpm_changed (int value);
@@ -220,109 +218,59 @@ gui_direction_clicked (GtkWidget *widget, gpointer data)
     gtk_widget_show(arrow[gui_settings.advance_cursor_in_fx_columns ? 1 : 0]);
 }
 
-static void
+static gboolean
 measure_close_requested (void)
 {
-#ifndef USE_GNOME
     gtk_widget_hide(measurewindow);
-#endif
 /* to make keyboard working immediately after closing the dialog */
     gtk_widget_grab_focus(pbutton);
+    return TRUE;
 }
 
 static void
-measure_dialog (gint x, gint y)
+measure_dialog ()
 {
     GtkObject *adj;
     GtkWidget *mainbox, *thing, *vbox;
-#ifndef USE_GNOME
-    GtkWidget *button;
-#endif
     static GtkWidget *majspin;
 
     if(measurewindow != NULL) {
-	gtk_widget_set_uposition(measurewindow, x, y);
+	gtk_window_set_position(GTK_WINDOW(measurewindow), GTK_WIN_POS_MOUSE);
 	gtk_widget_show(measurewindow);
 	gtk_widget_grab_focus(majspin);
 	return;
     }
     
-#ifdef USE_GNOME
-    measurewindow = gnome_dialog_new(_("Row highlighting configuration"),
-			GNOME_STOCK_BUTTON_CLOSE, NULL);
-    gnome_dialog_close_hides(GNOME_DIALOG(measurewindow), TRUE);
-    gnome_dialog_set_close(GNOME_DIALOG(measurewindow), TRUE);
-    g_signal_connect(measurewindow, "clicked",
+	measurewindow = gtk_dialog_new_with_buttons(_("Row highlighting configuration"), GTK_WINDOW(mainwindow),
+	                                            GTK_DIALOG_MODAL, GTK_STOCK_CLOSE, 0, NULL);
+    g_signal_connect(measurewindow, "response",
 			G_CALLBACK(measure_close_requested), NULL);
-    vbox = GNOME_DIALOG(measurewindow)->vbox;
-#else
-/* stolen from Gnome UI code. With Gnome life seemed so easy... (yaliaev) */
-    measurewindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(measurewindow), _("Row highlighting configuration"));
-    gtk_container_border_width(GTK_CONTAINER(measurewindow), 4);
-    
-    vbox = gtk_vbox_new(FALSE, 8);
-    gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
-    gtk_container_add(GTK_CONTAINER(measurewindow), vbox);
-    gtk_widget_show(vbox);
-
-    gtk_window_set_policy (GTK_WINDOW (measurewindow), FALSE, 
-			 FALSE, FALSE);
-
-    mainbox = gtk_vbox_new(FALSE, 8);
-    gtk_box_pack_start (GTK_BOX (vbox), mainbox, 
-		      TRUE, TRUE, 4);
-		      
-    thing = gtk_hbutton_box_new ();
-
-    gtk_button_box_set_spacing (GTK_BUTTON_BOX (thing), 8);
-    
-    button = gtk_button_new_with_label(_("Close"));
-    GTK_WIDGET_SET_FLAGS (GTK_WIDGET (button), GTK_CAN_DEFAULT);
-    gtk_box_pack_start (GTK_BOX (thing), button, TRUE, TRUE, 0);
-    g_signal_connect(button, "clicked",
-			G_CALLBACK(measure_close_requested), NULL);
-
-    gtk_widget_grab_default (button);
-    gtk_widget_show (button);
-
-    gtk_box_pack_end (GTK_BOX (vbox), thing, 
-		    FALSE, TRUE, 0);
-    gtk_widget_show (thing);
-
-    thing = gtk_hseparator_new ();
-    gtk_box_pack_end (GTK_BOX (vbox), thing, 
-		      FALSE, TRUE, 4);
-    gtk_widget_show (thing);
-		      
-#endif
+    vbox = gtk_dialog_get_content_area(GTK_DIALOG(measurewindow));
 
     g_signal_connect(measurewindow, "delete_event",
 			G_CALLBACK(measure_close_requested), NULL);
+	gtk_window_set_position(GTK_WINDOW(measurewindow), GTK_WIN_POS_MOUSE);
 
     mainbox = gtk_hbox_new(FALSE, 2);
     
-    gtk_widget_show(mainbox);
-
     thing = gtk_label_new(_("Highlight rows (major / minor):"));
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
+
     add_empty_hbox(mainbox);
     adj = gtk_adjustment_new((double)gui_settings.highlight_rows_n, 1, 32, 1, 2, 0.0);
     majspin = extspinbutton_new(GTK_ADJUSTMENT(adj), 0, 0);
     gtk_box_pack_start(GTK_BOX(mainbox), majspin, FALSE, TRUE, 0);
-    gtk_widget_show(majspin);
+
     gtk_spin_button_set_digits(GTK_SPIN_BUTTON(majspin), 0);
     g_signal_connect(majspin, "value-changed",
 		       G_CALLBACK(gui_settings_highlight_rows_changed), NULL);
     adj = gtk_adjustment_new((double)gui_settings.highlight_rows_minor_n, 1, 16, 1, 2, 0.0);
     thing = extspinbutton_new(GTK_ADJUSTMENT(adj), 0, 0);
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
+
     gtk_spin_button_set_digits(GTK_SPIN_BUTTON(thing), 0);
     g_signal_connect(thing, "value-changed",
 		       G_CALLBACK(gui_settings_highlight_rows_minor_changed), NULL);
-    gtk_widget_set_uposition(measurewindow, x, y);
     
     gtk_box_pack_start(GTK_BOX(vbox), mainbox, TRUE, TRUE, 0);
     gtk_widget_show_all(measurewindow);
@@ -330,30 +278,36 @@ measure_dialog (gint x, gint y)
 }    
 
 static void
-measure_changed (GtkWidget *list, GtkWidget *child, gpointer data)
+measure_changed (GtkWidget *widget, gpointer data)
 {
-    if((measure_chosen = gtk_list_child_position(GTK_LIST(list), child)) <= (MAXMEASURE - 1)) {
-	if ((gui_settings.highlight_rows_n != measure_msr[measure_chosen].major) ||
-		(gui_settings.highlight_rows_minor_n != measure_msr[measure_chosen].minor)) {
-	    gui_settings.highlight_rows_n = measure_msr[measure_chosen].major;
-	    gui_settings.highlight_rows_minor_n = measure_msr[measure_chosen].minor;
-	    tracker_redraw(tracker);
+	gint measure_chosen;
+	guint maxmeasure = GPOINTER_TO_INT(data);
+
+	if((measure_chosen = gtk_combo_box_get_active(GTK_COMBO_BOX(widget))) <= (maxmeasure - 1)) {
+		if(measurewindow && gtk_widget_get_visible(measurewindow))
+			gtk_widget_hide(measurewindow);
+		if((gui_settings.highlight_rows_n != measure_msr[measure_chosen].major) ||
+		   (gui_settings.highlight_rows_minor_n != measure_msr[measure_chosen].minor)) {
+			gui_settings.highlight_rows_n = measure_msr[measure_chosen].major;
+			gui_settings.highlight_rows_minor_n = measure_msr[measure_chosen].minor;
+			tracker_redraw(tracker);
 /* to make keyboard working immediately after chosing the measure */
-	    gtk_widget_grab_focus(pbutton);
-	}
-    }
+			gtk_widget_grab_focus(pbutton);
+		}
+/* Gtk+ stupidity: when combo box list is popped down, */
+	} else if (measure_chosen == maxmeasure + 1)
+		measure_dialog();
 }
 
 static void
-popwin_hide (GtkWidget *widget, GtkWidget *thing)
+popwin_hide (GtkWidget *widget, GParamSpec *ps, gpointer data)
 {
-    gint x, y, w, h, dx, dy;
-    
-    if (measure_chosen == MAXMEASURE){
-	gdk_window_get_geometry (thing->window, &x, &y, &w, &h, NULL);
-	gdk_window_get_root_origin (thing->window, &dx, &dy);
-	measure_dialog(x+ dx + w + 32, y + dy + h + 24);
-    }
+	gboolean shown;
+	guint maxmeasure = GPOINTER_TO_INT(data);
+
+	g_object_get(G_OBJECT(widget), "popup-shown", &shown, NULL);
+	if(!shown && gtk_combo_box_get_active(GTK_COMBO_BOX(widget)) == maxmeasure + 1) /* Popup is hidden by clicking on "Other..." */
+		measure_dialog();
 }
 
 static void
@@ -1850,17 +1804,29 @@ quit_requested (void)
 	return TRUE;
 }
 
+static gboolean
+is_sep (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
+{
+	GtkTreePath *path = gtk_tree_model_get_path(model, iter);
+	gint index = GPOINTER_TO_INT(data);
+	gint *indices = gtk_tree_path_get_indices(path);
+	gint curindex = indices[0];
+
+	gtk_tree_path_free(path);
+	return curindex == index;
+}
+
 int
 gui_final (int argc,
 	   char *argv[])
 {
-    GtkWidget *thing, *mainvbox, *table, *hbox, *frame, *mainvbox0, *pmw, *vbox, *list, *entry;
+    GtkWidget *thing, *mainvbox, *table, *hbox, *frame, *mainvbox0, *pmw, *vbox;
     GdkColormap *colormap;
     GtkStyle *style;
-    gint i, wdth, cur, selected;
-    GList *glist;
-    gchar *other;
+    gint i, selected;
     GError *error = NULL;
+    GtkListStore *ls;
+    GtkTreeIter iter;
 
 	struct menu_callback cb[] = {
 		{"file_open", fileops_open_dialog, (gpointer)DIALOG_LOAD_MOD},
@@ -2097,42 +2063,34 @@ gui_final (int argc,
 		       G_CALLBACK(gui_highlight_rows_toggled), NULL);
     gtk_widget_show(thing);
 
-    thing = gtk_combo_new();
-    gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE, 0);
-    gtk_widget_show(thing);
-    entry = GTK_COMBO(thing)->entry;
-    gui_hang_tooltip(entry, _("Row highlighting configuration"));
-    style = gtk_widget_get_style(entry);
+	selected = -1;
+	ls = gtk_list_store_new(1, G_TYPE_STRING);
 
-    glist = NULL;
-    wdth = 0;
-    selected = -1;
-    for(i = 0; measure_msr[i].title != NULL; i++) {
-	glist = g_list_append(glist, (gpointer)measure_msr[i].title);
-	if ((cur = gdk_string_width(gdk_font_from_description(style->font_desc),
-				    measure_msr[i].title)) > wdth)
-	    wdth = cur;
-	if ((measure_msr[i].major == gui_settings.highlight_rows_n) &&
-	    (measure_msr[i].minor == gui_settings.highlight_rows_minor_n))
-		selected = i;
-    }
-    if (selected == -1) selected = i;
-    other = _("Other...");
-    glist = g_list_append(glist, other);
-    if ((cur = gdk_string_width(gdk_font_from_description(style->font_desc),
-				    other)) > wdth) wdth = cur;
+	for(i = 0; measure_msr[i].title != NULL; i++) {
+		gtk_list_store_append(ls, &iter);
+		gtk_list_store_set(ls, &iter, 0, measure_msr[i].title, -1);
+		if ((measure_msr[i].major == gui_settings.highlight_rows_n) &&
+		    (measure_msr[i].minor == gui_settings.highlight_rows_minor_n))
+			selected = i;
+	}
+	if (selected == -1) selected = i + 1;
+	gtk_list_store_append(ls, &iter); /* separator */
+	gtk_list_store_set(ls, &iter, 0, "", -1);
+	gtk_list_store_append(ls, &iter);
+	gtk_list_store_set(ls, &iter, 0, _("Other..."), -1);
 
-    gtk_combo_set_popdown_strings(GTK_COMBO(thing), glist);
-    list = GTK_COMBO(thing)->list;
-    gtk_list_select_item(GTK_LIST(list), selected);
-    g_signal_connect(list, "select_child",
-		       G_CALLBACK(measure_changed), NULL);
-    /* the direct use of combo->popwin is not recommended, but I couldn't find another way... */
-    g_signal_connect(GTK_COMBO(thing)->popwin, "hide",
-		       G_CALLBACK(popwin_hide), entry);
-    
-    gtk_widget_set_size_request(entry, wdth + 5, -1);//-1 to suppress the height changing
-    gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
+	thing = gui_combo_new(ls);
+	gtk_combo_box_set_row_separator_func(GTK_COMBO_BOX(thing), is_sep, (gpointer)i, NULL);
+	gtk_combo_box_set_active(GTK_COMBO_BOX(thing), selected);
+
+	gui_hang_tooltip(thing, _("Row highlighting configuration"));
+	gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE, 0);
+	gtk_widget_show(thing);
+
+	g_signal_connect(thing, "changed",
+	                 G_CALLBACK(measure_changed), (gpointer)i);
+	g_signal_connect(thing, "notify::popup-shown",
+	                 G_CALLBACK(popwin_hide), (gpointer)i);
     
     add_empty_hbox(hbox);
     
