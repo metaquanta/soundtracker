@@ -40,12 +40,12 @@
 
 #include "i18n.h"
 #include "gui-settings.h"
+#include "gui-subs.h"
 #include "xm.h"
 #include "xm-player.h"
 #include "endian-conv.h"
 #include "st-subs.h"
 #include "recode.h"
-#include "errors.h"
 #include "audio.h"
 
 #include "preferences.h"
@@ -195,7 +195,7 @@ xm_load_xm_pattern (XMPattern *pat,
     if(len > 256) {
 	char buf[128];
 	g_sprintf(buf, _("Pattern length out of range: %d.\n"), len);
-	error_error(buf);
+	gui_error_dialog(buf);
 	return 0;
     }
 
@@ -471,7 +471,7 @@ xm_load_xm_instrument (STInstrument *instr,
 
     num_samples = get_le_16(a + 27);
    if(num_samples > 128) {
-	error_error("XM Load Error: Number of samples in instrument > 128.\n");
+	gui_error_dialog("XM Load Error: Number of samples in instrument > 128.\n");
 	return 0;
     }
 
@@ -481,7 +481,7 @@ xm_load_xm_instrument (STInstrument *instr,
     } else {
 	fread(a, 1, 4, f);
 	if(get_le_32(a) != 40) {
-	    error_error("XM Load Error: Sample header size != 40.\n");
+	    gui_error_dialog("XM Load Error: Sample header size != 40.\n");
 	    return 0;
 	}
 	fread(instr->samplemap, 1, 96, f);
@@ -510,7 +510,7 @@ xm_load_xm_instrument (STInstrument *instr,
 	    char buf[128];
 	    instr->vibtype = 0;
 	    g_sprintf(buf, "XM Load Warning: Invalid vibtype %d, using Sine.\n", instr->vibtype);
-	    error_warning(buf);
+	    gui_warning_dialog(buf);
 	}
 	instr->vibrate = b[13];
 	instr->vibdepth = b[12];
@@ -545,7 +545,7 @@ xm_load_xi (STInstrument *instr,
     fread(a, 1, 21, f);
     a[21] = 0;
     if(strcmp((char*)a, "Extended Instrument: ")) {
-	error_error(_("File is no XI instrument."));
+	gui_error_dialog(_("File is no XI instrument."));
 	return 0;
     }
 
@@ -556,7 +556,7 @@ xm_load_xi (STInstrument *instr,
     fread(a, 1, 23, f);
     if(get_le_16(a + 21) != 0x0102) {
 	g_sprintf((char*)b, _("Unknown XI version 0x%x\n"), get_le_16(a+21));
-	error_error((char*)b);
+	gui_error_dialog((char*)b);
 	return 0;
     }
 
@@ -586,7 +586,7 @@ xm_load_xi (STInstrument *instr,
 	char buf[128];
 	instr->vibtype = 0;
 	g_sprintf(buf, _("Invalid vibtype %d, using Sine.\n"), instr->vibtype);
-	error_warning(buf);
+	gui_warning_dialog(buf);
     }
     instr->vibrate = b[13];
     instr->vibdepth = b[12];
@@ -857,7 +857,7 @@ xm_load_mod (FILE *f,int *status)
     xm->flags = XM_FLAGS_IS_MOD | XM_FLAGS_AMIGA_FREQ;
 
     if(!xm_load_patterns(xm->patterns, n + 1, xm->num_channels, f, xm_load_mod_pattern)) {
-	error_error(_("Error while loading patterns."));
+	gui_error_dialog(_("Error while loading patterns."));
 	goto ende;
     }
 
@@ -885,7 +885,7 @@ xm_load_mod (FILE *f,int *status)
 	    } else if(s->sample.loopstart > s->sample.loopend) {
 		char buf[128];
 		g_sprintf(buf, "%d: Wrong loop start parameter. Don't know how to handle this. %04x %04x %04x\n", i, get_be_16(sh[i] + 0), get_be_16(sh[i] + 4), get_be_16(sh[i] + 6));
-		error_warning(buf);
+		gui_warning_dialog(buf);
 		s->sample.loopstart = 0;
 		s->sample.loopend = 1;
 		s->sample.looptype = 0;
@@ -925,7 +925,7 @@ XM_Load (const char *filename,int *status)
     *status = 0;
     f = fopen(filename, "rb");
     if(!f) {
-        error_error(_("Can't open file"));
+        gui_error_dialog(_("Can't open file"));
 	return NULL;
     }
 
@@ -939,11 +939,11 @@ XM_Load (const char *filename,int *status)
     }
 
     if(get_le_32(xh + 60) != 276) {
-	error_warning("XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n");
+	gui_warning_dialog("XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n");
     }
 
     if(get_le_16(xh + 58) != 0x0104) { /* In future -- replace with confirmation dialog */
-	error_warning("Version != 0x0104. The results may be unpredictable");
+	gui_warning_dialog("Version != 0x0104. The results may be unpredictable");
 //	goto fileerr;
     }
 
@@ -966,7 +966,7 @@ XM_Load (const char *filename,int *status)
 
     xm->num_channels = get_le_16(xh + 68);
     if(xm->num_channels > 32 || xm->num_channels < 1) {
-	error_error("Invalid number of channels in XM (only 1..32 allowed).");
+	gui_error_dialog("Invalid number of channels in XM (only 1..32 allowed).");
 	goto ende;
     }
 
@@ -982,13 +982,13 @@ XM_Load (const char *filename,int *status)
     fread(xm->pattern_order_table, 1, 256, f);
 
     if(!xm_load_patterns(xm->patterns, num_patterns, xm->num_channels, f, xm_load_xm_pattern)) {
-	error_error(_("Error while loading patterns."));
+	gui_error_dialog(_("Error while loading patterns."));
 	goto ende;
     }
     
     for(i = 0; i < num_instruments; i++) {
 	if(!xm_load_xm_instrument(&xm->instruments[i], f)) {
-	    error_error(_("Error while loading instruments."));
+	    gui_error_dialog(_("Error while loading instruments."));
 	    goto ende;
 	}
     }
@@ -1000,7 +1000,7 @@ XM_Load (const char *filename,int *status)
 	    if(instr->samples[j].sample.length > mixer->max_sample_length) {
 		char buf[128];
 		g_sprintf(buf, _("Module contains sample(s) that are too long for the current mixer.\nMaximum sample length is %d."), mixer->max_sample_length);
-		error_warning(buf);
+		gui_warning_dialog(buf);
 		goto weiter;
 	    }
 	}
@@ -1237,7 +1237,7 @@ File_Extract_Archive (const char *extract_cmd,char *tmp_dir_path,int *status)
     r = ExecuteAndWait ("/bin/sh", args);
     if ((r == -1) || (r == 127)) {
         g_snprintf (str, sizeof str, "%s (Err 0)",err_msg);
-        error_error (str);
+        gui_error_dialog (str);
         return ret;
     }
 
@@ -1247,7 +1247,7 @@ File_Extract_Archive (const char *extract_cmd,char *tmp_dir_path,int *status)
     dp = opendir (tmp_dir_path);
     if (dp == NULL) {
         g_snprintf (str, sizeof str, "%s (Err 1)",err_msg);
-        error_error (str);
+        gui_error_dialog (str);
         return ret;
     }
 
@@ -1286,7 +1286,7 @@ File_Extract_Archive (const char *extract_cmd,char *tmp_dir_path,int *status)
     r = system (str);
     if ((r == -1) || (r == 127)) {
         g_snprintf (str, sizeof str, "%s (Err 2)",err_msg);
-        error_error (str);
+        gui_error_dialog (str);
     }
 
     return ret;
@@ -1311,7 +1311,7 @@ File_Extract_SingleFile (const char *extract_cmd,char *tmp_path,int *status)
     r = ExecuteAndWait ("/bin/sh", args);
     if ((r == -1) || (r == 127)) {
         g_snprintf (str, sizeof str, "%s (Err 3)",err_msg);
-        error_error (str);
+        gui_error_dialog (str);
         return ret;
     }
 
@@ -1394,7 +1394,7 @@ File_Load (const char *filename)
      * mod file is eventually found in a compressed archive. -- jsno
      */
     if (!(status & LFSTAT_IS_MODULE))
-        error_error (_("Not FastTracker XM and not supported MOD format!"));
+        gui_error_dialog (_("Not FastTracker XM and not supported MOD format!"));
 
     g_free(str);
     g_free(filename_esc);
@@ -1409,15 +1409,15 @@ xm_xp_load_header (FILE *f, int *length)
     int version;
     
     if ( fread (pheader, 1, sizeof(pheader), f) != 4) {
-	error_error (_("Error when file reading or unexpected end of file"));
+	gui_error_dialog (_("Error when file reading or unexpected end of file"));
 	return FALSE;
     }
     if ((version = pheader[0] + (pheader[1] << 8)) != 1) {
-	error_error (_("Incorrect or unsupported version of pattern file!"));
+	gui_error_dialog (_("Incorrect or unsupported version of pattern file!"));
 	return FALSE;
     }
     if (((*length = pheader[2] + (pheader[3] << 8)) < 0) || (*length > 256)){
-	error_error (_("Incorrect pattern length!"));
+	gui_error_dialog (_("Incorrect pattern length!"));
 	return FALSE;
     }
     return TRUE;
@@ -1430,7 +1430,7 @@ xm_xp_load (FILE *f, int length, XMPattern *patt, XM *xm)
     int i, j, bp;
     
     if (fread (buf, 1, length * 32 * 5, f) != length*32*5) {
-	error_error (_("Error when file reading or unexpected end of file"));
+	gui_error_dialog (_("Error when file reading or unexpected end of file"));
 	return FALSE;
     }
     for (j = 0; j <= MIN (length, patt->length) - 1; j++) {
@@ -1460,7 +1460,7 @@ xm_xp_save (gchar *name, XMPattern *pattern, XM *xm)
     static guint8 buf[32*256*5];
     
 	if ( !(f = fopen (name, "wb"))) 
-	    error_error (_("Error during saving pattern!"));
+	    gui_error_dialog (_("Error during saving pattern!"));
 	else {
 	    put_le_16 (pheader+0, 01);//version
 	    put_le_16 (pheader+2, pattern->length);//length

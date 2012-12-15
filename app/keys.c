@@ -753,7 +753,7 @@ keys_load_config (void)
 		}
 	    }
 	}
-	gnome_warning_dialog(_("The keyboard configuration file is defective.\nPlease use the Keyboard Configuration dialog."));
+	gui_warning_dialog(N_("The keyboard configuration file is defective.\nPlease use the Keyboard Configuration dialog."));
 	return 0;
       break2:
 	continue; /* nonsense, but the easiest way to avoid gcc 3.2+ warnings */
@@ -1058,7 +1058,7 @@ keys_init (void)
 	   || !keys_ch_try_automatic_config ('E', -2, 8, keys3 + 19, ENCODE_MODIFIERS(1, 0, 1))
 	   || !keys_ch_try_automatic_config ('S', -1, 8, keys3 + 27, ENCODE_MODIFIERS(1, 0, 1))) {
 	    // Automatic key configuration unsuccessful. Popup requester.
-	    gnome_warning_dialog(_("Automatic key configuration unsuccessful.\nPlease use the Keyboard Configuration dialog\n"
+	    gui_warning_dialog(N_("Automatic key configuration unsuccessful.\nPlease use the Keyboard Configuration dialog\n"
 				 "in the Settings menu."));
 	}
     }

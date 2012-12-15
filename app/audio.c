@@ -50,6 +50,7 @@
 #include "time-buffer.h"
 #include "event-waiter.h"
 #include "gui-settings.h"
+#include "gui-subs.h"
 #include "tracer.h"
 
 st_mixer *mixer = NULL;
@@ -160,7 +161,8 @@ audio_raise_priority (void)
 static void
 audio_restore_priority (void)
 {
-    nice(- nice_value);
+	if(nice(- nice_value) == -1)
+		perror("audio_thread:nice():");
     nice_value = 0;
 }
 
@@ -211,7 +213,8 @@ audio_ctlpipe_play_song (int songpos,
 	a = AUDIO_BACKPIPE_DRIVER_OPEN_FAILED;
     }
 
-    write(backpipe, &a, sizeof(a));
+	if(write(backpipe, &a, sizeof(a)) != sizeof(a))
+		fprintf(stderr, "\n\n*** audio_thread: write incomplete\n\n\n");
 }
 
 static void
@@ -243,7 +246,8 @@ audio_ctlpipe_render_song_to_file (gchar *filename)
     }
 #endif
 
-    write(backpipe, &a, sizeof(a));
+	if(write(backpipe, &a, sizeof(a)) != sizeof(a))
+		fprintf(stderr, "\n\n*** audio_thread: write incomplete\n\n\n");
 }
 
 static void
@@ -280,7 +284,8 @@ audio_ctlpipe_play_pattern (int pattern,
 	}
     }
 
-    write(backpipe, &a, sizeof(a));
+	if(write(backpipe, &a, sizeof(a)) != sizeof(a))
+		fprintf(stderr, "\n\n*** audio_thread: write incomplete\n\n\n");
 }
 
 static void
@@ -300,7 +305,8 @@ audio_ctlpipe_play_note (int channel,
 	}
     }
 
-    write(backpipe, &a, sizeof(a));
+	if(write(backpipe, &a, sizeof(a)) != sizeof(a))
+		fprintf(stderr, "\n\n*** audio_thread: write incomplete\n\n\n");
 
     if(!playing)
 	return;
@@ -327,7 +333,8 @@ audio_ctlpipe_play_note_full (int channel,
 	}
     }
 
-    write(backpipe, &a, sizeof(a));
+	if(write(backpipe, &a, sizeof(a)) != sizeof(a))
+		fprintf(stderr, "\n\n*** audio_thread: write incomplete\n\n\n");
 
     if(!playing)
 	return;
@@ -363,7 +370,8 @@ audio_ctlpipe_stop_playing (void)
 	set_songpos_wait_for = -1;
     }
 
-    write(backpipe, &a, sizeof(a));
+	if(write(backpipe, &a, sizeof(a)) != sizeof(a))
+		fprintf(stderr, "\n\n*** audio_thread: write incomplete\n\n\n");
 
     audio_raise_priority();
 }
@@ -445,6 +453,7 @@ readpipe (int fd, void *p, int count)
 static void
 audio_thread (void)
 {
+	gboolean result = FALSE;
     struct pollfd pfd[5] = {
 	{ ctlpipe, POLLIN, 0 },
     };
@@ -526,23 +535,23 @@ audio_thread (void)
 	    audio_ctlpipe_render_song_to_file(msgbuf);
 	    break;
 	case AUDIO_CTLPIPE_SET_SONGPOS:
-	    read(ctlpipe, a, 1 * sizeof(a[0]));
+	    result = (read(ctlpipe, a, 1 * sizeof(a[0])) != 1 * sizeof(a[0]));
 	    audio_ctlpipe_set_songpos(a[0]);
 	    break;
 	case AUDIO_CTLPIPE_SET_PATTERN:
-	    read(ctlpipe, a, 1 * sizeof(a[0]));
+	    result = (read(ctlpipe, a, 1 * sizeof(a[0])) != 1 * sizeof(a[0]));
 	    audio_ctlpipe_set_pattern(a[0]);
 	    break;
 	case AUDIO_CTLPIPE_SET_AMPLIFICATION:
-	    read(ctlpipe, &af, sizeof(af));
+	    result = (read(ctlpipe, &af, sizeof(af)) != sizeof(af));
 	    audio_ctlpipe_set_amplification(af);
 	    break;
 	case AUDIO_CTLPIPE_SET_PITCHBEND:
-	    read(ctlpipe, &af, sizeof(af));
+	    result = (read(ctlpipe, &af, sizeof(af)) != sizeof(af));
 	    pitchbend_req = af;
 	    break;
 	case AUDIO_CTLPIPE_SET_MIXER:
-	    read(ctlpipe, &b, sizeof(b));
+	    result = (read(ctlpipe, &b, sizeof(b)) != sizeof(b));
 	    mixer = b;
 	    if(playing) {
 		mixer->reset();
@@ -564,6 +573,8 @@ audio_thread (void)
 	    pthread_exit(NULL);
 	    break;
 	}
+	if(result)
+		fprintf(stderr, "\n\n*** audio_thread: read incomplete\n\n\n");
     }
 
     for(pl = inputs, i = 1; i < npl; pl = pl->next, i++) {
@@ -629,9 +640,11 @@ audio_init (int c,
 void
 audio_set_mixer (st_mixer *newmixer)
 {
-    audio_ctlpipe_id i = AUDIO_CTLPIPE_SET_MIXER;
-    write(audio_ctlpipe, &i, sizeof(i));
-    write(audio_ctlpipe, &newmixer, sizeof(newmixer));
+	audio_ctlpipe_id i = AUDIO_CTLPIPE_SET_MIXER;
+
+	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) ||
+	   write(audio_ctlpipe, &newmixer, sizeof(newmixer)) != sizeof(newmixer))
+		gui_error_dialog(N_("Connection with audio thread failed!"));
 }
 
 static void

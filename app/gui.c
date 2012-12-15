@@ -1172,9 +1172,9 @@ read_mixer_pipe (gpointer data,
 	}
 	readpipe(source, msgbuf, x + 1);
 	if(a == AUDIO_BACKPIPE_ERROR_MESSAGE)
-            gnome_error_dialog(msgbuf);
+            gui_error_dialog(msgbuf);
 	else
-            gnome_warning_dialog(msgbuf);
+            gui_warning_dialog(msgbuf);
 	break;
 
     default:

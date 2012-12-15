@@ -155,7 +155,16 @@ prefs_get_line (FILE *f,
     for(i = 0; i < 2; i++) {
 	// Linear search
 	while(!feof(f)) {
-	    fgets(readbuf, 1024, f);
+		errno = 0;
+		if(!fgets(readbuf, 1024, f) && errno) {
+			gchar *buf;
+
+			buf = g_strdup_printf(_("Error reading file: %s"), strerror(errno));
+			gui_error_dialog(buf);
+			g_free(buf);
+
+			return FALSE;
+		}
 	    p = strchr(readbuf, '=');
 	    if(!p || p == readbuf || p[1] == 0) {
 		return 0;
@@ -194,20 +203,29 @@ prefs_get_str_array (prefs_node *pn,
     f = pn->file;
     fseek(f, 0, SEEK_SET);
 
-    while(!feof(f) && !stop_condition) {
-	fgets(readbuf, 1024, f);
-	p = strchr(readbuf, '=');
-	if(!p || p == readbuf || p[1] == 0) {
-	    return FALSE;
+	while(!feof(f) && !stop_condition) {
+		errno = 0;
+		if(!fgets(readbuf, 1024, f) && errno) {
+			gchar *buf;
+
+			buf = g_strdup_printf(_("Error reading file: %s"), strerror(errno));
+			gui_error_dialog(buf);
+			g_free(buf);
+
+			return FALSE;
+		}
+		p = strchr(readbuf, '=');
+		if(!p || p == readbuf || p[1] == 0) {
+			return FALSE;
+		}
+		p[-1] = 0;
+		if(!g_ascii_strcasecmp(readbuf, key)) {
+			end = strchr(p + 2, '\n');
+			end[0] = 0;
+			dest = g_strdup(p + 2);
+			stop_condition = (* action_func)(dest, data);
+		}    
 	}
-	p[-1] = 0;
-	if(!g_ascii_strcasecmp(readbuf, key)) {
-	    end = strchr(p + 2, '\n');
-	    end[0] = 0;
-	    dest = g_strdup(p + 2);
-	    stop_condition = (* action_func)(dest, data);
-	}    
-    }
 
     return TRUE;    
 }

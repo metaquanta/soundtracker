@@ -183,16 +183,12 @@ gui_yes_no_cancel_modal (GtkWidget *window,
 
 gboolean             gui_ok_cancel_modal              (GtkWidget *window, const gchar *text);
 
-#ifndef USE_GNOME
-
-#define GNOME_APP(x) x
-
-void                 gnome_warning_dialog             (gchar *text);
-void                 gnome_error_dialog               (gchar *text);
-
-#endif
+void                 gui_message_dialog               (const gchar *text, GtkMessageType type, const gchar *title);
+#define              gui_warning_dialog(text)         gui_message_dialog(text, GTK_MESSAGE_WARNING, N_("Warning"))
+#define              gui_error_dialog(text)           gui_message_dialog(text, GTK_MESSAGE_ERROR, N_("Error!"))
 
 gchar *              gui_filename_to_utf8             (const gchar *old_name);
 gchar *              gui_filename_from_utf8           (const gchar *old_name);
 
+GtkWidget*           gui_combo_new                    (GtkListStore *ls);
 #endif /* _GUI_SUBS_H */

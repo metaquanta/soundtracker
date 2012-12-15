@@ -420,7 +420,7 @@ fileops_open_dialog (GtkWidget *w,
 	int n = GPOINTER_TO_INT(index);
 
 	if(!fileops[n].dialog) {
-		error_error(_("Operation not supported."));
+		gui_error_dialog(N_("Operation not supported."));
 		return;
 	}
 

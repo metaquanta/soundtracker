@@ -591,82 +591,21 @@ gui_yes_no_cancel_modal (GtkWidget *window,
     gtk_widget_show(aacdialog);
 }
 
-
-#ifndef USE_GNOME
-
-static GtkWidget *cdialog = NULL;
-static void(*ccallback)(gint,gpointer);
-static gpointer ccallbackdata;
-
-static void
-cdialog_close (gpointer data)
-{
-    gtk_widget_destroy(cdialog);
-    cdialog = NULL;
-    
-    ccallback(GPOINTER_TO_INT(data), ccallbackdata);
-}
-
-static void
-dialog_close (gpointer data)
-{
-    gtk_widget_destroy(data);
-}
-
-
 void
-gnome_warning_dialog (gchar *text)
+gui_message_dialog (const gchar *text, GtkMessageType type, const gchar *title)
 {
-    GtkWidget *label, *button;
-    GtkWidget *dialog;
+	static GtkWidget *dialog = NULL;
 
-    dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_position (GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
-    gtk_window_set_title(GTK_WINDOW(dialog), _("Warning"));
+	if(!dialog)
+		dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, type,
+		                                GTK_BUTTONS_CLOSE, "%s", _(text));
+	else
+		gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), _(text));
 
-    label = gtk_label_new(text);
-    gtk_container_border_width(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), 10);
-    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), label, TRUE, TRUE, 10);
-    gtk_widget_show(label);
-    
-    button = gtk_button_new_with_label ("Ok");
-    GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button, TRUE, TRUE, 10);
-    g_signal_connect_swapped(button, "clicked",
-                               G_CALLBACK(dialog_close), (gpointer)dialog);
-    gtk_widget_grab_default (button);
-    gtk_widget_show (button);
-    
-    gtk_widget_show(dialog);
+	gtk_window_set_title(GTK_WINDOW(dialog), _(title));
+	gtk_dialog_run(GTK_DIALOG(dialog));
+	gtk_widget_hide(dialog);
 }
-
-void
-gnome_error_dialog (gchar *text)
-{
-    GtkWidget *label, *button;
-    GtkWidget *dialog;
-
-    dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_position (GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
-    gtk_window_set_title(GTK_WINDOW(dialog), _("Error!"));
-
-    label = gtk_label_new(text);
-    gtk_container_border_width(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), 10);
-    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), label, TRUE, TRUE, 10);
-    gtk_widget_show(label);
-    
-    button = gtk_button_new_with_label ("Ok");
-    GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), button, TRUE, TRUE, 10);
-    g_signal_connect_swapped(button, "clicked",
-                               G_CALLBACK(dialog_close), (gpointer)dialog);
-    gtk_widget_grab_default (button);
-    gtk_widget_show (button);
-    
-    gtk_widget_show(dialog);
-}
-
-#endif /* USE_GNOME */
 
 gboolean
 gui_ok_cancel_modal (GtkWidget *parent, const gchar *text)
@@ -725,3 +664,18 @@ gui_filename_to_utf8 (const gchar *old_name)
 	return name;
 }
 
+GtkWidget*
+gui_combo_new (GtkListStore *ls)
+{
+	GtkWidget *thing;
+	GtkCellRenderer *cell;
+
+	thing = gtk_combo_box_new_with_model(GTK_TREE_MODEL(ls));
+	g_object_unref(ls);
+    
+	cell = gtk_cell_renderer_text_new();
+	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(thing), cell, TRUE);
+	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(thing), cell, "text", 0, NULL);
+
+	return thing;
+}

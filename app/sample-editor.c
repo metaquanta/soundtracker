@@ -238,6 +238,44 @@ sample_editor_page_create (GtkNotebook *nb)
 	NULL
     };
 
+#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+	static const gchar *aiff_f[] = {N_("Apple/SGI audio (*aif, *.aiff, *.aifc)"), "*.[aA][iI][fF]", "*.[aA][iI][fF][fFcC]", NULL};
+	static const gchar *au_f[] = {N_("SUN/NeXT audio (*.au, *.snd)"), "*.[aA][uU]", "*.[sS][nN][dD]", NULL};
+	static const gchar *avr_f[] = {N_("Audio Visual Research files (*.avr)"), "*.[aA][vV][rR]", NULL};
+	static const gchar *caf_f[] = {N_("Apple Core Audio files (*.caf)"), "*.[cC][aA][fF]", NULL};
+	static const gchar *iff_f[] = {N_("Amiga IFF/SV8/SV16 (*.iff)"), "*.[iI][fF][fF]", NULL};
+	static const gchar *sf_f[] = {N_("Berkeley/IRCAM/CARL audio (*.sf)"), "*.[sS][fF]", NULL};
+	static const gchar *voc_f[] = {N_("Creative Labs audio (*.voc)"), "*.[vV][oO][cC]", NULL};
+	static const gchar *wavex_f[] = {N_("Microsoft RIFF/NIST Sphere (*.wav)"), "*.[wW][aA][vV]", NULL};
+	static const gchar *flac_f[] = {N_("FLAC lossless audio (*.flac)"), "*.flac", NULL};
+	static const gchar *wve_f[] = {N_("Psion audio (*.wve)"), "*.wve", NULL};
+	static const gchar *ogg_f[] = {N_("OGG compressed audio (*.ogg, *.vorbis)"), "*.ogg", "*.vorbis", NULL};
+	static const gchar *rf64_f[] = {N_("RIFF 64 files (*.rf64)"), "*.rf64", NULL};
+
+	static const gchar *wav_f[] = {N_("Microsoft RIFF (*.wav)"), "*.[wW][aA][vV]", NULL};
+	static const gchar **out_f[] = {wav_f, NULL};
+#endif
+
+#if USE_SNDFILE
+	static const gchar *htk_f[] = {N_("HMM Tool KIt files (*.htk)"), "*.[hH][tT][kK]", NULL};
+	static const gchar *mat_f[] = {N_("GNU Octave/Matlab files (*.mat)"), "*.[mM][aA][tT]", NULL};
+	static const gchar *paf_f[] = {N_("Ensoniq PARIS files (*.paf)"), "*.[pP][aA][fF]", NULL};
+	static const gchar *pvf_f[] = {N_("Portable Voice Format files (*.pvf)"), "*.[pP][vV][fF]", NULL};
+	static const gchar *raw_f[] = {N_("Headerless raw data (*.raw, *.r8)"), "*.[rR][aA][wW]", "*.[rR]8", NULL};
+	static const gchar *sd2_f[] = {N_("Sound Designer II files (*.sd2)"), "*.[sS][dD]2", NULL};
+	static const gchar *sds_f[] = {N_("Midi Sample Dump Standard files (*.sds)"), "*.[sS][dD][sS]", NULL};
+	static const gchar *w64_f[] = {N_("SoundFoundry WAVE 64 files (*.w64)"), "*.[wW]64", NULL};
+
+	static const gchar **in_f[] = {aiff_f, au_f, avr_f, caf_f, htk_f, iff_f, mat_f, paf_f, pvf_f, raw_f, sd2_f, sds_f, sf_f,
+	                                voc_f, w64_f, wavex_f, flac_f, wve_f, ogg_f, rf64_f, NULL};
+#endif
+
+#if !defined (NO_AUDIOFILE) && !defined (USE_SNDFILE)
+	static const gchar *smp_f[] = {N_("Sample Vision files (*.smp)"), "*.[sS][mM][pP]", NULL};
+
+	static const gchar **in_f[] = {aiff_f, au_f, avr_f, caf_f, iff_f, sf_f, voc_f, wavex_f, smp_f, NULL};
+#endif
+
     box = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(box), 10);
     gtk_notebook_append_page(nb, box, gtk_label_new(_("Sample Editor")));
@@ -368,9 +406,9 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
 
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
-    file_selection_create(DIALOG_LOAD_SAMPLE, _("Load Sample"), gui_settings.loadsmpl_path, sample_editor_load_wav, 3, TRUE, FALSE, TRUE);
-    file_selection_create(DIALOG_SAVE_SAMPLE, _("Save Sample"), gui_settings.savesmpl_path, sample_editor_save_wav, 4, FALSE, TRUE, TRUE);
-    file_selection_create(DIALOG_SAVE_RGN_SAMPLE, _("Save region as WAV..."), gui_settings.savesmpl_path, sample_editor_save_region_wav, -1, FALSE, TRUE, FALSE);
+    file_selection_create(DIALOG_LOAD_SAMPLE, _("Load Sample"), gui_settings.loadsmpl_path, sample_editor_load_wav, 3, TRUE, FALSE, TRUE, in_f);
+    file_selection_create(DIALOG_SAVE_SAMPLE, _("Save Sample"), gui_settings.savesmpl_path, sample_editor_save_wav, 4, FALSE, TRUE, TRUE, out_f);
+    file_selection_create(DIALOG_SAVE_RGN_SAMPLE, _("Save region as WAV..."), gui_settings.savesmpl_path, sample_editor_save_region_wav, -1, FALSE, TRUE, FALSE, out_f);
 #endif
 
     thing = gtk_button_new_with_label(_("Load Sample"));
@@ -1064,7 +1102,7 @@ sample_editor_copy_cut_common (gboolean copy,
 	copybufferlen = cutlen;
 	copybuffer = malloc(copybufferlen * 2);
 	if(!copybuffer) {
-	    error_error(_("Out of memory for copybuffer.\n"));
+	    gui_error_dialog(N_("Out of memory for copybuffer.\n"));
 	} else {
 	    memcpy(copybuffer,
 		   oldsample->sample.data + ss,
@@ -1296,7 +1334,7 @@ sample_editor_load_wav_main (int mode)
     
     len = 2 * wavload_frameCount * wavload_channelCount;
     if(!(sbuf = malloc(len))) {
-	error_error(_("Out of memory for sample data."));
+	gui_error_dialog(N_("Out of memory for sample data."));
 	goto errnobuf;
     }
 
@@ -1312,7 +1350,7 @@ sample_editor_load_wav_main (int mode)
 #else
 	if(wavload_frameCount != afReadFrames(wavload_file, AF_DEFAULT_TRACK, sbuf_loadto, wavload_frameCount)) {
 #endif
-	    error_error(_("Read error."));
+	    gui_error_dialog(N_("Read error."));
 	    goto errnodata;
 	}
     } else {
@@ -1324,7 +1362,7 @@ sample_editor_load_wav_main (int mode)
 				       wavload_frameCount,
 				       f)) {
 	    fclose(f);
-	    error_error(_("Read error."));
+	    gui_error_dialog(N_("Read error."));
 	    goto errnodata;
 	}
 	fclose(f);
@@ -1500,7 +1538,6 @@ sample_editor_open_raw_sample_dialog (const gchar *filename)
     GtkWidget *label;
     GtkWidget *thing;
     GtkTreeIter iter;
-    GtkCellRenderer *cell;
     gint response, i, active = 0;
     
     static const char *resolutionlabels[] = { N_("8 bits"), N_("16 bits"), NULL };
@@ -1592,11 +1629,7 @@ sample_editor_open_raw_sample_dialog (const gchar *filename)
 		    active = i;
 	    }
 
-	    combo = gtk_combo_box_new_with_model(GTK_TREE_MODEL(ls));
-	    g_object_unref(ls);
-	    cell = gtk_cell_renderer_text_new();
-	    gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(combo), cell, TRUE);
-	    gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(combo), cell, "text", 0, NULL);
+	    combo = gui_combo_new(ls);
 	    gtk_box_pack_start(GTK_BOX(box2), combo, FALSE, TRUE, 0);
 	    gtk_combo_box_set_active(GTK_COMBO_BOX(combo), active); // default is 8363
 	    gtk_widget_show (combo);
@@ -1668,7 +1701,7 @@ sample_editor_load_wav (const gchar *fn)
 	    wavload_through_library = FALSE;
 	    sample_editor_open_raw_sample_dialog(fn);
 	} else {
-	    error_error(_("Can't read sample"));
+	    gui_error_dialog(N_("Can't read sample"));
 	}
 	return;
     }
@@ -1681,7 +1714,7 @@ sample_editor_load_wav (const gchar *fn)
     wavload_frameCount = afGetFrameCount(wavload_file, AF_DEFAULT_TRACK);
 #endif
     if(wavload_frameCount > mixer->max_sample_length) {
-	error_warning(_("Sample is too long for current mixer module. Loading anyway."));
+	gui_warning_dialog(N_("Sample is too long for current mixer module. Loading anyway."));
     }
 
 #if USE_SNDFILE
@@ -1705,7 +1738,7 @@ sample_editor_load_wav (const gchar *fn)
 
 
     if((wavload_sampleWidth != 16 && wavload_sampleWidth != 8) || wavload_channelCount > 2) {
-	error_error(_("Can only handle 8 and 16 bit samples with up to 2 channels"));
+	gui_error_dialog(N_("Can only handle 8 and 16 bit samples with up to 2 channels"));
 	goto errwrongformat;
     }
 
@@ -1782,7 +1815,7 @@ sample_editor_save_wav_main (const gchar *fn,
 	g_free(localname);
 
     if(!outfile) {
-	error_error(_("Can't open file for writing."));//!!!, fn
+	gui_error_dialog(N_("Can't open file for writing."));
 	return;
     }
 
@@ -1839,7 +1872,7 @@ sample_editor_save_region_wav (const gchar *fn)
     }
     
     if(rss == -1) {
-        error_error(_("Please select region first."));//!!!
+        gui_error_dialog(N_("Please select region first."));
 	return;
     }
 	sample_editor_save_wav_main(fn, rss, rse - rss);
@@ -1903,7 +1936,7 @@ sample_editor_monitor_clicked (void)
     GtkWidget *mainbox, *thing;
 
     if(!sampling_driver || !sampling_driver_object) {
-	error_error(_("No sampling driver available"));
+	gui_error_dialog(N_("No sampling driver available"));
 	return;
     }
 
@@ -1957,7 +1990,7 @@ sample_editor_sampled (void *dest,
 	if(currentoffs == recordbuflen) {
 	    struct recordbuf *newbuf = malloc(sizeof(struct recordbuf) + recordbuflen * 2);
 	    if(!newbuf) {
-		error_error(_("Out of memory while sampling!"));
+		gui_error_dialog(N_("Out of memory while sampling!"));
 		sampling = 0;
 		break;
 	    }
@@ -2039,7 +2072,7 @@ sample_editor_ok_clicked (void)
     }
 
     if(recordedlen > mixer->max_sample_length) {
-	error_warning(_("Recorded sample is too long for current mixer module. Using it anyway."));
+	gui_warning_dialog(N_("Recorded sample is too long for current mixer module. Using it anyway."));
     }
 
     current_sample->sample.length = recordedlen;

@@ -164,7 +164,7 @@ instrument_editor_load_instrument (gchar *fn)
        statusbar_update(STATUS_INSTRUMENT_LOADED, FALSE);
 	fclose(f);
     } else {
-	error_error(_("Can't open file."));//!!! Not error_error, but usual ST error dialog!
+	gui_error_dialog(N_("Can't open file."));
     }
 
     current_instrument = NULL;
@@ -192,7 +192,7 @@ instrument_editor_save_instrument (gchar *fn)
         statusbar_update(STATUS_INSTRUMENT_SAVED, FALSE);
 	fclose(f);
     } else {
-	error_error(_("Can't open file."));//!!! Not error_error, but usual ST error dialog!, fn
+	gui_error_dialog(N_("Can't open file."));
     }
 }
 
@@ -213,6 +213,9 @@ instrument_page_create (GtkNotebook *nb)
 {
     GtkWidget *mainbox, *vbox, *thing, *box, *box2, *box3, *box4, *frame;
     static const char *vibtypelabels[] = { N_("Sine"), N_("Square"), N_("Saw Down"), N_("Saw Up"), NULL };
+
+	static const gchar *xi_f[] = {N_("FastTracker instrumets (*.xi)"), "*.[xX][iI]", NULL};
+	static const gchar **formats[] = {xi_f, NULL};
 
     mainbox = gtk_vbox_new(FALSE, 4);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 10);
@@ -250,8 +253,8 @@ instrument_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(box), box2, TRUE, TRUE, 0);
     gtk_widget_show(box2);
 
-    file_selection_create(DIALOG_LOAD_INSTRUMENT, _("Load Instrument"), gui_settings.loadinstr_path, instrument_editor_load_instrument, 5, TRUE, FALSE, TRUE);
-    file_selection_create(DIALOG_SAVE_INSTRUMENT, _("Save Instrument"), gui_settings.saveinstr_path, instrument_editor_save_instrument, 6, FALSE, TRUE, TRUE);
+    file_selection_create(DIALOG_LOAD_INSTRUMENT, _("Load Instrument"), gui_settings.loadinstr_path, instrument_editor_load_instrument, 5, TRUE, FALSE, TRUE, formats);
+    file_selection_create(DIALOG_SAVE_INSTRUMENT, _("Save Instrument"), gui_settings.saveinstr_path, instrument_editor_save_instrument, 6, FALSE, TRUE, TRUE, formats);
 
     thing = gtk_button_new_with_label(_("Load XI"));
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
