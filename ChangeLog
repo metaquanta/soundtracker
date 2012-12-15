@@ -1,3 +1,19 @@
+2012-12-10  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui.c, app/file-operations.[ch], app/instrument-editor.c,
+	app/sample-editor.c: file filters are added.
+
+2012-12-07  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui.c, app/audio.c, app/xm.c: the return value of some GLIBC syscalls
+	is checked to avoid compiler warnings and better debugging;
+	* app/drivers/alsa1x-output.c: device is opened in non-block mode.
+
+2012-11-30  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui.c: measure selection is ported from deprecated to modern widgets;
+	* app/audio.c, app/gui.c, app/gui-subs.[ch], app/file-operations.c,
+	app/instrument-editor.c, app/keys.c, app/preferences.c,
+	app/sample-editor.c, app/xm.c: error and warning dialogs are ported from
+	Gnome to GTK.
+
 2012-11-04  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c: crash at window closing by "x" button is fixed.
 

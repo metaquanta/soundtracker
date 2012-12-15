@@ -52,7 +52,8 @@ void            fileops_page_post_create           (void);
 
 void            file_selection_create              (guint index, const gchar *title, const gchar *path,
                                                     void(*clickfunc)(), gint order,
-                                                    gboolean is_single_click, gboolean is_save, gboolean need_return);
+                                                    gboolean is_single_click, gboolean is_save, gboolean need_return,
+                                                    const gchar **formats[]);
 
 gboolean        fileops_page_handle_keys           (int shift,
 						    int ctrl,

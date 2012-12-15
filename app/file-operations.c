@@ -48,6 +48,7 @@ struct file_op_tmp {
 	const gchar *title, *path;
 	void (*clickfunc)();
 	gboolean is_single_click, is_save, need_return;
+	const gchar ***formats;
 };
 
 struct file_op {
@@ -97,9 +98,42 @@ static void set_filepath(GtkWidget *fc, const gchar *path) {
 	g_free(newname);
 }
 
+static void
+add_filters(GtkFileChooser *fc, const char **formats[])
+{
+	GtkFileFilter *current, *omni;
+	const gchar **format;
+	guint i = 0;
+
+	omni = gtk_file_filter_new();
+	gtk_file_filter_set_name(omni, _("All supported types"));
+
+	while((format = formats[i])) {
+		guint j = 1;
+
+		current = gtk_file_filter_new();
+		gtk_file_filter_set_name(current, _(format[0]));
+		while(format[j]) {
+			gtk_file_filter_add_pattern(current, format[j]);
+			gtk_file_filter_add_pattern(omni, format[j]);
+			j++;
+		}
+		gtk_file_chooser_add_filter(fc, current);
+		i++;
+	}
+
+	gtk_file_chooser_add_filter(fc, omni);
+	gtk_file_chooser_set_filter(fc, omni);
+
+	omni = gtk_file_filter_new();
+	gtk_file_filter_set_name(omni, _("All files"));
+		gtk_file_filter_add_pattern(omni, "*");
+	gtk_file_chooser_add_filter(fc, omni);
+}
+
 void
 file_selection_create (guint index, const gchar * title, const gchar *path, void(*clickfunc)(),
-                       gint order, gboolean is_single_click, gboolean is_save, gboolean need_return)
+                       gint order, gboolean is_single_click, gboolean is_save, gboolean need_return, const gchar **formats[])
 {
 	static gboolean firsttime = TRUE;
 	static guint num_allocated = 0, already_allocated = 0;
@@ -133,6 +167,7 @@ file_selection_create (guint index, const gchar * title, const gchar *path, void
 		fileop_pool[num_allocated - 1].need_return = need_return;
 		fileop_pool[num_allocated - 1].index = index;
 		fileop_pool[num_allocated - 1].path = path;
+		fileop_pool[num_allocated - 1].formats = formats;
 
 		fileop_list = g_slist_insert_sorted(fileop_list, &fileop_pool[num_allocated - 1], cmpfunc);
 
@@ -147,6 +182,8 @@ file_selection_create (guint index, const gchar * title, const gchar *path, void
 		                                                         is_save ? GTK_STOCK_SAVE : GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
 		if(is_save)
 			gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(fc), TRUE);
+		if(formats)
+			add_filters(GTK_FILE_CHOOSER(fc), formats);
 
 		set_filepath(fc, path);
 	}
@@ -349,6 +386,9 @@ foreach_fn(gpointer lm, gpointer data)
 	   Native SAVE mode leads to creation too many place taking unneccessary widgets */
 	fc = gtk_file_chooser_widget_new(GTK_FILE_CHOOSER_ACTION_OPEN);
 	set_filepath(fc, elem->path);
+
+	if(elem->formats)
+		add_filters(GTK_FILE_CHOOSER(fc), elem->formats);
 
 	gtk_box_pack_start(GTK_BOX(box), fc, TRUE, TRUE, 0);
 	g_signal_connect_swapped(fc, "file-activated", G_CALLBACK(file_chosen), &fileops[index]);/* TODO check for directories! */

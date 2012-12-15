@@ -17,9 +17,10 @@ offset_to_pointer and so on);
 26) ESC for Cancel, Enter for Ok keybindings in dialogs;
 28) Check and clean all gtk_dialog()s;
 29) Provide more info in gtk_about_dialog
-30) Degnomization! Inline aliases as gui_error and gui_warning. Remove menubar.[ch] and move
-all GtkBuilder stuff to gui.c
+30) Degnomization!
 31) something's wrong with signals in transposition dialog
+32) Clicking at oscilloscopes does not actually mute channels
+34) techwavn.xm, pat 6, track 7: something wrooOOOoong with drawing
 
 
 Regarding gtk_entry_set_text double signal: see gtkentry.c->2059, 2300 (workaround in the ST
