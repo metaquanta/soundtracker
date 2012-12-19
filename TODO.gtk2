@@ -18,7 +18,6 @@ offset_to_pointer and so on);
 28) Check and clean all gtk_dialog()s;
 29) Provide more info in gtk_about_dialog
 30) Degnomization!
-31) something's wrong with signals in transposition dialog
 32) Clicking at oscilloscopes does not actually mute channels
 34) techwavn.xm, pat 6, track 7: something wrooOOOoong with drawing
 

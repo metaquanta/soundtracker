@@ -267,6 +267,9 @@ menubar_init_prefs ()
 #if USE_SNDFILE == 0 && defined (NO_AUDIOFILE)
 	GtkWidget *savewav = gui_get_widget("file_save_wav");
 #endif
+#if !defined(USE_GTKHTML)
+	GtkWidget *help_cheat = gui_get_widget("help_cheat");
+#endif
 	GtkWidget *disable_splash = gui_get_widget("settings_disable_splash");
 	GtkWidget *save_onexit = gui_get_widget("settings_save_on_exit");
 
@@ -284,6 +287,9 @@ menubar_init_prefs ()
 #endif
 #if ! (defined(DRIVER_ALSA_050) || defined(DRIVER_ALSA_09x))
     gtk_widget_set_sensitive(settings_midi, FALSE);
+#endif
+#if !defined(USE_GTKHTML)
+    gtk_widget_set_sensitive(help_cheat, FALSE);
 #endif
 }
 

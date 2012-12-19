@@ -1,3 +1,21 @@
+2012-12-19  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/cheat-sheet.c, app/menubar.c: XM Effects Cheat Sheet is ported from
+	obsolete code to libGtkHTML, thus allowing improved formating.
+
+2012-12-17  Yury Aliaev  <mutab0r@rambler.ru>
+	* drivers/file-output.c: the return value of some GLIBC syscalls
+	is checked to avoid compiler warnings and better debugging;
+	* app/audioconfig.c, app/gui.c, app/gui-settings.c, 
+	app/instrument-editor.c, app/keys.c/ app/menubar.c, app/midi-settings-*.c,
+	app/sample-editor.c, app/track-editor.c: the code is cleaned up from 
+	Gnome residuals (excluding Canvas stuff);
+	* local headers app/gettext.h and app/i18n.h are dropped in favour of
+	glibc/gi18n.h.
+
+2012-12-11  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui-subs.c, app/transposition.c: transposition dialog code is improved
+	and bugfixed.
+
 2012-12-10  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c, app/file-operations.[ch], app/instrument-editor.c,
 	app/sample-editor.c: file filters are added.
@@ -9,8 +27,8 @@
 
 2012-11-30  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c: measure selection is ported from deprecated to modern widgets;
-	* app/audio.c, app/gui.c, app/gui-subs.[ch], app/file-operations.c,
-	app/instrument-editor.c, app/keys.c, app/preferences.c,
+	* app/audio.c, app/errors.h, app/gui.c, app/gui-subs.[ch],
+	app/file-operations.c, app/instrument-editor.c, app/keys.c, app/preferences.c,
 	app/sample-editor.c, app/xm.c: error and warning dialogs are ported from
 	Gnome to GTK.
 

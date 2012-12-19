@@ -997,7 +997,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="menuitem72">
+                      <object class="GtkImageMenuItem" id="help_cheat">
                         <property name="label" translatable="yes">_XM Effects</property>
                         <property name="visible">True</property>
                         <property name="image">image24</property>

@@ -70,16 +70,12 @@ AC_ARG_ENABLE(gnome,
         gnome=$enableval, gnome=yes)
 
 if test "$gnome" = yes; then
-dnl  AC_PATH_PROG(gnomepath, gnome-config)
-  AC_MSG_CHECKING(for Gnome compile flags)
-dnl  GNOME_CFLAGS=`$gnomepath gnomeui --cflags 2>/dev/null`
 SND_MODULES="libgnomeui-2.0 >= 2.2"
   PKG_CHECK_MODULES(GNOME, $SND_MODULES)
   if test "_$GNOME_CFLAGS" = _ ; then
     gnome=no
     AC_MSG_RESULT([Gnome not found, building without it.])
   else
-    AC_MSG_RESULT(ok)
 	AC_SUBST(GNOME_CFLAGS)
 	AC_SUBST(GNOME_LIBS)
     LIBS="$LIBS $GNOME_LIBS"
@@ -92,6 +88,32 @@ LIBS="$LIBS $GTK_LIBS"
 CFLAGS="$CFLAGS $GTK_CFLAGS"
 
 AM_CONDITIONAL(USE_GNOME, test "x$gnome" = "xyes")
+
+dnl -----------------------------------------------------------------------
+dnl Test for GtkHTML
+dnl -----------------------------------------------------------------------
+
+html=yes
+AC_ARG_ENABLE(gtkhtml,
+[  --disable-gtkhtml       disable use of gnome],
+        html=$enableval, html=yes)
+
+if test "$html" = yes; then
+SND_MODULES="libgtkhtml-3.14"
+  PKG_CHECK_MODULES(GTKHTML, $SND_MODULES)
+  if test "_$GTKHTML_CFLAGS" = _ ; then
+   html=no
+    AC_MSG_RESULT([GtkHTML not found, building without it.])
+  else
+	AC_SUBST(GTKHTML_CFLAGS)
+	AC_SUBST(GTKHTML_LIBS)
+    LIBS="$LIBS $GTKHTML_LIBS"
+    CFLAGS="$CFLAGS $GTKHTML_CFLAGS"
+    AC_DEFINE([USE_GTKHTML], 1, [Set if GtkHTML support is compiled in])
+  fi
+fi
+
+AM_CONDITIONAL(USE_GTKHTML, test "x$html" = "xyes")
 
 dnl -----------------------------------------------------------------------
 dnl Test for gdk-pixbuf
