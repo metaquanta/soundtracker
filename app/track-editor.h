@@ -22,7 +22,7 @@
 #ifndef _TRACK_EDITOR_H
 #define _TRACK_EDITOR_H
 
-#include <gtk/gtknotebook.h>
+#include <gtk/gtk.h>
 
 #include "tracker.h"
 #include "tracker-settings.h"

@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <errno.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -37,8 +38,8 @@
 
 #include <glib.h>
 #include <gdk/gdkcolor.h>
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "gui-subs.h"
 #include "preferences.h"
 #include "scope-group.h"
@@ -358,6 +359,7 @@ prefs_put_string (prefs_node *pn,
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <glib/gi18n.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -365,7 +367,6 @@ prefs_put_string (prefs_node *pn,
 #define  WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include "i18n.h"
 #include "gui-subs.h"
 #include "preferences.h"
 #include "scope-group.h"

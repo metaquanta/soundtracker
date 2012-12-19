@@ -18,7 +18,6 @@ soundtracker_SOURCES = \
 	gui-settings.c gui-settings.h \
 	gui-subs.c gui-subs.h \
 	gui.c gui.h \
-	gettext.h i18n.h \
 	instrument-editor.c instrument-editor.h \
 	keys.c keys.h \
 	main.c main.h \

@@ -30,15 +30,15 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
-#include "poll.h"
 
 #ifdef _POSIX_PRIORITY_SCHEDULING
 #include <sched.h>
 #endif
 
 #include <glib.h>
+#include <glib/gi18n.h>
 
-#include "i18n.h"
+#include "poll.h"
 #include "audio.h"
 #include "mixer.h"
 #include "driver-inout.h"

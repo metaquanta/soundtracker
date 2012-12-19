@@ -27,8 +27,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <signal.h>
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "gui.h"
 #include "xm.h"
 #include "audio.h"

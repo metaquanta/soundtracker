@@ -24,11 +24,7 @@
 
 #include <gtk/gtktext.h>
 #include <gtk/gtk.h>
-#ifdef USE_GNOME
-#include <gnome.h>
-#endif
-
-#include "i18n.h"
+#include <glib/gi18n.h>
 
 static GtkWidget *cheat_sheet_window = NULL;
 

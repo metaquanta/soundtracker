@@ -27,7 +27,7 @@
 #include <glib.h>
 #include <glib/gprintf.h>
 
-#include "i18n.h"
+#include <glib/gi18n.h>
 #include "track-editor.h"
 #include "gui.h"
 #include "st-subs.h"

@@ -28,8 +28,8 @@
 #include <string.h>
 
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "tips-dialog.h"
 #include "preferences.h"
 

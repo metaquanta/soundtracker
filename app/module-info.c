@@ -21,12 +21,11 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <glib.h>
 #include <glib/gprintf.h>
+#include <glib/gi18n.h>
 
-//#include <gtk/gtkfeatures.h>
-
-#include "i18n.h"
 #include "module-info.h"
 #include "gui.h"
 #include "gui-subs.h"

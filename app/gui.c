@@ -33,15 +33,11 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 #include <glib.h>
-#ifdef USE_GNOME
-#include <gnome.h>
-#include <bonobo.h>
-#endif
+#include <glib/gi18n.h>
 #ifndef NO_GDK_PIXBUF
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #endif
 
-#include "i18n.h"
 #include "gui.h"
 #include "gui-subs.h"
 #include "gui-settings.h"
@@ -1123,9 +1119,7 @@ read_mixer_pipe (gpointer data,
     switch(a) {
     case AUDIO_BACKPIPE_PLAYING_STOPPED:
         statusbar_update(STATUS_IDLE, FALSE);
-#ifdef USE_GNOME
         clock_stop(CLOCK(st_clock));
-#endif
 
         if(gui_ewc_startstop > 0) {
 	    /* can be equal to zero when the audio subsystem decides to stop playing on its own. */
@@ -1145,10 +1139,8 @@ read_mixer_pipe (gpointer data,
     case AUDIO_BACKPIPE_PLAYING_PATTERN_STARTED:
         if(a == AUDIO_BACKPIPE_PLAYING_PATTERN_STARTED)
 	    statusbar_update(STATUS_PLAYING_PATTERN, FALSE);
-#ifdef USE_GNOME
         clock_set_seconds(CLOCK(st_clock), 0);
         clock_start(CLOCK(st_clock));
-#endif
 
         gui_ewc_startstop--;
 	gui_playing_mode = (a == AUDIO_BACKPIPE_PLAYING_STARTED) ? PLAYING_SONG : PLAYING_PATTERN;
@@ -1688,13 +1680,8 @@ gui_splash (int argc,
     GtkWidget *hbox, *logo_area, *frame;
 #endif
 
-#ifdef USE_GNOME
-    gnome_init("SoundTracker", VERSION, argc, argv);
-    gdk_rgb_init();
-#else
     gtk_init(&argc, &argv);
     gdk_rgb_init();
-#endif
 
     gui_splash_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 

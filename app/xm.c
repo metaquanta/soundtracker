@@ -37,8 +37,8 @@
 
 #include <glib.h>
 #include <glib/gprintf.h>
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "gui-settings.h"
 #include "gui-subs.h"
 #include "xm.h"

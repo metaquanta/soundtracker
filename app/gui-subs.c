@@ -23,8 +23,8 @@
 #include <config.h>
 
 #include <string.h>
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "gui.h"
 #include "gui-subs.h"
 #include "extspinbutton.h"

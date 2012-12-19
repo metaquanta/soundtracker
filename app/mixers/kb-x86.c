@@ -29,10 +29,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <glib/gi18n.h>
 
 #include "mixer.h"
 #include "kb-x86-asm.h"
-#include "i18n.h"
 #include "tracer.h"
 
 static int num_channels, mixfreq;

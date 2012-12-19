@@ -41,11 +41,8 @@
 
 #include <gtk/gtk.h>
 #include <glib.h>
-#ifdef USE_GNOME
-#include <gnome.h>
-#endif
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "keys.h"
 #include "gui-subs.h"
 #include "gui.h"
@@ -1113,15 +1110,14 @@ keys_is_key_pressed (guint32 keysym,
 #include <string.h>
 #include <stdlib.h>
 
-#include <glib.h>
 //#include <gdk/gdkx.h>
 //#include "X11/Xlib.h"
 //#include <X11/keysym.h>
 
 #include <gtk/gtk.h>
 #include <glib.h>
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "keys.h"
 #include "gui-subs.h"
 #include "gui.h"

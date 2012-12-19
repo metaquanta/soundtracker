@@ -23,13 +23,9 @@
 #include <config.h>
 
 #include <string.h>
-
 #include <gtk/gtk.h>
-#ifdef USE_GNOME
-#include <gnome.h>
-#endif
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "gui.h"
 #include "gui-settings.h"
 #include "gui-subs.h"
@@ -376,7 +372,7 @@ static void
 gui_settings_tracker_colors_dialog (GtkWindow *window)
 {
     static GtkWidget *dialog;
-    GtkWidget *thing, *table, *radio, *hbox;
+    GtkWidget *thing, *table, *radio = NULL, *hbox;
     GtkBoxChild *child;
     guint i;
 

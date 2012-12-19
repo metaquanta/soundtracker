@@ -40,11 +40,8 @@
 #include <glib.h>
 #include <glib/gprintf.h>
 #include <gtk/gtk.h>
-#ifdef USE_GNOME
-#include <gnome.h>
-#endif
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "sample-editor.h"
 #include "xm.h"
 #include "st-subs.h"

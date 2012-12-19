@@ -40,11 +40,8 @@ midi_settings_dialog (void)
 
 #if defined(DRIVER_ALSA_09x)
 
-#ifdef USE_GNOME
-#include <gnome.h>
-#endif
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "gui.h"
 #include "preferences.h"
 #include "gui-subs.h"

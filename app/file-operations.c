@@ -27,9 +27,9 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <unistd.h>
-
-#include "i18n.h"
+#include <glib/gi18n.h>
 #include <gdk/gdktypes.h>
+
 #include "file-operations.h"
 #include "keys.h"
 #include "track-editor.h"

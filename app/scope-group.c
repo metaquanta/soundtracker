@@ -226,6 +226,16 @@ scope_group_set_update_freq (ScopeGroup *s,
     }
 }
 
+static gboolean enter(void)//!!!
+{g_print("enter\n");
+return FALSE;
+}
+
+static gboolean leave(void)//!!!
+{g_print("leave\n");
+return FALSE;
+}
+
 static gint
 scope_group_scope_event (GtkWidget *t,
 			 GdkEvent *event,
@@ -289,6 +299,10 @@ scope_group_new (void)
 			   G_CALLBACK(scope_group_scope_event), s);
 	g_signal_connect(button, "toggled",
 			   G_CALLBACK(button_toggled), GINT_TO_POINTER(i));
+	g_signal_connect(button, "enter-notify-event",//!!!
+			   G_CALLBACK(enter), GINT_TO_POINTER(i));
+	g_signal_connect(button, "leave-notify-event",//!!!
+			   G_CALLBACK(leave), GINT_TO_POINTER(i));
 	gtk_widget_show(button);
 	gtk_widget_ref(button);
 
@@ -311,7 +325,7 @@ scope_group_new (void)
 	g_sprintf(buf, "%02d", i+1);
 	thing = gtk_label_new(buf);
 	gtk_widget_show(thing);
-	gtk_box_pack_start(GTK_BOX(box), thing, FALSE, TRUE, 0);
+	gtk_box_pack_end(GTK_BOX(box), thing, FALSE, TRUE, 0);
     }
 
     gtk_table_attach_defaults(GTK_TABLE(s->table), s->scopebuttons[0], 0, 1, 0, 1);

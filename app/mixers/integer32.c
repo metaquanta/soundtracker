@@ -25,9 +25,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <glib/gi18n.h>
 
 #include "mixer.h"
-#include "i18n.h"
 #include "tracer.h"
 
 #if defined(__i386__) && !defined(NO_ASM)

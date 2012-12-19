@@ -25,9 +25,10 @@
 #include <gtk/gtk.h>
 
 #include <string.h>
+#include <stdlib.h>
+#include <glib/gi18n.h>
 
 #include "tracker-settings.h"
-#include "i18n.h"
 #include "gui-subs.h"
 #include "gui-settings.h"
 #include "preferences.h"

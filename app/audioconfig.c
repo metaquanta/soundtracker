@@ -24,12 +24,10 @@
 
 #include <gtk/gtk.h>
 #include <glib/gprintf.h>
-#ifdef USE_GNOME
-#include <gnome.h>
-#endif
 #include <string.h>
+#include <stdlib.h>
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "audioconfig.h"
 #include "gui-subs.h"
 #include "audio.h"

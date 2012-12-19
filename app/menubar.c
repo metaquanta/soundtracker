@@ -22,13 +22,10 @@
 #include <config.h>
 
 #include <string.h>
-
-#ifndef USE_GNOME
 #include "X11/Xlib.h"
 #include <gdk/gdkkeysyms.h>
-#endif
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "menubar.h"
 #include "gui.h"
 #include "gui-subs.h"
@@ -142,7 +139,7 @@ menubar_save_settings_now (void)
     keys_save_config();
     audioconfig_save_config();
     trackersettings_write_settings();
-#if (defined(DRIVER_ALSA_050) || defined(DRIVER_ALSA_09x)) && defined(USE_GNOME)
+#if (defined(DRIVER_ALSA_050) || defined(DRIVER_ALSA_09x))
     midi_save_config();
 #endif
 }

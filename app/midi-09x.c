@@ -26,7 +26,10 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
+#include <glib/gi18n.h>
+
 #include <string.h>
+
 #include "midi.h"
 #include "midi-utils.h"
 #include "midi-settings.h"
@@ -34,7 +37,6 @@
 #include "tracker.h"
 #include "xm.h"
 #include "gui-settings.h"
-#include "i18n.h"
 
 /*********************************************************
  * Macro to transform a MIDI note (pitch) into a XM note

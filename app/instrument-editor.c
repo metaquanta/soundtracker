@@ -21,11 +21,13 @@
 
 #include <config.h>
 
-#ifndef USE_GNOME
+#include <glib/gi18n.h>
 #include <stdlib.h>
-#endif
-
+/*
+#ifndef USE_GNOME
 #include "i18n.h"
+#endif
+*/
 #include "instrument-editor.h"
 #include "envelope-box.h"
 #include "xm.h"

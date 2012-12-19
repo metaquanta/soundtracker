@@ -30,8 +30,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "xm-player.h"
 #include "xm.h"
 #include "main.h"

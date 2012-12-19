@@ -27,13 +27,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <glib/gi18n.h>
 
 #include <sys/types.h>
 #include <unistd.h>
 
 #include <sndfile.h>
 
-#include "i18n.h"
 #include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
@@ -115,7 +115,8 @@ sndfile_new (void)
 
     sndfile_make_config_widgets(d);
 
-    pipe(d->pipe);
+	if(pipe(d->pipe) == -1)
+		perror("File output: pipe()");
 
     return d;
 }
@@ -169,7 +170,8 @@ sndfile_open (void *dp)
     }
 
     /* In case we're running setuid root... */
-    chown(d->filename, getuid(), getgid());
+	if(chown(d->filename, getuid(), getgid()) == -1)
+		error_warning("Can't change file ownership.");
 
     d->sndbuf_size = 16384;
     d->sndbuf = malloc(d->sndbuf_size);
@@ -241,10 +243,10 @@ st_io_driver driver_out_file = {
 
 #include <sys/types.h>
 #include <unistd.h>
+#include <glib/gi18n.h>
 
 #include <audiofile.h>
 
-#include "i18n.h"
 #include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
@@ -320,7 +322,8 @@ file_new (void)
 
     file_make_config_widgets(d);
 
-    pipe(d->pipe);
+	if(pipe(d->pipe) == -1)
+		perror("File output: pipe()");
 
     return d;
 }
@@ -376,7 +379,8 @@ file_open (void *dp)
     }
 
     /* In case we're running setuid root... */
-    chown(d->filename, getuid(), getgid());
+	if(chown(d->filename, getuid(), getgid()) == -1)
+		error_warning("Can't change file ownership.");
 
     d->sndbuf_size = 16384;
     d->sndbuf = malloc(d->sndbuf_size);

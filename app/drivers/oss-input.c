@@ -44,8 +44,8 @@
 #include <glib.h>
 #include <glib/gprintf.h>
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 
-#include "i18n.h"
 #include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
@@ -84,7 +84,8 @@ oss_poll_ready_sampling (gpointer data,
 
     size = (d->stereo + 1) * (d->bits / 8) * d->fragsize;
 
-    read(d->soundfd, d->sndbuf, size);
+	if(read(d->soundfd, d->sndbuf, size) != size)
+		perror("OSS input: read()");
 
     sample_editor_sampled(d->sndbuf, d->fragsize, d->playrate, d->mf);
 }
@@ -225,7 +226,7 @@ oss_open (void *dp)
 {
     oss_driver * const d = dp;
     int mf;
-    int i;
+    int i, size;
 
     /* O_NONBLOCK is required for the es1370 driver in Linux
        2.2.9, for example. It's open() behaviour is not
@@ -298,7 +299,9 @@ oss_open (void *dp)
     d->polltag = gdk_input_add(d->soundfd, GDK_INPUT_READ, oss_poll_ready_sampling, d);
 
     // At least my ES1370 requires an initial read...
-    read(d->soundfd, d->sndbuf, (d->stereo + 1) * (d->bits / 8) * d->fragsize);
+	size = (d->stereo + 1) * (d->bits / 8) * d->fragsize;
+	if(read(d->soundfd, d->sndbuf, size) != size)
+		perror("OSS input: read()");
 
     return TRUE;
 

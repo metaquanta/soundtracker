@@ -25,8 +25,12 @@
 #include <string.h>
 
 #include <gtk/gtk.h>
-
+#include <glib/gi18n.h>
+/*
+#ifndef USE_GNOME // temporary
 #include "i18n.h"
+#endif
+*/
 #include "gui-subs.h"
 #include "envelope-box.h"
 #include "xm.h"
@@ -114,7 +118,7 @@ envelope_box_canvas_size_allocate (GnomeCanvas *c,
 {
     double newval = (double)GTK_WIDGET(c)->allocation.height / (64 + 10);
     if(newval != e->zoomfactor_base) {
-	gnome_canvas_set_pixels_per_unit(c, newval * e->zoomfactor_mult);
+	gnome_canvas_set_pixels_per_unit(c, newval * e->zoomfactor_mult);//set_scale if it is needed at all
 	e->zoomfactor_base = newval;
     }
 }
@@ -124,7 +128,7 @@ envelope_box_canvas_set_max_x (EnvelopeBox *e,
 			       int x)
 {
     e->canvas_max_x = x;
-    gnome_canvas_set_scroll_region(e->canvas, -2 - 10 - 10, -2, x + 2 + 10, 66);
+    gnome_canvas_set_scroll_region(e->canvas, -2 - 10 - 10, -2, x + 2 + 10, 66);//set_bounds
 }
 
 static void
@@ -145,13 +149,13 @@ envelope_box_canvas_paint_grid (EnvelopeBox *e)
     };
     int i;
 
-    group = GNOME_CANVAS_GROUP (gnome_canvas_item_new (gnome_canvas_root(e->canvas),
+    group = GNOME_CANVAS_GROUP (gnome_canvas_item_new (gnome_canvas_root(e->canvas),//get_root_item, group_new
 						       gnome_canvas_group_get_type (),
 						       "x", 0.0,
 						       "y", 0.0,
 						       NULL));
 
-    points = gnome_canvas_points_new(2);
+    points = gnome_canvas_points_new(2);//polyline_new
     for(i = 0; i < sizeof(lines) / 4 / sizeof(int); i++) {
 	points->coords[0] = lines[4*i+0];
 	points->coords[1] = lines[4*i+1];
@@ -385,7 +389,7 @@ envelope_box_move_point (EnvelopeBox *e,
 
 #ifdef USE_GNOME
     // Update Canvas
-    gnome_canvas_item_move(e->points[n], dpos, -dval);
+    gnome_canvas_item_move(e->points[n], dpos, -dval);//item_translate
     if(n < e->current->num_points - 1) {
 	GNOME_CANVAS_LINE(e->lines[n])->coords[0] += dpos;
 	GNOME_CANVAS_LINE(e->lines[n])->coords[1] -= dval;
@@ -414,7 +418,7 @@ envelope_box_get_world_coords (GnomeCanvasItem *item,
 			       double *worldy)
 {
     if(item == NULL) {
-	gnome_canvas_window_to_world(e->canvas, event->button.x, event->button.y, worldx, worldy);
+	gnome_canvas_window_to_world(e->canvas, event->button.x, event->button.y, worldx, worldy);//convert_to_pixels
     } else {
 	*worldx = event->button.x;
 	*worldy = event->button.y;
@@ -454,7 +458,7 @@ envelope_box_initialize_point_dragging (EnvelopeBox *e,
     e->dragfromx = x;
     e->dragfromy = y;
 
-    gnome_canvas_get_scroll_offsets(e->canvas, &e->dragging_canvas_from_x, &e->dragging_canvas_from_y);
+    gnome_canvas_get_scroll_offsets(e->canvas, &e->dragging_canvas_from_x, &e->dragging_canvas_from_y);//use x1 and y1 properties
 
     e->dragpoint = -1;
     for(i = 0; i < 12; i++) {
@@ -924,13 +928,11 @@ GtkWidget* envelope_box_new(const gchar *label)
 //	gtk_widget_push_colormap (gdk_rgb_get_cmap ());
 //	canvas = gnome_canvas_new_aa ();
 //    } else {
-	gtk_widget_push_visual (gdk_rgb_get_visual ());
 	gtk_widget_push_colormap (gdk_rgb_get_colormap ());
 	canvas = gnome_canvas_new ();
 //    }
     e->canvas = GNOME_CANVAS(canvas);
     gtk_widget_pop_colormap ();
-    gtk_widget_pop_visual ();
 
     memset(e->points, 0, sizeof(e->points));
     memset(e->lines, 0, sizeof(e->lines));
