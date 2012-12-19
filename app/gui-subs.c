@@ -180,8 +180,9 @@ gui_put_labelled_spin_button (GtkWidget *destbox,
     *spin = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(min, min, max, 1.0, 5.0, 0.0)), 0, 0);
     gtk_box_pack_start(GTK_BOX(hbox), *spin, FALSE, TRUE, 0);
     gtk_widget_show(*spin);
-    g_signal_connect(*spin, "value-changed",
-		       GTK_SIGNAL_FUNC(callback), callbackdata);
+	if(callback)
+		g_signal_connect(*spin, "value-changed",
+		                 GTK_SIGNAL_FUNC(callback), callbackdata);
 }
 
 void
