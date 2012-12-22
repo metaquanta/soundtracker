@@ -37,12 +37,6 @@
 #include "gui.h"
 #include "errors.h"
 
-#ifdef GTK_HACKS
-#define GTK_FILE_CHOOSER_ENABLE_UNSUPPORTED
-#define GTK_FILE_SYSTEM_ENABLE_UNSUPPORTED
-#include <gtk/gtkfilechooserprivate.h>
-#endif
-
 struct file_op_tmp {
 	gint order, index;
 	const gchar *title, *path;
@@ -361,7 +355,7 @@ foreach_fn(gpointer lm, gpointer data)
 	struct file_op_tmp *elem = (struct file_op_tmp*)lm;
 	gint index;
 #ifdef GTK_HACKS
-	struct _GtkFileChooserDefault* hack;
+	GList *list;
 #endif
 
 	if(!lm)
@@ -419,8 +413,20 @@ foreach_fn(gpointer lm, gpointer data)
 
 #ifdef GTK_HACKS /* Create Directory button */
 	if(elem->is_save) {
-		hack = (struct _GtkFileChooserDefault*) (GTK_FILE_CHOOSER_WIDGET(fc)->priv->impl);
-		gtk_widget_set_visible (hack->browse_new_folder_button, TRUE);
+		list = gtk_container_get_children(GTK_CONTAINER(fc));
+		widget = GTK_WIDGET(g_list_nth_data(list, 0)); /* browse_widgets_box */
+		g_list_free(list);
+		list = gtk_container_get_children(GTK_CONTAINER(widget));
+		widget = GTK_WIDGET(g_list_nth_data(list, 0)); /* browse_header_box */
+		g_list_free(list);
+		list = gtk_container_get_children(GTK_CONTAINER(widget));
+		widget = GTK_WIDGET(g_list_nth_data(list, 0)); /* browse_path_bar_box */
+		g_list_free(list);
+		list = gtk_container_get_children(GTK_CONTAINER(widget)); /* Create Folder button :) */
+		widget = GTK_WIDGET(g_list_nth_data(list, g_list_length(list) - 1));
+		g_list_free(list);
+
+		gtk_widget_show(widget);
 	}
 #endif
 

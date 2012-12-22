@@ -1,4 +1,8 @@
 2012-12-19  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/file-operations.c: Gtk hacks now performed at run time, no extra
+	headers required at compilation.
+
+2012-12-19  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/cheat-sheet.c, app/menubar.c: XM Effects Cheat Sheet is ported from
 	obsolete code to libGtkHTML, thus allowing improved formating.
 
