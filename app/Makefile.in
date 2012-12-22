@@ -48,11 +48,7 @@ bin_PROGRAMS = soundtracker$(EXEEXT)
 subdir = app
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/lib-ld.m4 \
-	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
-	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.in
+am__aclocal_m4_deps = $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -67,11 +63,11 @@ am__soundtracker_SOURCES_DIST = audio.c audio.h audioconfig.c \
 	endian-conv.h envelope-box.c envelope-box.h errors.c errors.h \
 	event-waiter.c event-waiter.h extspinbutton.c extspinbutton.h \
 	file-operations.c file-operations.h gui-settings.c \
-	gui-settings.h gui-subs.c gui-subs.h gui.c gui.h gettext.h \
-	i18n.h instrument-editor.c instrument-editor.h keys.c keys.h \
-	main.c main.h menubar.c menubar.h mixer.h module-info.c \
-	module-info.h playlist.c playlist.h poll.c poll.h \
-	preferences.c preferences.h recode.c recode.h sample-display.c \
+	gui-settings.h gui-subs.c gui-subs.h gui.c gui.h \
+	instrument-editor.c instrument-editor.h keys.c keys.h main.c \
+	main.h menubar.c menubar.h mixer.h module-info.c module-info.h \
+	playlist.c playlist.h poll.c poll.h preferences.c \
+	preferences.h recode.c recode.h sample-display.c \
 	sample-display.h sample-editor.c sample-editor.h scope-group.c \
 	scope-group.h st-subs.c st-subs.h time-buffer.c time-buffer.h \
 	tips-dialog.c tips-dialog.h track-editor.c track-editor.h \
@@ -208,10 +204,14 @@ EXEEXT = @EXEEXT@
 GDK_PIXBUF = @GDK_PIXBUF@
 GDK_PIXBUF_CFLAGS = @GDK_PIXBUF_CFLAGS@
 GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
+GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GMSGFMT = @GMSGFMT@
+GMSGFMT_015 = @GMSGFMT_015@
 GNOME_CFLAGS = @GNOME_CFLAGS@
 GNOME_LIBS = @GNOME_LIBS@
 GREP = @GREP@
+GTKHTML_CFLAGS = @GTKHTML_CFLAGS@
+GTKHTML_LIBS = @GTKHTML_LIBS@
 GTK_CFLAGS = @GTK_CFLAGS@
 GTK_HACKS_FALSE = @GTK_HACKS_FALSE@
 GTK_HACKS_TRUE = @GTK_HACKS_TRUE@
@@ -231,8 +231,8 @@ LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
-MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
+MSGFMT_015 = @MSGFMT_015@
 MSGMERGE = @MSGMERGE@
 NO_ASM_FALSE = @NO_ASM_FALSE@
 NO_ASM_TRUE = @NO_ASM_TRUE@
@@ -261,9 +261,13 @@ ST_S_JACK_INCLUDES = @ST_S_JACK_INCLUDES@
 ST_S_JACK_LIBS = @ST_S_JACK_LIBS@
 USE_GNOME_FALSE = @USE_GNOME_FALSE@
 USE_GNOME_TRUE = @USE_GNOME_TRUE@
+USE_GTKHTML_FALSE = @USE_GTKHTML_FALSE@
+USE_GTKHTML_TRUE = @USE_GTKHTML_TRUE@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 XGETTEXT = @XGETTEXT@
+XGETTEXT_015 = @XGETTEXT_015@
+XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 ac_ct_CC = @ac_ct_CC@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
@@ -323,7 +327,6 @@ soundtracker_SOURCES = \
 	gui-settings.c gui-settings.h \
 	gui-subs.c gui-subs.h \
 	gui.c gui.h \
-	gettext.h i18n.h \
 	instrument-editor.c instrument-editor.h \
 	keys.c keys.h \
 	main.c main.h \

@@ -129,7 +129,7 @@ cheat_sheet_dialog (void)
 
     gtk_container_add (GTK_CONTAINER (scrolled_window), text);
     gtk_widget_grab_focus (text);
-    gtk_widget_set_usize(text, 42 * 12, 46 * 12);
+    gtk_widget_set_usize(text, 46 * 12, 46 * 12);
     gtk_widget_show_all (cheat_sheet_window);
 #endif
 }

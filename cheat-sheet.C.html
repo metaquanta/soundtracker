@@ -3,19 +3,19 @@
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
 <title>XM Effects Cheat Sheet</title>
 </head>
-<body bgcolor="black" text="#f0d79c">
+<body bgcolor="#0a141e" text="#e6e6e6">
 <table border="2" width="100%">
 <tr>
 	<td align="center">
-	<font color="gold"><b>Effects Column</b></font>
+	<font color="e6c800"><b>Effects Column</b></font>
 	</td>
 	<td align="center">
-	<font color="gold"><b>Volume Column</b></font>
+	<font color="e6c800"><b>Volume Column</b></font>
 	</td>
 </tr>
 <tr>
-	<td align="center">
-		<table border="0" width="100%">
+	<td align="left" rowspan="2" width="45%">
+		<table border="0">
 			<tr><td>0</td><td></td><td>Arpeggio</td></tr>
 			<tr><td>1</td><td>(*)</td><td>Porta up</td></tr>
 			<tr><td>2</td><td>(*)</td><td>Porta down</td></tr>
@@ -54,10 +54,38 @@
 			<tr><td>X2</td><td>(*)</td><td>Extra fine porta down</td></tr>
 		</table>
 	</td>
-	<td>
+	<td align="left">
 		<table border="0">
-			<tr><td>0</td><td>Do nothing</td></tr>
+			<tr><td align="center">0</td><td colspan="2">Do nothing</td></tr>
+			<tr><td>0x10 &mdash; 0x50</td><td colspan="2">Set volume Value - 0x10</td></tr>
+			<tr><td>:</td><td>:</td><td>:</td></tr>
+			<tr><td>0x60 &mdash; 0x6f</td><td colspan="2">Volume slide down</td></tr>
+			<tr><td>0x70 &mdash; 0x7f</td><td colspan="2">Volume slide up</td></tr>
+			<tr><td>0x80 &mdash; 0x6f</td><td colspan="2">Fine volume slide down</td></tr>
+			<tr><td>0x90 &mdash; 0x7f</td><td colspan="2">Fine volume slide up</td></tr>
+			<tr><td>0xa0 &mdash; 0xaf</td><td colspan="2">Set vibrato speed</td></tr>
+			<tr><td>0xb0 &mdash; 0xbf</td><td colspan="2">Vibrato</td></tr>
+			<tr><td>0xc0 &mdash; 0xcf</td><td colspan="2">Set panning</td></tr>
+			<tr><td>0xd0 &mdash; 0xdf</td><td colspan="2">Panning slide left</td></tr>
+			<tr><td>0xe0 &mdash; 0xef</td><td colspan="2">Panning slide right</td></tr>
+			<tr><td>0xf0 &mdash; 0xff</td><td colspan="2">Tone porta</td></tr>
+			<tr><td colspan="3"></td></tr>
+		</table>
+		<table border="0">
+			<tr valign="top"><td width="15%">(*) =</td><td>If the data byte is zero, the last nonzero byte for the command should be used.</td></tr>
 		</table>
 	</td>
 </tr>
+<tr>
+	<td valign="top">Non-Standard XM effects &mdash; only available in SoundTracker and OpenCP &mdash; don't use if you want to stay compatible with FastTracker.
+		<br><br>
+		<table border="0" width="100%">
+			<tr><td align="center" colspan="2"><font color="e6c800"><b>Effects column</b></font></td></tr>
+			<tr><td>Z</td><td>Set LP filter cutoff frequiency</td></tr>
+			<tr><td>Q</td><td>Set LP filter resonance</td></tr>
+		</table>
+		<br>To switch off the filter, you must use Q00 <b>and</b> Zff!
+	</td>
+</tr>
+</table>
 </body></html>
