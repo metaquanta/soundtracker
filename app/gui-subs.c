@@ -272,28 +272,7 @@ gui_subs_get_slider_value (gui_subs_slider *s)
     return s->adjustment2->value;
 }
 
-void
-gui_update_spin_adjustment (GtkSpinButton *spin,
-			    int min,
-			    int max)
-{
-    GtkAdjustment* adj;
-    int p;
-
-    adj = gtk_spin_button_get_adjustment(spin);
-    p = adj->value;
-    if(p < min)
-	p = min;
-    else if(p > max)
-	p = max;
-
-    /* p+1 and the extra set_value is required due to a bug in gtk+ */
-    adj = GTK_ADJUSTMENT(gtk_adjustment_new(p+1, min, max, 1, 1, 0));
-    gtk_spin_button_set_adjustment(spin, adj); /* old adjustment is freed automagically */
-    gtk_adjustment_set_value(adj, p);
-}
-
-void
+void //!!! replace with gtk_range_set_range or adjustment-related functions?
 gui_update_range_adjustment (GtkRange *range,
 			     int pos,
 			     int upper,

@@ -660,8 +660,8 @@ sample_editor_update (void)
 
     sample_editor_block_loop_spins(1);
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(loopradio[s->looptype]), TRUE);
-    gui_update_spin_adjustment(GTK_SPIN_BUTTON(spin_loopstart), 0, s->length - 1);
-    gui_update_spin_adjustment(GTK_SPIN_BUTTON(spin_loopend), 1, s->length);
+    gtk_spin_button_set_range(GTK_SPIN_BUTTON(spin_loopstart), 0, s->length - 1);
+    gtk_spin_button_set_range(GTK_SPIN_BUTTON(spin_loopend), 1, s->length);
     sample_editor_block_loop_spins(0);
     sample_editor_blocked_set_loop_spins(s->loopstart, s->loopend);
     

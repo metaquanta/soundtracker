@@ -16,10 +16,10 @@ add avalable devices navigation (from csound->rtalsa.c);
 offset_to_pointer and so on);
 26) ESC for Cancel, Enter for Ok keybindings in dialogs;
 28) Check and clean all gtk_dialog()s;
-29) Provide more info in gtk_about_dialog
-30) Degnomization!
 32) Clicking at oscilloscopes does not actually mute channels
 34) techwavn.xm, pat 6, track 7: something wrooOOOoong with drawing
+36) Pressing Ctrl-O in Instrument editor crashes ST at some machines;
+37) Letters in clavier are shifted from center and probably drawn with obsolete functions;
 
 
 Regarding gtk_entry_set_text double signal: see gtkentry.c->2059, 2300 (workaround in the ST
@@ -33,3 +33,10 @@ Some remarks about asm mixer bug: at the sample end and loop points there are ug
 will be triggered to the minimal negative value (maybe it's a cause of the first issue
 'cause really ramping and looping is performing using additional channels. Probably the bug
 is in the mixing or post-mixing code.
+
+Instrument editor:
+-mouse wheel: horizontal scroll(shift), scale(ctrl);
+-scroll menu (in, out, 1:1): right-click on canvas;
+-loop/sustain drawing;
+-ctrl is fixing direction when point moving
+-right click on the button makes it current (if will not interfere with menu right-click);

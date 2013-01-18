@@ -92,9 +92,6 @@ void                 gui_put_labelled_spin_button     (GtkWidget *destbox,
 						       GtkWidget **spin,
 						       void(*callback)(),
 						       void *callbackdata);
-void                 gui_update_spin_adjustment       (GtkSpinButton *spin,
-						       int min,
-						       int max);
 void                 gui_update_range_adjustment      (GtkRange *range,
 						       int pos,
 						       int upper,

@@ -23,11 +23,7 @@
 
 #include <glib/gi18n.h>
 #include <stdlib.h>
-/*
-#ifndef USE_GNOME
-#include "i18n.h"
-#endif
-*/
+
 #include "instrument-editor.h"
 #include "envelope-box.h"
 #include "xm.h"
@@ -287,7 +283,7 @@ instrument_page_create (GtkNotebook *nb)
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     thing = gui_subs_create_slider(&instrument_page_sliders[0]);
-    gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     add_empty_hbox(box3);
 
@@ -297,13 +293,13 @@ instrument_page_create (GtkNotebook *nb)
 
     add_empty_hbox(box3);
     thing = gui_subs_create_slider(&instrument_page_sliders[1]);
-    gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     thing = gui_subs_create_slider(&instrument_page_sliders[2]);
-    gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     thing = gui_subs_create_slider(&instrument_page_sliders[3]);
-    gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(box3), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     add_empty_hbox(box3);
 

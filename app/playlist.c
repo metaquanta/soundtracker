@@ -301,7 +301,7 @@ playlist_songlength_changed (GtkSpinButton *spin,
     p->length = newlen;
 
     playlist_update_adjustment(GTK_ADJUSTMENT(p->adj_songpos), 0, newlen - 1);
-    gui_update_spin_adjustment(GTK_SPIN_BUTTON(p->spin_restartpos), 0, newlen - 1);
+    gtk_spin_button_set_range(GTK_SPIN_BUTTON(p->spin_restartpos), 0, newlen - 1);
     if(!p->frozen)
 	playlist_draw_contents(p);
     if(!p->signals_disabled)

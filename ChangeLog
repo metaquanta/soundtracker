@@ -1,3 +1,11 @@
+2013-01-18  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/envelope-box.[ch]: Goo canvas are used instead of Gnome canvas. The
+	last dependency on Gnome is dropped! Current point is highlit. Code is
+	cleaned up and bugfixed;
+	* app/instrument-editor.c: the bug with sliders displaying is fixed;
+	* app/gui-subs.[ch], app/playlist.c, app/sample-editor.c: Gtk+-2 native
+	function is used instead of self-made workaround.
+
 2012-12-19  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/file-operations.c: Gtk hacks now performed at run time, no extra
 	headers required at compilation.
