@@ -681,10 +681,10 @@ USE_GTKHTML_FALSE
 USE_GTKHTML_TRUE
 GTKHTML_LIBS
 GTKHTML_CFLAGS
-USE_GNOME_FALSE
-USE_GNOME_TRUE
-GNOME_LIBS
-GNOME_CFLAGS
+USE_CANVAS_FALSE
+USE_CANVAS_TRUE
+CANVAS_LIBS
+CANVAS_CFLAGS
 GTK_LIBS
 GTK_CFLAGS
 PKG_CONFIG
@@ -803,7 +803,7 @@ with_gnu_ld
 enable_rpath
 with_libiconv_prefix
 with_libintl_prefix
-enable_gnome
+enable_canvas
 enable_gtkhtml
 enable_gdk_pixbuf
 enable_sndfile
@@ -840,8 +840,8 @@ CPP
 PKG_CONFIG
 GTK_CFLAGS
 GTK_LIBS
-GNOME_CFLAGS
-GNOME_LIBS
+CANVAS_CFLAGS
+CANVAS_LIBS
 GTKHTML_CFLAGS
 GTKHTML_LIBS
 GDK_PIXBUF_CFLAGS
@@ -1481,7 +1481,7 @@ Optional Features:
   --disable-asm           Disable use of assembler optimizations
   --disable-nls           do not use Native Language Support
   --disable-rpath         do not hardcode runtime library paths
-  --disable-gnome         disable use of gnome
+  --disable-canvas         disable use of GooCanvas
   --disable-gtkhtml       disable use of gnome
   --disable-gdk-pixbuf    Disable use of gdk-pixbuf (default = try)
   --disable-sndfile       Disable usage of libsndfile (default = try)
@@ -1527,9 +1527,9 @@ Some influential environment variables:
   PKG_CONFIG  path to pkg-config utility
   GTK_CFLAGS  C compiler flags for GTK, overriding pkg-config
   GTK_LIBS    linker flags for GTK, overriding pkg-config
-  GNOME_CFLAGS
-              C compiler flags for GNOME, overriding pkg-config
-  GNOME_LIBS  linker flags for GNOME, overriding pkg-config
+  CANVAS_CFLAGS
+              C compiler flags for CANVAS, overriding pkg-config
+  CANVAS_LIBS linker flags for CANVAS, overriding pkg-config
   GTKHTML_CFLAGS
               C compiler flags for GTKHTML, overriding pkg-config
   GTKHTML_LIBS
@@ -7181,24 +7181,24 @@ fi
 
 
 
-gnome=yes
-# Check whether --enable-gnome was given.
-if test "${enable_gnome+set}" = set; then
-  enableval=$enable_gnome; gnome=$enableval
+canvas=yes
+# Check whether --enable-canvas was given.
+if test "${enable_canvas+set}" = set; then
+  enableval=$enable_canvas; canvas=$enableval
 else
-  gnome=yes
+  canvas=yes
 fi
 
 
-if test "$gnome" = yes; then
-SND_MODULES="libgnomeui-2.0 >= 2.2"
+if test "$canvas" = yes; then
+SND_MODULES="goocanvas"
 
 pkg_failed=no
-{ $as_echo "$as_me:$LINENO: checking for GNOME" >&5
-$as_echo_n "checking for GNOME... " >&6; }
+{ $as_echo "$as_me:$LINENO: checking for CANVAS" >&5
+$as_echo_n "checking for CANVAS... " >&6; }
 
-if test -n "$GNOME_CFLAGS"; then
-    pkg_cv_GNOME_CFLAGS="$GNOME_CFLAGS"
+if test -n "$CANVAS_CFLAGS"; then
+    pkg_cv_CANVAS_CFLAGS="$CANVAS_CFLAGS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
     { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"\$SND_MODULES\"") >&5
@@ -7206,15 +7206,15 @@ if test -n "$GNOME_CFLAGS"; then
   ac_status=$?
   $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_GNOME_CFLAGS=`$PKG_CONFIG --cflags "$SND_MODULES" 2>/dev/null`
+  pkg_cv_CANVAS_CFLAGS=`$PKG_CONFIG --cflags "$SND_MODULES" 2>/dev/null`
 else
   pkg_failed=yes
 fi
  else
     pkg_failed=untried
 fi
-if test -n "$GNOME_LIBS"; then
-    pkg_cv_GNOME_LIBS="$GNOME_LIBS"
+if test -n "$CANVAS_LIBS"; then
+    pkg_cv_CANVAS_LIBS="$CANVAS_LIBS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
     { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"\$SND_MODULES\"") >&5
@@ -7222,7 +7222,7 @@ if test -n "$GNOME_LIBS"; then
   ac_status=$?
   $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_GNOME_LIBS=`$PKG_CONFIG --libs "$SND_MODULES" 2>/dev/null`
+  pkg_cv_CANVAS_LIBS=`$PKG_CONFIG --libs "$SND_MODULES" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -7240,33 +7240,33 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GNOME_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "$SND_MODULES" 2>&1`
+	        CANVAS_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "$SND_MODULES" 2>&1`
         else
-	        GNOME_PKG_ERRORS=`$PKG_CONFIG --print-errors "$SND_MODULES" 2>&1`
+	        CANVAS_PKG_ERRORS=`$PKG_CONFIG --print-errors "$SND_MODULES" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
-	echo "$GNOME_PKG_ERRORS" >&5
+	echo "$CANVAS_PKG_ERRORS" >&5
 
 	{ { $as_echo "$as_me:$LINENO: error: Package requirements ($SND_MODULES) were not met:
 
-$GNOME_PKG_ERRORS
+$CANVAS_PKG_ERRORS
 
 Consider adjusting the PKG_CONFIG_PATH environment variable if you
 installed software in a non-standard prefix.
 
-Alternatively, you may set the environment variables GNOME_CFLAGS
-and GNOME_LIBS to avoid the need to call pkg-config.
+Alternatively, you may set the environment variables CANVAS_CFLAGS
+and CANVAS_LIBS to avoid the need to call pkg-config.
 See the pkg-config man page for more details.
 " >&5
 $as_echo "$as_me: error: Package requirements ($SND_MODULES) were not met:
 
-$GNOME_PKG_ERRORS
+$CANVAS_PKG_ERRORS
 
 Consider adjusting the PKG_CONFIG_PATH environment variable if you
 installed software in a non-standard prefix.
 
-Alternatively, you may set the environment variables GNOME_CFLAGS
-and GNOME_LIBS to avoid the need to call pkg-config.
+Alternatively, you may set the environment variables CANVAS_CFLAGS
+and CANVAS_LIBS to avoid the need to call pkg-config.
 See the pkg-config man page for more details.
 " >&2;}
    { (exit 1); exit 1; }; }
@@ -7277,8 +7277,8 @@ $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
 is in your PATH or set the PKG_CONFIG environment variable to the full
 path to pkg-config.
 
-Alternatively, you may set the environment variables GNOME_CFLAGS
-and GNOME_LIBS to avoid the need to call pkg-config.
+Alternatively, you may set the environment variables CANVAS_CFLAGS
+and CANVAS_LIBS to avoid the need to call pkg-config.
 See the pkg-config man page for more details.
 
 To get pkg-config, see <http://pkg-config.freedesktop.org/>.
@@ -7287,32 +7287,32 @@ $as_echo "$as_me: error: The pkg-config script could not be found or is too old.
 is in your PATH or set the PKG_CONFIG environment variable to the full
 path to pkg-config.
 
-Alternatively, you may set the environment variables GNOME_CFLAGS
-and GNOME_LIBS to avoid the need to call pkg-config.
+Alternatively, you may set the environment variables CANVAS_CFLAGS
+and CANVAS_LIBS to avoid the need to call pkg-config.
 See the pkg-config man page for more details.
 
 To get pkg-config, see <http://pkg-config.freedesktop.org/>.
 See \`config.log' for more details." >&2;}
    { (exit 1); exit 1; }; }; }
 else
-	GNOME_CFLAGS=$pkg_cv_GNOME_CFLAGS
-	GNOME_LIBS=$pkg_cv_GNOME_LIBS
+	CANVAS_CFLAGS=$pkg_cv_CANVAS_CFLAGS
+	CANVAS_LIBS=$pkg_cv_CANVAS_LIBS
         { $as_echo "$as_me:$LINENO: result: yes" >&5
 $as_echo "yes" >&6; }
 	:
 fi
-  if test "_$GNOME_CFLAGS" = _ ; then
-    gnome=no
-    { $as_echo "$as_me:$LINENO: result: Gnome not found, building without it." >&5
-$as_echo "Gnome not found, building without it." >&6; }
+  if test "_$CANVAS_CFLAGS" = _ ; then
+    canvas=no
+    { $as_echo "$as_me:$LINENO: result: GooCanvas not found, building without it." >&5
+$as_echo "GooCanvas not found, building without it." >&6; }
   else
 
 
-    LIBS="$LIBS $GNOME_LIBS"
-    CFLAGS="$CFLAGS $GNOME_CFLAGS"
+    LIBS="$LIBS $CANVAS_LIBS"
+    CFLAGS="$CFLAGS $CANVAS_CFLAGS"
 
 cat >>confdefs.h <<\_ACEOF
-#define USE_GNOME 1
+#define USE_CANVAS 1
 _ACEOF
 
   fi
@@ -7323,12 +7323,12 @@ CFLAGS="$CFLAGS $GTK_CFLAGS"
 
 
 
-if test "x$gnome" = "xyes"; then
-  USE_GNOME_TRUE=
-  USE_GNOME_FALSE='#'
+if test "x$canvas" = "xyes"; then
+  USE_CANVAS_TRUE=
+  USE_CANVAS_FALSE='#'
 else
-  USE_GNOME_TRUE='#'
-  USE_GNOME_FALSE=
+  USE_CANVAS_TRUE='#'
+  USE_CANVAS_FALSE=
 fi
 
 
@@ -11182,10 +11182,10 @@ $as_echo "$as_me: error: conditional \"NO_ASM\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
-if test -z "${USE_GNOME_TRUE}" && test -z "${USE_GNOME_FALSE}"; then
-  { { $as_echo "$as_me:$LINENO: error: conditional \"USE_GNOME\" was never defined.
+if test -z "${USE_CANVAS_TRUE}" && test -z "${USE_CANVAS_FALSE}"; then
+  { { $as_echo "$as_me:$LINENO: error: conditional \"USE_CANVAS\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
-$as_echo "$as_me: error: conditional \"USE_GNOME\" was never defined.
+$as_echo "$as_me: error: conditional \"USE_CANVAS\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi

@@ -58,10 +58,9 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	install-recursive installcheck-recursive installdirs-recursive \
 	pdf-recursive ps-recursive uninstall-info-recursive \
 	uninstall-recursive
-am__installdirs = "$(DESTDIR)$(stdir)" "$(DESTDIR)$(utildir)"
+am__installdirs = "$(DESTDIR)$(stdir)"
 stDATA_INSTALL = $(INSTALL_DATA)
-utilDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(st_DATA) $(util_DATA)
+DATA = $(st_DATA)
 ETAGS = etags
 CTAGS = ctags
 DIST_SUBDIRS = $(SUBDIRS)
@@ -87,6 +86,8 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+CANVAS_CFLAGS = @CANVAS_CFLAGS@
+CANVAS_LIBS = @CANVAS_LIBS@
 CC = @CC@
 CCAS = @CCAS@
 CCASFLAGS = @CCASFLAGS@
@@ -129,8 +130,6 @@ GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GMSGFMT = @GMSGFMT@
 GMSGFMT_015 = @GMSGFMT_015@
-GNOME_CFLAGS = @GNOME_CFLAGS@
-GNOME_LIBS = @GNOME_LIBS@
 GREP = @GREP@
 GTKHTML_CFLAGS = @GTKHTML_CFLAGS@
 GTKHTML_LIBS = @GTKHTML_LIBS@
@@ -181,8 +180,8 @@ SNDFILE_LIBS = @SNDFILE_LIBS@
 STRIP = @STRIP@
 ST_S_JACK_INCLUDES = @ST_S_JACK_INCLUDES@
 ST_S_JACK_LIBS = @ST_S_JACK_LIBS@
-USE_GNOME_FALSE = @USE_GNOME_FALSE@
-USE_GNOME_TRUE = @USE_GNOME_TRUE@
+USE_CANVAS_FALSE = @USE_CANVAS_FALSE@
+USE_CANVAS_TRUE = @USE_CANVAS_TRUE@
 USE_GTKHTML_FALSE = @USE_GTKHTML_FALSE@
 USE_GTKHTML_TRUE = @USE_GTKHTML_TRUE@
 USE_NLS = @USE_NLS@
@@ -239,8 +238,9 @@ EXTRA_DIST = config.rpath m4/ChangeLog  TODO FAQ ABOUT-NLS soundtracker.spec \
 	downarrow.xpm rightarrow.xpm play.xpm play_cur.xpm stop.xpm lock.xpm \
 	ChangeLog-v0.5 ChangeLog-v0.3 ChangeLog-v0.1\
 m4
-@USE_GNOME_TRUE@util_DATA = soundtracker.desktop
-@USE_GNOME_TRUE@utildir = $(datadir)/gnome/apps/Multimedia
+
+#util_DATA = soundtracker.desktop
+#utildir = $(datadir)/gnome/apps/Multimedia
 st_DATA = soundtracker_splash.png flat.xpm sharp.xpm muted.png downarrow.xpm \
 	rightarrow.xpm play.xpm play_cur.xpm stop.xpm lock.xpm soundtracker.xml \
 	cheat-sheet.*.html
@@ -318,23 +318,6 @@ uninstall-stDATA:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f '$(DESTDIR)$(stdir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(stdir)/$$f"; \
-	done
-install-utilDATA: $(util_DATA)
-	@$(NORMAL_INSTALL)
-	test -z "$(utildir)" || $(mkdir_p) "$(DESTDIR)$(utildir)"
-	@list='$(util_DATA)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(utilDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(utildir)/$$f'"; \
-	  $(utilDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(utildir)/$$f"; \
-	done
-
-uninstall-utilDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(util_DATA)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f '$(DESTDIR)$(utildir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(utildir)/$$f"; \
 	done
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -602,7 +585,7 @@ check: check-recursive
 all-am: Makefile $(DATA) config.h
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(stdir)" "$(DESTDIR)$(utildir)"; do \
+	for dir in "$(DESTDIR)$(stdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-recursive
@@ -648,7 +631,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-stDATA install-utilDATA
+install-data-am: install-stDATA
 
 install-exec-am:
 
@@ -676,7 +659,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-info-am uninstall-stDATA uninstall-utilDATA
+uninstall-am: uninstall-info-am uninstall-stDATA
 
 uninstall-info: uninstall-info-recursive
 
@@ -689,12 +672,11 @@ uninstall-info: uninstall-info-recursive
 	html-am info info-am install install-am install-data \
 	install-data-am install-exec install-exec-am install-info \
 	install-info-am install-man install-stDATA install-strip \
-	install-utilDATA installcheck installcheck-am installdirs \
-	installdirs-am maintainer-clean maintainer-clean-generic \
+	installcheck installcheck-am installdirs installdirs-am \
+	maintainer-clean maintainer-clean-generic \
 	maintainer-clean-recursive mostlyclean mostlyclean-generic \
 	mostlyclean-recursive pdf pdf-am ps ps-am tags tags-recursive \
-	uninstall uninstall-am uninstall-info-am uninstall-stDATA \
-	uninstall-utilDATA
+	uninstall uninstall-am uninstall-info-am uninstall-stDATA
 
 
 bindist:

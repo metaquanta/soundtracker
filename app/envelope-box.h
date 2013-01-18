@@ -26,8 +26,8 @@
 
 #include <gtk/gtk.h>
 
-#ifdef USE_GNOME
-#include <gnome.h>
+#ifdef USE_CANVAS
+#include <goocanvas.h>
 #endif
 
 #include "xm.h"
@@ -57,23 +57,27 @@ struct _EnvelopeBox
     GtkToggleButton *sustain;
     GtkToggleButton *loop;
 
-#ifdef USE_GNOME
-    GnomeCanvas *canvas;
-    GnomeCanvasGroup *group;
-    GnomeCanvasItem *points[ST_MAX_ENVELOPE_POINTS];
-    GnomeCanvasItem *lines[ST_MAX_ENVELOPE_POINTS - 1];
-    int canvas_max_x;
-    double zoomfactor_base;
-    double zoomfactor_mult;
+    gboolean length_set_modified;
 
-    int dragging_canvas_from_x, dragging_canvas_from_y; /* world coordinates */
-    int dragging_item_from_x, dragging_item_from_y;     /* world coordinates */
-    double dragfromx, dragfromy;                        /* screen pixel coordinates */
-    double zooming_canvas_from_val;
+#ifdef USE_CANVAS
+    GooCanvas *canvas;
+    GooCanvasItem *group;
+    GooCanvasItem *points[ST_MAX_ENVELOPE_POINTS], *cur_point;
+    GooCanvasItem *lines[ST_MAX_ENVELOPE_POINTS - 1];
+    GtkAdjustment *hadj, *vadj;
+
+    int canvas_max_x;
+    gdouble zoomfactor_base;
+    gdouble zoomfactor_mult;
+
+    gdouble dragging_item_from_x, dragging_item_from_y;     /* world coordinates */
+    gdouble dragfromx, dragfromy;                        /* screen pixel coordinates */
+    gdouble zooming_canvas_from_val;
 
     int dragpoint;
     gboolean dragging_canvas;
     gboolean zooming_canvas;
+    guint prev_current;
 #endif
 };
 

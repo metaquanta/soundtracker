@@ -139,8 +139,8 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
-/* Set if GNOME support is compiled in */
-#undef USE_GNOME
+/* Set if GooCanvas support is compiled in */
+#undef USE_CANVAS
 
 /* Set if GtkHTML support is compiled in */
 #undef USE_GTKHTML
