@@ -373,12 +373,13 @@ gui_save (gchar *data, gboolean save_smpls)
 
 	statusbar_update(STATUS_SAVING_MODULE, TRUE);
 	if(XM_Save(xm, localname, save_smpls)) {
+		gui_error_dialog(N_("Saving module failed"));
+	    statusbar_update(STATUS_IDLE, FALSE);
+	} else {
 	    xm->modified = 0;
 	    gui_auto_switch_page();
 	    statusbar_update(STATUS_MODULE_SAVED, FALSE);
 	    gui_update_title (data);
-	} else {
-	    statusbar_update(STATUS_IDLE, FALSE);
 	}
 
 	g_free(localname);

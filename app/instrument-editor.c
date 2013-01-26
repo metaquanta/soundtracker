@@ -184,14 +184,17 @@ instrument_editor_save_instrument (gchar *fn)
 	file_selection_save_path(fn, gui_settings.saveinstr_path);
     f = fopen(localname, "wb");
     g_free(localname);
-    if(f) {
-        statusbar_update(STATUS_SAVING_INSTRUMENT, TRUE);
-	xm_save_xi(instr, f);
-        statusbar_update(STATUS_INSTRUMENT_SAVED, FALSE);
-	fclose(f);
-    } else {
-	gui_error_dialog(N_("Can't open file."));
-    }
+	if(f) {
+		statusbar_update(STATUS_SAVING_INSTRUMENT, TRUE);
+		if(xm_save_xi(instr, f)) {
+			gui_error_dialog(N_("Saving instrument failed."));
+			statusbar_update(STATUS_IDLE, FALSE);
+		} else
+			statusbar_update(STATUS_INSTRUMENT_SAVED, FALSE);
+		fclose(f);
+	} else {
+		gui_error_dialog(N_("Can't open file."));
+	}
 }
 
 void

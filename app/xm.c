@@ -254,7 +254,7 @@ xm_load_patterns (XMPattern ptr[],
     return 1;
 }
 
-static void
+static gboolean
 xm_save_xm_pattern (XMPattern *p,
 		    int num_channels,
 		    FILE *f)
@@ -279,10 +279,10 @@ xm_save_xm_pattern (XMPattern *p,
     if(bp == p->length * num_channels) {
 	/* pattern is empty */
 	put_le_16(sh + 7, 0);
-	fwrite(sh, 1, sizeof(sh), f);
+	return fwrite(sh, 1, sizeof(sh), f) != sizeof(sh);
     } else {
-	fwrite(sh, 1, sizeof(sh), f);
-	fwrite(buf, 1, bp, f);
+	return fwrite(sh, 1, sizeof(sh), f) != sizeof(sh) ||
+	       fwrite(buf, 1, bp, f) != bp;
     }
 }
 
@@ -381,7 +381,7 @@ xm_load_xm_samples (STSample samples[],
     return TRUE;
 }
 
-static void
+static gboolean
 xm_save_xm_samples (STSample samples[],
 		    FILE *f,
 		    int num_samples)
@@ -389,6 +389,7 @@ xm_save_xm_samples (STSample samples[],
     int i, k;
     guint8 sh[40];
     STSample *s;
+    gboolean is_error = FALSE;
 
     for(i = 0; i < num_samples; i++) {
 	/* save sample header */
@@ -405,7 +406,7 @@ xm_save_xm_samples (STSample samples[],
 	sh[17] = 0;
 	strncpy((char*)sh + 18, s->name, 22);
 	recode_latin1_to_ibmpc((char*) sh + 18, 22);
-	fwrite(sh, 1, sizeof(sh), f);
+	is_error |= fwrite(sh, 1, sizeof(sh), f) != sizeof(sh);
     }
     
     for(i = 0; i < num_samples; i++) {
@@ -427,7 +428,7 @@ xm_save_xm_samples (STSample samples[],
 	    }
 
 	    le_16_array_to_host_order(packbuf, s->sample.length);
-	    fwrite(packbuf, 1, s->sample.length * 2, f);
+	    is_error |= fwrite(packbuf, 1, s->sample.length * 2, f) != s->sample.length * 2;
 	    free(packbuf);
 	} else {
 	    // Save as 8 bit sample
@@ -445,10 +446,11 @@ xm_save_xm_samples (STSample samples[],
 		p = (*d16++ >> 8);
 	    }
 
-	    fwrite(packbuf, 1, s->sample.length, f);
+	    is_error |= fwrite(packbuf, 1, s->sample.length, f) != s->sample.length;
 	    free(packbuf);
 	}
     }
+    return is_error;
 }
 
 static void
@@ -668,27 +670,28 @@ xm_save_xi (STInstrument *instr,
 {
     guint8 a[48];
     int num_samples;
+    gboolean is_error = FALSE;
 
     num_samples = st_instrument_num_save_samples(instr);
 
-    fwrite("Extended Instrument: ", 1, 21, f);
+    is_error |= fwrite("Extended Instrument: ", 1, 21, f) != 21;
 
     strncpy((char*)a, instr->name, 22);
     recode_latin1_to_ibmpc((char*)a, 22);
-    fwrite(a, 1, 22, f);
+    is_error |= fwrite(a, 1, 22, f) != 22;
 
     a[0] = 0x1a;
     memcpy(a + 1, "rst's SoundTracker  ", 20);
     put_le_16(a + 21, 0x0102);
-    fwrite(a, 1, 23, f);
+    is_error |= fwrite(a, 1, 23, f) != 23;
 
-    fwrite(instr->samplemap, 1, 96, f);
+    is_error |= fwrite(instr->samplemap, 1, 96, f) != 96;
     memcpy(a, instr->vol_env.points, 48);
     le_16_array_to_host_order((gint16*)a, 24);
-    fwrite(a, 1, 48, f);
+    is_error |= fwrite(a, 1, 48, f) != 48;
     memcpy(a, instr->pan_env.points, 48);
     le_16_array_to_host_order((gint16*)a, 24);
-    fwrite(a, 1, 48, f);
+    is_error |= fwrite(a, 1, 48, f) != 48;
 
     a[0] = instr->vol_env.num_points;
     a[2] = instr->vol_env.sustain_point;
@@ -705,24 +708,25 @@ xm_save_xi (STInstrument *instr,
     a[12] = instr->vibdepth;
     a[11] = instr->vibsweep;
     put_le_16(a + 14, instr->volfade);
-    fwrite(a, 1, 16, f);
+    is_error |= fwrite(a, 1, 16, f) != 16;
 
     memset(a, 0, 24);
     put_le_16(a + 22, num_samples);
-    fwrite(a, 1, 24, f);
+    is_error |= fwrite(a, 1, 24, f) != 24;
 
-    xm_save_xm_samples(instr->samples, f, num_samples);
+    is_error |= xm_save_xm_samples(instr->samples, f, num_samples);
 
-    return TRUE;
+    return is_error;
 }
 
-static void
+static gboolean
 xm_save_xm_instrument (STInstrument *instr,
                        FILE *f,
                        gboolean save_smpls)
 {
     guint8 h[48];
     int num_samples;
+    gboolean is_error = FALSE;
 
     num_samples = st_instrument_num_save_samples(instr);
 
@@ -738,24 +742,24 @@ xm_save_xm_instrument (STInstrument *instr,
     if(num_samples == 0) {
 	h[0] = 33;
 	h[1] = 0;
-	fwrite(h, 1, 29, f);
+	is_error |= fwrite(h, 1, 29, f) != 29;
 	put_le_32(h, 40);
-	fwrite(h, 1, 4, f);
-	return;
+	is_error |= fwrite(h, 1, 4, f) != 4;
+	return is_error;
     }
 
     put_le_16(h + 0, 263);
-    fwrite(h, 1, 29, f);
+    is_error |= fwrite(h, 1, 29, f) != 29;
     put_le_32(h, 40);
-    fwrite(h, 1, 4, f);
+    is_error |= fwrite(h, 1, 4, f) != 4;
 
-    fwrite(instr->samplemap, 1, 96, f);
+    is_error |= fwrite(instr->samplemap, 1, 96, f) != 96;
     memcpy(h, instr->vol_env.points, 48);
     le_16_array_to_host_order((gint16*)h, 24);
-    fwrite(h, 1, 48, f);
+    is_error |= fwrite(h, 1, 48, f) != 48;
     memcpy(h, instr->pan_env.points, 48);
     le_16_array_to_host_order((gint16*)h, 24);
-    fwrite(h, 1, 48, f);
+    is_error |= fwrite(h, 1, 48, f) != 48;
 
     memset(&h, 0, 38);
     h[0] = instr->vol_env.num_points;
@@ -776,9 +780,11 @@ xm_save_xm_instrument (STInstrument *instr,
 	
     put_le_16(h + 14, instr->volfade);
     
-    fwrite(&h, 1, 38, f);
+    is_error |= fwrite(&h, 1, 38, f) != 38;
 
-    if (save_smpls) xm_save_xm_samples(instr->samples, f, num_samples);
+	if (save_smpls)
+		is_error |= xm_save_xm_samples(instr->samples, f, num_samples);
+	return is_error;
 }
 
 static gboolean
@@ -1111,7 +1117,7 @@ XM_Load (const char *filename,int *status)
     return NULL;
 }
 
-int
+gboolean
 XM_Save (XM *xm,
 	 const char *filename,
 	 gboolean save_smpls)
@@ -1120,10 +1126,11 @@ XM_Save (XM *xm,
     int i;
     guint8 xh[80];
     int num_patterns, num_instruments;
+    gboolean is_error = FALSE;
 
     f = fopen(filename, "wb");
     if(!f)
-	return 0;
+	return TRUE;
 
     num_patterns = st_num_save_patterns(xm);
     num_instruments = st_num_save_instruments(xm);
@@ -1144,22 +1151,17 @@ XM_Save (XM *xm,
     put_le_16(xh + 76, xm->tempo);
     put_le_16(xh + 78, xm->bpm);
 
-    fwrite(&xh, 1, sizeof(xh), f);
-    fwrite(xm->pattern_order_table, 1, 256, f);
+    is_error |= fwrite(&xh, 1, sizeof(xh), f) != sizeof(xh);
+    is_error |= fwrite(xm->pattern_order_table, 1, 256, f) != 256;
 
     for(i = 0; i < num_patterns; i++)
-	xm_save_xm_pattern(&xm->patterns[i], xm->num_channels, f);
+	is_error |= xm_save_xm_pattern(&xm->patterns[i], xm->num_channels, f);
 
     for(i = 0; i < num_instruments; i++)
-        xm_save_xm_instrument(&xm->instruments[i], f, save_smpls);
-   
-    if(ferror(f)) {
-	fclose(f);
-	return 0;
-    }
-	
-    fclose(f);
-    return 1;
+        is_error |= xm_save_xm_instrument(&xm->instruments[i], f, save_smpls);
+
+	is_error |= ferror(f);
+	return (fclose(f) != 0) || is_error;
 }
 
 XM *
@@ -1547,13 +1549,13 @@ xm_xp_save (gchar *name, XMPattern *pattern, XM *xm)
     int i, j, bp;
     guint8 pheader[4];
     static guint8 buf[32*256*5];
-    
-	if ( !(f = fopen (name, "wb"))) 
+
+	if ( !(f = fopen (name, "wb")))
 	    gui_error_dialog(N_("Error during saving pattern!"));
 	else {
 	    put_le_16 (pheader+0, 01);//version
 	    put_le_16 (pheader+2, pattern->length);//length
-	    
+
 	    bp = 0;
 	    for (j = 0; j <= pattern->length - 1; j++)//row
 		for (i = 0; i <= 31; i++){//ch
@@ -1572,9 +1574,10 @@ xm_xp_save (gchar *name, XMPattern *pattern, XM *xm)
 		    }
 		    bp += 5;
 		}
-	    
-	    fwrite (pheader, 1, sizeof(pheader), f);
-	    fwrite (buf, 1, bp, f);
-	    fclose (f);
+
+		if( fwrite (pheader, 1, sizeof(pheader), f) != sizeof(pheader) ||
+		    fwrite (buf, 1, bp, f) != bp )
+			gui_error_dialog(N_("Error during saving pattern!"));
+		fclose (f);
 	}
 }

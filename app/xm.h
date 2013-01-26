@@ -139,7 +139,7 @@ typedef struct XM {
 
 XM*           File_Load                                (const char *filename);
 XM*           XM_Load                                  (const char *filename,int *status);
-int           XM_Save                                  (XM *xm, const char *filename, gboolean save_smpls);
+gboolean      XM_Save                                  (XM *xm, const char *filename, gboolean save_smpls);
 XM*           XM_New                                   (void);
 void          XM_Free                                  (XM*);
 

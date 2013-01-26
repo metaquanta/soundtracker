@@ -53,8 +53,8 @@ sigsegv_handler (int parameter)
     signal(SIGSEGV, SIG_DFL);
 
     if(xm != NULL) {
-	int retval = XM_Save(xm, "crash-save.xm", FALSE);
-	printf("*** SIGSEGV caught.\n*** Saved current XM to 'crash-save.xm' in current directory.\n    (status %d)\n", retval);
+	gboolean is_error = XM_Save(xm, "crash-save.xm", FALSE);
+	printf("*** SIGSEGV caught.\n*** Saved current XM to 'crash-save.xm' in current directory.\n    (%s)\n", is_error ? "failed" : "succeed");
 	exit(1);
     }
 }

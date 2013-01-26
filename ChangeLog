@@ -1,3 +1,7 @@
+2013-01-21  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui.c, app/instrument-editor.c, app/main.c, app/xm.[ch]: the return
+	value of fwrite() is handled, file errors while saving are now reported.
+
 2013-01-18  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/envelope-box.[ch]: Goo canvas are used instead of Gnome canvas. The
 	last dependency on Gnome is dropped! Current point is highlit. Code is
