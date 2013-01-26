@@ -6,7 +6,11 @@ EXTRA_DIST = config.rpath m4/ChangeLog  TODO FAQ ABOUT-NLS soundtracker.spec \
 	soundtracker.desktop \
 	soundtracker_splash.png flat.xpm sharp.xpm muted.png \
 	downarrow.xpm rightarrow.xpm play.xpm play_cur.xpm stop.xpm lock.xpm \
-	ChangeLog-v0.5 ChangeLog-v0.3 ChangeLog-v0.1
+	ChangeLog-v0.5 ChangeLog-v0.3 ChangeLog-v0.1 soundtracker.xml \
+	envelope-box.xml cheat-sheet.*.html soundtracker-icon.png \
+	soundtracker.1
+
+man_MANS = soundtracker.1
 
 #util_DATA = soundtracker.desktop
 #utildir = $(datadir)/gnome/apps/Multimedia

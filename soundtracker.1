@@ -1,0 +1,146 @@
+.TH SOUNDTRACKER 1
+.\" NAME should be all caps, SECTION should be 1-8, maybe w/ subsection
+.\" other parms are allowed: see man(7), man(1)
+.SH NAME
+soundtracker \- a tracker for gnome that supports .xm files
+.SH SYNOPSIS
+.B soundtracker
+.SH "DESCRIPTION"
+This manual page documents briefly
+.BR soundtracker.
+
+This manual page was written for the Debian GNU/Linux distribution
+because the original program does not have a manual page.
+Instead, it has some documentation in 
+.I /usr/share/doc/soundtracker 
+which will be more uptodate than this man page.
+
+.PP
+.B soundtracker
+is a program that allows one to arrange many sound samples into a tune,
+comprising of multiple `tracks' which are mixed together, typically in
+software.
+.SH USING
+Note that some functions are only accessible using the keyboard. These
+are all important key combinations, mostly inspired by the great Amiga
+ProTracker (most alphanumeric keys are mapped to a piano keyboard):
+.SS TRACK EDITOR
+.TP
+Right Ctrl
+Play Song
+.TP
+Right Alt
+Play Pattern
+.TP
+Right Shift
+Record (Play Pattern & Edit On) -- not yet!
+.TP
+Space
+Stop Playing; edit mode on/off
+.PP
+.TP
+F1 ... F7
+Change editing octave
+.TP
+Left Ctrl-1 ... -8
+ Change jump value
+.TP
+CrsrUp / Down
+Walk around in current pattern
+.TP
+PgUp / Down
+Walk around in current pattern, quickly
+.TP
+F9
+Jump to position 0
+.TP
+F10
+Jump to position L / 4
+.TP
+F11
+Jump to position L / 2
+.TP
+F12
+Jump to position 3 * L / 4
+.TP
+CrsrLeft / Right
+Change pattern column and/or channel
+.TP
+Tab
+Skip to same column in next channel
+.TP
+Left Ctrl - CrsrLeft
+Previous Instrument (faster with Left Shift)
+.TP
+Left Ctrl - CrsrRight
+Next Instrument (faster with Left Shift)
+.TP
+Left Ctrl - CrsrDown
+Previous Sample (faster with Left Shift)
+.TP
+Left Ctrl - CrsrUp
+Next Sample (faster with Left Shift)
+.TP
+Left Alt - CrsrLeft
+Previous Pattern (faster with Left Shift)
+.TP
+Left Alt - CrsrRight
+Next Pattern (faster with Left Shift)
+.TP
+Left Ctrl - B
+Start marking a block (one track horizontally)
+.TP
+Left Ctrl - C
+Copy block
+.TP
+Left Ctrl - X
+Cut block
+.TP
+Left Ctrl - V
+Paste block and advance to end
+.TP
+Left Shift - F3
+Cut track
+.TP
+Left Shift - F4
+Copy track
+.TP
+Left Shift - F5
+Paste track
+.TP
+Left Alt - F3
+Cut pattern
+.TP
+Left Alt - F4
+Copy pattern
+.TP
+Left Alt - F5
+Paste pattern
+.TP
+Any other keys
+Play notes on the keyboard.
+
+.SS SAMPLE EDITOR
+
+Hold Shift and use left / right mouse buttons to set the loop points
+in the sample display.
+
+.SH SEE ALSO
+If you want to know more about tracking in general,
+.I http://www.united-trackers.org/
+has a lot of resources.
+
+Also see the SoundTracker homepage,
+.I http://www.soundtracker.org/
+
+SoundTracker still needs detailed documentation. If you want to help
+out with this, you should become familiar with DocBook or similar SGML
+tools first.
+.SH AUTHOR
+Michael Krause [ raw style / lego ] <m.krause@tu-harburg.de> wrote SoundTracker.
+
+This manual page was mostly lifted from
+.I /usr/share/doc/soundtracker/README
+by Frankie Fisher <frankie@skunkpussy.freeserve.co.uk>, for the Debian GNU/Linux system (but may be used by others).
+.SH BUGS
+This documentation is possibly outdated.
