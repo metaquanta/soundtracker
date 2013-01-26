@@ -46,6 +46,13 @@ enum {
     STATUS_SONG_SAVED,
 };
 
+struct menu_callback
+{
+	const gchar *widget_name;
+	void (*fn)(GtkWidget*, gpointer);
+	gpointer data;
+};
+
 extern guint statusbar_context_id;
 extern GtkWidget *status_bar;
 extern GtkWidget *st_clock;
@@ -188,4 +195,6 @@ gchar *              gui_filename_to_utf8             (const gchar *old_name);
 gchar *              gui_filename_from_utf8           (const gchar *old_name);
 
 GtkWidget*           gui_combo_new                    (GtkListStore *ls);
+
+GtkBuilder           *gui_builder_from_file           (const gchar *name, const struct menu_callback cb[]);
 #endif /* _GUI_SUBS_H */

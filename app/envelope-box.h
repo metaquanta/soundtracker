@@ -63,7 +63,7 @@ struct _EnvelopeBox
     GooCanvas *canvas;
     GooCanvasItem *group;
     GooCanvasItem *points[ST_MAX_ENVELOPE_POINTS], *cur_point;
-    GooCanvasItem *lines[ST_MAX_ENVELOPE_POINTS - 1];
+    GooCanvasItem *lines[ST_MAX_ENVELOPE_POINTS - 1], *sustain_line, *loop_start_line, *loop_end_line;
     GtkAdjustment *hadj, *vadj;
 
     int canvas_max_x;

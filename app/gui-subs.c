@@ -659,3 +659,28 @@ gui_combo_new (GtkListStore *ls)
 
 	return thing;
 }
+
+GtkBuilder
+*gui_builder_from_file (const gchar *name, const struct menu_callback cb[])
+{
+	GtkBuilder *builder = gtk_builder_new();
+	GError *error = NULL;
+	guint i;
+
+	if(!gtk_builder_add_from_file(builder, name, &error)) {
+		g_critical(_("%s.\nLoading widgets' description from %s file failed!\n"),
+		           error->message, name);
+		g_error_free(error);
+		return NULL;
+	}
+
+	if(cb)
+		for(i = 0; cb[i].widget_name; i++) {
+			GtkWidget *w = GTK_WIDGET(gtk_builder_get_object(builder, cb[i].widget_name));
+
+			if(w)
+				g_signal_connect(w, "activate", G_CALLBACK(cb[i].fn), cb[i].data);
+		}
+
+	return builder;
+}

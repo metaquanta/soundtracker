@@ -124,13 +124,6 @@ static struct measure measure_msr[] = {
     {NULL}
 };
 
-struct menu_callback
-{
-	const gchar *widget_name;
-	void (*fn)(GtkWidget*, gpointer);
-	gpointer data;
-};
-
 static GtkWidget *measurewindow = NULL;
 //static gint measure_chosen;
     

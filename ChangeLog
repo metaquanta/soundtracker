@@ -1,3 +1,13 @@
+2013-01-24  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/envelope-box.[ch]: zooming (Ctrl) and horizontal scrolling (Shift) by
+	mouse wheel; sustain and loop lines are now dislayed.
+
+2013-01-22  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/envelope-box.c, app/gui.c, app/gui-subs.[ch] envelope-box.xml:
+	right-click on the envelope point makes it current. Right click on the
+	envelope editor canvas (outside points) pops up the menu (currently with
+	zoom functions only).
+
 2013-01-21  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c, app/instrument-editor.c, app/main.c, app/xm.[ch]: the return
 	value of fwrite() is handled, file errors while saving are now reported.
