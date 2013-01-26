@@ -226,16 +226,6 @@ scope_group_set_update_freq (ScopeGroup *s,
     }
 }
 
-static gboolean enter(void)//!!!
-{g_print("enter\n");
-return FALSE;
-}
-
-static gboolean leave(void)//!!!
-{g_print("leave\n");
-return FALSE;
-}
-
 static gint
 scope_group_scope_event (GtkWidget *t,
 			 GdkEvent *event,
@@ -299,24 +289,22 @@ scope_group_new (void)
 			   G_CALLBACK(scope_group_scope_event), s);
 	g_signal_connect(button, "toggled",
 			   G_CALLBACK(button_toggled), GINT_TO_POINTER(i));
-	g_signal_connect(button, "enter-notify-event",//!!!
-			   G_CALLBACK(enter), GINT_TO_POINTER(i));
-	g_signal_connect(button, "leave-notify-event",//!!!
-			   G_CALLBACK(leave), GINT_TO_POINTER(i));
 	gtk_widget_show(button);
 	gtk_widget_ref(button);
 
 	box = gtk_vbox_new(FALSE, 0);
 	gtk_widget_show(box);
-	gtk_container_add(GTK_CONTAINER(button), box);
-
+	/* Workaround for Gtk+-2 */
+	thing = gtk_event_box_new();
+	gtk_widget_show(thing);
+	gtk_container_add(GTK_CONTAINER(thing), box);
+	gtk_container_add(GTK_CONTAINER(button), thing);
 
 #ifndef NO_GDK_PIXBUF
 	thing = scalable_pic_new (mutedpic);
 	gtk_box_pack_start(GTK_BOX(box), thing, TRUE, TRUE, 0);
 	s->mutedpic[i] = thing;
 #endif
-
 
 	thing = sample_display_new(FALSE);
 	gtk_box_pack_start(GTK_BOX(box), thing, TRUE, TRUE, 0);
