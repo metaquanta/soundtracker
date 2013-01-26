@@ -44,12 +44,6 @@ gboolean player_looped;
 static double current_time;
 static int xmplayer_playmode;
 
-enum {
-    PLAYING_SONG = 1,
-    PLAYING_PATTERN,
-    PLAYING_NOTE,
-};
-
 static inline int
 env_length (STEnvelope *env)
 {

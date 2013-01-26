@@ -103,7 +103,6 @@ void                 gui_clipping_indicator_update    (double songtime);
 void                 gui_init_xm                      (int new_xm, gboolean updatechspin);
 void                 gui_free_xm                      (void);
 void                 gui_new_xm                       (void);
-void                 gui_load_xm                      (const char *filename);
 
 void                 gui_direction_clicked            (GtkWidget *widget,
                                                        gpointer data);
@@ -119,4 +118,6 @@ GtkStyle*            gui_get_style                    (void);
 
 GtkWidget*           gui_get_widget                   (const gchar *name);
 void                 gui_popup_menu_attach            (GtkWidget *menu, GtkWidget *widget, gpointer *user_data);
+
+void                 gui_update_title                 (const gchar *filename);
 #endif /* _GUI_H */

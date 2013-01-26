@@ -1,4 +1,12 @@
 2013-01-24  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui.[ch], app/xm-player.c, app/track-editor.c, app/menubar.c,
+	app/xm.h: Asterisk before file name is drawn when the module has unsaved
+	changes;
+	* app/gui.c, app/cheat-sheet.c, app/sample-editor.c: Application icon
+	support is added;
+	* app/scope-group.c: Clicking at scopes is fixed (now is working properly).
+
+2013-01-24  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/envelope-box.[ch]: zooming (Ctrl) and horizontal scrolling (Shift) by
 	mouse wheel; sustain and loop lines are now dislayed.
 

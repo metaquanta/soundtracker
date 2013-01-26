@@ -134,4 +134,17 @@ cursor position (note/instr/eff column, muted channel)
 
 "Jazz trying mode" (configurable): when out of the editing mode, the sound is
 playing like in Jazz mode, when the new pressed key doesn't finish the sounds
-triggered previously.
+triggered previously (polyphonic).
+
+Sample rate setting for File output.
+
+More careful handling of note recording positions in real-time with delay calculation and human-made delay pre-compensation.
+
+Last edited song list.
+
+"Play from cursor" and "Play block"
+
+FT2-like style of effects and volume representation (to think how to do this better. At the one
+hand is't rather inconvinient to subtract 0x10 from the volume to obtain its true value. But
+conserning effects in the volume column it's more suitable when the letter actually has been
+pressed is being displayed).

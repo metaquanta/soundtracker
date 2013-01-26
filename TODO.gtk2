@@ -4,39 +4,22 @@
 in the callback);
 15) Change option-menu in keys.c with notebook (like in audioconfig.c) for better
 widget sizes' behaviour;
-16) Fix mouse click at oscilloscopes (not only channel numbers) turn off/on channels;
-When scopes are disabled, place empty holder instead of scope/cross
 17) Understand why tracker scrolling is such CPU-consuming (compared to ST-Gtk+-1). Maybe it's
 a GTK+2.6.7 and is fixed in the modern release?;
-21) Native Alsa 1.x driver: make Alsa 1.x the requirement instead of 0.9.x; make sound device
-opening non-blocking, but give error dialog instead when the device is busy; signedness handling;
-add avalable devices navigation (from csound->rtalsa.c);
+21) Native Alsa 1.x driver: make Alsa 1.x the requirement instead of 0.9.x; signedness handling;
+add avalable devices navigation (from csound->rtalsa.c); remove alsa-09 warning in configure.in
 22) ESD driver reported to produce greater delay at start than in ST-gtk1;
 24) Chechk whether some str functions needed to be replaced with gtk_utf_(strlen,
 offset_to_pointer and so on);
 26) ESC for Cancel, Enter for Ok keybindings in dialogs;
 28) Check and clean all gtk_dialog()s;
-32) Clicking at oscilloscopes does not actually mute channels
 34) techwavn.xm, pat 6, track 7: something wrooOOOoong with drawing
 36) Pressing Ctrl-O in Instrument editor crashes ST at some machines;
 37) Letters in clavier are shifted from center and probably drawn with obsolete functions;
-
-
-Regarding gtk_entry_set_text double signal: see gtkentry.c->2059, 2300 (workaround in the ST
-sources is made. But a) we need to test whether it's fixed in Gtk+-2.10 and b) we should
-push the fixes into the Gtk+-2.0 upstream. NEWS: it's at least fixed at the GTK+ upstream :)
-So we need to know from what release this will happen and make corresponding check in
-configure.in.
+38) Install manpage properly
 
 Some remarks about asm mixer bug: at the sample end and loop points there are ugly clicks
 (ramping works badly). Also when the previous channel has amplitude > 0, the following one
 will be triggered to the minimal negative value (maybe it's a cause of the first issue
 'cause really ramping and looping is performing using additional channels. Probably the bug
 is in the mixing or post-mixing code.
-
-Instrument editor:
--mouse wheel: horizontal scroll(shift), scale(ctrl);
--scroll menu (in, out, 1:1): right-click on canvas;
--loop/sustain drawing;
--ctrl is fixing direction when point moving
--right click on the button makes it current (if will not interfere with menu right-click);

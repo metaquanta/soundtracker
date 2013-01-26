@@ -13,7 +13,7 @@ EXTRA_DIST = config.rpath m4/ChangeLog  TODO FAQ ABOUT-NLS soundtracker.spec \
 
 st_DATA = soundtracker_splash.png flat.xpm sharp.xpm muted.png downarrow.xpm \
 	rightarrow.xpm play.xpm play_cur.xpm stop.xpm lock.xpm soundtracker.xml \
-	cheat-sheet.*.html envelope-box.xml
+	cheat-sheet.*.html envelope-box.xml soundtracker-icon.png
 stdir = $(pkgdatadir)
 
 bindist:

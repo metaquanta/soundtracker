@@ -171,6 +171,7 @@ static void offset_current_instrument(int offset);
 static void offset_current_sample(int offset);
 
 static void gui_auto_switch_page (void);
+static void gui_load_xm (const char *filename);
 
 static void
 editing_toggled (GtkToggleButton *button, gpointer data)
@@ -299,18 +300,20 @@ popwin_hide (GtkWidget *widget, GParamSpec *ps, gpointer data)
 		measure_dialog();
 }
 
-static void
+void
 gui_update_title (const gchar *filename)
 {
     gchar *title;
+	if(filename && g_strcmp0(filename, current_filename)) {
+		if(current_filename){
+			g_free(current_filename);
+		}
+		current_filename = g_strdup(filename);
+	}
 
-    title = g_strdup_printf("SoundTracker "VERSION": %s", g_basename(filename));
+    title = g_strdup_printf("SoundTracker "VERSION": %s%s", xm_get_modified() ? "*" : "", current_filename ? g_basename(current_filename) : "");
     gtk_window_set_title(GTK_WINDOW(mainwindow), title);
     g_free(title);
-
-	if(current_filename)
-		g_free(current_filename);
-	current_filename = g_strdup(filename);
 }
 
 static void
@@ -357,7 +360,7 @@ gui_mixer_set_pattern (int pattern)
 }
 
 static void
-gui_save (gchar *data, gboolean save_smpls)
+gui_save (const gchar *data, gboolean save_smpls)
 {
 	gchar *localname = gui_filename_from_utf8(data);
 
@@ -369,7 +372,7 @@ gui_save (gchar *data, gboolean save_smpls)
 		gui_error_dialog(N_("Saving module failed"));
 	    statusbar_update(STATUS_IDLE, FALSE);
 	} else {
-	    xm->modified = 0;
+	    xm_set_modified(0);
 	    gui_auto_switch_page();
 	    statusbar_update(STATUS_MODULE_SAVED, FALSE);
 	    gui_update_title (data);
@@ -489,7 +492,7 @@ load_xm (const gchar *fn)
 	static GtkWidget *dialog = NULL;
 
 	file_selection_save_path(fn, gui_settings.loadmod_path);
-	if(xm->modified) {
+	if(xm_get_modified()) {
 		gint response;
 
 		if(!dialog)
@@ -1295,7 +1298,7 @@ gui_new_xm (void)
     gui_init_xm(1, TRUE);
 }
 
-void
+static void
 gui_load_xm (const char *filename)
 {
 	gchar *newname;
@@ -1680,7 +1683,6 @@ gui_splash (int argc,
     gui_splash_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
     gtk_window_set_title (GTK_WINDOW(gui_splash_window), _("SoundTracker Startup"));
-//    gtk_window_set_wmclass (GTK_WINDOW (gui_splash_window), "soundtracker_startup", "SoundTracker");
     gtk_window_set_position (GTK_WINDOW (gui_splash_window), GTK_WIN_POS_CENTER);
     gtk_window_set_policy (GTK_WINDOW (gui_splash_window), FALSE, FALSE, FALSE);
     gtk_window_set_modal(GTK_WINDOW(gui_splash_window), TRUE);
@@ -1797,7 +1799,7 @@ gui_get_style(void)
 gboolean
 quit_requested (void)
 {
-	if(xm->modified) {
+	if(xm_get_modified()) {
 		if(gui_ok_cancel_modal(mainwindow,
 		                       _("Are you sure you want to quit?\nAll changes will be lost!")))
 			gtk_main_quit();
@@ -1894,6 +1896,7 @@ gui_final (int argc,
 				  gui_settings.st_window_x,
 				  gui_settings.st_window_y);
     }
+    gtk_window_set_icon_from_file(GTK_WINDOW(mainwindow), PREFIX"/share/soundtracker/soundtracker-icon.png", NULL);
 
 //!!! TODO pop-up tooltip hints: Render module as WAV etc.
 	file_selection_create(DIALOG_LOAD_MOD, _("Load Module"), gui_settings.loadmod_path, load_xm, 0, TRUE, FALSE, FALSE, mod_formats);

@@ -26,6 +26,7 @@
 #include <glib/gi18n.h>
 #include <gtkhtml/gtkhtml.h>
 
+#include "gui.h"
 #include "gui-subs.h"
 
 static gboolean
@@ -91,6 +92,7 @@ cheat_sheet_dialog (void)
 
     cheat_sheet_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(cheat_sheet_window), _("XM Effects Cheat Sheet"));
+    gtk_window_set_transient_for(GTK_WINDOW(cheat_sheet_window), GTK_WINDOW(mainwindow));
     g_signal_connect (GTK_OBJECT (cheat_sheet_window), "delete_event",
 			GTK_SIGNAL_FUNC (cheat_sheet_close_requested), NULL);
 

@@ -614,7 +614,7 @@ track_editor_handle_keys (int shift,
                             note->note = i;
                             note->instrument = gui_get_current_instrument();
                             tracker_redraw_current_row(t);
-                            xm->modified = 1;
+                            xm_set_modified(1);
 			    
                         } else if(!keys_is_key_pressed(keyval, 
 				  ENCODE_MODIFIERS(shift, ctrl, alt))) { // Release key
@@ -635,7 +635,7 @@ track_editor_handle_keys (int shift,
                            note->note = 97;
                            note->instrument = 0;
                            tracker_redraw_current_row(t);
-                           xm->modified = 1; 
+                           xm_set_modified(1); 
                         }
                     } else if (pressed) {
 			
@@ -644,7 +644,7 @@ track_editor_handle_keys (int shift,
 			note->instrument = gui_get_current_instrument();
 			tracker_redraw_current_row(t);
 			tracker_step_cursor_row(t, gui_get_current_jump_value());
-			xm->modified = 1;
+			xm_set_modified(1);
 		    }
 fin_note:
 		    track_editor_do_the_note_key(m, pressed, keyval, ENCODE_MODIFIERS(shift, ctrl, alt));
@@ -657,7 +657,7 @@ fin_note:
 		    note->instrument = 0;
 		    tracker_redraw_current_row(t);
 		    tracker_step_cursor_row(t, gui_get_current_jump_value());
-		    xm->modified = 1;
+		    xm_set_modified(1);
 		}
 		break;
 	    }
@@ -811,7 +811,7 @@ fin_note:
 
 	    tracker_redraw_current_row(t);
 	    tracker_step_cursor_row(t, gui_get_current_jump_value());
-	    xm->modified = 1;
+	    xm_set_modified(1);
 	    handled = TRUE;
 	}
 	break;
@@ -829,7 +829,7 @@ fin_note:
 	    note->fxparam = 0;
 
 	    tracker_redraw_current_row(t);
-	    xm->modified = 1;
+	    xm_set_modified(1);
 	    handled = TRUE;
         }
         break;
@@ -850,7 +850,7 @@ fin_note:
 		note->fxparam = 0;
 		
 		tracker_redraw_current_row(t);
-		xm->modified = 1;
+		xm_set_modified(1);
 		handled = TRUE;
 	    }
         }
@@ -911,7 +911,7 @@ track_editor_cut_pattern (GtkWidget *w, Tracker *t)
     }
     pattern_buffer = st_dup_pattern(p);
     st_clear_pattern(p);
-    xm->modified = 1;
+    xm_set_modified(1);
     tracker_redraw(t);
 }
 
@@ -935,7 +935,7 @@ track_editor_paste_pattern (GtkWidget *w, Tracker *t)
     } else {
 	tracker_redraw(t);
     }
-    xm->modified = 1;
+    xm_set_modified(1);
 }
 
 void
@@ -964,7 +964,7 @@ track_editor_cut_track (GtkWidget *w, Tracker *t)
     track_buffer_length = l;
     track_buffer = st_dup_track(n, l);
     st_clear_track(n, l);
-    xm->modified = 1;
+    xm_set_modified(1);
     tracker_redraw(t);
 }
 
@@ -982,7 +982,7 @@ track_editor_paste_track (GtkWidget *w, Tracker *t)
 	i = l;
     while(i--)
 	n[i] = track_buffer[i];
-    xm->modified = 1;
+    xm_set_modified(1);
     tracker_redraw(t);
 }
 
@@ -990,7 +990,7 @@ void
 track_editor_delete_track (GtkWidget *w, Tracker *t)
 {
     st_pattern_delete_track(t->curpattern, t->cursor_ch);
-    xm->modified = 1;
+    xm_set_modified(1);
     tracker_redraw(t);
 }
 
@@ -998,7 +998,7 @@ void
 track_editor_insert_track (GtkWidget *w, Tracker *t)
 {
     st_pattern_insert_track(t->curpattern, t->cursor_ch);
-    xm->modified = 1;
+    xm_set_modified(1);
     tracker_redraw(t);
 }
 
@@ -1017,7 +1017,7 @@ track_editor_kill_notes_track (GtkWidget *w, Tracker *t)
        note->fxparam = 0;
     }
 
-    xm->modified = 1;
+    xm_set_modified(1);
     tracker_redraw(t);
 }
 
@@ -1049,7 +1049,7 @@ track_editor_cmd_mvalue (Tracker *t, gboolean mode)
             note->fxparam = nparam;
 
         tracker_step_cursor_row(t, gui_get_current_jump_value());
-        xm->modified = 1;
+        xm_set_modified(1);
         tracker_redraw(t);
     }
 }
@@ -1115,7 +1115,7 @@ track_editor_cut_selection (Tracker *t)
 {
     track_editor_copy_cut_selection_common(t, TRUE);
     menubar_block_mode_set(FALSE);
-    xm->modified = 1;
+    xm_set_modified(1);
     tracker_redraw(t);
 }
 
@@ -1135,7 +1135,7 @@ track_editor_paste_selection (Tracker *t)
 				       block_buffer.length);
     }
 
-    xm->modified = 1;
+    xm_set_modified(1);
  	/* I'm not sure if it's a good idea (Olivier GLORIEUX) */
     tracker_set_patpos(t, (t->patpos + block_buffer.length) % t->curpattern->length);
     tracker_redraw(t);
@@ -1265,7 +1265,7 @@ track_editor_handle_semidec_column_input (Tracker *t,
 	tracker_step_cursor_row(t, gui_get_current_jump_value());
     else
 	tracker_step_cursor_item(t, 1);
-    xm->modified = 1;
+    xm_set_modified(1);
 }
 
 static void
@@ -1298,7 +1298,7 @@ track_editor_handle_hex_column_input (Tracker *t,
 	 }
     }
 
-    xm->modified = 1;
+    xm_set_modified(1);
 }
 
 static gboolean
@@ -1327,7 +1327,7 @@ track_editor_handle_column_input (Tracker *t,
 	    tracker_step_cursor_row(t, gui_get_current_jump_value());
 	else
 	    tracker_step_cursor_item(t, 1);
-	xm->modified = 1;
+	xm_set_modified(1);
 	return TRUE;
     }
 

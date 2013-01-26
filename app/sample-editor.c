@@ -1944,6 +1944,7 @@ sample_editor_monitor_clicked (void)
     
     samplingwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(samplingwindow), _("Sampling Window"));
+    gtk_window_set_transient_for(GTK_WINDOW(samplingwindow), GTK_WINDOW(mainwindow));
     g_signal_connect(samplingwindow, "delete_event",
 			G_CALLBACK(sample_editor_stop_sampling), NULL);
 

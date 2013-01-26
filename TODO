@@ -161,12 +161,9 @@ Date: 	Fri, 19 Apr 1996 21:29:45 +0400  (19:29 CEST)
 
 --***--
 
-"Sample name" and "Instrument name" as the lists with the ability of choosing
-the instrument/sample
-
-No error message when attempting to write to read-only filesystem/directory
-
 Track (and maybe not only) Cut/Copy/Paste shortcuts work only if out of the
 editing mode
 
 If the dialog has "Exit" or "Cancel" button, pressing ESC will close it.
+
+Pressing "Ctrl" restricts point dragging to vertical or horizontal direction.

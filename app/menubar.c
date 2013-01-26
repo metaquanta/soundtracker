@@ -75,12 +75,12 @@ menubar_clear (gboolean all)
 	if(all) {
 		gui_free_xm();
 		gui_new_xm();
-		xm->modified = 0;
+		xm_set_modified(0);
 	} else {
 		gui_play_stop();
 		st_clean_song(xm);
 		gui_init_xm(1, TRUE);
-		xm->modified = 0;
+		xm_set_modified(0);
 	}
 }
 
@@ -88,7 +88,7 @@ void
 menubar_clear_clicked (GtkWidget *w,
 		       gpointer b)
 {
-	if(xm->modified) {
+	if(xm_get_modified()) {
 		if(gui_ok_cancel_modal((mainwindow),
 		                       _("Are you sure you want to do this?\nAll changes will be lost!")))
 			menubar_clear(GPOINTER_TO_INT(b));
