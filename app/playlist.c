@@ -549,7 +549,7 @@ playlist_new (void)
 
     thing1 = p->ibutton = gtk_button_new_with_label(_("Insert"));
     gtk_widget_show(thing1);
-    gui_hang_tooltip(thing1, _("Insert pattern that is being edited"));
+    gtk_widget_set_tooltip_text(thing1, _("Insert pattern that is being edited"));
     gtk_box_pack_start(GTK_BOX(thing), thing1, FALSE, FALSE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing1, "clicked",
@@ -558,7 +558,7 @@ playlist_new (void)
 
     thing1 = p->dbutton = gtk_button_new_with_label(_("Delete"));
     gtk_widget_show(thing1);
-    gui_hang_tooltip(thing1, _("Remove current playlist entry"));
+    gtk_widget_set_tooltip_text(thing1, _("Remove current playlist entry"));
     gtk_box_pack_start(GTK_BOX(thing), thing1, FALSE, FALSE, 0);
     g_signal_connect(thing1, "clicked",
 		    G_CALLBACK(playlist_delete_clicked),
@@ -568,12 +568,12 @@ playlist_new (void)
 
     thing1 = p->icbutton = gtk_button_new_with_label(_("Add + Cpy"));
     gtk_widget_show(thing1);
-    gui_hang_tooltip(thing1, _("Add a free pattern behind current position, and copy current pattern to it"));
+    gtk_widget_set_tooltip_text(thing1, _("Add a free pattern behind current position, and copy current pattern to it"));
     gtk_box_pack_start(GTK_BOX(thing), thing1, FALSE, FALSE, 0);
 
     thing1 = p->ifbutton = gtk_button_new_with_label(_("Add Free"));
     gtk_widget_show(thing1);
-    gui_hang_tooltip(thing1, _("Add a free pattern behind current position"));
+    gtk_widget_set_tooltip_text(thing1, _("Add a free pattern behind current position"));
     gtk_box_pack_start(GTK_BOX(thing), thing1, FALSE, FALSE, 0);
 
     gtk_box_pack_start(GTK_BOX(box), thing, FALSE, FALSE, 0);
@@ -597,7 +597,7 @@ playlist_new (void)
     thing1 = p->spin_songlength = extspinbutton_new(GTK_ADJUSTMENT(adj), 1.0, 0);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(thing1));
     gtk_widget_show(thing1);
-    gui_hang_tooltip(thing1, _("Song length"));
+    gtk_widget_set_tooltip_text(thing1, _("Song length"));
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
     g_signal_connect(thing1, "value-changed",
 			G_CALLBACK(playlist_songlength_changed),
@@ -616,7 +616,7 @@ playlist_new (void)
     thing1 = p->spin_restartpos = extspinbutton_new(GTK_ADJUSTMENT(adj), 1.0, 0);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(thing1));
     gtk_widget_show(thing1);
-    gui_hang_tooltip(thing1, _("Song restart position"));
+    gtk_widget_set_tooltip_text(thing1, _("Song restart position"));
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
     g_signal_connect(thing1, "value-changed",
 			G_CALLBACK(playlist_restartpos_changed),

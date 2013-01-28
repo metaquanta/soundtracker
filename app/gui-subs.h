@@ -104,7 +104,6 @@ void                 gui_update_range_adjustment      (GtkRange *range,
 						       int upper,
 						       int window,
 						       void(*func)());
-void		     gui_hang_tooltip 		      (GtkWidget *widget, const gchar *text);
 
 typedef enum {
     GUI_SUBS_SLIDER_WITH_HSCALE = 0,

@@ -1,11 +1,9 @@
 6) Huge CPU overhead (partially fixed);
 9) Contains a lot of obsolete code.
 14) some CPU-consuming code in the instrument list selection callback (really 
-in the callback);
+in the callback) and main notebook switch callback;
 15) Change option-menu in keys.c with notebook (like in audioconfig.c) for better
 widget sizes' behaviour;
-17) Understand why tracker scrolling is such CPU-consuming (compared to ST-Gtk+-1). Maybe it's
-a GTK+2.6.7 and is fixed in the modern release?;
 21) Native Alsa 1.x driver: make Alsa 1.x the requirement instead of 0.9.x; signedness handling;
 add avalable devices navigation (from csound->rtalsa.c); remove alsa-09 warning in configure.in
 22) ESD driver reported to produce greater delay at start than in ST-gtk1;

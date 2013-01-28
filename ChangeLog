@@ -1,3 +1,13 @@
+2013-01-28  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui.c, app/gui-settings.c, app/gui-subs.[ch], app/playlist.c:
+	Tooltips are hung using proper Gtk+ interface;
+	* app/drivers/alsa1x-output.c: audio delay estimation is reverted back
+	with appropriate tooltip. The configuting warning about ALSA 0.9 is
+	removed since the playback driver is working.
+
+2013-01-27  Yury Aliaev  <mutab0r@rambler.ru>
+	Manual page is added (taken probably from Debian project).
+
 2013-01-24  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.[ch], app/xm-player.c, app/track-editor.c, app/menubar.c,
 	app/xm.h: Asterisk before file name is drawn when the module has unsaved

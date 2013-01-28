@@ -148,3 +148,8 @@ FT2-like style of effects and volume representation (to think how to do this bet
 hand is't rather inconvinient to subtract 0x10 from the volume to obtain its true value. But
 conserning effects in the volume column it's more suitable when the letter actually has been
 pressed is being displayed).
+
+Gtk1 notably (about 2 times) overperfoms Gtk2 in the graphic primitives drawing. It has
+sence to develope fast drawing library based on the adopted and reduced code of Gtk1 and
+optionally use it instead of Gdk. It is especially important for upcoming Gtk+-3 port, where
+Caito-based drawing functions are even much slower.

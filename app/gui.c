@@ -1964,7 +1964,7 @@ gui_final (int argc,
     g_signal_connect(thing, "clicked",
 			G_CALLBACK(play_song), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE,0);
-    gui_hang_tooltip(thing, _("Play Song"));
+    gtk_widget_set_tooltip_text(thing, _("Play Song"));
     gtk_widget_show_all(thing);
 
     pmw = gtk_image_new_from_file(PREFIX"/share/soundtracker/play_cur.xpm");
@@ -1973,7 +1973,7 @@ gui_final (int argc,
     g_signal_connect(thing, "clicked",
 			G_CALLBACK(play_pattern), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE,0);
-    gui_hang_tooltip(thing, _("Play Pattern"));
+    gtk_widget_set_tooltip_text(thing, _("Play Pattern"));
     gtk_widget_show_all(thing);
 
     pmw = gtk_image_new_from_file(PREFIX"/share/soundtracker/stop.xpm");
@@ -1982,7 +1982,7 @@ gui_final (int argc,
     g_signal_connect(thing, "clicked",
 			G_CALLBACK(gui_play_stop), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE,0);		
-    gui_hang_tooltip(thing, _("Stop"));
+    gtk_widget_set_tooltip_text(thing, _("Stop"));
     gtk_widget_show_all(thing);
     
     add_empty_hbox(hbox);
@@ -1993,7 +1993,7 @@ gui_final (int argc,
 
     spin_editpat = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 255, 1.0, 10.0, 0.0)), 1, 0);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(spin_editpat));
-    gui_hang_tooltip(spin_editpat, _("Edited pattern"));
+    gtk_widget_set_tooltip_text(spin_editpat, _("Edited pattern"));
     gtk_box_pack_start(GTK_BOX(hbox), spin_editpat, FALSE, TRUE, 0);
     gtk_widget_show(spin_editpat);
     g_signal_connect(spin_editpat, "value-changed",
@@ -2003,7 +2003,7 @@ gui_final (int argc,
     toggle_lock_editpat = thing = gtk_toggle_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE,0);		
-    gui_hang_tooltip(thing, _("When enabled, browsing the playlist does not change the edited pattern."));
+    gtk_widget_set_tooltip_text(thing, _("When enabled, browsing the playlist does not change the edited pattern."));
     gtk_widget_show_all(thing);
 
     thing = gui_subs_create_slider(&tempo_slider);
@@ -2065,14 +2065,14 @@ gui_final (int argc,
     thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), vbox);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE, 0);
-    gui_hang_tooltip(thing, _("Set preferred accidental type"));
+    gtk_widget_set_tooltip_text(thing, _("Set preferred accidental type"));
     gtk_widget_show(thing);
     g_signal_connect(thing, "clicked",
 		       G_CALLBACK(gui_accidentals_clicked), NULL);
 
     add_empty_hbox(hbox);
     thing = gtk_toggle_button_new_with_label(_("Measure"));
-    gui_hang_tooltip(thing, _("Enable row highlighting"));
+    gtk_widget_set_tooltip_text(thing, _("Enable row highlighting"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),gui_settings.highlight_rows);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE, 0);
     g_signal_connect(thing, "toggled",
@@ -2099,7 +2099,7 @@ gui_final (int argc,
 	gtk_combo_box_set_row_separator_func(GTK_COMBO_BOX(thing), is_sep, (gpointer)i, NULL);
 	gtk_combo_box_set_active(GTK_COMBO_BOX(thing), selected);
 
-	gui_hang_tooltip(thing, _("Row highlighting configuration"));
+	gtk_widget_set_tooltip_text(thing, _("Row highlighting configuration"));
 	gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE, 0);
 	gtk_widget_show(thing);
 
@@ -2122,7 +2122,7 @@ gui_final (int argc,
     thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), vbox);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE, 0);
-    gui_hang_tooltip(thing, _("Change effect column editing direction"));
+    gtk_widget_set_tooltip_text(thing, _("Change effect column editing direction"));
     gtk_widget_show(thing);
     g_signal_connect(thing, "clicked",
 		       G_CALLBACK(gui_direction_clicked), NULL);
@@ -2153,7 +2153,7 @@ gui_final (int argc,
 
     adj_amplification = GTK_ADJUSTMENT(gtk_adjustment_new(7.0, 0, 8.0, 0.1, 0.1, 0.1));
     thing = gtk_vscale_new(adj_amplification);
-    gui_hang_tooltip(thing, _("Global amplification"));
+    gtk_widget_set_tooltip_text(thing, _("Global amplification"));
     gtk_scale_set_draw_value(GTK_SCALE(thing), FALSE);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(hbox), thing, TRUE, TRUE, 0);
@@ -2189,7 +2189,7 @@ gui_final (int argc,
 
     adj_pitchbend = GTK_ADJUSTMENT(gtk_adjustment_new(0.0, -20.0, +20.0, 1, 1, 1));
     thing = gtk_vscale_new(adj_pitchbend);
-    gui_hang_tooltip(thing, _("Pitchbend"));
+    gtk_widget_set_tooltip_text(thing, _("Pitchbend"));
     gtk_scale_set_draw_value(GTK_SCALE(thing), FALSE);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(hbox), thing, TRUE, TRUE, 0);
@@ -2197,7 +2197,7 @@ gui_final (int argc,
 			G_CALLBACK(gui_adj_pitchbend_changed), NULL);
 
     thing = gtk_button_new_with_label("R");
-    gui_hang_tooltip(thing, _("Reset pitchbend to its normal value"));
+    gtk_widget_set_tooltip_text(thing, _("Reset pitchbend to its normal value"));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "clicked",

@@ -294,17 +294,6 @@ gui_update_range_adjustment (GtkRange *range,
     }
 }
 
-void
-gui_hang_tooltip (GtkWidget *widget, const gchar *text)
-{
-    GtkTooltips *tips = NULL;
-    
-    if(!tips) {
-	tips = gtk_tooltips_new();
-    }
-    gtk_tooltips_set_tip(tips, widget, text, NULL);
-}
-
 // Stolen from testgtk.c and modified
 GtkWidget *
 gui_build_option_menu (OptionMenuItem items[],

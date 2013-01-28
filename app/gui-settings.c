@@ -390,7 +390,7 @@ gui_settings_tracker_colors_dialog (GtkWindow *window)
 
     /* Heavy Gtk+ hack just to access the button widget... */
     child = g_list_nth_data(GTK_BOX(GTK_DIALOG(dialog)->action_area)->children, 0);
-    gui_hang_tooltip(child->widget, _("Reset tracker colors to standard ST"));
+    gtk_widget_set_tooltip_text(child->widget, _("Reset tracker colors to standard ST"));
 
     g_signal_connect(dialog, "response",
 		     G_CALLBACK(colors_dialog_response), NULL);
@@ -616,7 +616,7 @@ gui_settings_dialog (void)
 
     /* Tracker colors configuration dialog */
     thing = gtk_button_new_with_label(_("Col. scheme"));
-    gui_hang_tooltip(thing, _("Tracker colors configuration"));
+    gtk_widget_set_tooltip_text(thing, _("Tracker colors configuration"));
     gtk_box_pack_end(GTK_BOX(box1), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect_swapped(thing, "clicked",
