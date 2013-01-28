@@ -71,7 +71,7 @@ typedef struct _alsa_driver {
     GtkWidget *prefs_resolution_w[2];
     GtkWidget *prefs_channels_w[2];
     GtkWidget *prefs_mixfreq;
-    GtkWidget *bufsizespin, *bufsizelabel, *periodspin, *periodlabel;
+    GtkWidget *bufsizespin, *bufsizelabel, *periodspin, *periodlabel, *estimatelabel;
 
     GtkTreeModel *model;
 
@@ -332,6 +332,18 @@ update_periods_range (alsa_driver *d)
 }
 
 static void
+update_estimate (alsa_driver *d)
+{
+    char *buf;
+    snd_pcm_uframes_t periodsize = (1 << d->buffer_size) / (1 << d->num_periods);
+
+    buf = g_strdup_printf(_("Estimated audio delay: %f milliseconds"), 1000 * (double)periodsize / (double)d->playrate);
+    gtk_label_set_text(GTK_LABEL(d->estimatelabel), buf);
+
+    g_free(buf);
+}
+
+static void
 update_controls (alsa_driver *d)
 {
     gtk_widget_set_sensitive(d->prefs_resolution_w[0], d->can8);
@@ -448,6 +460,7 @@ check_period_sizes (alsa_driver *d)
     }
 
     update_periods_range(d);
+    update_estimate(d);
 
     d->address_old = address;
     d->bufsize_old = d->buffer_size;
@@ -662,6 +675,7 @@ prefs_mixfreq_changed (GtkWidget *w, alsa_driver *d)
     if(!gtk_combo_box_get_active_iter(GTK_COMBO_BOX(d->prefs_mixfreq), &iter))
 	return;
     gtk_tree_model_get(d->model, &iter, 0, &d->playrate, -1);
+    update_estimate(d);
 }
 
 static void
@@ -689,6 +703,8 @@ prefs_periods_changed (GtkWidget *w, alsa_driver *d)
     expression = g_strdup_printf(_(" = %u"), 1 << d->num_periods);
     gtk_label_set_text(GTK_LABEL(d->periodlabel), expression);
     g_free(expression);
+
+    update_estimate(d);
 }
 
 static void
@@ -824,6 +840,14 @@ alsa_make_config_widgets (alsa_driver *d)
     box2 = gtk_hbox_new(FALSE, 4);
     gtk_widget_show(box2);
     gtk_box_pack_start(GTK_BOX(mainbox), box2, FALSE, TRUE, 0);
+
+    d->estimatelabel = thing = gtk_label_new("");
+    gtk_misc_set_alignment(GTK_MISC(thing), 0.0, 0.5);
+    gtk_widget_set_tooltip_text(thing, _("The playback will start and stop immediately, "
+                                         "but the reaction to the interactive events "
+                                         "will happens after this delay"));
+    gtk_box_pack_end(GTK_BOX(box2), thing, TRUE, TRUE, 0);
+    gtk_widget_show(thing);
 }
 
 static GtkWidget *
