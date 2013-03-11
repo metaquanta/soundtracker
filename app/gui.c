@@ -2248,7 +2248,7 @@ gui_final (int argc,
     gui_get_text_entry(22, current_instrument_name_changed, &gui_curins_name);
     gtk_box_pack_start(GTK_BOX(hbox), gui_curins_name, TRUE, TRUE, 0);
     gtk_widget_show(gui_curins_name);
-    gtk_widget_set_size_request(gui_curins_name, 100, gui_curins_name->requisition.height);
+    gtk_widget_set_size_request(gui_curins_name, 100, -1);
 
     thing = gtk_label_new(_("Sample"));
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
@@ -2264,7 +2264,7 @@ gui_final (int argc,
     gui_get_text_entry(22, current_sample_name_changed, &gui_cursmpl_name);
     gtk_box_pack_start(GTK_BOX(hbox), gui_cursmpl_name, TRUE, TRUE, 0);
     gtk_widget_show(gui_cursmpl_name);
-    gtk_widget_set_size_request(gui_cursmpl_name, 100, gui_cursmpl_name->requisition.height);
+    gtk_widget_set_size_request(gui_cursmpl_name, 100, -1);
 
     /* The notebook */
 
