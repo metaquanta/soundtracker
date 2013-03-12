@@ -101,6 +101,12 @@ envelope_box_clip_point_movement (EnvelopeBox *e,
     return corrected;
 }
 
+static void
+envelope_box_move_point (EnvelopeBox *e,
+			 int n,
+			 int dpos,
+			 int dval);
+
 #ifdef USE_CANVAS
 
 #define POINT_ACTIVE "#ffcc00"
@@ -116,12 +122,6 @@ envelope_box_initialize_point_dragging (EnvelopeBox *e,
 static void
 envelope_box_stop_point_dragging (EnvelopeBox *e,
 				  GdkEventButton *event);
-
-static void
-envelope_box_move_point (EnvelopeBox *e,
-			 int n,
-			 int dpos,
-			 int dval);
 
 static void
 envelope_box_canvas_set_max_x (EnvelopeBox *e,
@@ -356,7 +356,6 @@ envelope_box_block_loop_spins (EnvelopeBox *e,
 		 gpointer            data);
 
     func = block ? g_signal_handlers_block_matched : g_signal_handlers_unblock_matched;
-
     func(G_OBJECT(e->spin_length), 
 	    (GSignalMatchType) G_SIGNAL_MATCH_DATA, 0, 0, NULL, NULL, e);
     func(G_OBJECT(e->spin_pos),
@@ -500,7 +499,6 @@ envelope_box_canvas_point_out_of_sight (EnvelopeBox *e,
 	if(y >= bottom + GTK_WIDGET(e->canvas)->allocation.height)
 		*dragy = 1;
 }
-#endif
 
 /* We assume here that the movement is valid! */
 static void
@@ -542,6 +540,7 @@ loop_sustain_new(EnvelopeBox *e, guint pos, gboolean is_sustain)
 
 	return line;
 }
+#endif
 
 static void
 envelope_box_move_point (EnvelopeBox *e,
@@ -951,23 +950,16 @@ void envelope_box_set_envelope(EnvelopeBox *e, STEnvelope *env)
     }
 
     // Update GUI
-    e->length_set_modified = FALSE;
-    gtk_spin_button_set_value(e->spin_length, env->num_points);
-    e->length_set_modified = TRUE;
-    envelope_box_block_loop_spins(e, TRUE);
-    gtk_spin_button_set_value(e->spin_pos, 0);
-    gtk_spin_button_set_value(e->spin_offset, env->points[0].pos);
-    gtk_spin_button_set_value(e->spin_value, env->points[0].val);
-    gtk_spin_button_set_value(e->spin_sustain, env->sustain_point);
-    gtk_spin_button_set_value(e->spin_loop_start, env->loop_start);
-    gtk_spin_button_set_value(e->spin_loop_end, env->loop_end);
-    envelope_box_block_loop_spins(e, FALSE);
-
-    gtk_toggle_button_set_state(e->enable, env->flags & EF_ON);
-    gtk_toggle_button_set_state(e->sustain, env->flags & EF_SUSTAIN);
-    gtk_toggle_button_set_state(e->loop, env->flags & EF_LOOP);
-
 #ifdef USE_CANVAS
+	/* Creation and removing lines are handled by toggle button callbacks */
+	if(env->flags & EF_SUSTAIN && e->sustain_line)
+		loop_sustain_move(e->sustain_line, env->points[env->sustain_point].pos);
+
+	if(env->flags & EF_LOOP && e->loop_start_line) {
+		loop_sustain_move(e->loop_start_line, env->points[env->loop_start].pos);
+		loop_sustain_move(e->loop_end_line, env->points[env->loop_end].pos);
+	}
+
     // Update Canvas
     for(i = 0; i < (sizeof(e->points) / sizeof(e->points[0])) && e->points[i]; i++) {
 	goo_canvas_item_remove(e->points[i]);
@@ -983,32 +975,24 @@ void envelope_box_set_envelope(EnvelopeBox *e, STEnvelope *env)
     envelope_box_canvas_set_max_x(e, env->points[env->num_points - 1].pos);
     e->prev_current = 0;
     e->cur_point = e->points[0];
-
-	if(env->flags & EF_SUSTAIN) {
-		if(e->sustain_line)
-			loop_sustain_move(e->sustain_line, env->points[env->sustain_point].pos);
-		else
-			e->sustain_line = loop_sustain_new(e, env->points[env->sustain_point].pos, TRUE);
-	} else if(e->sustain_line) {
-		goo_canvas_item_remove(e->sustain_line);
-		e->sustain_line = NULL;
-	}
-
-	if(env->flags & EF_LOOP) {
-		if(e->loop_start_line) {
-			loop_sustain_move(e->loop_start_line, env->points[env->loop_start].pos);
-			loop_sustain_move(e->loop_end_line, env->points[env->loop_end].pos);
-		} else {
-			e->loop_start_line = loop_sustain_new(e, env->points[env->loop_start].pos, FALSE);
-			e->loop_end_line = loop_sustain_new(e, env->points[env->loop_end].pos, FALSE);
-		}
-	} else if(e->loop_start_line) {
-		goo_canvas_item_remove(e->loop_start_line);
-		e->loop_start_line = NULL;
-		goo_canvas_item_remove(e->loop_end_line);
-		e->loop_end_line = NULL;
-	}
 #endif
+
+    gtk_toggle_button_set_state(e->enable, env->flags & EF_ON);
+    gtk_toggle_button_set_state(e->sustain, env->flags & EF_SUSTAIN);
+    gtk_toggle_button_set_state(e->loop, env->flags & EF_LOOP);
+
+    e->length_set_modified = FALSE;
+    gtk_spin_button_set_value(e->spin_length, env->num_points);
+    e->length_set_modified = TRUE;
+
+    envelope_box_block_loop_spins(e, TRUE);
+    gtk_spin_button_set_value(e->spin_pos, 0);
+    gtk_spin_button_set_value(e->spin_offset, env->points[0].pos);
+    gtk_spin_button_set_value(e->spin_value, env->points[0].val);
+    gtk_spin_button_set_value(e->spin_sustain, env->sustain_point);
+    gtk_spin_button_set_value(e->spin_loop_start, env->loop_start);
+    gtk_spin_button_set_value(e->spin_loop_end, env->loop_end);
+    envelope_box_block_loop_spins(e, FALSE);
 
     xm_set_modified(m);
 }
@@ -1109,6 +1093,7 @@ spin_length_changed (GtkSpinButton *spin,
 	if(newval < e->current->num_points)
 		for(i = e->current->num_points - 1; i >= newval; i--) {
 			goo_canvas_item_remove(e->points[i]);
+			e->points[i] = NULL;
 			goo_canvas_item_remove(e->lines[i - 1]);
 			e->lines[i - 1] = NULL;
 		}
@@ -1217,6 +1202,7 @@ delete_clicked (GtkWidget *w,
     envelope_box_delete_point(e, gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(e->spin_pos)));
 }
 
+#ifdef USE_CANVAS
 void
 zoom_normal (GtkWidget *w, gpointer data)
 {
@@ -1225,6 +1211,7 @@ zoom_normal (GtkWidget *w, gpointer data)
 	e->zoomfactor_mult = 1.0;
 	goo_canvas_set_scale(e->canvas, e->zoomfactor_base * e->zoomfactor_mult);
 }
+#endif
 
 GtkWidget* envelope_box_new(const gchar *label)
 {

@@ -1,3 +1,6 @@
+2013-02-04  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/envelope-box.c: Bugfix (crashes, leaks and GTK warnings).
+
 2013-02-01  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c: Bugfix (Instrument and Sample name entries' size).
 
