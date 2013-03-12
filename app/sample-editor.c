@@ -1947,6 +1947,7 @@ sample_editor_monitor_clicked (void)
     gtk_window_set_transient_for(GTK_WINDOW(samplingwindow), GTK_WINDOW(mainwindow));
     g_signal_connect(samplingwindow, "delete_event",
 			G_CALLBACK(sample_editor_stop_sampling), NULL);
+	gui_set_escape_close(samplingwindow);
 
     mainbox = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 4);

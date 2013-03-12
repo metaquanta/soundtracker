@@ -54,8 +54,7 @@ cheat_sheet_dialog (void)
 	static GtkWidget *cheat_sheet_window = NULL;
 
 	if(cheat_sheet_window != NULL) {
-		gtk_widget_show(cheat_sheet_window);
-		gdk_window_raise(cheat_sheet_window->window);
+		gtk_window_present(GTK_WINDOW(cheat_sheet_window));
 		return;
 	}
 
@@ -93,8 +92,9 @@ cheat_sheet_dialog (void)
     cheat_sheet_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(cheat_sheet_window), _("XM Effects Cheat Sheet"));
     gtk_window_set_transient_for(GTK_WINDOW(cheat_sheet_window), GTK_WINDOW(mainwindow));
-    g_signal_connect (GTK_OBJECT (cheat_sheet_window), "delete_event",
-			GTK_SIGNAL_FUNC (cheat_sheet_close_requested), NULL);
+    g_signal_connect(cheat_sheet_window, "delete_event",
+			G_CALLBACK(cheat_sheet_close_requested), NULL);
+	gui_set_escape_close(cheat_sheet_window);
 
     mainbox = gtk_vbox_new(FALSE, 2);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 4);

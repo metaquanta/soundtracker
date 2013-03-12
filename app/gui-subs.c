@@ -673,3 +673,14 @@ GtkBuilder
 
 	return builder;
 }
+
+void
+gui_set_escape_close (GtkWidget *window)
+{
+	GtkAccelGroup *group = gtk_accel_group_new();
+	GClosure *closure = g_cclosure_new_swap(G_CALLBACK(gtk_widget_hide), window, NULL);
+
+	gtk_accel_group_connect(group, GDK_Escape, 0, 0, closure);
+	gtk_window_add_accel_group(GTK_WINDOW(window), group);
+}
+

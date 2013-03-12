@@ -196,4 +196,6 @@ gchar *              gui_filename_from_utf8           (const gchar *old_name);
 GtkWidget*           gui_combo_new                    (GtkListStore *ls);
 
 GtkBuilder           *gui_builder_from_file           (const gchar *name, const struct menu_callback cb[]);
+
+void                 gui_set_escape_close             (GtkWidget *window);
 #endif /* _GUI_SUBS_H */
