@@ -148,8 +148,11 @@ main (int argc,
     }
 
     /* To decrease distance between list rows */
-    gtk_rc_parse_string("style \"compact\" { GtkTreeView::vertical-separator = 0 }\
-			 class \"GtkTreeView\" style \"compact\"");
+    gtk_rc_parse_string("style \"compact\" { GtkTreeView::vertical-separator = 0 }\n"
+                        "class \"GtkTreeView\" style \"compact\"\n"
+    /* To cause keycodes to be displayed as list */
+                        "style \"list\" {GtkComboBox::appears-as-list = 1}\n"
+                        "widget \"*.keyconfig_combo\" style \"list\"");
 
     audio_ctlpipe = pipea[1];
     audio_backpipe = pipeb[0];

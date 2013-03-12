@@ -29,7 +29,7 @@ void        tips_dialog_open               (void);
 
 /* Return dialog main vbox without creating window. An existing tips
    dialog window will be closed. */
-GtkWidget * tips_dialog_get_vbox           (void);
+void        tips_box_populate              (GtkWidget *box, gboolean has_separator);
 
 void        tips_dialog_load_settings      (void);
 void        tips_dialog_save_settings      (void);

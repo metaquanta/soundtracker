@@ -84,7 +84,6 @@ static struct SampleEditor * const se = &sample_editor;
 
 // = Volume ramping dialog
 
-static GtkWidget *volrampwindow = NULL;
 static GtkWidget *sample_editor_volramp_spin_w[2];
 static int sample_editor_volramp_last_values[2] = { 100, 100 };
 
@@ -194,8 +193,7 @@ static void sample_editor_save_region_wav(const gchar *name);
 #endif
 
 static void sample_editor_open_volume_ramp_dialog(void);
-static void sample_editor_close_volume_ramp_dialog(void);
-static void sample_editor_perform_ramp(GtkWidget *w, gpointer data);
+static void sample_editor_perform_ramp(GtkWidget *w, gint response, gpointer data);
 
 static void sample_editor_reverse_clicked(void);
 
@@ -1464,7 +1462,7 @@ sample_editor_load_wav_main (int mode)
 static void
 sample_editor_open_stereowav_dialog (void)
 {
-    static GtkWidget *window = NULL;
+    static GtkWidget *window = NULL, *mixbutton;
     GtkWidget *label, *separator, *bbox, *box1;
     GtkWidget *buttons[3];
     gint response, i;
@@ -1473,20 +1471,21 @@ sample_editor_open_stereowav_dialog (void)
 	window = gtk_dialog_new_with_buttons (_("Load stereo sample"), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
 	buttons[0] = gtk_dialog_add_button(GTK_DIALOG(window), _("Left"), GTK_RESPONSE_YES);
-	buttons[1] = gtk_dialog_add_button(GTK_DIALOG(window), _("Mix"), GTK_RESPONSE_APPLY);
+	mixbutton = buttons[1] = gtk_dialog_add_button(GTK_DIALOG(window), _("Mix"), GTK_RESPONSE_APPLY);
 	buttons[2] = gtk_dialog_add_button(GTK_DIALOG(window), _("Right"), GTK_RESPONSE_NO);
 
+	gui_dialog_adjust(window, GTK_RESPONSE_APPLY);
 	box1 = gtk_dialog_get_content_area(GTK_DIALOG(window));
-	gtk_box_set_spacing(GTK_BOX(box1), 5);
+	gtk_box_set_spacing(GTK_BOX(box1), 2);
+
+	separator = gtk_hseparator_new();
+	gtk_box_pack_end (GTK_BOX (box1), separator, FALSE, TRUE, 4);
+	gtk_widget_show(separator);
 
 	bbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);  
 	gtk_box_pack_end(GTK_BOX(box1), bbox, TRUE, TRUE, 0);
 	gtk_widget_show(bbox);
-
-	separator = gtk_hseparator_new();
-	gtk_box_pack_end (GTK_BOX (box1), separator, FALSE, TRUE, 0);
-	gtk_widget_show(separator);
 
     /* A bit trick to move buttons to vbox from action area, but leaving them active */
 	for(i = 0; i < 3; i++) {
@@ -1495,16 +1494,14 @@ sample_editor_open_stereowav_dialog (void)
 	    gtk_box_pack_end(GTK_BOX(bbox), buttons[i], FALSE, TRUE, 0);
 	}
 
-	gtk_window_set_position (GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-	gtk_container_set_border_width (GTK_CONTAINER (window), 10);
-
 	label = gtk_label_new (_("You have selected a stereo sample!\n(SoundTracker can only handle mono samples!)\n\nPlease choose which channel to load:"));
 	gtk_label_set_justify (GTK_LABEL (label),GTK_JUSTIFY_CENTER);
 	gtk_box_pack_start (GTK_BOX (box1), label, FALSE, TRUE, 0);
 	gtk_widget_show (label);
     } else
-	gtk_widget_show(window);
+	gtk_window_present(GTK_WINDOW(window));
 
+	gtk_widget_grab_focus(mixbutton);
     response = gtk_dialog_run(GTK_DIALOG(window));
     gtk_widget_hide(window);
 
@@ -1552,7 +1549,7 @@ sample_editor_open_raw_sample_dialog (const gchar *filename)
 	                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
    
 	    wavload_dialog = window;
-	    gtk_container_set_border_width (GTK_CONTAINER (window), 10);
+	    gui_dialog_adjust(window, GTK_RESPONSE_OK);
        
 	    box1 = gtk_dialog_get_content_area (GTK_DIALOG(window)); // upper part (vbox)
     
@@ -1630,9 +1627,14 @@ sample_editor_open_raw_sample_dialog (const gchar *filename)
 	    gtk_box_pack_start(GTK_BOX(box2), combo, FALSE, TRUE, 0);
 	    gtk_combo_box_set_active(GTK_COMBO_BOX(combo), active); // default is 8363
 	    gtk_widget_show (combo);
-	}
 
-	gtk_widget_show(window);
+	    thing = gtk_hseparator_new();
+	    gtk_box_pack_end(GTK_BOX(box1), thing, FALSE, FALSE, 4);
+	    gtk_widget_show(thing);
+		gtk_widget_show(window);
+	} else
+		gtk_window_present(GTK_WINDOW(window));
+
 	response = gtk_dialog_run(GTK_DIALOG(window));
 	gtk_widget_hide(window);
 
@@ -2121,54 +2123,48 @@ sample_editor_lrvol (GtkWidget *widget,
 static void
 sample_editor_open_volume_ramp_dialog (void)
 {
+	static GtkWidget *volrampwindow = NULL;
+
     GtkWidget *mainbox, *box1, *thing;
-    gint i;
-    const char *labels1[] = {
-	_("Normalize"),
-	_("Execute"),
-	_("Close")
-    };
 
     if(volrampwindow != NULL) {
-	gdk_window_raise(volrampwindow->window);
+	gtk_window_present(GTK_WINDOW(volrampwindow));
 	return;
     }
     
-    volrampwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);//!!! Dialog
-    gtk_window_set_title(GTK_WINDOW(volrampwindow), _("Volume Ramping"));
+    volrampwindow = gtk_dialog_new_with_buttons(_("Volume Ramping"), GTK_WINDOW(mainwindow), 0,
+                                                _("Normalize"), 1,
+                                                GTK_STOCK_EXECUTE, 2,
+                                                GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
     g_signal_connect(volrampwindow, "delete_event",
-			G_CALLBACK(sample_editor_close_volume_ramp_dialog), NULL);
+			G_CALLBACK(gui_delete_noop), NULL);
+    g_signal_connect(volrampwindow, "response",
+			G_CALLBACK(sample_editor_perform_ramp), NULL);
 
-    gtk_window_set_transient_for(GTK_WINDOW(volrampwindow), GTK_WINDOW(mainwindow));
-
-    mainbox = gtk_vbox_new(FALSE, 2);
-    gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-    gtk_container_add(GTK_CONTAINER(volrampwindow), mainbox);
-    gtk_widget_show(mainbox);
+    gui_dialog_adjust(volrampwindow, 2);
+    mainbox = gtk_dialog_get_content_area(GTK_DIALOG(volrampwindow));
+    gtk_box_set_spacing(GTK_BOX(mainbox), 2);
 
     thing = gtk_label_new(_("Perform linear volume fade on Selection"));
-    gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
 
     thing = gtk_hseparator_new();
-    gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
 
     box1 = gtk_hbox_new(FALSE, 4);
-    gtk_widget_show(box1);
     gtk_box_pack_start(GTK_BOX(mainbox), box1, FALSE, TRUE, 0);
 
     gui_put_labelled_spin_button(box1, _("Left [%]:"), -1000, 1000, &sample_editor_volramp_spin_w[0], NULL, NULL);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(sample_editor_volramp_spin_w[0]), sample_editor_volramp_last_values[0]);
 
     thing = gtk_button_new_with_label(_("H"));
-    gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
+    gtk_widget_set_tooltip_text(thing, _("Half"));
     g_signal_connect(thing, "clicked",
                        G_CALLBACK(sample_editor_lrvol), (gpointer)0);
 
     thing = gtk_button_new_with_label(_("D"));
-    gtk_widget_show(thing);
+    gtk_widget_set_tooltip_text(thing, _("Double"));
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "clicked",
                        G_CALLBACK(sample_editor_lrvol), (gpointer)4);
@@ -2179,80 +2175,67 @@ sample_editor_open_volume_ramp_dialog (void)
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(sample_editor_volramp_spin_w[1]), sample_editor_volramp_last_values[1]);
 
     thing = gtk_button_new_with_label(_("H"));
-    gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
+    gtk_widget_set_tooltip_text(thing, _("Half"));
     g_signal_connect(thing, "clicked",
                        G_CALLBACK(sample_editor_lrvol), (gpointer)2);
 
     thing = gtk_button_new_with_label(_("D"));
-    gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
+    gtk_widget_set_tooltip_text(thing, _("Double"));
     g_signal_connect(thing, "clicked",
                        G_CALLBACK(sample_editor_lrvol), (gpointer)8);
 
     thing = gtk_hseparator_new();
-    gtk_widget_show(thing);
-    gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 4);
     
-
-    box1 = gtk_hbox_new(FALSE, 4);
-    gtk_widget_show(box1);
-    gtk_box_pack_start(GTK_BOX(mainbox), box1, FALSE, TRUE, 0);
-
-    for(i = 0; i < 3; i++) {
-	thing = gtk_button_new_with_label(labels1[i]);
-	gtk_widget_show(thing);
-	gtk_box_pack_start(GTK_BOX(box1), thing, TRUE, TRUE, 0);
-	g_signal_connect(thing, "clicked",
-			   G_CALLBACK(sample_editor_perform_ramp),
-			   GINT_TO_POINTER(i));
-    }
-
-    gtk_widget_show (volrampwindow);
+    gtk_widget_show_all(volrampwindow);
 }
 
 static void
-sample_editor_close_volume_ramp_dialog (void)
+sample_editor_close_volume_ramp_dialog (GtkWidget *w)
 {
     sample_editor_volramp_last_values[0] = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(sample_editor_volramp_spin_w[0]));
     sample_editor_volramp_last_values[1] = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(sample_editor_volramp_spin_w[1]));
 
-    gtk_widget_destroy(volrampwindow);
-    volrampwindow = NULL;
+    gtk_widget_hide(w);
 }
 
 static void
-sample_editor_perform_ramp (GtkWidget *w,
+sample_editor_perform_ramp (GtkWidget *w, gint action,
 			    gpointer data)
 {
-    int action = GPOINTER_TO_INT(data);
     double left, right;
     const int ss = sampledisplay->sel_start, se = sampledisplay->sel_end;
-    int i;
+    gint i, m, q;
     gint16 *p;
  
-    if(action == 2 || !current_sample || ss == -1) {
-	sample_editor_close_volume_ramp_dialog();
+    if(!current_sample || ss == -1) {
+	sample_editor_close_volume_ramp_dialog(w);
 	return;
     }
 
-    if(action == 0) {
-	// Find maximum amplitude
-	int m;
-	int q;
-	p = current_sample->sample.data;
-	p += ss;
-	for(i = 0, m = 0; i < se - ss; i++) {
-	    q = *p++;
-	    q = ABS(q);
-	    if(q > m)
-		m = q;
+	switch(action) {
+	case 1:
+		// Find maximum amplitude
+		p = current_sample->sample.data;
+		p += ss;
+		for(i = 0, m = 0; i < se - ss; i++) {
+			q = *p++;
+			q = ABS(q);
+			if(q > m)
+			m = q;
+		}
+		left = right = (double)0x7fff / m;
+		break;
+	case 2:
+		left = gtk_spin_button_get_value_as_float(GTK_SPIN_BUTTON(sample_editor_volramp_spin_w[0])) / 100.0;
+		right = gtk_spin_button_get_value_as_float(GTK_SPIN_BUTTON(sample_editor_volramp_spin_w[1])) / 100.0;
+		break;
+	default:
+		sample_editor_close_volume_ramp_dialog(w);
+		return;
 	}
-	left = right = (double)0x7fff / m;
-    } else {
-	left = gtk_spin_button_get_value_as_float(GTK_SPIN_BUTTON(sample_editor_volramp_spin_w[0])) / 100.0;
-	right = gtk_spin_button_get_value_as_float(GTK_SPIN_BUTTON(sample_editor_volramp_spin_w[1])) / 100.0;
-    }
 
     // Now perform the actual operation
     sample_editor_lock_sample();
@@ -2288,10 +2271,9 @@ sample_editor_trim_dialog (void)
     if(!trimdialog) {
 	trimdialog = gtk_dialog_new_with_buttons(_("Trim parameters"), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
 	                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
-	gtk_dialog_set_default_response(GTK_DIALOG(trimdialog), GTK_RESPONSE_OK);
+	gui_dialog_adjust(trimdialog, GTK_RESPONSE_OK);
 	mainbox = gtk_dialog_get_content_area(GTK_DIALOG(trimdialog));
-	gtk_box_set_spacing(GTK_BOX(mainbox), 4);
-	gtk_container_border_width(GTK_CONTAINER(trimdialog), 4);
+	gtk_box_set_spacing(GTK_BOX(mainbox), 2);
 
 	trimbeg = thing = gtk_check_button_new_with_label(_("Trim at the beginning"));
 	gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, FALSE, 0);
@@ -2309,9 +2291,12 @@ sample_editor_trim_dialog (void)
 	gtk_box_pack_end(GTK_BOX(box), thing, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(mainbox), box, FALSE, FALSE, 0);
 
+	thing = gtk_hseparator_new();
+	gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, FALSE, 4);
+
 	gtk_widget_show_all(trimdialog);
     } else
-	gtk_widget_show(trimdialog);
+	gtk_window_present(GTK_WINDOW(trimdialog));
 
     response = gtk_dialog_run(GTK_DIALOG(trimdialog));
     gtk_widget_hide(trimdialog);

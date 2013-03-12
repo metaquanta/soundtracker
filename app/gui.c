@@ -226,13 +226,14 @@ measure_dialog ()
 
     if(measurewindow != NULL) {
 	gtk_window_set_position(GTK_WINDOW(measurewindow), GTK_WIN_POS_MOUSE);
-	gtk_widget_show(measurewindow);
+	gtk_window_present(GTK_WINDOW(measurewindow));
 	gtk_widget_grab_focus(majspin);
 	return;
     }
     
 	measurewindow = gtk_dialog_new_with_buttons(_("Row highlighting configuration"), GTK_WINDOW(mainwindow),
-	                                            GTK_DIALOG_MODAL, GTK_STOCK_CLOSE, 0, NULL);
+	                                            GTK_DIALOG_MODAL, GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
+	gui_dialog_adjust(measurewindow, GTK_RESPONSE_CLOSE);
     g_signal_connect(measurewindow, "response",
 			G_CALLBACK(measure_close_requested), NULL);
     vbox = gtk_dialog_get_content_area(GTK_DIALOG(measurewindow));
@@ -263,6 +264,10 @@ measure_dialog ()
 		       G_CALLBACK(gui_settings_highlight_rows_minor_changed), NULL);
     
     gtk_box_pack_start(GTK_BOX(vbox), mainbox, TRUE, TRUE, 0);
+
+    thing = gtk_hseparator_new();
+    gtk_box_pack_start(GTK_BOX(vbox), thing, FALSE, FALSE, 4);
+
     gtk_widget_show_all(measurewindow);
     gtk_widget_grab_focus(majspin);
 }    
@@ -578,11 +583,13 @@ load_pat (const gchar *fn)
 		} else {
 			gint response;
 
-			if(!dialog1)
-				dialog1 = gtk_dialog_new_with_buttons(_("The length of the pattern being loaded doesn't match with that of current pattern in module.\n"
-				                                      "Do you want to change the current pattern length?"), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
-				                                      GTK_STOCK_YES, GTK_RESPONSE_YES, GTK_STOCK_NO, GTK_RESPONSE_NO,
-				                                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
+			if(!dialog1) {
+				dialog1 = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
+				                                 _("The length of the pattern being loaded doesn't match with that of current pattern in module.\n"
+				                                   "Do you want to change the current pattern length?"));
+				gtk_dialog_add_buttons(GTK_DIALOG(dialog1), GTK_STOCK_YES, GTK_RESPONSE_YES, GTK_STOCK_NO, GTK_RESPONSE_NO,
+				                                           GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
+			}
 
 			response = gtk_dialog_run(GTK_DIALOG(dialog1));
 			gtk_widget_hide(dialog1);
@@ -1746,16 +1753,11 @@ gui_splash (int argc,
     /* Show tips if enabled. */
 
     if(tips_dialog_show_tips) {
-	GtkWidget *tipsbox = tips_dialog_get_vbox();
-
-	if(tipsbox) {
 	    thing = gtk_hseparator_new();
 	    gtk_widget_show(thing);
 	    gtk_box_pack_start(GTK_BOX(vbox), thing, FALSE, TRUE, 0);
 
-	    gtk_box_pack_start(GTK_BOX(vbox), tipsbox, FALSE, FALSE, 0);
-	    gtk_widget_show(tipsbox);
-	}
+	    tips_box_populate(vbox, FALSE);
     }
 
     thing = gtk_hseparator_new();

@@ -135,12 +135,6 @@ audioconfig_list_select (GtkTreeSelection *sel, guint page)
 }
 
 static void
-audioconfig_close_requested (GtkWidget *window)
-{
-    gtk_widget_hide(window);
-}
-
-static void
 audioconfig_mixer_selected (GtkTreeSelection *sel)
 {
     GtkTreeModel *mdl;
@@ -204,7 +198,7 @@ audioconfig_notebook_add_page (GtkNotebook *nbook, guint n)
     gtk_widget_show(box1);
 
     // Driver selection list
-    list = gui_stringlist_in_scrolled_window(1, listtitles, box1);
+    list = gui_stringlist_in_scrolled_window(1, listtitles, box1, TRUE);
     gtk_widget_set_size_request(list, 200, -1);
     list_store = GUI_GET_LIST_STORE(list);
 
@@ -244,29 +238,27 @@ void
 audioconfig_dialog (void)
 {
     static GtkWidget *configwindow = NULL;
-    GtkWidget *mainbox, *thing, *hbox, *nbook, *box2, *frame;
+    GtkWidget *mainbox, *thing, *nbook, *box2, *frame;
     static gchar *listtitles2[2];
     int i;
 
     listtitles2[0] = gettext("Mixer Module");
     listtitles2[1] = gettext("Description");
 
-    if(configwindow != NULL) {
-	if(!GTK_WIDGET_VISIBLE(configwindow))
-	    gtk_widget_show(configwindow);
-	gdk_window_raise(configwindow->window);
-	return;
-    }
+	if(configwindow != NULL) {
+		gtk_window_present(GTK_WINDOW(configwindow));
+		return;
+	}
     
-    configwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);//!!! Dialog
-    gtk_window_set_title(GTK_WINDOW(configwindow), _("Audio Configuration"));
-    g_signal_connect_swapped (configwindow, "delete_event",
-			G_CALLBACK (audioconfig_close_requested), configwindow);
+    configwindow = gtk_dialog_new_with_buttons(_("Audio Configuration"), GTK_WINDOW(mainwindow), 0,
+                                               GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
+    g_signal_connect(configwindow, "delete_event",
+			G_CALLBACK(gui_delete_noop), NULL);
+    g_signal_connect(configwindow, "response",
+			G_CALLBACK(gtk_widget_hide), NULL);
 
-    mainbox = gtk_vbox_new(FALSE, 2);
-    gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-    gtk_container_add(GTK_CONTAINER(configwindow), mainbox);
-    gtk_widget_show(mainbox);
+    mainbox = gtk_dialog_get_content_area(GTK_DIALOG(configwindow));
+    gui_dialog_adjust(configwindow, GTK_RESPONSE_CLOSE);
 
     // Each driver (playback,capture,editing,etc...) occupies the notebook page
     nbook = gtk_notebook_new();
@@ -274,46 +266,22 @@ audioconfig_dialog (void)
     for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
 	audioconfig_notebook_add_page(GTK_NOTEBOOK(nbook), i);
     }
-    gtk_widget_show(nbook);
 
     // Mixer selection
     frame = gtk_frame_new(NULL);
     gtk_frame_set_label(GTK_FRAME(frame), _("Mixers"));
     gtk_box_pack_start(GTK_BOX(mainbox), frame, TRUE, TRUE, 0);
-    gtk_widget_show(frame);
 
     box2 = gtk_vbox_new(FALSE, 2);
-    gtk_widget_show(box2);
     gtk_container_add (GTK_CONTAINER(frame), box2);
     gtk_container_border_width(GTK_CONTAINER(box2), 4);
 
-    thing = gui_stringlist_in_scrolled_window(2, listtitles2, box2);
+    thing = gui_stringlist_in_scrolled_window(2, listtitles2, box2, TRUE);
     gui_list_handle_selection(thing, G_CALLBACK(audioconfig_mixer_selected), NULL);
     audioconfig_mixer_list = thing;
     audioconfig_initialize_mixer_list();
 
-    /* The button area */
-    thing = gtk_hseparator_new();
-    gtk_widget_show(thing);
-    gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
-
-    hbox = gtk_hbutton_box_new();
-    gtk_button_box_set_spacing(GTK_BUTTON_BOX (hbox), 4);
-    gtk_button_box_set_layout(GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_END);
-    gtk_box_pack_start(GTK_BOX (mainbox), hbox,
-			FALSE, FALSE, 0);
-    gtk_widget_show(hbox);
-
-    thing = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-    GTK_WIDGET_SET_FLAGS(thing, GTK_CAN_DEFAULT);
-    gtk_window_set_default(GTK_WINDOW(configwindow), thing);
-    g_signal_connect_swapped(thing, "clicked",
-			G_CALLBACK(audioconfig_close_requested), configwindow);
-    gtk_box_pack_start(GTK_BOX (hbox), thing, FALSE, FALSE, 0);
-    gtk_widget_show(thing);
-
-
-    gtk_widget_show(configwindow);
+    gtk_widget_show_all(configwindow);
 }
 
 void

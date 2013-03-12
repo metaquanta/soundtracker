@@ -107,7 +107,6 @@ static GtkWidget *col_samples[TRACKERCOL_LAST];
 static GtkWidget *colorsel;
 static guint active_col_item = 0;
 
-static GtkWidget *configwindow = NULL;
 static GtkWidget *ts_box = NULL;
 
 static void           prefs_scopesfreq_changed                  (int value);
@@ -121,9 +120,9 @@ static gui_subs_slider prefs_trackerfreq_slider = {
 };
 
 static void
-gui_settings_close_requested (void)
+gui_settings_close (GtkWidget *configwindow)
 {
-    gdk_window_hide(configwindow->window);
+    gtk_widget_hide(configwindow);
 }
 
 static void
@@ -333,9 +332,6 @@ colors_dialog_response (GtkWidget *dialog, gint response)
     guint i;
 
     switch (response) {
-    case GTK_RESPONSE_CLOSE:
-	gtk_widget_hide(dialog);
-	break;
     case GTK_RESPONSE_APPLY:
 	tracker_apply_colors(tracker);
 	tracker_redraw(tracker);
@@ -346,7 +342,9 @@ colors_dialog_response (GtkWidget *dialog, gint response)
 	for(i = 0; i < TRACKERCOL_LAST; i++)
 	    col_sample_paint(col_samples[i], NULL, i);
 	gtk_color_selection_set_current_color(GTK_COLOR_SELECTION(colorsel), &tracker->colors[active_col_item]);
+	break;
     default:
+	gtk_widget_hide(dialog);
 	break;
     }
 }
@@ -371,14 +369,12 @@ color_changed (void)
 static void
 gui_settings_tracker_colors_dialog (GtkWindow *window)
 {
-    static GtkWidget *dialog;
-    GtkWidget *thing, *table, *radio = NULL, *hbox;
-    GtkBoxChild *child;
+    static GtkWidget *dialog = NULL;
+    GtkWidget *thing, *table, *radio = NULL, *hbox, *vbox;
     guint i;
 
     if(dialog) {
-	gtk_widget_show(dialog);
-	gdk_window_raise(dialog->window);
+	gtk_window_present(GTK_WINDOW(dialog));
 	return;
     }
 
@@ -387,13 +383,13 @@ gui_settings_tracker_colors_dialog (GtkWindow *window)
 					 _("Reset"), GTK_RESPONSE_REJECT,
 					 GTK_STOCK_APPLY, GTK_RESPONSE_APPLY,
 					 GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
-
-    /* Heavy Gtk+ hack just to access the button widget... */
-    child = g_list_nth_data(GTK_BOX(GTK_DIALOG(dialog)->action_area)->children, 0);
-    gtk_widget_set_tooltip_text(child->widget, _("Reset tracker colors to standard ST"));
+	gui_dialog_adjust(dialog, GTK_RESPONSE_APPLY);
+    gtk_widget_set_tooltip_text(gtk_dialog_get_widget_for_response(GTK_DIALOG(dialog), GTK_RESPONSE_REJECT), _("Reset tracker colors to standard ST"));
 
     g_signal_connect(dialog, "response",
 		     G_CALLBACK(colors_dialog_response), NULL);
+    g_signal_connect(dialog, "delete-event",
+			G_CALLBACK(gui_delete_noop), NULL);
 
     table = gtk_table_new(TRACKERCOL_LAST, 5, FALSE);
     for(i = 0; i < TRACKERCOL_LAST; i++) {
@@ -416,18 +412,24 @@ gui_settings_tracker_colors_dialog (GtkWindow *window)
     }
 
     thing = gtk_vseparator_new();
-    gtk_table_attach_defaults(GTK_TABLE(table), thing, 3, 4, 0, TRACKERCOL_LAST - 1);
-    gtk_table_set_col_spacing(GTK_TABLE(table), 1, 2);
-    gtk_table_set_col_spacing(GTK_TABLE(table), 3, 2);
+    gtk_table_attach_defaults(GTK_TABLE(table), thing, 3, 4, 0, TRACKERCOL_LAST);
+    gtk_table_set_col_spacing(GTK_TABLE(table), 1, 4);
+    gtk_table_set_col_spacing(GTK_TABLE(table), 2, 4);
+    gtk_table_set_col_spacing(GTK_TABLE(table), 3, 4);
 
     colorsel = gtk_color_selection_new();
     gtk_color_selection_set_current_color(GTK_COLOR_SELECTION(colorsel), &tracker->colors[0]);
     g_signal_connect(colorsel, "color_changed",
 		     G_CALLBACK(color_changed), NULL);
-    gtk_table_attach_defaults(GTK_TABLE(table), colorsel, 4, 5, 0, TRACKERCOL_LAST - 1);
+    gtk_table_attach_defaults(GTK_TABLE(table), colorsel, 4, 5, 0, TRACKERCOL_LAST);
 
     gtk_widget_show_all(table);
-    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), table, TRUE, TRUE, 0);
+    vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    gtk_box_pack_start(GTK_BOX(vbox), table, TRUE, TRUE, 0);
+
+    thing = gtk_hseparator_new();
+    gtk_box_pack_start(GTK_BOX(vbox), thing, FALSE, FALSE, 4);
+    gtk_widget_show_all(thing);
 
     gtk_widget_realize(dialog);
 
@@ -443,100 +445,82 @@ gui_settings_tracker_colors_dialog (GtkWindow *window)
 void
 gui_settings_dialog (void)
 {
-    GtkWidget *mainbox, *mainhbox, *thing, *box1, *hbox, *vbox1;
-    GtkTooltips *tooltips;
+	static GtkWidget *configwindow = NULL;
+
+    GtkWidget *mainbox, *mainhbox, *thing, *box1, *vbox1;
     gchar stmp[5];
 
-    if(configwindow != NULL) {
-	if (!gdk_window_is_visible(configwindow->window))
-	    gdk_window_show(configwindow->window);
-	gdk_window_raise(configwindow->window);
-	return;
-    }
+	if(configwindow != NULL) {
+		gtk_window_present(GTK_WINDOW(configwindow));
+		return;
+	}
 
-    configwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);//!!! dialog
-    gtk_window_set_title(GTK_WINDOW(configwindow), _("GUI Configuration"));
-    g_signal_connect (configwindow, "delete_event",
-			G_CALLBACK(gui_settings_close_requested), NULL);
-//    gtk_window_set_policy(GTK_WINDOW(configwindow), FALSE, FALSE, FALSE);
-
-    mainbox = gtk_vbox_new(FALSE, 2);
-    gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-    gtk_container_add(GTK_CONTAINER(configwindow), mainbox);
-    gtk_widget_show(mainbox);
+    configwindow = gtk_dialog_new_with_buttons(_("GUI Configuration"), GTK_WINDOW(mainwindow), 0,
+                                               GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
+    g_signal_connect(configwindow, "delete_event",
+			G_CALLBACK(gui_delete_noop), NULL);
+    g_signal_connect(configwindow, "response",
+			G_CALLBACK(gui_settings_close), NULL);
+	gui_dialog_adjust(configwindow, GTK_RESPONSE_CLOSE);
+    mainbox = gtk_dialog_get_content_area(GTK_DIALOG(configwindow));
 
     mainhbox = gtk_hbox_new(FALSE, 4);
     gtk_box_pack_start(GTK_BOX(mainbox), mainhbox, TRUE, TRUE, 0);
-    gtk_widget_show(mainhbox);
 
     vbox1 = gtk_vbox_new(FALSE, 2);
     gtk_box_pack_start(GTK_BOX(mainhbox), vbox1, FALSE, TRUE, 0);
-    gtk_widget_show(vbox1);
-
-    tooltips = gtk_tooltips_new();
-    gtk_object_set_data(GTK_OBJECT(configwindow), "tooltips", tooltips);
 
     thing = gui_subs_create_slider(&prefs_scopesfreq_slider);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
 
     thing = gui_subs_create_slider(&prefs_trackerfreq_slider);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
 
     thing = gtk_check_button_new_with_label(_("Hexadecimal row numbers"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.tracker_hexmode);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     g_signal_connect(thing, "toggled",
 		       G_CALLBACK(gui_settings_hexmode_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Use upper case letters for hex numbers"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.tracker_upcase);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     g_signal_connect(thing, "toggled",
 		       G_CALLBACK(gui_settings_upcase_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Asynchronous (IT-style) pattern editing"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.asynchronous_editing);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     g_signal_connect(thing, "toggled",
 		       G_CALLBACK(gui_settings_asyncedit_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Fxx command updates Tempo/BPM sliders"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.tempo_bpm_update);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     g_signal_connect(thing, "toggled",
 		       G_CALLBACK(gui_settings_tempo_bpm_update_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Switch to tracker after loading/saving"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.auto_switch);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     g_signal_connect(thing, "toggled",
 		       G_CALLBACK(gui_settings_auto_switch_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Save window geometry on exit"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.save_geometry);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     g_signal_connect(thing, "toggled",
 		       G_CALLBACK(gui_settings_save_geometry_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Use note name B instead of H"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.bh);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     g_signal_connect(thing, "toggled",
 		       G_CALLBACK(gui_settings_bh_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Save and restore permanent channels"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.store_perm);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     gtk_signal_connect(GTK_OBJECT(thing), "toggled",
 		       GTK_SIGNAL_FUNC(gui_settings_perm_toggled), NULL);
 
@@ -544,31 +528,25 @@ gui_settings_dialog (void)
     gui_subs_set_slider_value(&prefs_trackerfreq_slider, gui_settings.tracker_update_freq);
 
     box1 = gtk_hbox_new(FALSE, 4);
-    gtk_widget_show(box1);
     gtk_box_pack_start(GTK_BOX(vbox1), box1, FALSE, TRUE, 0);
 
     thing = gtk_label_new(_("Scopes buffer size [MB]"));
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     add_empty_hbox(box1);
     thing = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new((double)gui_settings.scopes_buffer_size / 1000000, 0.5, 5.0, 0.1, 1.0, 0.0)), 0, 0);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     gtk_spin_button_set_digits(GTK_SPIN_BUTTON(thing), 1);
     g_signal_connect(thing, "value-changed",
 		       G_CALLBACK(gui_settings_scopebufsize_changed), NULL);
 
     thing = gtk_hseparator_new();
-    gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
 
     /* Track line format */
     box1 = gtk_hbox_new(FALSE, 4);
-    gtk_widget_show(box1);
-    gtk_box_pack_start(GTK_BOX(vbox1), box1, FALSE, TRUE, 0);		
+    gtk_box_pack_start(GTK_BOX(vbox1), box1, FALSE, TRUE, 0);
     thing = gtk_label_new(_("Track line format:"));
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
 
     thing = gtk_entry_new();
     gtk_widget_set_usize(thing, 13*3, thing->requisition.height);
@@ -577,7 +555,6 @@ gui_settings_dialog (void)
     stmp[3] = 0;
     gtk_entry_set_text((GtkEntry*)thing, stmp);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     g_signal_connect(thing, "changed",
         G_CALLBACK(gui_settings_tracker_line_note_modified), 0);
 
@@ -588,7 +565,6 @@ gui_settings_dialog (void)
     stmp[2] = 0;
     gtk_entry_set_text((GtkEntry*)thing, stmp);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     g_signal_connect(thing, "changed",
         G_CALLBACK(gui_settings_tracker_line_ins_modified), 0);
 
@@ -599,7 +575,6 @@ gui_settings_dialog (void)
     stmp[2] = 0;
     gtk_entry_set_text((GtkEntry*)thing, stmp);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     g_signal_connect(thing, "changed",
         G_CALLBACK(gui_settings_tracker_line_vol_modified), 0);
 
@@ -610,53 +585,30 @@ gui_settings_dialog (void)
     stmp[3] = 0;
     gtk_entry_set_text((GtkEntry*)thing, stmp);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
     g_signal_connect(thing, "changed",
         G_CALLBACK(gui_settings_tracker_line_effect_modified), 0);
 
     /* Tracker colors configuration dialog */
-    thing = gtk_button_new_with_label(_("Col. scheme"));
+    thing = gtk_button_new_with_label(_("Color scheme"));
     gtk_widget_set_tooltip_text(thing, _("Tracker colors configuration"));
-    gtk_box_pack_end(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
+    gtk_box_pack_end(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
     g_signal_connect_swapped(thing, "clicked",
         G_CALLBACK(gui_settings_tracker_colors_dialog), GTK_WINDOW(configwindow));
 
     thing = gtk_vseparator_new();
-    gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(mainhbox), thing, FALSE, TRUE, 0);
 
     /* The tracker widget settings */
     ts_box = vbox1 = gtk_vbox_new(FALSE, 2);
     gtk_box_pack_start(GTK_BOX(mainhbox), vbox1, TRUE, TRUE, 0);
-    gtk_widget_show(vbox1);
 
     gtk_object_ref(GTK_OBJECT(trackersettings));
     gtk_box_pack_start(GTK_BOX(vbox1), trackersettings, TRUE, TRUE, 0);
-    gtk_widget_show(trackersettings);
 
-    /* The button area */
     thing = gtk_hseparator_new();
-    gtk_widget_show(thing);
-    gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, FALSE, 4);
 
-    hbox = gtk_hbutton_box_new ();
-    gtk_button_box_set_spacing (GTK_BUTTON_BOX (hbox), 4);
-    gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_END);
-    gtk_box_pack_start (GTK_BOX (mainbox), hbox,
-			FALSE, FALSE, 0);
-    gtk_widget_show (hbox);
-
-    thing = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-    GTK_WIDGET_SET_FLAGS(thing, GTK_CAN_DEFAULT);
-    gtk_window_set_default(GTK_WINDOW(configwindow), thing);
-    g_signal_connect (thing, "clicked",
-			G_CALLBACK(gui_settings_close_requested), NULL);
-    gtk_box_pack_start (GTK_BOX (hbox), thing, FALSE, FALSE, 0);
-    gtk_widget_show (thing);
-
-
-    gtk_widget_show (configwindow);
+    gtk_widget_show_all (configwindow);
 }
 
 void

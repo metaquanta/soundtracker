@@ -24,6 +24,7 @@
 
 #include <string.h>
 #include <glib/gi18n.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "gui.h"
 #include "gui-subs.h"
@@ -48,10 +49,6 @@ static const char *status_messages[] = {
     N_("Saving song..."),
     N_("Song saved."),
 };
-
-static GtkWidget *aacdialog = NULL;
-static void(*aaccallback)(gint,gpointer);
-static gpointer aaccallbackdata;
 
 void
 statusbar_update (int message, gboolean force_update)
@@ -294,43 +291,8 @@ gui_update_range_adjustment (GtkRange *range,
     }
 }
 
-// Stolen from testgtk.c and modified
 GtkWidget *
-gui_build_option_menu (OptionMenuItem items[],
-		   gint           num_items,
-		   gint           history)
-{
-  GtkWidget *omenu;
-  GtkWidget *menu;
-  GtkWidget *menu_item;
-  GSList *group;
-  gint i;
-
-  omenu = gtk_option_menu_new ();
-      
-  menu = gtk_menu_new ();
-  group = NULL;
-  
-  for (i = 0; i < num_items; i++)
-    {
-      menu_item = gtk_radio_menu_item_new_with_label (group, items[i].name);
-      g_signal_connect (menu_item, "activate",
-			  G_CALLBACK(items[i].func), GINT_TO_POINTER(i));
-      group = gtk_radio_menu_item_group (GTK_RADIO_MENU_ITEM (menu_item));
-      gtk_menu_append (GTK_MENU (menu), menu_item);
-      if (i == history)
-	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu_item), TRUE);
-      gtk_widget_show (menu_item);
-    }
-
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (omenu), menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (omenu), history);
-  
-  return omenu;
-}
-
-GtkWidget *
-gui_stringlist_in_scrolled_window (int n, gchar **tp,  GtkWidget *hbox)
+gui_stringlist_in_scrolled_window (int n, gchar **tp,  GtkWidget *hbox, gboolean expandfill)
 {
     GType *types;
     GtkWidget *list;
@@ -339,7 +301,7 @@ gui_stringlist_in_scrolled_window (int n, gchar **tp,  GtkWidget *hbox)
     types = g_new(GType, n);
     for(i = 0; i < n; i++)
 	types[i] = G_TYPE_STRING;
-    list = gui_list_in_scrolled_window(n, tp, hbox, types, NULL, NULL, GTK_SELECTION_BROWSE);
+    list = gui_list_in_scrolled_window(n, tp, hbox, types, NULL, NULL, GTK_SELECTION_BROWSE, expandfill, expandfill);
     g_free(types);
     return list;
 }
@@ -385,7 +347,7 @@ static gboolean hover_changed (GtkTreeView *widget, GdkEvent* event, gpointer da
 GtkWidget *
 gui_list_in_scrolled_window (int n, gchar **tp,  GtkWidget *hbox,
 			     GType *types, gfloat *alignments, gboolean *expands,
-			     GtkSelectionMode mode)
+			     GtkSelectionMode mode, gboolean expand, gboolean fill)
 {
     GtkWidget *list;
     GtkWidget *sw;
@@ -425,7 +387,7 @@ gui_list_in_scrolled_window (int n, gchar **tp,  GtkWidget *hbox,
     g_signal_connect(list, "leave-notify-event", G_CALLBACK(hover_changed), (gpointer)FALSE);
 
     gtk_widget_show(sw);
-    gtk_box_pack_start(GTK_BOX(hbox), sw, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), sw, expand, fill, 0);
     /* According to Gtk+ documentation this is not recommended but the lists are not strippy by default...*/
     gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(list), TRUE);
     /* This speeds ip a bit */ //!!!but currently not working
@@ -500,64 +462,6 @@ gui_button (GtkWidget * win, char *stock,
       gtk_container_add (GTK_CONTAINER (box), button);
 
    return button;
-}
-
-static void
-aacdialog_close (gpointer data)
-{
-    gtk_widget_destroy(aacdialog);
-    aacdialog = NULL;
-    
-    aaccallback((gint)data, aaccallbackdata);
-}
-
-void //!!! gtk_dialog
-gui_yes_no_cancel_modal (GtkWidget *window,
-			   const gchar *text,
-			   void (*callback)(gint, gpointer),
-			   gpointer data)
-{
-    GtkWidget *label, *button;
-
-    g_return_if_fail(aacdialog == NULL);
-
-    aaccallback = callback;
-    aaccallbackdata = data;
-    
-    aacdialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_position (GTK_WINDOW(aacdialog), GTK_WIN_POS_CENTER);
-    gtk_window_set_title(GTK_WINDOW(aacdialog), _("Question"));
-    gtk_window_set_modal(GTK_WINDOW(aacdialog), TRUE);
-    gtk_window_set_transient_for(GTK_WINDOW(aacdialog), GTK_WINDOW(window));
-
-    label = gtk_label_new(text);
-    gtk_container_border_width(GTK_CONTAINER(GTK_DIALOG(aacdialog)->vbox), 10);
-    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(aacdialog)->vbox), label, TRUE, TRUE, 10);
-    gtk_widget_show(label);
-    
-    button = gtk_button_new_with_label (_("Yes"));
-    GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(aacdialog)->action_area), button, TRUE, TRUE, 10);
-    g_signal_connect_swapped(button, "clicked",
-                               G_CALLBACK(aacdialog_close), (gpointer)0);
-    gtk_widget_grab_default (button);
-    gtk_widget_show (button);
-    
-    button = gtk_button_new_with_label (_("No"));
-    GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(aacdialog)->action_area), button, TRUE, TRUE, 10);
-    g_signal_connect_swapped (button, "clicked",
-                              G_CALLBACK(aacdialog_close), (gpointer)1);
-    gtk_widget_show (button);
-    
-    button = gtk_button_new_with_label (_("Cancel"));
-    GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
-    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(aacdialog)->action_area), button, TRUE, TRUE, 10);
-    g_signal_connect_swapped (button, "clicked",
-                               G_CALLBACK(aacdialog_close), (gpointer)2);
-    gtk_widget_show (button);
-    
-    gtk_widget_show(aacdialog);
 }
 
 void
@@ -672,6 +576,20 @@ GtkBuilder
 		}
 
 	return builder;
+}
+
+gboolean
+gui_delete_noop (void)
+{
+	/* For dialogs, Response callback already hides this window */
+	return TRUE;
+}
+
+void
+gui_dialog_adjust (GtkWidget *dialog, gint default_id)
+{
+	gtk_container_set_border_width(GTK_CONTAINER(dialog), 4);
+	gtk_dialog_set_default_response(GTK_DIALOG(dialog), default_id);
 }
 
 void

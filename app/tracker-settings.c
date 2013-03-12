@@ -278,7 +278,7 @@ trackersettings_new (void)
     ts->clist_selected_row = -1;
     ts->current_font = 0;
 
-    ts->list = gui_stringlist_in_scrolled_window(1, clisttitles, GTK_WIDGET(ts));
+    ts->list = gui_stringlist_in_scrolled_window(1, clisttitles, GTK_WIDGET(ts), TRUE);
     gui_list_handle_selection(ts->list, 
 			      G_CALLBACK(trackersettings_clist_selected), ts);
 

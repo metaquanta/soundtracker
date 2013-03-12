@@ -187,7 +187,7 @@ transposition_current_instrument_clicked (GtkWidget *w,
 {
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(transposition_instrument_w[
         		      GPOINTER_TO_INT(data)]),
-			      gui_get_current_instrument());		     
+			      gui_get_current_instrument());
 }
 
 void
@@ -219,19 +219,19 @@ transposition_dialog (void)
     };
 
 	if(transposition_window != NULL) {
-		gtk_widget_show(transposition_window);
+		gtk_window_present(GTK_WINDOW(transposition_window));
 		return;
 	}
-    
+
     transposition_window = gtk_dialog_new_with_buttons(_("Transposition Tools"), GTK_WINDOW(mainwindow),
-                                                       GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_CLOSE, 0, NULL);
+                                                       GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
     g_signal_connect(transposition_window, "response",
 			G_CALLBACK(gtk_widget_hide), NULL);
     g_signal_connect(transposition_window, "delete-event",
 			G_CALLBACK(transposition_close_requested), NULL);
 
     mainbox = gtk_dialog_get_content_area(GTK_DIALOG(transposition_window));
-    gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
+    gui_dialog_adjust(transposition_window, GTK_RESPONSE_CLOSE);
 
     box1 = gtk_hbox_new(FALSE, 4);
     gtk_box_pack_start(GTK_BOX(mainbox), box1, FALSE, TRUE, 0);

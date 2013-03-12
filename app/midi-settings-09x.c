@@ -97,11 +97,6 @@ enum MidiSettingsPage {
 /****************************************************/
 /* Local variables */
 
-/* MIDI Dialog Box */
-
-static GtkWidget* midi_dialog = NULL;
-static GtkWidget* midi_notebook = NULL;
-
 /*
   Variables with prefix "mi" are related to MIDI Input settings.
   Variables with prefix "mo" are related to MIDI Output settings. 
@@ -131,9 +126,7 @@ static midi_prefs new_midi_settings;
 
 /* Local functions prototypes */
 
-static void dialog_apply_callback (GtkWidget *notebook);
-static void dialog_cancel_callback(void);
-static void dialog_okay_callback(void);
+static void dialog_apply(gint page_num);
 static void reset_page_changed_flags(void);
 
 /************************************************************************/
@@ -219,144 +212,114 @@ midi_save_config (void)
  **************************************************************************/
 
 /****************************************
- * MIDI dialog box callbacks.
+ * MIDI dialog box callback.
  */
 
-/*
-  Process the cancel event.
-*/
-
 static void
-dialog_cancel_callback(void)
+dialog_response(GtkWidget *dialog, gint response, GtkWidget *midi_notebook)
 {
-  /* Just close the dialog box (discard any changes). */
+	int page_num;
 
-  if (midi_notebook != NULL) {
-    gtk_widget_destroy(midi_notebook);
-    midi_notebook = NULL;
-  }
+	switch(response) {
+	case GTK_RESPONSE_APPLY:
+		page_num = gtk_notebook_get_current_page(GTK_NOTEBOOK(midi_notebook));
 
-  if (midi_dialog != NULL ) {
-    gtk_widget_destroy(midi_dialog);
-    midi_dialog = NULL;
-  }
+		if ( midi_settings_changed[page_num] == FALSE ) {
+			if (IS_MIDI_DEBUG_ON) {
+				g_print("No changes to apply for page #%d\n", page_num);
+			}
 
+			return;
+		}
+		dialog_apply(page_num);
+		break;
+	case GTK_RESPONSE_OK:
+		/*
+		* For each page, set the notebook page to it and then call
+		* the Apply callback.
+		*/
+
+		for (page_num = 0; page_num < MIDI_SETTINGS_COUNT_OF_PAGES; page_num++ ) {
+			if (IS_MIDI_DEBUG_ON) {
+				g_print("MIDI page %d changed: %d\n",
+				        page_num, midi_settings_changed[page_num]);
+			}
+
+			dialog_apply(page_num);
+		}
+	default:
+		gtk_widget_hide(dialog);
+	}
 }
 
-/*
-  Process the Ok event.
-*/
-
 static void
-dialog_okay_callback(void)
+dialog_apply(gint page_num)
 {
-  int page_num;
+	gboolean reinit_midi = FALSE;
 
-  /*
-   * For each page, set the notebook page to it and then call
-   * the Apply callback.
-   */
+	switch (page_num){
+	case MIDI_SETTINGS_INPUT_PAGE:
 
-  for (page_num = 0; page_num < MIDI_SETTINGS_COUNT_OF_PAGES; page_num++ ) {
-    if (IS_MIDI_DEBUG_ON) {
-      g_print( "MIDI page %d changed: %d\n",
-               page_num, midi_settings_changed[page_num]);
-    }
+		if (IS_MIDI_DEBUG_ON) {
+			g_print("new input settings: volume %d channel %d client %d port %d\n",
+			        new_midi_settings.input.volume_enabled,
+			        new_midi_settings.input.channel_enabled,
+			        new_midi_settings.input.client,
+			        new_midi_settings.input.port);
+		}
 
-    gtk_notebook_set_page( GTK_NOTEBOOK(midi_notebook), page_num);
-    dialog_apply_callback( midi_notebook);
-  }
+		/*
+		  If the user changed the input client or port,
+		  we need to reinitialize the MIDI channel.
+		  The auto_connect feature does not need to reinit. the MIDI channel.
+		*/
 
-  /* Close the dialog by calling the Cancel callback. */
+		if (new_midi_settings.input.client != midi_settings.input.client
+		    || new_midi_settings.input.port != midi_settings.input.port) {
+			reinit_midi = TRUE;
+		}
 
-  dialog_cancel_callback();
-}
+		/* Copy the new settings into the settings structure. */
 
-/*
-  Process the "apply" event.
-  Apply the changes of the current page of the notebook if it has changed.
-*/
+		midi_settings.input = new_midi_settings.input;
 
-static void
-dialog_apply_callback (GtkWidget *notebook)
-{
-  gboolean reinit_midi = FALSE;
-  int page_num = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+		if ( reinit_midi ) {
+			midi_init();
+		}
 
-  if ( midi_settings_changed[page_num] == FALSE ) {
-    if (IS_MIDI_DEBUG_ON) {
-      g_print("No changes to apply for page #%d\n", page_num);
-    }
-
-    return;
-  }
-
-
-  switch (page_num){
-  case MIDI_SETTINGS_INPUT_PAGE:
-
-    if (IS_MIDI_DEBUG_ON) {
-      g_print( "new input settings: volume %d channel %d client %d port %d\n",
-               new_midi_settings.input.volume_enabled,
-               new_midi_settings.input.channel_enabled,
-               new_midi_settings.input.client,
-               new_midi_settings.input.port);
-    }
-
-    /*
-      If the user changed the input client or port,
-      we need to reinitialize the MIDI channel.
-      The auto_connect feature does not need to reinit. the MIDI channel.
-    */
-
-    if ( new_midi_settings.input.client != midi_settings.input.client
-         || new_midi_settings.input.port != midi_settings.input.port) {
-      reinit_midi = TRUE;
-    }
-
-    /* Copy the new settings into the settings structure. */
-
-    midi_settings.input = new_midi_settings.input;
-
-    if ( reinit_midi ) {
-      midi_init();
-    }
-
-    break;
+		break;
 
 #if 0
-  case MIDI_SETTINGS_OUTPUT_PAGE:
-    if (IS_MIDI_DEBUG_ON) {
-      g_print( "new output settings: client %d port %d\n",
-               new_midi_settings.output.client,
-               new_midi_settings.output.port);
-    }
+	case MIDI_SETTINGS_OUTPUT_PAGE:
+		if (IS_MIDI_DEBUG_ON) {
+			g_print("new output settings: client %d port %d\n",
+			        new_midi_settings.output.client,
+			        new_midi_settings.output.port);
+		}
 
-    break;
+		break;
 #endif
 
-  case MIDI_SETTINGS_MISC_PAGE:
+	case MIDI_SETTINGS_MISC_PAGE:
 
-    if (IS_MIDI_DEBUG_ON) {
-      g_print( "new misc settings: debug %d\n",
-               new_midi_settings.misc.debug_level);
-    }
+		if (IS_MIDI_DEBUG_ON) {
+			g_print("new misc settings: debug %d\n",
+			        new_midi_settings.misc.debug_level);
+		}
 
-    /* Copy the new settings into the settings structure. */
+		/* Copy the new settings into the settings structure. */
 
-    midi_settings.misc = new_midi_settings.misc;
+		midi_settings.misc = new_midi_settings.misc;
 
-    break;
+		break;
 
-  default:
-    g_warning("MIDI Settings: unknown page\n");
-  }
+	default:
+		g_warning("MIDI Settings: unknown page\n");
+	}
 
-  /* Prepare for next call. */
-
-  midi_settings_changed[page_num] = FALSE;
-
-} /* dialog_apply_callback() */
+	/* Prepare for next call. */
+	midi_settings_changed[page_num] = FALSE;
+} /* dialog_apply() */
 
 /************************************************************************
  * MIDI Input settings dialog box functions.
@@ -479,7 +442,7 @@ static void reset_page_changed_flags(void)
 */
 
 static GtkWidget*
-create_midi_notebook( GtkDialog* dialog, midi_prefs settings)
+create_midi_notebook(midi_prefs settings)
 {
   GtkWidget *notebook;
   GtkWidget *page;
@@ -608,14 +571,12 @@ create_midi_notebook( GtkDialog* dialog, midi_prefs settings)
 void
 midi_settings_dialog (void)
 {
-  GtkWidget *okay_button;
-  GtkWidget *apply_button;
-  GtkWidget *cancel_button;
+static GtkWidget *midi_dialog = NULL, *midi_notebook;
 
   /* If dialog already created, just raise it. */
 
   if ( midi_dialog != NULL) {
-    gdk_window_raise(midi_dialog->window);
+    gtk_window_present(GTK_WINDOW(midi_dialog));
     return;
   }
 
@@ -627,53 +588,24 @@ midi_settings_dialog (void)
      The action area will contain 3 buttons: Ok, Apply and Cancel.
      The top area will contain a notebook. */
 
-  midi_dialog = gtk_dialog_new();
-  gtk_window_set_title( GTK_WINDOW( midi_dialog), _("MIDI Configuration"));
+  midi_dialog = gtk_dialog_new_with_buttons(_("MIDI Configuration"), GTK_WINDOW(mainwindow), 0,
+                                            GTK_STOCK_OK, GTK_RESPONSE_OK,
+                                            GTK_STOCK_APPLY, GTK_RESPONSE_APPLY,
+                                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
 
-  /* Create the buttons. */
-
-  okay_button = gtk_button_new_with_label( _("Ok"));
-  apply_button = gtk_button_new_with_label( _("Apply"));
-  cancel_button = gtk_button_new_with_label( _("Cancel"));
-
-  /* Add buttons to action area. */
-
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG(midi_dialog)->action_area),
-                     okay_button);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG(midi_dialog)->action_area),
-                     apply_button);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG(midi_dialog)->action_area),
-                     cancel_button);
-
+	gui_dialog_adjust(midi_dialog, GTK_RESPONSE_OK);
   /* Create the notebook (if necessary). */
-
-  if (midi_notebook == NULL) {
-    midi_notebook = create_midi_notebook(GTK_DIALOG(midi_dialog),
-                                         new_midi_settings);
-  }
+  midi_notebook = create_midi_notebook(new_midi_settings);
 
   /* Connect dialog/notebook callbacks. */
-
-  g_signal_connect_swapped(okay_button,
-                             "clicked",
-                             G_CALLBACK(dialog_okay_callback),
-                             0);
-  g_signal_connect_swapped(apply_button,
-                             "clicked",
-                             G_CALLBACK(dialog_apply_callback),
-                             G_OBJECT(midi_notebook));
-  g_signal_connect_swapped(cancel_button,
-                             "clicked",
-                             G_CALLBACK(dialog_cancel_callback),
-                             0);
+  g_signal_connect(midi_dialog, "response",
+                   G_CALLBACK(dialog_response), midi_notebook);
+  g_signal_connect(midi_dialog, "delete-event",
+                   G_CALLBACK(gui_delete_noop), NULL);
 
   /* Add the notebook to the upper part of the dialog box. */
-  /* To access the notebook from the dialog box object:
-     g_list_first(gtk_container_children(midi_dialog->vbox))
-  */
-
-  gtk_container_add( GTK_CONTAINER(GTK_DIALOG(midi_dialog)->vbox),
-                     GTK_WIDGET(midi_notebook));
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(midi_dialog))),
+                     midi_notebook, FALSE, TRUE, 0);
 
   gtk_widget_show_all (midi_dialog);
 

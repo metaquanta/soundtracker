@@ -132,22 +132,16 @@ typedef struct OptionMenuItem {
   void *func;
 } OptionMenuItem;
 
-GtkWidget *          gui_build_option_menu            (OptionMenuItem items[],
-						       gint           num_items,
-						       gint           history);
-
-GtkWidget *          gui_clist_in_scrolled_window     (int n,
-						       gchar **tp,
-						       GtkWidget *hbox);//!!!
+GtkWidget*           gui_combo_new                    (GtkListStore *ls);
 
 GtkWidget *	     gui_list_in_scrolled_window      (int n, gchar **tp,  GtkWidget *hbox,
 						       GType *types, gfloat *alignments,
 						        gboolean *expands,
-							GtkSelectionMode mode);
+							GtkSelectionMode mode, gboolean expand, gboolean fill);
 
 GtkWidget *          gui_stringlist_in_scrolled_window(int n,
 						       gchar **tp,
-						       GtkWidget *hbox);
+						       GtkWidget *hbox, gboolean expandfill);
 
 void		     gui_list_clear		      (GtkWidget *list);
 
@@ -178,24 +172,17 @@ GtkWidget *          gui_button                       (GtkWidget * win,
 						       gpointer userdata,
 						       GtkWidget *box);
 
-void
-gui_yes_no_cancel_modal (GtkWidget *window,
-			   const gchar *text,
-			   void (*callback)(gint, gpointer),
-			   gpointer data);
-
 gboolean             gui_ok_cancel_modal              (GtkWidget *window, const gchar *text);
-
 void                 gui_message_dialog               (const gchar *text, GtkMessageType type, const gchar *title);
 #define              gui_warning_dialog(text)         gui_message_dialog(text, GTK_MESSAGE_WARNING, N_("Warning"))
 #define              gui_error_dialog(text)           gui_message_dialog(text, GTK_MESSAGE_ERROR, N_("Error!"))
+void                 gui_dialog_adjust                (GtkWidget *dialog, gint default_id);
 
 gchar *              gui_filename_to_utf8             (const gchar *old_name);
 gchar *              gui_filename_from_utf8           (const gchar *old_name);
 
-GtkWidget*           gui_combo_new                    (GtkListStore *ls);
-
 GtkBuilder           *gui_builder_from_file           (const gchar *name, const struct menu_callback cb[]);
 
+gboolean             gui_delete_noop                  (void);
 void                 gui_set_escape_close             (GtkWidget *window);
 #endif /* _GUI_SUBS_H */

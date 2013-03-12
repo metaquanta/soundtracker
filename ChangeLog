@@ -1,3 +1,15 @@
+2013-02-20  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/cheat-sheet.c, app/sample-editor.[ch], app/gui-subs.[ch]: Escape
+	closes cheat-sheet and sampling windows + related code cleanups;
+	* app/menubar.c, app/track-editor.[ch], soundtracker.xml:
+	Right-click menu of track editor becomes working properly;
+	* app/audioconfig.c, app/gui.c, app/gui-settings.c, app/gui-subs.[ch],
+	app/keys.c, app/main.c, app/midi-settings-09x.c, app/sample-editor.c,
+	app/tips-dialog.[ch], app/tracker-settings.c, app/transposition.c:
+	Massive dialogs cleanup and optimization;
+	* app/tracker.c: Fixed slightly corrupted XM displaying (with FX
+	type > 35), emulating FT2 behavoiur.
+
 2013-02-04  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/envelope-box.c: Bugfix (crashes, leaks and GTK warnings).
 

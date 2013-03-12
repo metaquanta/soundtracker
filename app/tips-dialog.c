@@ -22,23 +22,17 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 
 #include "tips-dialog.h"
 #include "preferences.h"
+#include "gui.h"
+#include "gui-subs.h"
 
-static int  tips_dialog_hide (GtkWidget *widget, gpointer data);
 static int  tips_show_next (GtkWidget *widget, gpointer data);
 static void tips_toggle_update (GtkWidget *widget, gpointer data);
 
-static GtkWidget *tips_dialog_vbox = NULL;
-static GtkWidget *tips_dialog = NULL;
 static GtkWidget *tips_label;
 
 int tips_dialog_last_tip = 0;
@@ -71,125 +65,95 @@ static char const * const tips_array[] = {
 };
 
 void
-tips_dialog_open ()
+tips_box_populate(GtkWidget *vbox, gboolean has_separator)
 {
-    GtkWidget *thing;
-
-    if(!tips_dialog) {
-	tips_dialog = gtk_dialog_new ();
-	gtk_window_set_wmclass (GTK_WINDOW (tips_dialog), "tip_of_the_day", "SoundTracker");
-	gtk_window_set_title (GTK_WINDOW (tips_dialog), (_("SoundTracker Tip of the day")));
-	g_signal_connect(tips_dialog, "delete_event",
-			 G_CALLBACK(tips_dialog_hide), NULL);
-	
-	thing = tips_dialog_get_vbox();
-	gtk_container_add(GTK_CONTAINER (tips_dialog), thing);
-	gtk_widget_show(thing);
-    }
-
-    if(!GTK_WIDGET_VISIBLE (tips_dialog)) {
-	gtk_widget_show (tips_dialog);
-    } else {
-	gdk_window_raise (tips_dialog->window);
-    }
-}
-
-static void
-tips_dialog_vbox_destroy (GtkObject *object)
-{
-    tips_dialog_vbox = NULL;
-}
-
-GtkWidget *
-tips_dialog_get_vbox (void)
-{
-    GtkWidget *vbox;
     GtkWidget *hbox1;
     GtkWidget *hbox2;
     GtkWidget *bbox;
     GtkWidget *vbox_bbox2;
     GtkWidget *bbox2;
-    GtkWidget *button_next;
-    GtkWidget *button_prev;
     GtkWidget *vbox_check;
-    GtkWidget *button_check;
-
-    if(tips_dialog_vbox) {
-	g_error("tips_dialog_get_vbox() called twice.\n");
-	return NULL;
-    }
-
-    tips_dialog_vbox = vbox = gtk_vbox_new (FALSE, 0);
-
-    g_signal_connect(tips_dialog_vbox, "destroy",
-		       G_CALLBACK(tips_dialog_vbox_destroy), NULL);
+    GtkWidget *thing;
 
     hbox1 = gtk_hbox_new (FALSE, 5);
     gtk_container_set_border_width (GTK_CONTAINER (hbox1), 10);
     gtk_box_pack_start (GTK_BOX (vbox), hbox1, FALSE, TRUE, 0);
-    gtk_widget_show (hbox1);
+    gtk_widget_show(hbox1);
+
+	if(has_separator) {
+		thing = gtk_hseparator_new();
+		gtk_box_pack_end (GTK_BOX (vbox), thing, FALSE, FALSE, 4);
+		gtk_widget_show(thing);
+	}
 
     hbox2 = gtk_hbox_new (FALSE, 5);
-    gtk_container_set_border_width (GTK_CONTAINER (hbox2), 10);
+    gtk_container_set_border_width (GTK_CONTAINER (hbox2), 4);
     gtk_box_pack_end (GTK_BOX (vbox), hbox2, FALSE, TRUE, 0);
-    gtk_widget_show (hbox2);
-      
+    gtk_widget_show(hbox2);
+
     bbox = gtk_hbutton_box_new ();
     gtk_box_pack_end (GTK_BOX (hbox2), bbox, FALSE, FALSE, 0);
-    gtk_widget_show (bbox);
+    gtk_widget_show(bbox);
 
     vbox_bbox2 = gtk_vbox_new (FALSE, 0);
     gtk_box_pack_end (GTK_BOX (hbox2), vbox_bbox2, FALSE, FALSE, 15);
-    gtk_widget_show (vbox_bbox2);
+    gtk_widget_show(vbox_bbox2);
 
-    bbox2 = gtk_hbox_new (TRUE, 5); 
+    bbox2 = gtk_hbox_new (TRUE, 5);
     gtk_box_pack_end (GTK_BOX (vbox_bbox2), bbox2, TRUE, FALSE, 0);
     gtk_widget_show(bbox2);
 
     tips_label = gtk_label_new (_(tips_array[tips_dialog_last_tip]));
     gtk_label_set_justify (GTK_LABEL (tips_label), GTK_JUSTIFY_CENTER);
     gtk_box_pack_start (GTK_BOX (hbox1), tips_label, TRUE, TRUE, 3);
-    gtk_widget_show (tips_label);
+    gtk_widget_show(tips_label);
 
-    button_prev = gtk_button_new_with_label ((_("Previous Tip")));
-    GTK_WIDGET_UNSET_FLAGS (button_prev, GTK_RECEIVES_DEFAULT);
-    g_signal_connect(button_prev, "clicked",
+    thing = gtk_button_new_with_label ((_("Previous Tip")));
+    g_signal_connect(thing, "clicked",
 			G_CALLBACK(tips_show_next),
 			(gpointer) "prev");
-    gtk_container_add (GTK_CONTAINER (bbox2), button_prev);
-    gtk_widget_show (button_prev);
+    gtk_container_add (GTK_CONTAINER (bbox2), thing);
+    gtk_widget_show(thing);
 
-    button_next = gtk_button_new_with_label ((_("Next Tip")));
-    GTK_WIDGET_UNSET_FLAGS (button_next, GTK_RECEIVES_DEFAULT);
-    g_signal_connect(button_next, "clicked",
+    thing = gtk_button_new_with_label ((_("Next Tip")));
+    g_signal_connect(thing, "clicked",
 			G_CALLBACK(tips_show_next),
 			(gpointer) "next");
-    gtk_container_add (GTK_CONTAINER (bbox2), button_next);
-    gtk_widget_show (button_next);
+    gtk_container_add (GTK_CONTAINER (bbox2), thing);
+    gtk_widget_show(thing);
 
     vbox_check = gtk_vbox_new (FALSE, 0);
     gtk_box_pack_start (GTK_BOX (hbox2), vbox_check, FALSE, TRUE, 0);
-    gtk_widget_show (vbox_check);
+    gtk_widget_show(vbox_check);
 
-    button_check = gtk_check_button_new_with_label ((_("Show tip next time")));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button_check),
+    thing = gtk_check_button_new_with_label ((_("Show tip next time")));
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (thing),
 				  tips_dialog_show_tips);
-    g_signal_connect(button_check, "toggled",
+    g_signal_connect(thing, "toggled",
 			G_CALLBACK(tips_toggle_update),
 			(gpointer) &tips_dialog_show_tips);
-    gtk_box_pack_start (GTK_BOX (vbox_check), button_check, TRUE, FALSE, 0);
-    gtk_widget_show (button_check);
-
-    return vbox;
+    gtk_box_pack_start (GTK_BOX (vbox_check), thing, TRUE, FALSE, 0);
+    gtk_widget_show(thing);
 }
 
-static int
-tips_dialog_hide (GtkWidget *widget,
-		  gpointer data)
+void
+tips_dialog_open ()
 {
-    gtk_widget_hide (tips_dialog);
+	static GtkWidget *tips_dialog = NULL;
 
-    return TRUE;
+	if(!tips_dialog) {
+		tips_dialog = gtk_dialog_new_with_buttons(_("SoundTracker Tip of the day"), GTK_WINDOW(mainwindow), 0,
+		                                          GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
+		gui_dialog_adjust(tips_dialog, GTK_RESPONSE_CLOSE);
+		g_signal_connect(tips_dialog, "response",
+		                 G_CALLBACK(gtk_widget_hide), NULL);
+		g_signal_connect(tips_dialog, "delete_event",
+		                 G_CALLBACK(gui_delete_noop), NULL);
+
+		tips_box_populate(gtk_dialog_get_content_area(GTK_DIALOG(tips_dialog)), TRUE);
+		gtk_widget_show(tips_dialog);
+	} else
+		gtk_window_present(GTK_WINDOW(tips_dialog));
 }
 
 static int
