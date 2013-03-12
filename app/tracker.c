@@ -473,8 +473,9 @@ note2string (XMNote *note,
 	buf[11] = gui_settings.tracker_line_format[8];
 	buf[12] = gui_settings.tracker_line_format[9];
     } else {
-	buf[10] = hexmap[note->fxtype];
-	buf[11] = hexmap[note->fxparam / 16];
+    /* Emulate FT2 behaviour on probably broken files */
+	buf[10] = hexmap[note->fxtype < 36 ? note->fxtype : 0];
+	buf[11] = hexmap[note->fxparam >> 4];
 	buf[12] = hexmap[note->fxparam & 15];
     }
     
