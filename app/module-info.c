@@ -132,7 +132,7 @@ modinfo_page_create (GtkNotebook *nb)
     gtk_widget_show(hbox);
 
     ilist = gui_list_in_scrolled_window(3, ititles, hbox, itypes, ialignments,
-					iexpands, GTK_SELECTION_BROWSE);
+					iexpands, GTK_SELECTION_BROWSE, TRUE, TRUE);
     list_store = GUI_GET_LIST_STORE(ilist);
     model = gui_list_freeze(ilist);
     for(i = 1; i <= 128; i++) {
@@ -148,7 +148,7 @@ modinfo_page_create (GtkNotebook *nb)
     gtk_widget_show(vbox);
 
     slist = gui_list_in_scrolled_window(2, stitles, vbox, stypes, salignments,
-					sexpands, GTK_SELECTION_BROWSE);
+					sexpands, GTK_SELECTION_BROWSE, TRUE, TRUE);
     list_store = GUI_GET_LIST_STORE(slist);
     model = gui_list_freeze(slist);
     for(i = 1; i <= 16; i++) {
@@ -168,8 +168,6 @@ modinfo_page_create (GtkNotebook *nb)
 
     gui_get_text_entry(20, songname_changed, &songname);
     gtk_box_pack_start(GTK_BOX(hbox), songname, TRUE, TRUE, 0);
-    g_signal_connect_after(songname, "changed",
-			     G_CALLBACK(songname_changed), NULL);
     gtk_widget_show(songname);
 
     hbox = gtk_hbox_new(FALSE, 4);

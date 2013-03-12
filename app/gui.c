@@ -1567,8 +1567,8 @@ gui_get_text_entry (int length,
     thing = gtk_entry_new();
     gtk_entry_set_max_length(GTK_ENTRY(thing), length);
 
-    g_signal_connect_after(GTK_EDITABLE(thing), "insert-text",
-			     G_CALLBACK(changedfunc), NULL);
+    g_signal_connect(thing, "changed",
+                     G_CALLBACK(changedfunc), NULL);
 
     *widget = thing;
 }
