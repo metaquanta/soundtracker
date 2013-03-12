@@ -1,7 +1,13 @@
+2013-02-21  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/clavier.[ch]: Labels drawing is ported to Pango functions,
+	labels placement is fixed;
+	* app/gui.c, app/module-info.c: Fixed small bug with double calling
+	songname_changed() function.
+
 2013-02-20  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/cheat-sheet.c, app/sample-editor.[ch], app/gui-subs.[ch]: Escape
 	closes cheat-sheet and sampling windows + related code cleanups;
-	* app/menubar.c, app/track-editor.[ch], soundtracker.xml:
+	* app/menubar.c, app/gui.c, app/track-editor.[ch], soundtracker.xml:
 	Right-click menu of track editor becomes working properly;
 	* app/audioconfig.c, app/gui.c, app/gui-settings.c, app/gui-subs.[ch],
 	app/keys.c, app/main.c, app/midi-settings-09x.c, app/sample-editor.c,

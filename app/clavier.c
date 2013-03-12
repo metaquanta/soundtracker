@@ -27,7 +27,7 @@
 #include <gdk/gdkkeysyms.h>
 #include "clavier.h"
 
-#define XFONTNAME "5x8"
+#define XFONTNAME "Fixed 8"
 
 static const int default_colors[] = {
     255, 0, 0,
@@ -170,15 +170,17 @@ clavier_class_init (ClavierClass *class)
 static void
 clavier_init (Clavier *clavier)
 {
-  clavier->font = gdk_font_load(XFONTNAME);
-  if(!clavier->font) {
-      fprintf(stderr, "Hmpf. Strange X installation. You don't have the %s font?\n", XFONTNAME);
-      clavier->font = gdk_font_load("fixed");
-  }
-  g_assert(clavier->font != NULL);
+	PangoFontDescription *desc;
 
-  clavier->fonth = clavier->font->ascent + clavier->font->descent;
-  clavier->fontw = gdk_string_width(clavier->font, "X"); /* let's just hope this is a non-proportional font */
+	clavier->context = gtk_widget_create_pango_context(GTK_WIDGET(clavier));
+	clavier->layout = pango_layout_new(clavier->context);
+	desc = pango_font_description_from_string("Fixed 8");
+	g_assert(desc != NULL);
+	pango_layout_set_font_description(clavier->layout, desc);
+	pango_font_description_free(desc);
+
+	pango_layout_set_text(clavier->layout, "0", -1); /* let's just hope this is a non-proportional font */
+	pango_layout_get_pixel_size(clavier->layout, &clavier->fontw, &clavier->fonth);
   clavier->keylabels = NULL;
 
   clavier->type = CLAVIER_TYPE_SEQUENCER;
@@ -506,19 +508,27 @@ static void
 clavier_draw_label (Clavier *clavier,
 		    int keynum)
 {
+	static gint8 prev_label = -1;
+
     ClavierKeyInfo *this = &(clavier->key_info[keynum]);
     GtkWidget *widget = GTK_WIDGET(clavier);
     gchar string[10] = "";
 
-    if(clavier->keylabels) {
-	sprintf(string, "%x", clavier->keylabels[keynum]);
-    }
+	if(clavier->keylabels) {
+		gint8 label = clavier->keylabels[keynum];
 
-    if(clavier->key_info[keynum].is_black) {
-	gdk_draw_string(widget->window, clavier->font, clavier->fontbgc, this->upper_right_x - 6, 10, string);
-    } else {
-	gdk_draw_string(widget->window, clavier->font, clavier->fontwgc, this->upper_right_x - 6, 20, string);
-    }
+		if(label != prev_label) {
+			sprintf(string, "%x", clavier->keylabels[keynum]);
+			pango_layout_set_text(clavier->layout, string, -1);
+			prev_label = label;
+		}
+
+		if(clavier->key_info[keynum].is_black) {
+			gdk_draw_layout(widget->window, clavier->fontbgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 10, clavier->layout);
+		} else {
+			gdk_draw_layout(widget->window, clavier->fontwgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 20, clavier->layout);
+		}
+	}
 }
 
 /* main drawing function
