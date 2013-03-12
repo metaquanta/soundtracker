@@ -70,9 +70,9 @@ void      track_editor_insert_track        (GtkWidget *w, Tracker *t);
 void      track_editor_kill_notes_track    (GtkWidget *w, Tracker *t);
 void      track_editor_mark_selection      (Tracker *t);
 void      track_editor_clear_mark_selection(GtkWidget *w, Tracker *t);
-void      track_editor_copy_selection      (Tracker *t);
-void      track_editor_cut_selection       (Tracker *t);
-void      track_editor_paste_selection     (Tracker *t);
+void      track_editor_copy_selection      (GtkWidget *w, Tracker *t);
+void      track_editor_cut_selection       (GtkWidget *w, Tracker *t);
+void      track_editor_paste_selection     (GtkWidget *w, Tracker *t);
 
 void      track_editor_interpolate_fx      (GtkWidget *w, Tracker *t);
 

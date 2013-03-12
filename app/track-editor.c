@@ -1104,14 +1104,14 @@ track_editor_copy_cut_selection_common (Tracker *t,
 }
 
 void
-track_editor_copy_selection (Tracker *t)
+track_editor_copy_selection (GtkWidget *w, Tracker *t)
 {
     track_editor_copy_cut_selection_common(t, FALSE);
     menubar_block_mode_set(FALSE);
 }
 
 void
-track_editor_cut_selection (Tracker *t)
+track_editor_cut_selection (GtkWidget *w, Tracker *t)
 {
     track_editor_copy_cut_selection_common(t, TRUE);
     menubar_block_mode_set(FALSE);
@@ -1120,7 +1120,7 @@ track_editor_cut_selection (Tracker *t)
 }
 
 void
-track_editor_paste_selection (Tracker *t)
+track_editor_paste_selection (GtkWidget *w, Tracker *t)
 {
     int i;
 

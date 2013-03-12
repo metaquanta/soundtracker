@@ -155,7 +155,7 @@ menubar_handle_cutcopypaste (GtkWidget *p, gpointer a)
     case 0:		//Cut
 	switch(notebook_current_page){
 	case NOTEBOOK_PAGE_TRACKER:
-	    track_editor_cut_selection(t);
+	    track_editor_cut_selection(NULL, t);
 	    break;
 	case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
 	case NOTEBOOK_PAGE_MODULE_INFO:
@@ -174,7 +174,7 @@ menubar_handle_cutcopypaste (GtkWidget *p, gpointer a)
     case 1:		//Copy
 	switch(notebook_current_page){
 	case NOTEBOOK_PAGE_TRACKER:
-	    track_editor_copy_selection(t);
+	    track_editor_copy_selection(NULL, t);
 	    break;
 	case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
 	case NOTEBOOK_PAGE_MODULE_INFO:
@@ -188,7 +188,7 @@ menubar_handle_cutcopypaste (GtkWidget *p, gpointer a)
     case 2:		//Paste
 	switch(notebook_current_page){
 	case NOTEBOOK_PAGE_TRACKER:
-	    track_editor_paste_selection(t);
+	    track_editor_paste_selection(NULL, t);
 	    break;
 	case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
 	case NOTEBOOK_PAGE_MODULE_INFO:
