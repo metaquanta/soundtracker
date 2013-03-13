@@ -44,13 +44,13 @@ typedef struct st_driver {
     // get pointer to configuration widget
     GtkWidget * (*getwidget)     (void *d);
 
-    // load configuration from provided prefs_node
+    // load configuration from provided preferences section
     // can use get/put the functions from preferences.h
-    gboolean    (*loadsettings)  (void *d, prefs_node *f);
+    gboolean    (*loadsettings)  (void *d, const gchar *section);
 
-    // save configuration to specified prefs_node
+    // save configuration to specified preferences section
     // can use get/put the functions from preferences.h
-    gboolean    (*savesettings)  (void *d, prefs_node *f);
+    gboolean    (*savesettings)  (void *d, const gchar *section);
 } st_driver;
 
 #endif /* _ST_DRIVER_H */

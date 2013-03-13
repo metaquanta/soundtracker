@@ -45,7 +45,7 @@ keys_get_key_meaning (guint32 keysym,
 void
 keys_dialog (void);
 
-int
+void
 keys_save_config (void);
 
 gboolean

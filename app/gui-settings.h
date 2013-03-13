@@ -24,11 +24,10 @@
 #define _ST_GUI_SETTINGS_H
 
 #include <gtk/gtk.h>
-#include "tracker.h" /* To know the number of colors */
 
 typedef struct gui_prefs {
-    gchar tracker_line_format[11];
-    gchar tracker_font[256];
+    gchar *tracker_line_format;
+    gchar *tracker_font;
     gboolean tracker_hexmode;
     gboolean tracker_upcase;
     gboolean highlight_rows;
@@ -63,32 +62,26 @@ typedef struct gui_prefs {
     gboolean store_perm;
     guint32 permanent_channels;
 
-    gchar loadmod_path[128];
-    gchar savemod_path[128];
-    gchar savemodaswav_path[128];
-    gchar savesongasxm_path[128];
-    gchar loadsmpl_path[128];
-    gchar savesmpl_path[128];
-    gchar loadinstr_path[128];
-    gchar saveinstr_path[128];
-    gchar loadpat_path[128];
-    gchar savepat_path[128];
+    gchar *loadmod_path;
+    gchar *savemod_path;
+    gchar *savemodaswav_path;
+    gchar *savesongasxm_path;
+    gchar *loadsmpl_path;
+    gchar *savesmpl_path;
+    gchar *loadinstr_path;
+    gchar *saveinstr_path;
+    gchar *loadpat_path;
+    gchar *savepat_path;
 
-    gchar rm_path[128];
-    gchar unzip_path[128];
-    gchar lha_path[128];
-    gchar gz_path[128];
-    gchar bz2_path[128];
+    gchar *rm_path;
+    gchar *unzip_path;
+    gchar *lha_path;
+    gchar *gz_path;
+    gchar *bz2_path;
 
 } gui_prefs;
 
-typedef struct _gui_prefs_colors {
-    gboolean ok;
-    GdkColor val[TRACKERCOL_LAST];
-} gui_prefs_colors;
-
 extern gui_prefs gui_settings;
-extern gui_prefs_colors gui_settings_colors;
 
 void        gui_settings_dialog                   (void);
 

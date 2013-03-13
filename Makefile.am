@@ -11,6 +11,7 @@ EXTRA_DIST = config.rpath m4/ChangeLog  TODO FAQ ABOUT-NLS soundtracker.spec \
 	soundtracker.1
 
 man_MANS = soundtracker.1
+dist_bin_SCRIPTS = soundtracker_convert_config
 
 #util_DATA = soundtracker.desktop
 #utildir = $(datadir)/gnome/apps/Multimedia

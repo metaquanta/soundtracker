@@ -422,21 +422,21 @@ jack_driver_getwidget (void *dp)
 }
 
 static gboolean
-jack_driver_loadsettings (void *dp, prefs_node *f)
+jack_driver_loadsettings (void *dp, const gchar *f)
 {
 	jack_driver *d = dp;
 	// prefs_get_string (f, "jack_client_name", d->client_name);
-	prefs_get_int (f, "jack-declick", &(d->do_declick));
+	d->do_declick = prefs_get_bool (f, "jack-declick", TRUE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(d->declick_check), d->do_declick);
 	return TRUE;
 }
 
 static gboolean
-jack_driver_savesettings (void *dp, prefs_node *f)
+jack_driver_savesettings (void *dp, const gchar *f)
 {
 	jack_driver *d = dp;
 	//	prefs_put_string (f, "jack-client_name", d->client_name);
-	prefs_put_int (f, "jack-declick", d->do_declick);
+	prefs_put_bool (f, "jack-declick", d->do_declick);
 	return TRUE;
 }
 
@@ -461,8 +461,8 @@ st_io_driver driver_out_jack = {
       jack_driver_open,            // open the driver
       jack_driver_release,         // close the driver, release audio
       jack_driver_getwidget,       // get pointer to configuration widget
-      jack_driver_loadsettings,    // load configuration from provided prefs_node
-      jack_driver_savesettings,    // save configuration to specified prefs_node
+      jack_driver_loadsettings,    // load configuration from provided preferences section
+      jack_driver_savesettings,    // save configuration to specified preferences section
     },
     jack_driver_get_play_time,     // get time offset since first sound output
     jack_driver_get_play_rate

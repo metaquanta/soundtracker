@@ -2,6 +2,7 @@
 /*
  * The Real SoundTracker - Preferences handling (header)
  *
+ * Copyright (C) 2013 Yury Alyaev
  * Copyright (C) 1998-2001 Michael Krause
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,52 +23,73 @@
 #ifndef _ST_PREFERENCES_H
 #define _ST_PREFERENCES_H
 
-#include <stdio.h>
+#include <glib.h>
+#include <gdk/gdkcolor.h>
 
-#include <gtk/gtk.h>
-
-void           prefs_page_handle_keys         (int shift,
-					       int ctrl,
-					       int alt,
-					       guint32 keyval);
-
-int            prefs_fragsize_log2            (int fragsize);
-
-typedef struct prefs_node prefs_node;
-
-prefs_node *   prefs_open_read                (const char *name);
-prefs_node *   prefs_open_write               (const char *name);
-void           prefs_close                    (prefs_node *f);
-
-// Use the following function if you need direct access to the preferences file
-// (only directly after opening)
-FILE *         prefs_get_file_pointer         (prefs_node *p);
+void           prefs_init                     (void);
+void           prefs_save                     (void);
+void           prefs_close                    (void);
 
 // Returns the file location of a configuration node
-char *         prefs_get_prefsdir             (void);
-const char *   prefs_get_filename             (const char *name);
+gchar *        prefs_get_prefsdir             (void);
+gchar *        prefs_get_filename             (const gchar *name);
 
-void           prefs_put_int                  (prefs_node *f,
-					       const char *key,
-					       int value);
-void           prefs_put_color                (prefs_node *f,
-					       const char *key,
-					       GdkColor value);
-void           prefs_put_string               (prefs_node *f,
-					       const char *key,
-					       const char *value);
-gboolean       prefs_get_int                  (prefs_node *f,
-					       const char *key,
-					       int *dest);
-gboolean       prefs_get_color                (prefs_node *f,
-					       const char *key,
-					       GdkColor *dest);
-gboolean       prefs_get_string               (prefs_node *f,
-					       const char *key,
-					       char *dest);
-gboolean       prefs_get_str_array	      (prefs_node *pn,
+gboolean
+               prefs_remove_key               (const gchar *section,
+					       const gchar *key);
+
+void           prefs_put_int                  (const gchar *section,
 					       const gchar *key,
-					       gboolean (* action_func)(gchar *string, gpointer data),
-					       gpointer data);
+					       const gint value);
+void           prefs_put_bool                 (const gchar *section,
+					       const gchar *key,
+					       const gboolean value);
+void           prefs_put_color                (const gchar *section,
+					       const gchar *key,
+					       const GdkColor value);
+void           prefs_put_string               (const gchar *section,
+					       const gchar *key,
+					       const gchar *value);
+/* Currently is not needed
+void           prefs_put_str_array            (const gchar *section,
+					       const gchar *key,
+					       const gchar * const *value,
+					       gsize length);
+*/
+void           prefs_put_int_array            (const gchar *section,
+					       const gchar *key,
+					       gint *value,
+					       gsize length);
+void           prefs_put_bool_array           (const gchar *section,
+					       const gchar *key,
+					       gboolean *value,
+					       gsize length);
+gint           prefs_get_int                  (const gchar *section,
+					       const gchar *key,
+					       const gint deflt);
+gboolean       prefs_get_bool                 (const gchar *section,
+					       const gchar *key,
+					       const gboolean deflt);
+GdkColor       prefs_get_color                (const gchar *section,
+					       const gchar *key,
+					       const GdkColor deflt);
+gchar*         prefs_get_string               (const gchar *section,
+					       const gchar *key,
+					       const gchar *deflt);
+
+/* No default value, return NULL on failure */
+gchar**        prefs_get_str_array            (const gchar *section,
+					       const gchar *key,
+					       gsize *length);
+gint*          prefs_get_int_array            (const gchar *section,
+					       const gchar *key,
+					       gsize *length);
+gboolean*      prefs_get_bool_array           (const gchar *section,
+					       const gchar *key,
+					       gsize *length);
+/* No default value, return 0 on failure */
+gsize          prefs_get_pairs                (const gchar *section,
+					       gchar ***keys,
+					       gchar ***values);
 
 #endif /* _ST_PREFERENCES_H */

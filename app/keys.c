@@ -52,6 +52,7 @@
 enum { BLACK, WHITE };
 
 #define NONE_TEXT _("<none>")
+#define SECTION "keyboard"
 
 static GtkWidget *cw_list,
     *cw_explabel,
@@ -678,94 +679,61 @@ keys_dialog (void)
 }
 
 static void
-chop (gchar *str)
-{
-    str[strlen(str)-1] = 0;
-}
-
-static int
 keys_load_config (void)
 {
-    char buf[256];
-    FILE *f;
-    prefs_node *p;
-    int r = 0;
-    int g;
+    gchar **titles = NULL, **values = NULL;
+    gsize length, i;
+    guint g;
     keys_key *k;
     int keysym, keycode, mod;
+    gboolean processed;
 
-    p = prefs_open_read("keyboard");
-    if(!p) {
-	return 0;
-    }
-
-    f = prefs_get_file_pointer(p);
-
-    // Oh, oh, oh my god... goto is sooo evil :)
-    while(!feof(f)) {
-	clearerr(f);
-	if(!fgets(buf, 256, f)) {
-	    if(ferror(f)) {
-		goto err;
-	    } else break;
-	}
-	chop(buf);
-	for(g = 0; g < NUM_KEY_GROUPS; g++) {
-	    for(k = groups[g].keys; k->title; k++) {
-		if(!strcmp(k->title, buf)) {
-		    if(!fgets(buf, 256, f))
-			goto err;
-		    chop(buf);
-		    if(keys_decode_assignment(buf, &keysym, &keycode, &mod)) {
-			k->xkeycode = keycode;
-			k->xkeysym = keysym;
-			k->modifiers = mod;
-		    } else {
-			fprintf(stderr, "*** Can't find key '%s'\n", buf);
-		    }
-    		    goto break2;
+	length = prefs_get_pairs(SECTION, &titles, &values);
+	for(i = 0; i < length; i++) {
+		processed = FALSE;
+		for(g = 0; g < NUM_KEY_GROUPS && !processed; g++) {
+			for(k = groups[g].keys; k->title; k++) {
+				if(!strcmp(k->title, titles[i])) {
+					if(keys_decode_assignment(values[i], &keysym, &keycode, &mod)) {
+						k->xkeycode = keycode;
+						k->xkeysym = keysym;
+						k->modifiers = mod;
+					} else {
+						fprintf(stderr, "*** Can't find key '%s'; removed\n", values[i]);
+						prefs_remove_key(SECTION, titles[i]);
+					}
+					processed = TRUE;
+					break;
+				}
+			}
 		}
-	    }
+/* Leave keys with unknown functions as is, maybe this config is sent us from future :-)
+		if(g == NUM_KEY_GROUPS && !k->title) {
+			gui_warning_dialog(N_("The keyboard configuration file is defective.\nPlease use the Keyboard Configuration dialog."));
+		}
+*/
 	}
-	gui_warning_dialog(N_("The keyboard configuration file is defective.\nPlease use the Keyboard Configuration dialog."));
-	return 0;
-      break2:
-	continue; /* nonsense, but the easiest way to avoid gcc 3.2+ warnings */
-    }
-    r = 1;
 
-  err:
-    prefs_close(p);
-    return r;
+	g_strfreev(titles);
+	g_strfreev(values);
+	return;
 }
 
-int
+void
 keys_save_config (void)
 {
-    char buf[256];
-    FILE *f;
-    prefs_node *p;
-    int g;
-    keys_key *k;
+	gchar buf[256];
+	guint g;
+	keys_key *k;
 
-    p = prefs_open_write("keyboard");
-    if(!p) {
-	return 0;
-    }
-
-    f = prefs_get_file_pointer(p);
-
-    for(g = 0; g < NUM_KEY_GROUPS; g++) {
-	for(k = groups[g].keys; k->title; k++) {
-	    if(k->xkeysym != 0) {
-		keys_encode_assignment(buf, k->modifiers, k->xkeysym);
-		fprintf(f, "%s\n%s\n", k->title, buf);
-	    }
+	for(g = 0; g < NUM_KEY_GROUPS; g++) {
+		for(k = groups[g].keys; k->title; k++) {
+			if(k->xkeysym != 0) {
+				keys_encode_assignment(buf, k->modifiers, k->xkeysym);
+				prefs_put_string(SECTION, k->title, buf);
+			}
+		}
 	}
-    }
-
-    prefs_close(p);
-    return 1;
 }
 
 static int
@@ -1014,7 +982,7 @@ keys_init (void)
     keys_generate_channel_explanations(keys3 + 3, 32);
     keys3[sizeof(keys3)/sizeof(keys3[0]) - 1].title = NULL;
 
-    if(!keys_load_config()) {
+	/* First try automatic config to obtain defaults and than overwrite with user-defined values */
 	if(!keys_try_automatic_config('e', -2, 12, 12, WHITE, keys1)
 	   || !keys_try_automatic_config('x', -1, 10, 0, WHITE, keys2)
 	   || !keys_try_automatic_config('2', 0, 8, 13, BLACK, keys1 + 1)
@@ -1027,8 +995,8 @@ keys_init (void)
 	    gui_warning_dialog(N_("Automatic key configuration unsuccessful.\nPlease use the Keyboard Configuration dialog\n"
 				 "in the Settings menu."));
 	}
-    }
-    
+	keys_load_config();
+
     return 1;
 }
 
@@ -1099,10 +1067,9 @@ keys_dialog (void)
 {
 }
 
-int
+void
 keys_save_config (void)
 {
-    return 1;
 }
 
 int

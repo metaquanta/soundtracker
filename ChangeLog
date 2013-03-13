@@ -1,3 +1,17 @@
+2013-03-11  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/audioconfig.c, app/driver.h, app/gui.[ch], app/gui-settings.[ch],
+	app/gui-subs.c, app/instrument-editor.c, app/keys.[ch], app/main.c,
+	app/menubar.c, app/midi-settings-09x.c, app/preferences.[ch],
+	app/sample-editor.c, app/tips-dialog.c, app/tracker.[ch],
+	app/track-editor.c app/tracker-settings.c, app/drivers/alsa1x-output.c,
+	app/drivers/dsound-output.c, app/drivers/esd-output.c,
+	app/drivers/file-output.c, app/drivers/jack-output.c,
+	app/drivers/oss-input.c, app/drivers/oss-output.c, app/drivers/sdl-output.c,
+	app/drivers/sun-input.c, app/drivers/sun-output.c: Preferences are ported to
+	Glib stuff; now a single ~/.soundtracker/config file is used instead of
+	bunch of small files. Automatic conversion from ST-gtk1 configuration is
+	provided using soundtracker_convert_config script. Fixed longh paths storing.
+
 2013-02-21  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/clavier.[ch]: Labels drawing is ported to Pango functions,
 	labels placement is fixed;
@@ -7,7 +21,7 @@
 2013-02-20  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/cheat-sheet.c, app/sample-editor.[ch], app/gui-subs.[ch]: Escape
 	closes cheat-sheet and sampling windows + related code cleanups;
-	* app/menubar.c, app/gui.c, app/track-editor.[ch], soundtracker.xml:
+	* app/gui.c, app/menubar.c, app/track-editor.[ch], soundtracker.xml:
 	Right-click menu of track editor becomes working properly;
 	* app/audioconfig.c, app/gui.c, app/gui-settings.c, app/gui-subs.[ch],
 	app/keys.c, app/main.c, app/midi-settings-09x.c, app/sample-editor.c,

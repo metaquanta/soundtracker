@@ -181,7 +181,10 @@ trackersettings_apply_font (TrackerSettings *ts)
     if(sel != -1) {
     gchar *font = g_list_nth_data(trackersettings_fontlist, sel);
 	tracker_set_font(ts->tracker, font);
-	strcpy(gui_settings.tracker_font, font);
+	if(strcmp(gui_settings.tracker_font, font)) {
+		g_free(gui_settings.tracker_font);
+		gui_settings.tracker_font = g_strdup(font);
+	}
     }
 }
 
@@ -340,27 +343,14 @@ trackersettings_set_tracker_widget (TrackerSettings *ts,
 static void
 trackersettings_read_fontlist (void)
 {
-    char buf[256];
-    FILE *f;
-    prefs_node *p;
+	gchar **fontlist; /* Don't g_strfreev() it because strings are used directly in the font list */
+	gsize length, i;
 
-    trackersettings_fontlist = NULL;
+	trackersettings_fontlist = NULL;
 
-    p = prefs_open_read("tracker-fonts");
-    if(p) {
-	f = prefs_get_file_pointer(p);
-	while(!feof(f)) {
-	    buf[0] = 0;
-	    if(fgets(buf, 255, f)) {//!!! Error handling
-		    buf[255] = 0;
-		    if(strlen(buf) > 0) {
-			buf[strlen(buf) - 1] = 0;
-			trackersettings_fontlist = g_list_append(trackersettings_fontlist, g_strdup(buf));
-		    }
-	    }
-	}
-	prefs_close(p);
-    }
+	fontlist = prefs_get_str_array("settings", "fonts", &length);
+	for(i = 0; i < length; i++)
+		trackersettings_fontlist = g_list_append(trackersettings_fontlist, fontlist[i]);
 
     if(g_list_length(trackersettings_fontlist) == 0) {
 	trackersettings_fontlist = g_list_append(trackersettings_fontlist, "fixed");
@@ -370,22 +360,16 @@ trackersettings_read_fontlist (void)
 void
 trackersettings_write_settings (void)
 {
-    FILE *f;
-    prefs_node *p;
     GList *l;
+    GString *tmp = g_string_new("");
 
-    p = prefs_open_write("tracker-fonts");
-    if(!p) {
-	return;
-    }
+	/* It's simplier here to combine fonts string ourselves and put is as a single string rather than an array */
+	for(l = trackersettings_fontlist; l != NULL; l = l->next) {
+		g_string_append_printf(tmp, "%s;", (gchar*)l->data);
+	}
 
-    f = prefs_get_file_pointer(p);
-
-    for(l = trackersettings_fontlist; l != NULL; l = l->next) {
-	fprintf(f, "%s\n", (gchar*)l->data);
-    }
-
-    prefs_close(p);
+	prefs_put_string("settings", "fonts", tmp->str);
+	g_string_free(tmp, TRUE);
 }
 
 static void

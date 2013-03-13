@@ -2,6 +2,7 @@
 /*
  * The Real SoundTracker - Preferences handling
  *
+ * Copyright (C) 2013 Yury Alyaev
  * Copyright (C) 1998-2001 Michael Krause
  * Copyright (C) 2000 Fabian Giesen
  *
@@ -24,321 +25,415 @@
 
 #if !defined(_WIN32)
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <errno.h>
-
 #include <sys/stat.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <pwd.h>
-#include <sys/types.h>
 
-#include <glib.h>
-#include <gdk/gdkcolor.h>
 #include <glib/gi18n.h>
 
 #include "gui-subs.h"
 #include "preferences.h"
-#include "scope-group.h"
-#include "track-editor.h"
-#include "errors.h"
 
-struct prefs_node {
-    gboolean writemode;
-    FILE *file;
-};
+static GKeyFile *kf = NULL;
+static gchar *config;
 
-char *
+gchar *
 prefs_get_prefsdir (void)
 {
-    static char xdir[128];
-    struct passwd *pw;
+	static gchar xdir[PATH_MAX]; /* Assume that $HOME is sane */
+	const gchar *homedir = g_getenv("HOME");
 
-    pw = getpwuid(getuid());
-    sprintf(xdir, "%s/.soundtracker2", pw->pw_dir);
-    return(xdir);
+	if(!homedir)
+		homedir = g_get_home_dir();
+	sprintf(xdir, "%s/.soundtracker", homedir);
+	return(xdir);
 }
 
 static void
 prefs_check_prefs_dir (void)
 {
     struct stat st;
-    char *dir = prefs_get_prefsdir();
+    gchar *dir = prefs_get_prefsdir();
 
     if(stat(dir, &st) < 0) {
 	mkdir(dir, S_IRUSR | S_IWUSR | S_IXUSR);
     strcat(dir, "/tmp");
 	mkdir(dir, S_IRUSR | S_IWUSR | S_IXUSR);
-	error_warning(_("A directory called '.soundtracker2' has been created in your\nhome directory to store configuration files.\n"));
+	gui_warning_dialog("A directory called '.soundtracker' has been created in your\nhome directory to store configuration files.\n");
     }
 }
 
-const char *
-prefs_get_filename (const char *name)
+gchar *
+prefs_get_filename (const gchar *name)
 {
-    static char buf[256];
+	gchar *buf;
 
-    prefs_check_prefs_dir();
-    sprintf(buf, "%s/%s", prefs_get_prefsdir(), name);
-    return buf;
-}
-
-prefs_node *
-prefs_open_read (const char *name)
-{
-    prefs_node *p = g_new(prefs_node, 1);
-    char buf[256];
-
-    if(p) {
-	p->writemode = FALSE;
-	sprintf(buf, "%s/%s", prefs_get_prefsdir(), name);
-	p->file = fopen(buf, "rb");
-	if(p->file) {
-	    return p;
-	}
-	g_free(p);
-    }
-
-    return NULL;
-}
-
-prefs_node *
-prefs_open_write (const char *name)
-{
-    prefs_node *p = g_new(prefs_node, 1);
-    char buf[256];
-
-    if(p) {
-	p->writemode = TRUE;
 	prefs_check_prefs_dir();
-	sprintf(buf, "%s/%s", prefs_get_prefsdir(), name);
-	p->file = fopen(buf, "wb");
-	if(p->file) {
-	    return p;
-	}
-	g_free(p);
-    }
-
-    return NULL;
+	buf = g_strdup_printf("%s/%s", prefs_get_prefsdir(), name);
+	return buf;
 }
 
 void
-prefs_close (prefs_node *f)
+prefs_init (void)
 {
-    if(f) {
-	fclose(f->file);
-	g_free(f);
-    }
-}
+	GError *error;
 
-FILE *
-prefs_get_file_pointer (prefs_node *p)
-{
-    if(p) {
-	return p->file;
-    } else {
-	return NULL;
-    }
-}
+	config = prefs_get_filename("config");
+	kf = g_key_file_new();
 
-static gboolean
-prefs_get_line (FILE *f,
-		const char *key,
-		char *destbuf,
-		int destbuflen)
-{
-    int i;
-    char readbuf[1024], *p;
+	/* Don't panic, this loop will be executed no more than 2 times */
+	while(1) {
+		error = NULL;
+		g_key_file_load_from_file(kf, config, G_KEY_FILE_NONE, &error);
+		if(error) {
+			if(error->code == G_FILE_ERROR_NOENT) {
+				gchar *buf = prefs_get_filename("settings"); /* maybe ST-gtk1 configs exist */
 
-    for(i = 0; i < 2; i++) {
-	// Linear search
-	while(!feof(f)) {
-		errno = 0;
-		if(!fgets(readbuf, 1024, f) && errno) {
-			gchar *buf;
+				if(g_file_test(buf, G_FILE_TEST_EXISTS)) {
+					if(gui_ok_cancel_modal(NULL, _("Would you like to import settings from old version of Soundtracker?"))) {
+						GError *err = NULL;
 
-			buf = g_strdup_printf(_("Error reading file: %s"), strerror(errno));
-			gui_error_dialog(buf);
-			g_free(buf);
+						if(!g_spawn_command_line_sync("soundtracker_convert_config -f", NULL, NULL, NULL, &err)) {
+							gchar *buff = g_strdup_printf(_("An error is occured during converting config:\n%s"), error->message);
 
-			return FALSE;
+							gui_error_dialog(buff);
+							g_free(buff);
+							g_error_free(err);
+						} else {
+							g_free(buf);
+							g_error_free(error);
+							continue; /* Try to load config after the conversion */
+						}
+					}
+				}
+				g_free(buf);
+			} else {
+				gchar *buf = g_strdup_printf(_("An error is occured during reading or parsing config:\n%s"), error->message);
+
+				gui_error_dialog(buf);
+				g_free(buf);
+			}
+			g_error_free(error);
 		}
-	    p = strchr(readbuf, '=');
-	    if(!p || p == readbuf || p[1] == 0) {
-		return 0;
-	    }
-	    p[-1] = 0;
-	    if(!strcmp(readbuf, key)) {
-		strncpy(destbuf, p + 2, destbuflen - 1);
-		destbuf[destbuflen - 1] = 0;
+		/* The second attempt is not required */
+		break;
+	}
+}
 
-		if(strlen(destbuf) > 0 && destbuf[strlen(destbuf) - 1] == '\n')
-		    destbuf[strlen(destbuf) - 1] = 0;
+void
+prefs_save (void)
+{
+	gchar *contents;
+	gsize length;
+	GError *error = NULL;
 
-		return 1;
-	    }
+	g_assert(kf != NULL);
+
+	contents = g_key_file_to_data(kf, &length, NULL);
+	g_file_set_contents(config, contents, length, &error);
+	if(error) {
+		gchar *buf = g_strdup_printf(_("An error is occured during saving config:\n%s"), error->message);
+
+		gui_error_dialog(buf);
+		g_free(buf);
+		g_error_free(error);
 	}
 
-	// Start from the beginning
-	fseek(f, 0, SEEK_SET);
-    }
+	g_free(contents);
+}
 
-    return 0;
+void
+prefs_close (void)
+{
+	g_assert(kf != NULL);
+
+	g_key_file_free(kf);
+	kf = NULL;
+	g_free(config);
 }
 
 gboolean
-prefs_get_str_array (prefs_node *pn,
+prefs_remove_key (const gchar *section, const gchar *key)
+{
+	g_assert(kf != NULL);
+
+	return g_key_file_remove_key(kf, section, key, NULL);
+}
+
+
+gchar**
+prefs_get_str_array (const gchar *section,
 		     const gchar *key,
-		     gboolean (* action_func)(gchar *string, gpointer data),
-		     gpointer data)
+		     gsize *length)
 {
-    FILE *f;
-    gboolean stop_condition = FALSE;
-    gchar readbuf[1024], *p, *dest, *end;
+	gchar **ret;
+	GError *error = NULL;
 
-    if(pn->writemode)
-	return FALSE;
-    f = pn->file;
-    fseek(f, 0, SEEK_SET);
+	g_assert(kf != NULL);
 
-	while(!feof(f) && !stop_condition) {
-		errno = 0;
-		if(!fgets(readbuf, 1024, f) && errno) {
-			gchar *buf;
-
-			buf = g_strdup_printf(_("Error reading file: %s"), strerror(errno));
-			gui_error_dialog(buf);
-			g_free(buf);
-
-			return FALSE;
-		}
-		p = strchr(readbuf, '=');
-		if(!p || p == readbuf || p[1] == 0) {
-			return FALSE;
-		}
-		p[-1] = 0;
-		if(!g_ascii_strcasecmp(readbuf, key)) {
-			end = strchr(p + 2, '\n');
-			end[0] = 0;
-			dest = g_strdup(p + 2);
-			stop_condition = (* action_func)(dest, data);
-		}    
+	ret = g_key_file_get_string_list(kf, section, key, length, &error);
+	if(error) {
+		ret = NULL;
+		g_error_free(error);
 	}
 
-    return TRUE;    
+	return ret;
+}
+
+gint*
+prefs_get_int_array (const gchar *section,
+		     const gchar *key,
+		     gsize *length)
+{
+	gint *ret;
+	GError *error = NULL;
+
+	g_assert(kf != NULL);
+
+	ret = g_key_file_get_integer_list(kf, section, key, length, &error);
+	if(error) {
+		ret = NULL;
+		g_error_free(error);
+	}
+
+	return ret;
+}
+
+gboolean*
+prefs_get_bool_array (const gchar *section,
+		     const gchar *key,
+		     gsize *length)
+{
+	gboolean *ret;
+	GError *error = NULL;
+
+	g_assert(kf != NULL);
+
+	ret = g_key_file_get_boolean_list(kf, section, key, length, &error);//!!! Test missing
+	if(error) {
+		g_error_free(error);
+		error = NULL;
+		/* Try to read values as integer list; maybe the config is from elder version */
+		ret = (gboolean *)g_key_file_get_integer_list(kf, section, key, length, &error);
+		if(error) {
+			ret = NULL;
+			g_error_free(error);
+		}
+	}
+
+	return ret;
+}
+
+gint
+prefs_get_int (const gchar *section,
+		     const gchar *key,
+		     const gint dflt)
+{
+	gint retval;
+
+	GError *error = NULL;
+
+	g_assert(kf != NULL);
+
+	retval = g_key_file_get_integer(kf, section, key, &error);
+	if(error) {
+		retval = dflt;
+		g_error_free(error);
+	}
+
+	return retval;
 }
 
 gboolean
-prefs_get_int (prefs_node *pn,
-	       const char *key,
-	       int *dest)
+prefs_get_bool (const gchar *section,
+		     const gchar *key,
+		     const gboolean dflt)
 {
-    char buf[21];
-    FILE *f;
+	gboolean retval;
 
-    if(pn->writemode)
-	return FALSE;
-    f = pn->file;
+	GError *error = NULL;
 
-    if(prefs_get_line(f, key, buf, 20)) {
-	buf[20] = 0;
-	*dest = atoi(buf);
-	return 1;
-    }
+	g_assert(kf != NULL);
 
-    return 0;
+	retval = g_key_file_get_boolean(kf, section, key, &error);
+	if(error) {
+		g_error_free(error);
+		error = NULL;
+		/* Try to read values as integer; maybe the config is from elder version */
+		retval = g_key_file_get_integer(kf, section, key, &error);
+		if(error) {
+			retval = dflt;
+			g_error_free(error);
+		}
+	}
+
+	return retval;
 }
 
-gboolean
-prefs_get_color (prefs_node *pn,
-	         const char *key,
-	         GdkColor *dest)
+GdkColor
+prefs_get_color (const gchar *section,
+                 const gchar *key,
+                 const GdkColor dflt)
 {
-    char buf[21];
-    FILE *f;
-    gchar **components;
+	gint *retval;
+	GdkColor ret;
+	gsize size;
 
-    if(pn->writemode)
-	return FALSE;
-    f = pn->file;
+	GError *error = NULL;
 
-    if(prefs_get_line(f, key, buf, 20)) {
-	buf[20] = 0;
-	components = g_strsplit(buf, " ", 3);
-	dest->red = atoi(components[0]);
-	dest->green = atoi(components[1]);
-	dest->blue = atoi(components[2]);
-	g_strfreev(components);
-	return TRUE;
-    }
+	g_assert(kf != NULL);
 
-    return FALSE;
+	retval = g_key_file_get_integer_list(kf, section, key, &size, &error);
+	if(error || size < 3) {
+		ret.red = dflt.red;
+		ret.green = dflt.green;
+		ret.blue =  dflt.blue;
+		g_error_free(error);
+	} else {
+		ret.red = retval[0];
+		ret.green = retval[1];
+		ret.blue = retval[2];
+		g_free(retval);
+	}
+
+	ret.pixel = 0;
+	return ret;
 }
 
-gboolean
-prefs_get_string (prefs_node *pn,
-		  const char *key,
-		  char *dest)
+gchar*
+prefs_get_string (const gchar *section,
+		     const gchar *key,
+		     const gchar *dflt)
 {
-    char buf[128];
-    FILE *f;
+	gchar *retval;
 
-    if(pn->writemode)
-	return FALSE;
-    f = pn->file;
+	GError *error = NULL;
 
-    if(prefs_get_line(f, key, buf, 127)) {
-	buf[127] = 0;
-	strcpy(dest, buf);
-	return 1;
-    }
+	g_assert(kf != NULL);
 
-    return 0;
+	retval = g_key_file_get_string(kf, section, key, &error);
+	if(error) {
+		if(dflt)
+			retval = g_strdup(dflt);
+		else
+			retval = NULL;
+
+		g_error_free(error);
+	}
+
+	return retval;
+}
+
+gsize
+prefs_get_pairs (const gchar *section,
+                 gchar ***keys,
+                 gchar ***values)
+{
+	gsize lgth;
+	guint i;
+	GError *error = NULL;
+	gchar **ks, **vs;
+
+	g_assert(kf != NULL);
+
+	ks = g_key_file_get_keys(kf, section, &lgth, &error);
+	if(error) {
+		g_error_free(error);
+		return 0;
+	}
+
+	vs = g_new0(gchar *, lgth + 1); /* +1 for terminating NULL */
+
+	for(i = 0; i < lgth; i++) {
+		vs[i] = g_key_file_get_string(kf, section, ks[i], &error);
+		if(error) {
+			g_strfreev(ks);
+			g_strfreev(vs);
+			g_error_free(error);
+			return 0;
+		}
+	}
+
+	*keys = ks;
+	*values = vs;
+	return lgth;
 }
 
 void
-prefs_put_int (prefs_node *pn,
-	       const char *key,
-	       int value)
+prefs_put_int (const gchar *section,
+		     const gchar *key,
+		     const gint value)
 {
-    FILE *f;
+	g_assert(kf != NULL);
 
-    if(!pn->writemode)
-	return;
-    f = pn->file;
-
-    fprintf(f, "%s = %d\n", key, value);
+	g_key_file_set_integer(kf, section, key, value);
 }
 
 void
-prefs_put_color (prefs_node *pn,
-	         const char *key,
-	         GdkColor value)
+prefs_put_bool (const gchar *section,
+		     const gchar *key,
+		     const gboolean value)
 {
-    FILE *f;
+	g_assert(kf != NULL);
 
-    if(!pn->writemode)
-	return;
-    f = pn->file;
-
-    fprintf(f, "%s = %d %d %d\n", key, value.red, value.green, value.blue);
+	g_key_file_set_boolean(kf, section, key, value);
 }
 
 void
-prefs_put_string (prefs_node *pn,
-		  const char *key,
-		  const char *value)
+prefs_put_color (const gchar *section,
+		     const gchar *key,
+	        const GdkColor value)
 {
-    FILE *f;
+	gint val[3];
 
-    if(!pn->writemode)
-	return;
-    f = pn->file;
+	g_assert(kf != NULL);
 
-    fprintf(f, "%s = %s\n", key, value);
+	val[0] = value.red;
+	val[1] = value.green;
+	val[2] = value.blue;
+
+	g_key_file_set_integer_list(kf, section, key, val, 3);
+}
+
+void
+prefs_put_string (const gchar *section,
+		  const gchar *key,
+		  const gchar *value)
+{
+	g_assert(kf != NULL);
+
+	g_key_file_set_string(kf, section, key, value);
+}
+/*
+void
+prefs_put_str_array (const gchar *section,
+                     const gchar *key,
+                     const gchar * const *value,
+                     gsize length)
+{
+	g_assert(kf != NULL);
+
+	g_key_file_set_string_list(kf, section, key, value, length);
+}
+*/
+void
+prefs_put_int_array (const gchar *section,
+                     const gchar *key,
+                     gint *value,
+                     gsize length)
+{
+	g_assert(kf != NULL);
+
+	g_key_file_set_integer_list(kf, section, key, value, length);
+}
+
+void
+prefs_put_bool_array (const gchar *section,
+                      const gchar *key,
+                      gboolean *value,
+                      gsize length)
+{
+	g_assert(kf != NULL);
+
+	g_key_file_set_boolean_list(kf, section, key, value, length);
 }
 
 #else /* defined(_WIN32) */

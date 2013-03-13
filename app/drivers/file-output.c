@@ -201,7 +201,7 @@ sndfile_get_play_time (void *dp)
 
 static gboolean
 sndfile_loadsettings (void *dp,
-		   prefs_node *f)
+		   const gchar *f)
 {
 //    sndfile_driver * const d = dp;
 
@@ -210,7 +210,7 @@ sndfile_loadsettings (void *dp,
 
 static gboolean
 sndfile_savesettings (void *dp,
-		   prefs_node *f)
+		   const gchar *f)
 {
 //    sndfile_driver * const d = dp;
 
@@ -417,7 +417,7 @@ file_get_play_rate (void *d)
 
 static gboolean
 file_loadsettings (void *dp,
-		   prefs_node *f)
+		   const gchar *f)
 {
 //    file_driver * const d = dp;
 
@@ -426,7 +426,7 @@ file_loadsettings (void *dp,
 
 static gboolean
 file_savesettings (void *dp,
-		   prefs_node *f)
+		   const gchar *f)
 {
 //    file_driver * const d = dp;
 

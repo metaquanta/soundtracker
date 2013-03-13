@@ -153,3 +153,20 @@ Gtk1 notably (about 2 times) overperfoms Gtk2 in the graphic primitives drawing.
 sence to develope fast drawing library based on the adopted and reduced code of Gtk1 and
 optionally use it instead of Gdk. It is especially important for upcoming Gtk+-3 port, where
 Caito-based drawing functions are even much slower.
+
+Track (and maybe not only) Cut/Copy/Paste/Kill notes shortcuts shall work only if in
+editing mode. Test other CCP operations
+
+Pressing "Ctrl" restricts point dragging to vertical or horizontal direction.
+
+Check if in some dialogs items are very close to each other and increase spacing.
+
+Automatic extension adding to file names if not specified (configurable).
+
+Acquire focus on file name entry when activating file selection page.
+
+"Delete instrument" button
+
+Fix beginning dragging when file is selected by single click and following switching to tracker page.
+
+Arrows and tab in module-info page to selecting instruments/samples.

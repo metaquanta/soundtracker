@@ -69,7 +69,7 @@ int gui_playing_mode = 0;
 int notebook_current_page = NOTEBOOK_PAGE_FILE;
 GtkWidget *editing_toggle;
 GtkWidget *gui_curins_name, *gui_cursmpl_name;
-GtkWidget *mainwindow;
+GtkWidget *mainwindow = NULL;
 GtkWidget *alt[2], *arrow[2];
 ScopeGroup *scopegroup;
 
@@ -406,7 +406,7 @@ save_wav (gchar *fn)
 
 	l = strlen(path);
 
-	file_selection_save_path(fn, gui_settings.savemodaswav_path);
+	file_selection_save_path(fn, &gui_settings.savemodaswav_path);
 	audio_ctlpipe_id i = AUDIO_CTLPIPE_RENDER_SONG_TO_FILE;
 
 	gui_play_stop();
@@ -496,7 +496,7 @@ load_xm (const gchar *fn)
 {
 	static GtkWidget *dialog = NULL;
 
-	file_selection_save_path(fn, gui_settings.loadmod_path);
+	file_selection_save_path(fn, &gui_settings.loadmod_path);
 	if(xm_get_modified()) {
 		gint response;
 
@@ -519,14 +519,14 @@ load_xm (const gchar *fn)
 static void
 save_song (gchar *fn)
 {
-	file_selection_save_path(fn, gui_settings.savemod_path);
+	file_selection_save_path(fn, &gui_settings.savemod_path);
 	gui_save(fn, TRUE); /* with samples */
 }
 
 static void
 save_xm (gchar *fn)
 {
-	file_selection_save_path(fn, gui_settings.savesongasxm_path);
+	file_selection_save_path(fn, &gui_settings.savesongasxm_path);
 	gui_save(fn, FALSE); /* without samples */
 }
 
@@ -538,7 +538,7 @@ save_pat (gchar *fn)
 	if(!localname)
 		return;
 
-	file_selection_save_path(fn, gui_settings.savepat_path);
+	file_selection_save_path(fn, &gui_settings.savepat_path);
 	xm_xp_save (localname, tracker->curpattern, xm);
 	g_free(localname);
 }
@@ -559,7 +559,7 @@ load_pat (const gchar *fn)
 	f = fopen(localname, "r");
 	g_free(localname);
 
-	file_selection_save_path(fn, gui_settings.loadpat_path);
+	file_selection_save_path(fn, &gui_settings.loadpat_path);
 
 	if (!f){
 		gint response;
@@ -1676,15 +1676,13 @@ gui_splash_set_label (const gchar *text,
 }
 
 int
-gui_splash (int argc,
-	    char *argv[])
+gui_splash (void)
 {
     GtkWidget *vbox, *thing;
 #ifndef NO_GDK_PIXBUF
     GtkWidget *hbox, *logo_area, *frame;
 #endif
 
-    gtk_init(&argc, &argv);
     gdk_rgb_init();
 
     gui_splash_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);

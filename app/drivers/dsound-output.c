@@ -405,7 +405,7 @@ dsound_get_play_rate (void *d)
 
 static gboolean
 dsound_loadsettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
 //    dsound_driver * const d = dp;
 
@@ -414,7 +414,7 @@ dsound_loadsettings (void *dp,
 
 static gboolean
 dsound_savesettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
 //    dsound_driver * const d = dp;
 

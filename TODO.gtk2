@@ -2,22 +2,28 @@
 9) Contains a lot of obsolete code.
 14) some CPU-consuming code in the instrument list selection callback (really 
 in the callback) and main notebook switch callback;
-15) Change option-menu in keys.c with notebook (like in audioconfig.c) for better
-widget sizes' behaviour;
 21) Native Alsa 1.x driver: make Alsa 1.x the requirement instead of 0.9.x; signedness handling;
-add avalable devices navigation (from csound->rtalsa.c); remove alsa-09 warning in configure.in
+add avalable devices navigation (from csound->rtalsa.c); remove all alsa except 1.0; recording;
 22) ESD driver reported to produce greater delay at start than in ST-gtk1;
-24) Chechk whether some str functions needed to be replaced with gtk_utf_(strlen,
-offset_to_pointer and so on);
-26) ESC for Cancel, Enter for Ok keybindings in dialogs;
-28) Check and clean all gtk_dialog()s;
-34) techwavn.xm, pat 6, track 7: something wrooOOOoong with drawing
 36) Pressing Ctrl-O in Instrument editor crashes ST at some machines;
-37) Letters in clavier are shifted from center and probably drawn with obsolete functions;
-38) Install manpage properly
+39) wet3.xm: "invalid UTF8 pango warnings" (modinfo page)
+40) Disable ALSA error messages when audio capabilities testing
+42) replace recode.[ch] with g_convert() functions to/from UTF-8 (check for pseudographics support)
+Hmm, seems FT2 uses its own encoding, not standard Latin. The custom coding procedures are still required...
+The problem seems wider. Multibyte UTF-8 charachters requiure to extend length of osme fields like xm->name
+and modify encoding procedures.
+45) Volume ramping->normalize does somethong wrong (subsequently decreases positive half-periods),
+at 8 bit samples only, st_sample_cutoff_lowest_8_bits() and the maximum value is negative;
+46) Increment/Decrement cmd value menus work very strange;
+47) Use usual Label insted of Status Bar;
+49) Update or even rewrite JACK driver;
+50) Make SUID root conditional at install;
 
 Some remarks about asm mixer bug: at the sample end and loop points there are ugly clicks
 (ramping works badly). Also when the previous channel has amplitude > 0, the following one
 will be triggered to the minimal negative value (maybe it's a cause of the first issue
 'cause really ramping and looping is performing using additional channels. Probably the bug
 is in the mixing or post-mixing code.
+
+Scopes stop working at some relation between sound and scopes buffer. Explore this issue and probably
+exclude manual scope buffer size setting. Or remain it for after time?

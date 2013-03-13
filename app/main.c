@@ -140,9 +140,11 @@ main (int argc,
     textdomain(PACKAGE);
 #endif
 
+	gtk_init(&argc, &argv);
+	prefs_init();
     tips_dialog_load_settings();
 
-    if(!gui_splash(argc, argv)) {
+    if(!gui_splash()) {
 	fprintf(stderr, "GUI Initialization failed.\n");
 	return 1;
     }
@@ -269,13 +271,15 @@ main (int argc,
 	    gui_settings_save_config();
 	    audioconfig_save_config();
 	}
-
 	gui_settings_save_config_always();
 	tips_dialog_save_settings();
 	track_editor_save_config();
 #if defined(DRIVER_ALSA_050) || defined(DRIVER_ALSA_09x)
 	midi_save_config();
 #endif
+	prefs_save();
+	prefs_close();
+
 	fileops_tmpclean();
 	audioconfig_shutdown();/* Closing all opened drivers */
 	return 0;

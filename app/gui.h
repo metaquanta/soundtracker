@@ -59,7 +59,7 @@ extern GtkWidget *mainwindow;
 
 extern void show_editmode_status (void);
 
-int                  gui_splash                       (int argc, char *argv[]);
+int                  gui_splash                       (void);
 int                  gui_final                        (int argc, char *argv[]);
 
 void                 gui_playlist_initialize          (void);

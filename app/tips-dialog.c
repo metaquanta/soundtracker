@@ -35,8 +35,8 @@ static void tips_toggle_update (GtkWidget *widget, gpointer data);
 
 static GtkWidget *tips_label;
 
-int tips_dialog_last_tip = 0;
-int tips_dialog_show_tips = 1;
+gint tips_dialog_last_tip;
+gboolean tips_dialog_show_tips;
 
 #define TIPS_COUNT (sizeof(tips_array)/sizeof(tips_array[0]))
 
@@ -193,36 +193,18 @@ tips_toggle_update (GtkWidget *widget,
 void
 tips_dialog_load_settings (void)
 {
-    prefs_node *f;
-
-    f = prefs_open_read("tips");
-    if(f) {
-	prefs_get_int(f, "show-tips", &tips_dialog_show_tips);
-	prefs_get_int(f, "last-tip", &tips_dialog_last_tip);
-	prefs_close(f);
-    }
+	tips_dialog_show_tips = prefs_get_bool("tips", "show-tips", TRUE);
+	tips_dialog_last_tip = prefs_get_int("tips", "last-tip", 0);
 
     if(tips_dialog_last_tip >= TIPS_COUNT || tips_dialog_last_tip < 0) {
 	tips_dialog_last_tip = 0;
     }
-
-    return;
 }
 
 void
 tips_dialog_save_settings (void)
 {
-    prefs_node *f;
-
-    f = prefs_open_write("tips");
-    if(!f)
-	return;
-
     tips_dialog_last_tip++;
-    prefs_put_int(f, "show-tips", tips_dialog_show_tips);
-    prefs_put_int(f, "last-tip", tips_dialog_last_tip);
-    
-    prefs_close(f);
-    return;
+    prefs_put_bool("tips", "show-tips", tips_dialog_show_tips);
+    prefs_put_int("tips", "last-tip", tips_dialog_last_tip);
 }
-

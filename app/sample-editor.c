@@ -1676,7 +1676,7 @@ sample_editor_load_wav (const gchar *fn)
     if(!localname)
 		return;
 
-    file_selection_save_path(fn, gui_settings.loadsmpl_path);
+    file_selection_save_path(fn, &gui_settings.loadsmpl_path);
 
     wavload_samplename = strrchr(fn, '/');
     if(!wavload_samplename)
@@ -1781,7 +1781,7 @@ sample_editor_save_wav_main (const gchar *fn,
 
     statusbar_update(STATUS_SAVING_SAMPLE, TRUE);
 
-    file_selection_save_path(localname, gui_settings.savesmpl_path);
+    file_selection_save_path(localname, &gui_settings.savesmpl_path);
 
 #if USE_SNDFILE
     if(current_sample->treat_as_8bit) {
@@ -1940,7 +1940,7 @@ sample_editor_monitor_clicked (void)
     }
 
     if(samplingwindow != NULL) {
-	gdk_window_raise(samplingwindow->window);
+	gtk_window_present(GTK_WINDOW(samplingwindow));
 	return;
     }
     
@@ -2015,25 +2015,27 @@ sample_editor_sampled (void *dest,
     }
 }
 
-void
+gboolean
 sample_editor_stop_sampling (void)
 {
     struct recordbuf *r, *r2;
 
     if(!samplingwindow) {
-	return;
+	return TRUE;
     }
 
     sampling_driver->common.release(sampling_driver_object);
 
-    gtk_widget_destroy(samplingwindow);
-    samplingwindow = NULL;
+    gtk_widget_hide(samplingwindow);
 
     /* clear the recorded sample */
     for(r = recordbufs; r; r = r2) {
 	r2 = r->next;
 	free(r);
     }
+
+    /* Stop delete event propagation */
+    return TRUE;
 }
 
 static void
@@ -2047,8 +2049,7 @@ sample_editor_ok_clicked (void)
 
     sampling_driver->common.release(sampling_driver_object);
 
-    gtk_widget_destroy(samplingwindow);
-    samplingwindow = NULL;
+    gtk_widget_hide(samplingwindow);
 
     g_return_if_fail(current_sample != NULL);
 

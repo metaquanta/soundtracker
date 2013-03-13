@@ -1405,43 +1405,32 @@ tracker_set_update_freq (int freq)
 void
 track_editor_load_config (void)
 {
-    char buf[256];
-    prefs_node *f;
-    int i, j;
+    gboolean *buf;
+    int i;
 
-    f = prefs_open_read("jazz");
-    if(f) {
+    buf = prefs_get_bool_array("settings", "jazz-toggle", NULL);
+    if(buf) {
 	for(i = 0; i < 32; i++) {
-	    g_sprintf(buf, "jazz-toggle-%d", i);
-	    prefs_get_int(f, buf, &j);
-	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(jazztoggles[i]), j);
+	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(jazztoggles[i]), buf[i]);
 	}
 
-	prefs_close(f);
+	g_free(buf);
     }
 }
 
 void
 track_editor_save_config (void)
 {
-    char buf[256];
-    prefs_node *f;
-    int i;
+    gboolean buf[32];
+    guint i;
 
     if(gui_settings.save_settings_on_exit) {
 	trackersettings_write_settings();
     }
 
-    f = prefs_open_write("jazz");
-    if(!f)
-	return;
-
-    for(i = 0; i < 32; i++) {
-	g_sprintf(buf, "jazz-toggle-%d", i);
-	prefs_put_int(f, buf, GTK_TOGGLE_BUTTON(jazztoggles[i])->active);
-    }
-
-    prefs_close(f);
+	for(i = 0; i < 32; i++)
+		buf[i] = GTK_TOGGLE_BUTTON(jazztoggles[i])->active;
+	prefs_put_bool_array("settings", "jazz-toggle", buf, 32);
 }
 
 void

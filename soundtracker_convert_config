@@ -1,0 +1,38 @@
+#!/bin/bash
+pushd ~
+	if [ ! -d .soundtracker ]; then
+		echo "Warning!!! .soundtracker does not exist. Nothing to do!"
+		exit 1;
+	fi
+	if [ -a .soundtracker/config ]; then
+		if [ -n "$1" ]; then
+			if [ "$1" = "-f" ]; then
+				rm -rf .soundtracker/config;
+			else
+				echo "Warning!!! .soundtracker/config already exists! Use \"soundtracker_convert_config -f\" to override"
+				exit 1;
+			fi;
+		else
+			echo "Warning!!! .soundtracker/config already exists! Use \"soundtracker_convert_config -f\" to override"
+			exit 1;
+		fi;
+	fi;
+	CHARSET=`echo $LANG | sed s/^.*[.]//`
+	for i in `ls .soundtracker`; do
+		if [ -f .soundtracker/$i ] && [ $i != keyboard ] && [ $i != tracker-fonts ] && [ $i != jazz ] && [ $i != non-gnome-accels ] && [ $i != config ]; then
+			echo "[$i]" >> .soundtracker/config
+			cat .soundtracker/$i | iconv -f $CHARSET -t UTF-8 >> .soundtracker/config;
+		fi
+		if [ $i == settings ]; then
+			echo -n "fonts=" >> .soundtracker/config
+			cat .soundtracker/tracker-fonts | tr '\n' ';' >> .soundtracker/config
+			echo >> .soundtracker/config
+			echo -n "jazz-toggle=" >> .soundtracker/config
+			cat .soundtracker/jazz | sed "s/^jazz-toggle.*= *//" | tr '\n' ';' >> .soundtracker/config
+			echo >> .soundtracker/config;
+		fi
+	done
+	echo "[keyboard]" >> .soundtracker/config
+	cat .soundtracker/keyboard | sed  -n -e '1~2h; 2~2{x;G;s/\n/=/;p}' >> .soundtracker/config
+popd
+

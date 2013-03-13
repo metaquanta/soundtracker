@@ -67,7 +67,7 @@ typedef struct oss_driver {
     void *sndbuf;
     int polltag;
 
-    gchar p_devdsp[128];
+    gchar *p_devdsp;
     int p_resolution;
     int p_channels;
     int p_mixfreq;
@@ -150,7 +150,7 @@ oss_new (void)
 {
     oss_driver *d = g_new(oss_driver, 1);
 
-    strcpy(d->p_devdsp, "/dev/dsp");
+    d->p_devdsp = g_strdup("/dev/dsp");
     d->p_mixfreq = 44100;
     d->p_channels = 1;
     d->p_resolution = 16;
@@ -312,11 +312,15 @@ oss_open (void *dp)
 
 static gboolean
 oss_loadsettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
+	gchar *buf;
     oss_driver * const d = dp;
 
-    prefs_get_string(f, "oss-devdsp", d->p_devdsp);
+	if((buf = prefs_get_string(f, "oss-devdsp", NULL))) {
+		g_free(d->p_devdsp);
+		d->p_devdsp = buf;
+	}
 
     prefs_init_from_structure(d);
 
@@ -325,7 +329,7 @@ oss_loadsettings (void *dp,
 
 static gboolean
 oss_savesettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
     oss_driver * const d = dp;
 

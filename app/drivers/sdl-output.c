@@ -170,14 +170,14 @@ sdl_get_play_rate (void *dp)
 
 static gboolean
 sdl_loadsettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
     return TRUE;
 }
 
 static gboolean
 sdl_savesettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
     return TRUE;
 }

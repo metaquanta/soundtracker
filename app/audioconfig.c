@@ -90,18 +90,10 @@ audioconfig_driver_load_config (audio_object *ao)
 {
     st_io_driver *d = *ao->driver;
     char buf[256];
-    prefs_node *f;
 
     if(d->common.loadsettings) {
 	g_sprintf(buf, "audio-object-%s", ao->shorttitle);
-	f = prefs_open_read(buf);
-	if(f) {
-	    d->common.loadsettings(*ao->driver_object, f);
-	    prefs_close(f);
-	} else {
-	    // set default values
-	    // will use module defaults for now
-	}
+	d->common.loadsettings(*ao->driver_object, buf);
     }
 }
 
@@ -287,31 +279,27 @@ audioconfig_dialog (void)
 void
 audioconfig_load_config (void)
 {
-    char buf[256];
-    prefs_node *f;
+    gchar *buf;
     GList *l;
     guint i, n[NUM_AUDIO_OBJECTS];
 
     for(i = 0; i < NUM_AUDIO_OBJECTS; i++)
 	n[i] = 0;
 
-    f = prefs_open_read("audio-objects");
-    if(f) {
 	for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
-	    guint j;
+		guint j;
 
-	    if(prefs_get_string(f, audio_objects[i].shorttitle, buf)) {
-		for(j = 0, l = drivers[audio_objects[i].type]; l; l = l->next, j++) {
-		    if(!strcmp(*((gchar **)l->data), buf)) {
-			*audio_objects[i].driver = l->data;
-			n[i] = j;
-			break;
-		    }
+		if((buf = prefs_get_string("audio-objects", audio_objects[i].shorttitle, NULL))) {
+			for(j = 0, l = drivers[audio_objects[i].type]; l; l = l->next, j++) {
+				if(!strcmp(*((gchar **)l->data), buf)) {
+					*audio_objects[i].driver = l->data;
+					n[i] = j;
+					break;
+				}
+			}
+			g_free(buf);
 		}
-	    }
 	}
-	prefs_close(f);
-    }
 
     for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
 	guint j;
@@ -342,23 +330,19 @@ audioconfig_load_config (void)
 void
 audioconfig_load_mixer_config (void)
 {
-    char buf[256];
-    prefs_node *f;
+    gchar *buf;
     GList *l;
 
-    f = prefs_open_read("mixer");
-    if(f) {
-	if(prefs_get_string(f, "mixer", buf)) {
-	    for(l = mixers; l; l = l->next) {
-		st_mixer *m = l->data;
-		if(!strcmp(m->id, buf)) {
-		    mixer = m;
-		    audioconfig_current_mixer = m;
+	if((buf = prefs_get_string("mixer", "mixer", NULL))) {
+		for(l = mixers; l; l = l->next) {
+			st_mixer *m = l->data;
+			if(!strcmp(m->id, buf)) {
+				mixer = m;
+				audioconfig_current_mixer = m;
+			}
 		}
-	    }
+		g_free(buf);
 	}
-	prefs_close(f);
-    }
 
     if(!audioconfig_current_mixer) {
 	mixer = mixers->data;
@@ -370,42 +354,25 @@ void
 audioconfig_save_config (void)
 {
     char buf[256];
-    prefs_node *f;
     int i;
-
-    f = prefs_open_write("audio-objects");
-    if(!f)
-	return;
 
     // Write the driver module names
     for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
-	prefs_put_string(f, audio_objects[i].shorttitle,
+	prefs_put_string("audio-objects", audio_objects[i].shorttitle,
 			 ((st_driver*)*(audio_objects[i].driver))->name);
     }
 
-    prefs_close(f);
-
     /* Write the driver module's configurations in extra files */
     for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
-	gboolean (*savesettings)(void *, prefs_node *) = ((st_driver*)*(audio_objects[i].driver))->savesettings;
+	gboolean (*savesettings)(void *, const gchar *) = ((st_driver*)*(audio_objects[i].driver))->savesettings;
 
-	if(savesettings) {
-	    g_sprintf(buf, "audio-object-%s", audio_objects[i].shorttitle);
-	    f = prefs_open_write(buf);
-	    if(f) {
-		savesettings(*audio_objects[i].driver_object, f);
-		prefs_close(f);
-	    }
+		if(savesettings) {
+			g_sprintf(buf, "audio-object-%s", audio_objects[i].shorttitle);
+			savesettings(*audio_objects[i].driver_object, buf);
+		}
 	}
-    }
 
-    f = prefs_open_write("mixer");
-    if(f) {
-	prefs_put_string(f, "mixer", audioconfig_current_mixer->id);
-	prefs_close(f);
-    }
-
-    return;
+	prefs_put_string("mixer", "mixer", audioconfig_current_mixer->id);
 }
 
 void

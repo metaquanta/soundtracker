@@ -66,7 +66,7 @@ typedef struct sun_driver {
     gpointer polltag;
     int firstpoll;
 
-    gchar p_devaudio[128];
+    gchar *p_devaudio;
     int p_resolution;
     int p_channels;
     int p_mixfreq;
@@ -179,8 +179,12 @@ static void
 sun_devaudio_changed (void *a,
 		    sun_driver *d)
 {
-    strncpy(d->p_devaudio, gtk_entry_get_text(GTK_ENTRY(d->prefs_devaudio_w)),
-        127);
+	gchar *buf = gtk_entry_get_text(GTK_ENTRY(d->prefs_devaudio_w);
+
+	if(strcmp(buf, d->p_devaudio)) {
+		g_free(d->p_devaudio);
+		d->p_devaudio = g_strdup(buf);
+	}
 }
 
 static void
@@ -302,7 +306,7 @@ sun_new (void)
 {
     sun_driver *d = g_new(sun_driver, 1);
 
-    strcpy(d->p_devaudio, "/dev/audio");
+    d->p_devaudio = g_strdup("/dev/audio");
     d->p_mixfreq = 44100;
     d->p_channels = 2;
     d->p_resolution = 16;
@@ -526,15 +530,19 @@ sun_get_play_rate (void *d)
 
 static gboolean
 sun_loadsettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
+	gchar *buf;
     sun_driver * const d = dp;
 
-    prefs_get_string(f, "sun-devaudio", d->p_devaudio);
-    prefs_get_int(f, "sun-resolution", &d->p_resolution);
-    prefs_get_int(f, "sun-channels", &d->p_channels);
-    prefs_get_int(f, "sun-mixfreq", &d->p_mixfreq);
-    prefs_get_int(f, "sun-bufsize", &d->p_bufsize);
+	if((buf = prefs_get_string(f, "sun-devaudio", NULL))) {
+		g_free(d->p_devaudio);
+		d->p_devaudio = buf;
+	}
+    d->p_resolution = prefs_get_int(f, "sun-resolution", 16);
+    d->p_channels = prefs_get_int(f, "sun-channels", 2);
+    d->p_mixfreq = prefs_get_int(f, "sun-mixfreq", 44100);
+    d->p_bufsize = prefs_get_int(f, "sun-bufsize", 11);
 
     prefs_init_from_structure(d);
 
@@ -543,7 +551,7 @@ sun_loadsettings (void *dp,
 
 static gboolean
 sun_savesettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
     sun_driver * const d = dp;
 

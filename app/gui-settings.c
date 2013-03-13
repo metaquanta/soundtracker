@@ -35,73 +35,10 @@
 #include "extspinbutton.h"
 #include "tracker-settings.h"
 
-gui_prefs gui_settings = {
-    "---0000000",
-    "fixed",
-    1,
-    0,
-    1,
-    16,
-    8,
+#define SECTION "settings"
+#define SECTION_ALWAYS "settings-always"
 
-    0,
-    0,
-
-    1,
-    0,
-
-    1,
-    0,
-    0,
-
-    0,
-    1,
-
-    TRUE,/* sharps or flats */
-    FALSE,
-    
-    50,
-    40,
-    500000,
-
-    -666,
-    0,
-    0,
-    0,
-
-    TRUE,
-    0,
-
-    "~/",
-    "~/",
-    "~/",
-    "~/",
-    "~/",
-    "~/",
-    "~/",
-    "~/",
-
-    "rm",
-    "unzip",
-    "lha",
-    "zcat",
-    "bunzip2"
-};
-
-static const gchar *color_meanings[] = {
-    N_("Tracker background"),
-    N_("Cursor background"),
-    N_("Major lines highlighting"),
-    N_("Minor lines highlighting"),
-    N_("Selection"),
-    N_("Notes"),
-    N_("Delimiters"),
-    N_("Channel numbers"),
-    N_("Cursor idle"),
-    N_("Cursor editing")
-};
-
-gui_prefs_colors gui_settings_colors;
+gui_prefs gui_settings;
 
 static GtkWidget *col_samples[TRACKERCOL_LAST];
 static GtkWidget *colorsel;
@@ -614,82 +551,61 @@ gui_settings_dialog (void)
 void
 gui_settings_load_config (void)
 {
-    prefs_node *f;
+	gui_settings.st_window_x = prefs_get_int(SECTION, "st-window-x", -666);
+	gui_settings.st_window_y = prefs_get_int(SECTION, "st-window-y", 0);
+	gui_settings.st_window_w = prefs_get_int(SECTION, "st-window-w", 0);
+	gui_settings.st_window_h = prefs_get_int(SECTION, "st-window-h", 0);
 
-    f = prefs_open_read("settings");
-    if(f) {
-	guint i;
+	gui_settings.tracker_hexmode = prefs_get_bool(SECTION, "gui-use-hexadecimal-numbers", TRUE);
+	gui_settings.tracker_upcase = prefs_get_bool(SECTION, "gui-use-upper-case", FALSE);
+	gui_settings.advance_cursor_in_fx_columns = prefs_get_bool(SECTION, "gui-advance-cursor-in-fx-columns", FALSE);
+	gui_settings.asynchronous_editing = prefs_get_bool(SECTION, "gui-asynchronous-editing", FALSE);
+	gui_settings.tracker_line_format = prefs_get_string(SECTION, "gui-tracker-line-format", "---0000000");
+	gui_settings.tracker_font = prefs_get_string(SECTION, "tracker-font", "fixed");
+	gui_settings.tempo_bpm_update = prefs_get_bool(SECTION, "gui-tempo-bpm-update", TRUE);
+	gui_settings.auto_switch = prefs_get_bool(SECTION, "gui-auto-switch", FALSE);
+	gui_settings.gui_display_scopes = prefs_get_bool(SECTION, "gui-display-scopes", TRUE);
+	gui_settings.gui_use_backing_store = prefs_get_bool(SECTION, "gui-use-backing-store", TRUE);
+	gui_settings.highlight_rows = prefs_get_bool(SECTION, "tracker-highlight-rows", TRUE);
+	gui_settings.highlight_rows_n = prefs_get_int(SECTION, "tracker-highlight-rows-n", 16);
+	gui_settings.highlight_rows_minor_n = prefs_get_int(SECTION, "tracker-highlight-rows-minor-n", 8);
 
-	prefs_get_int(f, "st-window-x", &gui_settings.st_window_x);
-	prefs_get_int(f, "st-window-y", &gui_settings.st_window_y);
-	prefs_get_int(f, "st-window-w", &gui_settings.st_window_w);
-	prefs_get_int(f, "st-window-h", &gui_settings.st_window_h);
+	gui_settings.save_geometry = prefs_get_bool(SECTION, "save-geometry", TRUE);
+	gui_settings.save_settings_on_exit = prefs_get_bool(SECTION, "save-settings-on-exit", TRUE);
+	gui_settings.tracker_update_freq = prefs_get_int(SECTION, "tracker-update-frequency", 50);
+	gui_settings.scopes_update_freq = prefs_get_int(SECTION, "scopes-update-frequency", 40);
+	gui_settings.scopes_buffer_size = prefs_get_int(SECTION, "scopes-buffer-size", 500000);
+	gui_settings.sharp = prefs_get_bool(SECTION, "sharp", TRUE);
+	gui_settings.bh = prefs_get_bool(SECTION, "bh", FALSE);
+	gui_settings.store_perm = prefs_get_bool(SECTION, "store-permanent", TRUE);
 
-	prefs_get_int(f, "gui-use-hexadecimal-numbers", &gui_settings.tracker_hexmode);
-	prefs_get_int(f, "gui-use-upper-case", &gui_settings.tracker_upcase);
-	prefs_get_int(f, "gui-advance-cursor-in-fx-columns", &gui_settings.advance_cursor_in_fx_columns);
-	prefs_get_int(f, "gui-asynchronous-editing", &gui_settings.asynchronous_editing);
-	prefs_get_string(f, "gui-tracker-line-format", gui_settings.tracker_line_format);
-	prefs_get_string(f, "tracker-font", gui_settings.tracker_font);
-	prefs_get_int(f, "gui-tempo-bpm-update", &gui_settings.tempo_bpm_update);
-	prefs_get_int(f, "gui-auto-switch", &gui_settings.auto_switch);
-	prefs_get_int(f, "gui-display-scopes", &gui_settings.gui_display_scopes);
-	prefs_get_int(f, "gui-use-backing-store", &gui_settings.gui_use_backing_store);
-	prefs_get_int(f, "tracker-highlight-rows", &gui_settings.highlight_rows);
-	prefs_get_int(f, "tracker-highlight-rows-n", &gui_settings.highlight_rows_n);
-	prefs_get_int(f, "tracker-highlight-rows-minor-n", &gui_settings.highlight_rows_minor_n);
-	gui_settings_colors.ok = TRUE;
-	for(i = 0; i < TRACKERCOL_LAST; i++)
-	    gui_settings_colors.ok &= prefs_get_color(f, color_meanings[i], &gui_settings_colors.val[i]);
-	prefs_get_int(f, "save-geometry", &gui_settings.save_geometry);
-	prefs_get_int(f, "save-settings-on-exit", &gui_settings.save_settings_on_exit);
-	prefs_get_int(f, "tracker-update-frequency", &gui_settings.tracker_update_freq);
-	prefs_get_int(f, "scopes-update-frequency", &gui_settings.scopes_update_freq);
-	prefs_get_int(f, "scopes-buffer-size", &gui_settings.scopes_buffer_size);
-  	prefs_get_int(f, "sharp", &gui_settings.sharp);
-  	prefs_get_int(f, "bh", &gui_settings.bh);
-	prefs_get_int(f, "store-permanent", &gui_settings.store_perm);
-	
 	if(gui_settings.store_perm)
-	    prefs_get_int(f, "permanent-channels", (gint32*)&gui_settings.permanent_channels);
+		gui_settings.permanent_channels = prefs_get_int(SECTION, "permanent-channels", 0);
 
-	prefs_close(f);
-    }
+	gui_settings.loadmod_path = prefs_get_string(SECTION_ALWAYS, "loadmod-path", "~");
+	gui_settings.savemod_path = prefs_get_string(SECTION_ALWAYS, "savemod-path", "~");
+	gui_settings.savemodaswav_path = prefs_get_string(SECTION_ALWAYS, "savemodaswav-path", "~");
+	gui_settings.savesongasxm_path = prefs_get_string(SECTION_ALWAYS, "savesongasxm-path", "~");
+	gui_settings.loadsmpl_path = prefs_get_string(SECTION_ALWAYS, "loadsmpl-path", "~");
+	gui_settings.savesmpl_path = prefs_get_string(SECTION_ALWAYS, "savesmpl-path", "~");
+	gui_settings.loadinstr_path = prefs_get_string(SECTION_ALWAYS, "loadinstr-path", "~");
+	gui_settings.saveinstr_path = prefs_get_string(SECTION_ALWAYS, "saveinstr-path", "~");
+	gui_settings.loadpat_path = prefs_get_string(SECTION_ALWAYS, "loadpat-path", "~");
+	gui_settings.savepat_path = prefs_get_string(SECTION_ALWAYS, "savepat-path", "~");
 
-    f = prefs_open_read("settings-always");
-    if(f) {
-	prefs_get_string(f, "loadmod-path", gui_settings.loadmod_path);
-	prefs_get_string(f, "savemod-path", gui_settings.savemod_path);
-	prefs_get_string(f, "savemodaswav-path", gui_settings.savemodaswav_path);
-	prefs_get_string(f, "savesongasxm-path", gui_settings.savesongasxm_path);
-	prefs_get_string(f, "loadsmpl-path", gui_settings.loadsmpl_path);
-	prefs_get_string(f, "savesmpl-path", gui_settings.savesmpl_path);
-	prefs_get_string(f, "loadinstr-path", gui_settings.loadinstr_path);
-	prefs_get_string(f, "saveinstr-path", gui_settings.saveinstr_path);
-	prefs_get_string(f, "loadpat-path", gui_settings.loadpat_path);
-	prefs_get_string(f, "savepat-path", gui_settings.savepat_path);
+	gui_settings.rm_path = prefs_get_string(SECTION_ALWAYS, "rm-path", "rm");
+	gui_settings.unzip_path = prefs_get_string(SECTION_ALWAYS, "unzip-path", "unzip");
+	gui_settings.lha_path = prefs_get_string(SECTION_ALWAYS, "lha-path", "lha");
+	gui_settings.gz_path = prefs_get_string(SECTION_ALWAYS, "gz-path", "zcat");
+	gui_settings.bz2_path = prefs_get_string(SECTION_ALWAYS, "bz2-path", "bunzip2");
 
-	prefs_get_string(f, "rm-path", gui_settings.rm_path);
-	prefs_get_string(f, "unzip-path", gui_settings.unzip_path);
-	prefs_get_string(f, "lha-path", gui_settings.lha_path);
-	prefs_get_string(f, "gz-path", gui_settings.gz_path);
-	prefs_get_string(f, "bz2-path", gui_settings.bz2_path);
-
-	prefs_get_int(f, "gui-disable-splash", &gui_settings.gui_disable_splash);
-
-	prefs_close(f);
-    }
+	gui_settings.gui_disable_splash = prefs_get_bool(SECTION_ALWAYS, "gui-disable-splash", FALSE);
 }
 
 void
 gui_settings_save_config (void)
 {
-    prefs_node *f;
     guint i;
-
-    f = prefs_open_write("settings");
-    if(!f)
-	return;
 
     if(gui_settings.save_geometry) {
 	gdk_window_get_size (mainwindow->window,
@@ -700,68 +616,58 @@ gui_settings_save_config (void)
 				    &gui_settings.st_window_y);
     }
 
-    prefs_put_int(f, "st-window-x", gui_settings.st_window_x);
-    prefs_put_int(f, "st-window-y", gui_settings.st_window_y);
-    prefs_put_int(f, "st-window-w", gui_settings.st_window_w);
-    prefs_put_int(f, "st-window-h", gui_settings.st_window_h);
+    prefs_put_int(SECTION, "st-window-x", gui_settings.st_window_x);
+    prefs_put_int(SECTION, "st-window-y", gui_settings.st_window_y);
+    prefs_put_int(SECTION, "st-window-w", gui_settings.st_window_w);
+    prefs_put_int(SECTION, "st-window-h", gui_settings.st_window_h);
 
-    prefs_put_int(f, "gui-use-hexadecimal-numbers", gui_settings.tracker_hexmode);
-    prefs_put_int(f, "gui-use-upper-case", gui_settings.tracker_upcase);
-    prefs_put_int(f, "gui-advance-cursor-in-fx-columns", gui_settings.advance_cursor_in_fx_columns);
-    prefs_put_int(f, "gui-asynchronous-editing", gui_settings.asynchronous_editing);
-    prefs_put_string(f, "gui-tracker-line-format", gui_settings.tracker_line_format);
-	prefs_put_string(f, "tracker-font", gui_settings.tracker_font);
-    prefs_put_int(f, "gui-tempo-bpm-update", gui_settings.tempo_bpm_update);
-    prefs_put_int(f, "gui-auto-switch", gui_settings.auto_switch);
-    prefs_put_int(f, "gui-display-scopes", gui_settings.gui_display_scopes);
-    prefs_put_int(f, "gui-use-backing-store", gui_settings.gui_use_backing_store);
-    prefs_put_int(f, "tracker-highlight-rows", gui_settings.highlight_rows);
-    prefs_put_int(f, "tracker-highlight-rows-n", gui_settings.highlight_rows_n);
-    prefs_put_int(f, "tracker-highlight-rows-minor-n", gui_settings.highlight_rows_minor_n);
+    prefs_put_bool(SECTION, "gui-use-hexadecimal-numbers", gui_settings.tracker_hexmode);
+    prefs_put_bool(SECTION, "gui-use-upper-case", gui_settings.tracker_upcase);
+    prefs_put_bool(SECTION, "gui-advance-cursor-in-fx-columns", gui_settings.advance_cursor_in_fx_columns);
+    prefs_put_bool(SECTION, "gui-asynchronous-editing", gui_settings.asynchronous_editing);
+    prefs_put_string(SECTION, "gui-tracker-line-format", gui_settings.tracker_line_format);
+	prefs_put_string(SECTION, "tracker-font", gui_settings.tracker_font);
+    prefs_put_bool(SECTION, "gui-tempo-bpm-update", gui_settings.tempo_bpm_update);
+    prefs_put_bool(SECTION, "gui-auto-switch", gui_settings.auto_switch);
+    prefs_put_bool(SECTION, "gui-display-scopes", gui_settings.gui_display_scopes);
+    prefs_put_bool(SECTION, "gui-use-backing-store", gui_settings.gui_use_backing_store);
+    prefs_put_bool(SECTION, "tracker-highlight-rows", gui_settings.highlight_rows);
+    prefs_put_int(SECTION, "tracker-highlight-rows-n", gui_settings.highlight_rows_n);
+    prefs_put_int(SECTION, "tracker-highlight-rows-minor-n", gui_settings.highlight_rows_minor_n);
     for(i = 0; i < TRACKERCOL_LAST; i++)
-	prefs_put_color(f, color_meanings[i], tracker->colors[i]);
-    prefs_put_int(f, "save-geometry", gui_settings.save_geometry);
-    prefs_put_int(f, "save-settings-on-exit", gui_settings.save_settings_on_exit);
-    prefs_put_int(f, "tracker-update-frequency", gui_settings.tracker_update_freq);
-    prefs_put_int(f, "scopes-update-frequency", gui_settings.scopes_update_freq);
-    prefs_put_int(f, "scopes-buffer-size", gui_settings.scopes_buffer_size);
-    prefs_put_int(f, "sharp", gui_settings.sharp);
-    prefs_put_int(f, "bh", gui_settings.bh);
-    prefs_put_int(f, "store-permanent", gui_settings.store_perm);
+	prefs_put_color(SECTION, color_meanings[i], tracker->colors[i]);
+    prefs_put_bool(SECTION, "save-geometry", gui_settings.save_geometry);
+    prefs_put_bool(SECTION, "save-settings-on-exit", gui_settings.save_settings_on_exit);
+    prefs_put_int(SECTION, "tracker-update-frequency", gui_settings.tracker_update_freq);
+    prefs_put_int(SECTION, "scopes-update-frequency", gui_settings.scopes_update_freq);
+    prefs_put_int(SECTION, "scopes-buffer-size", gui_settings.scopes_buffer_size);
+    prefs_put_bool(SECTION, "sharp", gui_settings.sharp);
+    prefs_put_bool(SECTION, "bh", gui_settings.bh);
+    prefs_put_bool(SECTION, "store-permanent", gui_settings.store_perm);
 
     if(gui_settings.store_perm)
-	prefs_put_int(f, "permanent-channels", gui_settings.permanent_channels);
-
-    prefs_close(f);
+	prefs_put_int(SECTION, "permanent-channels", gui_settings.permanent_channels);
 }
 
 void
 gui_settings_save_config_always (void)
 {
-    prefs_node *f;
+    prefs_put_string(SECTION_ALWAYS, "loadmod-path", gui_settings.loadmod_path);
+    prefs_put_string(SECTION_ALWAYS, "savemod-path", gui_settings.savemod_path);
+    prefs_put_string(SECTION_ALWAYS, "savemodaswav-path", gui_settings.savemodaswav_path);
+    prefs_put_string(SECTION_ALWAYS, "savesongasxm-path", gui_settings.savesongasxm_path);
+    prefs_put_string(SECTION_ALWAYS, "loadsmpl-path", gui_settings.loadsmpl_path);
+    prefs_put_string(SECTION_ALWAYS, "savesmpl-path", gui_settings.savesmpl_path);
+    prefs_put_string(SECTION_ALWAYS, "loadinstr-path", gui_settings.loadinstr_path);
+    prefs_put_string(SECTION_ALWAYS, "saveinstr-path", gui_settings.saveinstr_path);
+    prefs_put_string(SECTION_ALWAYS, "loadpat-path", gui_settings.loadpat_path);
+    prefs_put_string(SECTION_ALWAYS, "savepat-path", gui_settings.savepat_path);
 
-    f = prefs_open_write("settings-always");
-    if(!f)
-	return;
+    prefs_put_string(SECTION_ALWAYS, "rm-path", gui_settings.rm_path);
+    prefs_put_string(SECTION_ALWAYS, "unzip-path", gui_settings.unzip_path);
+    prefs_put_string(SECTION_ALWAYS, "lha-path", gui_settings.lha_path);
+    prefs_put_string(SECTION_ALWAYS, "gz-path", gui_settings.gz_path);
+    prefs_put_string(SECTION_ALWAYS, "bz2-path", gui_settings.bz2_path);
 
-    prefs_put_string(f, "loadmod-path", gui_settings.loadmod_path);
-    prefs_put_string(f, "savemod-path", gui_settings.savemod_path);
-    prefs_put_string(f, "savemodaswav-path", gui_settings.savemodaswav_path);
-    prefs_put_string(f, "savesongasxm-path", gui_settings.savesongasxm_path);
-    prefs_put_string(f, "loadsmpl-path", gui_settings.loadsmpl_path);
-    prefs_put_string(f, "savesmpl-path", gui_settings.savesmpl_path);
-    prefs_put_string(f, "loadinstr-path", gui_settings.loadinstr_path);
-    prefs_put_string(f, "saveinstr-path", gui_settings.saveinstr_path);
-    prefs_put_string(f, "loadpat-path", gui_settings.loadpat_path);
-    prefs_put_string(f, "savepat-path", gui_settings.savepat_path);
-
-    prefs_put_string(f, "rm-path", gui_settings.rm_path);
-    prefs_put_string(f, "unzip-path", gui_settings.unzip_path);
-    prefs_put_string(f, "lha-path", gui_settings.lha_path);
-    prefs_put_string(f, "gz-path", gui_settings.gz_path);
-    prefs_put_string(f, "bz2-path", gui_settings.bz2_path);
-
-    prefs_put_int(f, "gui-disable-splash", gui_settings.gui_disable_splash);
-
-    prefs_close(f);
+    prefs_put_bool(SECTION_ALWAYS, "gui-disable-splash", gui_settings.gui_disable_splash);
 }

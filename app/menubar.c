@@ -142,6 +142,7 @@ menubar_save_settings_now (void)
 #if (defined(DRIVER_ALSA_050) || defined(DRIVER_ALSA_09x))
     midi_save_config();
 #endif
+    prefs_save();
 }
 
 void

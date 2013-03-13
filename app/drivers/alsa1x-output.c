@@ -50,11 +50,6 @@
 #define ALSA_PCM_NEW_HW_PARAMS_API
 #define ALSA_PCM_NEW_SW_PARAMS_API
 
-typedef struct _device_capabilities {
-    gint minfreq, maxfreq;
-    snd_pcm_uframes_t minbufsize, maxbufsize;
-} device_capabilities;
-
 enum {
     MONO8 = 0,
     STEREO8,
@@ -76,14 +71,15 @@ typedef struct _alsa_driver {
     GtkTreeModel *model;
 
     gint playrate;
-    gint stereo;
+    gint stereo; /* Not boolean because quadro is expected =) */
     gint bits;
     gint buffer_size; /* The exponent of 2: real_buffer_size = 2 ^ buffer_size */
     snd_pcm_uframes_t persizemin, persizemax;
     gint num_periods; /* The exponent of 2, see buffer_size */
 
     gchar *device;
-    device_capabilities devcap[NUM_FORMATS];
+    gint minfreq[NUM_FORMATS], maxfreq[NUM_FORMATS];
+    gint minbufsize[NUM_FORMATS], maxbufsize[NUM_FORMATS];
     gboolean can8, can16, canmono, canstereo, signedness8, signedness16;
 
     snd_pcm_t *soundfd;
@@ -243,8 +239,8 @@ update_freqs_list (alsa_driver *d, gboolean set_highest)
     guint i;
 
     guint address = PARAMS_TO_ADDRESS(d);
-    guint minfreq = d->devcap[address].minfreq;
-    guint maxfreq = d->devcap[address].maxfreq;
+    guint minfreq = d->minfreq[address];
+    guint maxfreq = d->maxfreq[address];
 
     if(d->bits == 0)
 	return;
@@ -279,14 +275,14 @@ update_bufsize_range (alsa_driver *d)
     if(d->bits == 0)
 	return;
 
-    i = d->devcap[address].maxbufsize;
+    i = d->maxbufsize[address];
     while((i = i >> 1))
 	j++;
 
-    i = d->devcap[address].minbufsize;
+    i = d->minbufsize[address];
     while((i = i >> 1))
 	k++;
-    if((1 << k) - d->devcap[address].minbufsize)
+    if((1 << k) - d->minbufsize[address])
 	k++;
 
     gtk_spin_button_set_range(GTK_SPIN_BUTTON(d->bufsizespin), k, j);
@@ -481,25 +477,25 @@ set_rates (alsa_driver *d, guint channels, guint format)
 	alsa_error(N_("Unable to get minimal sample rate"), err);
 	return -1;
     }
-    d->devcap[format].minfreq = MAX(ratemin, 8000);
+    d->minfreq[format] = MAX(ratemin, 8000);
 
     if((err = snd_pcm_hw_params_get_rate_max(d->hwparams, &ratemax, 0)) < 0) {
 	alsa_error(N_("Unable to get maximal sample rate"), err);
 	return -1;
     }
-    d->devcap[format].maxfreq = MIN(ratemax, 96000);
+    d->maxfreq[format] = MIN(ratemax, 96000);
 
     if((err = snd_pcm_hw_params_get_buffer_size_min(d->hwparams, &bufsizemin)) < 0) {
 	alsa_error(N_("Unable to get minimal buffer size"), err);
 	return -1;
     }
-    d->devcap[format].minbufsize = MAX(bufsizemin, 256);
+    d->minbufsize[format] = MAX(bufsizemin, 256);
 
     if((err = snd_pcm_hw_params_get_buffer_size_max(d->hwparams, &bufsizemax)) < 0) {
 	alsa_error(N_("Unable to get maximal buffer size"), err);
 	return -1;
     }
-    d->devcap[format].maxbufsize = bufsizemax;
+    d->maxbufsize[format] = bufsizemax;
 
     return 0;
 }
@@ -526,14 +522,14 @@ device_test (GtkWidget *w, alsa_driver *d)
     }
 
     for(i = 0; i < NUM_FORMATS; i++){
-	d->devcap[i].minfreq = 8000;
-	d->devcap[i].maxfreq = 44100;
-	d->devcap[i].minbufsize = 256;
+	d->minfreq[i] = 8000;
+	d->maxfreq[i] = 44100;
+	d->minbufsize[i] = 256;
     }
-    d->devcap[MONO8].maxbufsize = 65536;
-    d->devcap[STEREO8].maxbufsize = 32768;
-    d->devcap[MONO16].maxbufsize = 32768;
-    d->devcap[STEREO16].maxbufsize = 16384;
+    d->maxbufsize[MONO8] = 65536;
+    d->maxbufsize[STEREO8] = 32768;
+    d->maxbufsize[MONO16] = 32768;
+    d->maxbufsize[STEREO16] = 16384;
 
     if(pcm_open_and_load_hwparams(d) < 0)
 	return;
@@ -922,10 +918,10 @@ alsa_new (void)
     d->persizemax = 8192;
 
     for(i = 0; i < NUM_FORMATS; i++) {
-	d->devcap[i].minfreq = 22050;
-	d->devcap[i].maxfreq = 44100;
-	d->devcap[i].minbufsize = 512;
-	d->devcap[i].maxbufsize = 16384;
+	d->minfreq[i] = 22050;
+	d->maxfreq[i] = 44100;
+	d->minbufsize[i] = 512;
+	d->maxbufsize[i] = 16384;
     }
 
     d->soundfd = 0;
@@ -1136,59 +1132,68 @@ alsa_get_play_rate (void *d)
     return (int)dp->playrate;
 }
 
-
-static gboolean
-load_dev_func(gchar *devname, gpointer data)
-{
-    alsa_driver *d = (alsa_driver *)data;
-
-    gui_hlp_combo_box_prepend_text_or_set_active(GTK_COMBO_BOX(d->alsa_device), devname, FALSE);
-    g_free(devname);
-
-    return FALSE;
-}
-
 static gboolean
 alsa_loadsettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
     alsa_driver * const d = dp;
-    guint i;
-    gchar buf[32];
+    gchar *buf, **devlist;
+    gsize size, i;
+    gint *tmp;
 
-    //!!! Port all preferences to gchar, gint, etc...
-    if(prefs_get_string(f, "alsa1x-device", buf)) {
-	g_free(d->device);
-        d->device = g_strdup(buf);
+    if((buf = prefs_get_string(f, "alsa1x-device", NULL))) {
+		g_free(d->device);
+		d->device = buf;
     }
 
-    prefs_get_int(f, "alsa1x-resolution", &d->bits);
-    prefs_get_int(f, "alsa1x-stereo", &d->stereo);
-    prefs_get_int(f, "alsa1x-playrate", &d->playrate);
-    prefs_get_int(f, "alsa1x-buffer_size", &d->buffer_size);
-    prefs_get_int(f, "alsa1x-num_periods", &d->num_periods);
-    prefs_get_int(f, "alsa1x-can_8", &d->can8);
-    prefs_get_int(f, "alsa1x-can_16", &d->can16);
-    prefs_get_int(f, "alsa1x-can_mono", &d->canmono);
-    prefs_get_int(f, "alsa1x-can_stereo", &d->canstereo);
-    prefs_get_int(f, "alsa1x-signedness_8", &d->signedness8);
-    prefs_get_int(f, "alsa1x-signedness_16", &d->signedness16);
-    prefs_get_int(f, "alsa1x-period_size_min", (int *)&d->persizemin);
-    prefs_get_int(f, "alsa1x-period_size_max", (int *)&d->persizemax);
+	d->bits = prefs_get_int(f, "alsa1x-resolution", d->bits);
+	d->stereo = prefs_get_int(f, "alsa1x-stereo", d->stereo);
+	d->playrate = prefs_get_int(f, "alsa1x-playrate", d->playrate);
+	d->buffer_size = prefs_get_int(f, "alsa1x-buffer_size", d->buffer_size);
+	d->num_periods = prefs_get_int(f, "alsa1x-num_periods", d->num_periods);
+	d->can8 = prefs_get_bool(f, "alsa1x-can_8", d->can8);
+	d->can16 = prefs_get_bool(f, "alsa1x-can_16", d->can16);
+	d->canmono = prefs_get_bool(f, "alsa1x-can_mono", d->canmono);
+	d->canstereo = prefs_get_bool(f, "alsa1x-can_stereo", d->canstereo);
+	d->signedness8 = prefs_get_bool(f, "alsa1x-signedness_8", d->signedness8);
+	d->signedness16 = prefs_get_bool(f, "alsa1x-signedness_16", d->signedness16);
+	d->persizemin = prefs_get_int(f, "alsa1x-period_size_min", d->persizemin);
+	d->persizemax = prefs_get_int(f, "alsa1x-period_size_max", d->persizemax);
 
-    for(i = 0; i < NUM_FORMATS; i++) {
-	g_sprintf(buf, "alsa1x-devcap[%u].minfreq", i);
-	prefs_get_int(f, buf, &d->devcap[i].minfreq);
-	g_sprintf(buf, "alsa1x-devcap[%u].maxfreq", i);
-	prefs_get_int(f, buf, &d->devcap[i].maxfreq);
-	g_sprintf(buf, "alsa1x-devcap[%u].minbufsize", i);
-	prefs_get_int(f, buf, (int *)&d->devcap[i].minbufsize);
-	g_sprintf(buf, "alsa1x-devcap[%u].maxbufsize", i);
-	prefs_get_int(f, buf, (int *)&d->devcap[i].maxbufsize);
-    }
+	tmp = prefs_get_int_array(f, "alsa1x-minfreq", &size);
+	for(i = 0; i < MIN(NUM_FORMATS, size); i++) {
+		d->minfreq[i] = tmp[i];
+	}
+	if(size)
+		g_free(tmp);
 
-    prefs_get_int(f, "alsa1x-verbose", (int *)&d->verbose);
-    prefs_get_str_array(f, "alsa1x-device-list", load_dev_func, d);
+	tmp = prefs_get_int_array(f, "alsa1x-maxfreq", &size);
+	for(i = 0; i < MIN(NUM_FORMATS, size); i++) {
+		d->maxfreq[i] = tmp[i];
+	}
+	if(size)
+		g_free(tmp);
+
+	tmp = prefs_get_int_array(f, "alsa1x-minbufsize", &size);
+	for(i = 0; i < MIN(NUM_FORMATS, size); i++) {
+		d->minbufsize[i] = tmp[i];
+	}
+	if(size)
+		g_free(tmp);
+
+	tmp = prefs_get_int_array(f, "alsa1x-maxbufsize", &size);
+	for(i = 0; i < MIN(NUM_FORMATS, size); i++) {
+		d->maxbufsize[i] = tmp[i];
+	}
+	if(size)
+		g_free(tmp);
+
+	d->verbose = prefs_get_bool(f, "alsa1x-verbose", d->verbose);
+
+	devlist = prefs_get_str_array(f, "alsa1x-device-list", &size);
+	for(i = 0; i < size; i++)
+		gui_hlp_combo_box_prepend_text_or_set_active(GTK_COMBO_BOX(d->alsa_device), devlist[i], FALSE);
+
     gtk_combo_box_set_active(GTK_COMBO_BOX(d->alsa_device), 0);
 
     prefs_init_from_structure(d);
@@ -1197,36 +1202,34 @@ alsa_loadsettings (void *dp,
 }
 
 typedef struct _svd_data {
-    prefs_node *f;
+    GString *str;
     guint counter;
 } svd_data;
 
 static gboolean
 save_dev_func (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
 {
-    svd_data *sdd = (svd_data *)data;
-    gchar *item_str = NULL;
+	svd_data *sdd = (svd_data *)data;
+	gchar *item_str = NULL;
 
-    if(sdd->counter++ >= 10)
-	return TRUE;
+	if(sdd->counter++ >= 10)
+		return TRUE;
 
-    gtk_tree_model_get(model, iter, 0, &item_str, -1);
-    if(!item_str)
-	return TRUE; /* Aborting due to error */
+	gtk_tree_model_get(model, iter, 0, &item_str, -1);
+	if(!item_str)
+		return TRUE; /* Aborting due to error */
 
-    prefs_put_string(sdd->f, "alsa1x-device-list", item_str);
-    g_free(item_str);
-    return FALSE;
+	g_string_append_printf(sdd->str, "%s;", item_str);
+	g_free(item_str);
+	return FALSE;
 }
 
 static gboolean
 alsa_savesettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
     alsa_driver * const d = dp;
-    guint i;
-    gchar buf[32];
-    svd_data savedev_data;
+    svd_data sdd;
 
     prefs_put_string(f, "alsa1x-device", d->device);
 
@@ -1235,31 +1238,27 @@ alsa_savesettings (void *dp,
     prefs_put_int(f, "alsa1x-playrate", d->playrate);
     prefs_put_int(f, "alsa1x-buffer_size", d->buffer_size);
     prefs_put_int(f, "alsa1x-num_periods", d->num_periods);
-    prefs_put_int(f, "alsa1x-can_8", d->can8);
-    prefs_put_int(f, "alsa1x-can_16", d->can16);
-    prefs_put_int(f, "alsa1x-can_mono", d->canmono);
-    prefs_put_int(f, "alsa1x-can_stereo", d->canstereo);
-    prefs_put_int(f, "alsa1x-signedness_8", d->signedness8);
-    prefs_put_int(f, "alsa1x-signedness_16", d->signedness16);
+    prefs_put_bool(f, "alsa1x-can_8", d->can8);
+    prefs_put_bool(f, "alsa1x-can_16", d->can16);
+    prefs_put_bool(f, "alsa1x-can_mono", d->canmono);
+    prefs_put_bool(f, "alsa1x-can_stereo", d->canstereo);
+    prefs_put_bool(f, "alsa1x-signedness_8", d->signedness8);
+    prefs_put_bool(f, "alsa1x-signedness_16", d->signedness16);
     prefs_put_int(f, "alsa1x-period_size_min", d->persizemin);
     prefs_put_int(f, "alsa1x-period_size_max", d->persizemax);
 
-    for(i = 0; i < NUM_FORMATS; i++) {
-	g_sprintf(buf, "alsa1x-devcap[%u].minfreq", i);
-	prefs_put_int(f, buf, d->devcap[i].minfreq);
-	g_sprintf(buf, "alsa1x-devcap[%u].maxfreq", i);
-	prefs_put_int(f, buf, d->devcap[i].maxfreq);
-	g_sprintf(buf, "alsa1x-devcap[%u].minbufsize", i);
-	prefs_put_int(f, buf, d->devcap[i].minbufsize);
-	g_sprintf(buf, "alsa1x-devcap[%u].maxbufsize", i);
-	prefs_put_int(f, buf, d->devcap[i].maxbufsize);
-    }
+	prefs_put_int_array(f, "alsa1x-minfreq", d->minfreq, NUM_FORMATS);
+	prefs_put_int_array(f, "alsa1x-maxfreq", d->maxfreq, NUM_FORMATS);
+	prefs_put_int_array(f, "alsa1x-minbufsize", d->minbufsize, NUM_FORMATS);
+	prefs_put_int_array(f, "alsa1x-maxbufsize", d->maxbufsize, NUM_FORMATS);
 
-    prefs_put_int(f, "alsa1x-verbose", d->verbose);
+    prefs_put_bool(f, "alsa1x-verbose", d->verbose);
 
-    savedev_data.f = f;
-    savedev_data.counter = 0;
-    gtk_tree_model_foreach(gtk_combo_box_get_model(GTK_COMBO_BOX(d->alsa_device)), save_dev_func, &savedev_data);
+	sdd.counter = 0;
+	sdd.str = g_string_new("");
+	gtk_tree_model_foreach(gtk_combo_box_get_model(GTK_COMBO_BOX(d->alsa_device)), save_dev_func, &sdd);
+	prefs_put_string(f, "alsa1x-device-list", sdd.str->str);
+	g_string_free(sdd.str, TRUE);
 
     return TRUE;
 }

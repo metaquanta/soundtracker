@@ -75,7 +75,7 @@ typedef struct oss_driver {
     gpointer polltag;
     int firstpoll;
 
-    gchar p_devdsp[128];
+    gchar *p_devdsp;
     int p_resolution;
     int p_channels;
     int p_mixfreq;
@@ -306,7 +306,7 @@ oss_new (void)
 {
     oss_driver *d = g_new(oss_driver, 1);
 
-    strcpy(d->p_devdsp, "/dev/dsp");
+    d->p_devdsp = g_strdup("/dev/dsp");
     d->p_mixfreq = 44100;
     d->p_channels = 2;
     d->p_resolution = 16;
@@ -501,15 +501,19 @@ oss_get_play_rate (void *d)
 
 static gboolean
 oss_loadsettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
     oss_driver * const d = dp;
+    gchar *buf;
 
-    prefs_get_string(f, "oss-devdsp", d->p_devdsp);
-    prefs_get_int(f, "oss-resolution", &d->p_resolution);
-    prefs_get_int(f, "oss-channels", &d->p_channels);
-    prefs_get_int(f, "oss-mixfreq", &d->p_mixfreq);
-    prefs_get_int(f, "oss-fragsize", &d->p_fragsize);
+	if((buf = prefs_get_string(f, "oss-devdsp", NULL))) {
+		g_free(d->p_devdsp);
+		d->p_devdsp = buf;
+	}
+	d->p_resolution = prefs_get_int(f, "oss-resolution", d->p_resolution);
+	d->p_channels = prefs_get_int(f, "oss-channels", d->p_channels);
+	d->p_mixfreq = prefs_get_int(f, "oss-mixfreq", d->p_mixfreq);
+	d->p_fragsize = prefs_get_int(f, "oss-fragsize", d->p_fragsize);
 
     prefs_init_from_structure(d);
 
@@ -518,7 +522,7 @@ oss_loadsettings (void *dp,
 
 static gboolean
 oss_savesettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
     oss_driver * const d = dp;
 

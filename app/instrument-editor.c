@@ -151,7 +151,7 @@ instrument_editor_load_instrument (gchar *fn)
     if(!localname)
 		return;
 
-	file_selection_save_path(fn, gui_settings.loadinstr_path);
+	file_selection_save_path(fn, &gui_settings.loadinstr_path);
     // Instead of locking the instrument and samples, we simply stop playing.
     gui_play_stop();
 
@@ -181,7 +181,7 @@ instrument_editor_save_instrument (gchar *fn)
     if(!localname)
 		return;
 
-	file_selection_save_path(fn, gui_settings.saveinstr_path);
+	file_selection_save_path(fn, &gui_settings.saveinstr_path);
     f = fopen(localname, "wb");
     g_free(localname);
 	if(f) {

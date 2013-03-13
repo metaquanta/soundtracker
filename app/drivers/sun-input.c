@@ -60,7 +60,7 @@ typedef struct sun_driver {
     int polltag;
 
     audio_info_t info;
-    gchar p_devaudio[128];
+    gchar *p_devaudio;
     int p_resolution;
     int p_channels;
     int p_mixfreq;
@@ -143,7 +143,7 @@ sun_new (void)
 {
     sun_driver *d = g_new(sun_driver, 1);
 
-    strcpy(d->p_devaudio, "/dev/audio");
+    d->p_devaudio = g_strdup("/dev/audio");
     d->p_mixfreq = 44100;
     d->p_channels = 1;
     d->p_resolution = 16;
@@ -340,11 +340,15 @@ sun_open (void *dp)
 
 static gboolean
 sun_loadsettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
     sun_driver * const d = dp;
+    gchar *buf;
 
-    prefs_get_string(f, "sun-devaudio", d->p_devaudio);
+	if((buf = prefs_get_string(f, "sun-devaudio", NULL))) {
+		g_free(d->p_devaudio);
+		d->p_devaudio = buf;
+	}
 
     prefs_init_from_structure(d);
 
@@ -353,7 +357,7 @@ sun_loadsettings (void *dp,
 
 static gboolean
 sun_savesettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
     sun_driver * const d = dp;
 

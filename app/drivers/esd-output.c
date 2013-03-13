@@ -209,7 +209,7 @@ esd_get_play_rate (void *d)
 
 static gboolean
 esd_loadsettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
 //    esd_driver * const d = dp;
 
@@ -218,7 +218,7 @@ esd_loadsettings (void *dp,
 
 static gboolean
 esd_savesettings (void *dp,
-		  prefs_node *f)
+		  const gchar *f)
 {
 //    esd_driver * const d = dp;
 

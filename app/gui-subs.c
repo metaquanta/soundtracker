@@ -184,14 +184,15 @@ gui_put_labelled_spin_button (GtkWidget *destbox,
 
 void
 file_selection_save_path (const gchar *fn,
-			  gchar *store)
+			  gchar **store)
 {
-    gchar *dn = g_dirname(fn);
+	gchar *dn = g_dirname(fn);
 
-    strncpy(store, dn, 127);
-    strncat(store, "/", 127);
+	if(*store)
+		g_free(*store);
 
-    g_free(dn);
+	*store = g_strconcat(dn, "/", NULL);
+	g_free(dn);
 }
 
 static void
@@ -601,4 +602,3 @@ gui_set_escape_close (GtkWidget *window)
 	gtk_accel_group_connect(group, GDK_Escape, 0, 0, closure);
 	gtk_window_add_accel_group(GTK_WINDOW(window), group);
 }
-

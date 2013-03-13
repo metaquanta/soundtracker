@@ -59,29 +59,7 @@ midi_settings_dialog (void)
 /******************************************************************/
 /* Global variables. */
 
-/* MIDI preferences default values
- * and keys in the preferences file.
- */
-
-midi_prefs midi_settings = {
-  /* MIDI input parameters */
-  {
-    1,  /* key=input-auto-connect */
-    64, /* key=input-client */
-    0,  /* key=input-port */
-    0,  /* key=input-channel-enabled */
-    1   /* key=input-volume-enabled */
-  },
-  /* MIDI output parameters */
-  {
-    128, /* key=output-client */
-    0  /* key=output-port */
-  },
-  /* MIDI misc. parameters */
-  {
-    MIDI_DEBUG_OFF /* key=debug-level */
-  }
-};
+midi_prefs midi_settings;
 
 /* Page numbers for the MIDI settings notebook. */
 /* Depends on the order the pages are added to the notebook. */
@@ -135,44 +113,26 @@ static void reset_page_changed_flags(void);
  * Load MIDI configuration parameters.
  */
 
+#define SECTION "midi"
+
 void
 midi_load_config (void)
 {
-  prefs_node *f;
+	midi_settings.misc.debug_level = prefs_get_int(SECTION, "debug-level", MIDI_DEBUG_OFF);
+	/* Validate debug level */
+	if ( midi_settings.misc.debug_level < 0) {
+		midi_settings.misc.debug_level = MIDI_DEBUG_OFF;
+	} else if (midi_settings.misc.debug_level > MIDI_DEBUG_HIGHEST) {
+		midi_settings.misc.debug_level = MIDI_DEBUG_HIGHEST;
+	}
 
-
-  f = prefs_open_read("midi");
-
-  if (f) {
-
-    prefs_get_int(f, "debug-level",
-                  &midi_settings.misc.debug_level);
-    /* Validate debug level */
-    if ( midi_settings.misc.debug_level < 0) {
-      midi_settings.misc.debug_level = MIDI_DEBUG_OFF;
-    } else if (midi_settings.misc.debug_level > MIDI_DEBUG_HIGHEST) {
-      midi_settings.misc.debug_level = MIDI_DEBUG_HIGHEST;
-    }
-
-    prefs_get_int(f, "input-auto-connect",
-                  &midi_settings.input.auto_connect);
-    prefs_get_int(f, "input-client",
-                  &midi_settings.input.client);
-    prefs_get_int(f, "input-port",
-                  &midi_settings.input.port);
-    prefs_get_int(f, "input-channel-enabled",
-                  &midi_settings.input.channel_enabled);
-    prefs_get_int(f, "input-volume-enabled",
-                  &midi_settings.input.volume_enabled);
-
-    prefs_get_int(f, "output-client",
-                  &midi_settings.output.client);
-    prefs_get_int(f, "output-port",
-                  &midi_settings.output.port);
-
-    prefs_close(f);
-  }
-
+	midi_settings.input.auto_connect = prefs_get_bool(SECTION, "input-auto-connect", TRUE);
+	midi_settings.input.client = prefs_get_int(SECTION, "input-client", 0);
+	midi_settings.input.port = prefs_get_int(SECTION, "input-port", 0);
+	midi_settings.input.channel_enabled = prefs_get_int(SECTION, "input-channel-enabled", 0);
+	midi_settings.input.volume_enabled = prefs_get_int(SECTION, "input-volume-enabled", 0);
+	midi_settings.output.client = prefs_get_int(SECTION, "output-client", 0);
+	midi_settings.output.port = prefs_get_int(SECTION, "output-port", 0);
 } /* midi_load_config() */
 
 /*****************************************************
@@ -182,29 +142,20 @@ midi_load_config (void)
 void
 midi_save_config (void)
 {
-  prefs_node *f;
-
-  f = prefs_open_write("midi");
-  if(!f)
-    return;
-
   if (IS_MIDI_DEBUG_ON) {
     g_print( "MIDI settings saved to file\n");
   }
 
-  prefs_put_int(f, "debug-level", midi_settings.misc.debug_level);
+  prefs_put_int(SECTION, "debug-level", midi_settings.misc.debug_level);
 
-  prefs_put_int(f, "input-auto-connect", midi_settings.input.auto_connect);
-  prefs_put_int(f, "input-client", midi_settings.input.client);
-  prefs_put_int(f, "input-port", midi_settings.input.port);
-  prefs_put_int(f, "input-channel-enabled", midi_settings.input.channel_enabled);
-  prefs_put_int(f, "input-volume-enabled", midi_settings.input.volume_enabled);
+  prefs_put_bool(SECTION, "input-auto-connect", midi_settings.input.auto_connect);
+  prefs_put_int(SECTION, "input-client", midi_settings.input.client);
+  prefs_put_int(SECTION, "input-port", midi_settings.input.port);
+  prefs_put_int(SECTION, "input-channel-enabled", midi_settings.input.channel_enabled);
+  prefs_put_int(SECTION, "input-volume-enabled", midi_settings.input.volume_enabled);
 
-  prefs_put_int(f, "output-client", midi_settings.output.client);
-  prefs_put_int(f, "output-port", midi_settings.output.port);
-
-  prefs_close(f);
-
+  prefs_put_int(SECTION, "output-client", midi_settings.output.client);
+  prefs_put_int(SECTION, "output-port", midi_settings.output.port);
 } /* midi_save_config() */
 
 /***************************************************************************
