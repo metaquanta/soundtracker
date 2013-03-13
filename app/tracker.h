@@ -25,6 +25,7 @@
 
 #include <gdk/gdk.h>
 #include <gtk/gtkwidget.h>
+#include <glib/gi18n.h>
 
 #include "xm.h"
 
@@ -97,6 +98,8 @@ struct _TrackerClass
 };
 
 extern const char * const notenames[4][96];
+
+extern const gchar *color_meanings[];
 
 guint		tracker_get_type            (void);
 GtkWidget*     	tracker_new                 (void);

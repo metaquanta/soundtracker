@@ -71,9 +71,7 @@ const char * const notenames[4][96] = {{
     "C-7", "Db7", "D-7", "Eb7", "E-7", "F-7", "Gb7", "G-7", "Ab7", "A-7", "Bb7", "B-7",
 }};
 
-static void init_display(Tracker *t, int width, int height);
-
-static const int default_colors[] = {
+static const guint default_colors[] = {
     10, 20, 30,
     100, 100, 100,
     70, 70, 70,
@@ -83,8 +81,23 @@ static const int default_colors[] = {
     170, 170, 200,
     230, 200, 0,
     250, 100, 50,
-    250, 200, 50,
+    250, 200, 50
 };
+
+const gchar *color_meanings[] = {
+    N_("Tracker background"),
+    N_("Cursor background"),
+    N_("Major lines highlighting"),
+    N_("Minor lines highlighting"),
+    N_("Selection"),
+    N_("Notes"),
+    N_("Delimiters"),
+    N_("Channel numbers"),
+    N_("Cursor idle"),
+    N_("Cursor editing")
+};
+
+static void init_display(Tracker *t, int width, int height);
 
 enum {
     SIG_PATPOS,
@@ -944,7 +957,7 @@ void
 tracker_init_colors (Tracker *t)
 {
     int n;
-    const int *p;
+    const guint *p;
     GdkColor *c;
 
     for (n = 0, p = default_colors, c = t->colors; n < TRACKERCOL_LAST; n++, c++) {
@@ -975,6 +988,8 @@ tracker_realize (GtkWidget *widget)
     GdkWindowAttr attributes;
     gint attributes_mask;
     Tracker *t;
+	guint i;
+	const guint *p;
 
     g_return_if_fail (widget != NULL);
     g_return_if_fail (IS_TRACKER (widget));
@@ -1007,15 +1022,18 @@ tracker_realize (GtkWidget *widget)
     t->notes_gc = gdk_gc_new(widget->window);
     t->misc_gc = gdk_gc_new(widget->window);
     t->bars_gc = gdk_gc_new(widget->window);
-    if(gui_settings_colors.ok) {
-	guint i;
 
-	memcpy(&t->colors[0], &gui_settings_colors.val[0], sizeof(GdkColor) * TRACKERCOL_LAST);
-	for(i = 0; i < TRACKERCOL_LAST; i++)
-	    gdk_color_alloc(gtk_widget_get_colormap(widget), &t->colors[i]);
+	for (i = 0, p = default_colors; i < TRACKERCOL_LAST; i++) {
+		GdkColor c;
+
+		c.red = *p++ * 65535 / 255;
+		c.green = *p++ * 65535 / 255;
+		c.blue = *p++ * 65535 / 255;
+
+		t->colors[i] = prefs_get_color("settings", color_meanings[i], c);
+		gdk_color_alloc(gtk_widget_get_colormap(widget), &t->colors[i]);
+	}
 	tracker_apply_colors(t);
-    } else
-	tracker_init_colors(t);
 
     if(!t->enable_backing_store)
 	gdk_gc_set_exposures (t->bg_gc, 1); /* man XCopyArea, grep exposures */

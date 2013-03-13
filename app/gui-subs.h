@@ -61,7 +61,7 @@ void                 statusbar_update                 (int message,
 						       gboolean force_gui_update);
 
 void                 file_selection_save_path         (const gchar *fn,
-						       gchar *store);
+						       gchar **store);
 
 int                  find_current_toggle              (GtkWidget **widgets,
 						       int count);
