@@ -58,6 +58,7 @@ endif
 
 soundtracker_LDADD = drivers/libdrivers.a mixers/libmixers.a ${ST_S_JACK_LIBS}
 
+if SUID_ROOT
 install-exec-local:
 	case `uname` in \
 	  OpenBSD) \
@@ -81,10 +82,9 @@ install-exec-local:
 	@echo "*** if this is a multi-user machine. See file INSTALL."
 	@echo "***"
 	@echo ""
+endif
 
 
 stdir = $(datadir)/soundtracker
 
-#INCLUDES = -DDATADIR=\"$(stdir)\" \
-#	-DLOCALEDIR=\"$(datadir)/locale\"
 INCLUDES = -DLOCALEDIR=\"$(datadir)/locale\"

@@ -7,7 +7,6 @@ add avalable devices navigation (from csound->rtalsa.c); remove all alsa except 
 22) ESD driver reported to produce greater delay at start than in ST-gtk1;
 36) Pressing Ctrl-O in Instrument editor crashes ST at some machines;
 39) wet3.xm: "invalid UTF8 pango warnings" (modinfo page)
-40) Disable ALSA error messages when audio capabilities testing
 42) replace recode.[ch] with g_convert() functions to/from UTF-8 (check for pseudographics support)
 Hmm, seems FT2 uses its own encoding, not standard Latin. The custom coding procedures are still required...
 The problem seems wider. Multibyte UTF-8 charachters requiure to extend length of osme fields like xm->name
@@ -15,9 +14,7 @@ and modify encoding procedures.
 45) Volume ramping->normalize does somethong wrong (subsequently decreases positive half-periods),
 at 8 bit samples only, st_sample_cutoff_lowest_8_bits() and the maximum value is negative;
 46) Increment/Decrement cmd value menus work very strange;
-47) Use usual Label insted of Status Bar;
 49) Update or even rewrite JACK driver;
-50) Make SUID root conditional at install;
 
 Some remarks about asm mixer bug: at the sample end and loop points there are ugly clicks
 (ramping works badly). Also when the previous channel has amplitude > 0, the following one

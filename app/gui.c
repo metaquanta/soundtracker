@@ -94,7 +94,6 @@ static GtkWidget *toggle_lock_editpat;
 static Playlist *playlist;
 static GtkBuilder *builder;
 
-guint statusbar_context_id;
 GtkWidget *status_bar;
 GtkWidget *st_clock;
 
@@ -2303,8 +2302,9 @@ gui_final (int argc,
     gtk_box_pack_start (GTK_BOX (hbox), thing, TRUE, TRUE, 0);
     gtk_frame_set_shadow_type (GTK_FRAME (thing), GTK_SHADOW_IN);
 
-    status_bar = gtk_statusbar_new();
-    gtk_statusbar_set_has_resize_grip(GTK_STATUSBAR(status_bar), FALSE);
+    status_bar = gtk_label_new(WELCOME_MESSAGE);
+    gtk_misc_set_alignment(GTK_MISC(status_bar), 0.0, 0.5);
+    gtk_misc_set_padding(GTK_MISC(status_bar), 4, 0);
     gtk_widget_show (status_bar);
     gtk_container_add (GTK_CONTAINER (thing), status_bar);
 
@@ -2320,9 +2320,6 @@ gui_final (int argc,
     clock_set_format (CLOCK (st_clock), _("%M:%S"));
     clock_set_seconds(CLOCK (st_clock), 0);
 
-    statusbar_context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(status_bar), "ST Statusbar");
-    gtk_statusbar_push(GTK_STATUSBAR(status_bar), statusbar_context_id, WELCOME_MESSAGE);
-    
     /* capture all key presses */
     gtk_widget_add_events(GTK_WIDGET(mainwindow), GDK_KEY_RELEASE_MASK);
     g_signal_connect(mainwindow, "key-press-event", G_CALLBACK(keyevent), (gpointer)1);

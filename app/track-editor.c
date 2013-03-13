@@ -91,8 +91,7 @@ static struct {
 static gint
 track_editor_editmode_status_idle_function (void)
 {
-    gtk_statusbar_pop(GTK_STATUSBAR(status_bar), statusbar_context_id);
-    gtk_statusbar_push(GTK_STATUSBAR(status_bar), statusbar_context_id, track_editor_editmode_status_ed_buf);
+    gtk_label_set_text(GTK_LABEL(status_bar), track_editor_editmode_status_ed_buf);
 
     gtk_idle_remove(track_editor_editmode_status_idle_handler);
     track_editor_editmode_status_idle_handler = 0;

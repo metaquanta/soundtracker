@@ -378,7 +378,7 @@ AC_PROG_RANLIB
 
 AC_C_BIGENDIAN
 
-dnl Check if gtk+ tweaks are used (may cause problems with compilation).
+dnl Check if gtk+ tweaks are used (may cause problems in runtime).
 AC_ARG_ENABLE(hacks,
 [  --disable-hacks           Disable Gtk+ hacks (default = yes)],
 gtk_hacks=no)
@@ -387,7 +387,12 @@ if test x$gtk_hacks != xno; then
   AC_DEFINE([GTK_HACKS], 1, [Set if gtk hacks are used])
 fi
 
-AM_CONDITIONAL(GTK_HACKS, test x$gtk_hacks = xyes)
+dnl Check if soundtracker shall be installed suid root
+AC_ARG_ENABLE([suid_root],
+AS_HELP_STRING([--enable-suid_root], [Install ST suid root (default = no)]),
+suid_root=yes)
+
+AM_CONDITIONAL(SUID_ROOT, test x$suid_root = xyes)
 
 dnl Set PREFIX in config.h.
 if test "x${prefix}" = "xNONE"; then

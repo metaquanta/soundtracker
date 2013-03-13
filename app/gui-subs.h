@@ -53,7 +53,6 @@ struct menu_callback
 	gpointer data;
 };
 
-extern guint statusbar_context_id;
 extern GtkWidget *status_bar;
 extern GtkWidget *st_clock;
 
@@ -61,7 +60,7 @@ void                 statusbar_update                 (int message,
 						       gboolean force_gui_update);
 
 void                 file_selection_save_path         (const gchar *fn,
-						       gchar **store);
+                                                       gchar **store);
 
 int                  find_current_toggle              (GtkWidget **widgets,
 						       int count);

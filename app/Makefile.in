@@ -43,7 +43,11 @@ bin_PROGRAMS = soundtracker$(EXEEXT)
 subdir = app
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.in
+am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -153,9 +157,7 @@ EXEEXT = @EXEEXT@
 GDK_PIXBUF = @GDK_PIXBUF@
 GDK_PIXBUF_CFLAGS = @GDK_PIXBUF_CFLAGS@
 GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
-GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GMSGFMT = @GMSGFMT@
-GMSGFMT_015 = @GMSGFMT_015@
 GREP = @GREP@
 GTKHTML_CFLAGS = @GTKHTML_CFLAGS@
 GTKHTML_LIBS = @GTKHTML_LIBS@
@@ -178,8 +180,8 @@ LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
-MSGFMT_015 = @MSGFMT_015@
 MSGMERGE = @MSGMERGE@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
@@ -206,8 +208,6 @@ ST_S_JACK_LIBS = @ST_S_JACK_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 XGETTEXT = @XGETTEXT@
-XGETTEXT_015 = @XGETTEXT_015@
-XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -280,9 +280,6 @@ soundtracker_SOURCES = audio.c audio.h audioconfig.c audioconfig.h \
 	$(am__append_3)
 soundtracker_LDADD = drivers/libdrivers.a mixers/libmixers.a ${ST_S_JACK_LIBS}
 stdir = $(datadir)/soundtracker
-
-#INCLUDES = -DDATADIR=\"$(stdir)\" \
-#	-DLOCALEDIR=\"$(datadir)/locale\"
 INCLUDES = -DLOCALEDIR=\"$(datadir)/locale\"
 all: all-recursive
 
@@ -613,6 +610,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+@SUID_ROOT_FALSE@install-exec-local:
 clean: clean-recursive
 
 clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
@@ -689,29 +687,29 @@ uninstall-am: uninstall-binPROGRAMS
 	uninstall uninstall-am uninstall-binPROGRAMS
 
 
-install-exec-local:
-	case `uname` in \
-	  OpenBSD) \
-	    chown root.wheel $(bindir)/soundtracker; \
-	    ;; \
-	  NetBSD) \
-	    chown root.wheel $(bindir)/soundtracker; \
-	    ;; \
-	  Darwin) \
-	    chown root:admin $(bindir)/soundtracker; \
-	    ;; \
-	  *) \
-	    chown root:root $(bindir)/soundtracker; \
-	    ;; \
-	esac
-	chmod +s $(bindir)/soundtracker
-	@echo ""
-	@echo "***"
-	@echo "*** Installing SoundTracker suid root."
-	@echo "*** This improves sound responsivity, but may be a security risk"
-	@echo "*** if this is a multi-user machine. See file INSTALL."
-	@echo "***"
-	@echo ""
+@SUID_ROOT_TRUE@install-exec-local:
+@SUID_ROOT_TRUE@	case `uname` in \
+@SUID_ROOT_TRUE@	  OpenBSD) \
+@SUID_ROOT_TRUE@	    chown root.wheel $(bindir)/soundtracker; \
+@SUID_ROOT_TRUE@	    ;; \
+@SUID_ROOT_TRUE@	  NetBSD) \
+@SUID_ROOT_TRUE@	    chown root.wheel $(bindir)/soundtracker; \
+@SUID_ROOT_TRUE@	    ;; \
+@SUID_ROOT_TRUE@	  Darwin) \
+@SUID_ROOT_TRUE@	    chown root:admin $(bindir)/soundtracker; \
+@SUID_ROOT_TRUE@	    ;; \
+@SUID_ROOT_TRUE@	  *) \
+@SUID_ROOT_TRUE@	    chown root:root $(bindir)/soundtracker; \
+@SUID_ROOT_TRUE@	    ;; \
+@SUID_ROOT_TRUE@	esac
+@SUID_ROOT_TRUE@	chmod +s $(bindir)/soundtracker
+@SUID_ROOT_TRUE@	@echo ""
+@SUID_ROOT_TRUE@	@echo "***"
+@SUID_ROOT_TRUE@	@echo "*** Installing SoundTracker suid root."
+@SUID_ROOT_TRUE@	@echo "*** This improves sound responsivity, but may be a security risk"
+@SUID_ROOT_TRUE@	@echo "*** if this is a multi-user machine. See file INSTALL."
+@SUID_ROOT_TRUE@	@echo "***"
+@SUID_ROOT_TRUE@	@echo ""
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

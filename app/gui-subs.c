@@ -53,8 +53,7 @@ static const char *status_messages[] = {
 void
 statusbar_update (int message, gboolean force_update)
 {
-    gtk_statusbar_pop(GTK_STATUSBAR(status_bar), statusbar_context_id);
-    gtk_statusbar_push(GTK_STATUSBAR(status_bar), statusbar_context_id, _(status_messages[message]));
+    gtk_label_set_text(GTK_LABEL(status_bar), _(status_messages[message]));
 
     /* Take care here... GUI callbacks can be called at this point. */
     if(force_update) {

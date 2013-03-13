@@ -1,3 +1,10 @@
+2013-03-13  Yury Aliaev  <mutab0r@rambler.ru>
+	* configure.in, app/Makefile.am: Installing ST suid root is made
+	conditional and disabled by default;
+	* app/drivers/alsa1x-output.c: Warnings at device test are removed;
+	* app/gui.c, app/gui-subs.[ch], app/track-editor.c: Label is used as tracker
+	status bar (this slightly improves look).
+
 2013-03-11  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/audioconfig.c, app/driver.h, app/gui.[ch], app/gui-settings.[ch],
 	app/gui-subs.c, app/instrument-editor.c, app/keys.[ch], app/main.c,
