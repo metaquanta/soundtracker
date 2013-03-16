@@ -104,6 +104,13 @@ void                 gui_update_range_adjustment      (GtkRange *range,
 						       int window,
 						       void(*func)());
 
+static inline void
+gui_set_radio_active (GtkWidget **radiobutton, guint i)
+{
+	if(GTK_WIDGET_IS_SENSITIVE(radiobutton[i]))
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radiobutton[i]), TRUE);
+}
+
 typedef enum {
     GUI_SUBS_SLIDER_WITH_HSCALE = 0,
     GUI_SUBS_SLIDER_SPIN_ONLY
@@ -122,48 +129,68 @@ typedef struct gui_subs_slider {
 GtkWidget *          gui_subs_create_slider           (gui_subs_slider *s);
 
 void                 gui_subs_set_slider_value        (gui_subs_slider *s,
-						       int v);
+                                                       int v);
 
 int                  gui_subs_get_slider_value        (gui_subs_slider *s);
 
-typedef struct OptionMenuItem {
-  const gchar *name;
-  void *func;
-} OptionMenuItem;
-
 GtkWidget*           gui_combo_new                    (GtkListStore *ls);
 
-GtkWidget *	     gui_list_in_scrolled_window      (int n, gchar **tp,  GtkWidget *hbox,
-						       GType *types, gfloat *alignments,
-						        gboolean *expands,
-							GtkSelectionMode mode, gboolean expand, gboolean fill);
+gboolean             gui_set_active_combo_item        (GtkWidget *combobox,
+                                                       GtkTreeModel *model,
+                                                       guint item);
+
+void                 gui_combo_box_prepend_text_or_set_active (GtkComboBox *combobox,
+                                                               const gchar *text,
+                                                               gboolean force_active);
+
+GtkWidget *          gui_list_in_scrolled_window      (int n, gchar **tp,  GtkWidget *hbox,
+                                                       GType *types,
+                                                       gfloat *alignments,
+                                                       gboolean *expands,
+                                                       GtkSelectionMode mode,
+                                                       gboolean expand,
+                                                       gboolean fill);
 
 GtkWidget *          gui_stringlist_in_scrolled_window(int n,
-						       gchar **tp,
-						       GtkWidget *hbox, gboolean expandfill);
+                                                       gchar **tp,
+                                                       GtkWidget *hbox, gboolean expandfill);
 
-void		     gui_list_clear		      (GtkWidget *list);
+void                 gui_list_clear                   (GtkWidget *list);
 
-void		     gui_list_clear_with_model	      (GtkTreeModel *model);
+void                 gui_list_clear_with_model        (GtkTreeModel *model);
 
-GtkTreeModel *	     gui_list_freeze		      (GtkWidget *list);
+GtkTreeModel *       gui_list_freeze                  (GtkWidget *list);
 
-void		     gui_list_thaw		      (GtkWidget *list, GtkTreeModel *model);
+void                 gui_list_thaw                    (GtkWidget *list,
+                                                       GtkTreeModel *model);
 
 #define GUI_GET_LIST_STORE(list) GTK_LIST_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(list)))
 
-void		     gui_list_handle_selection	      (GtkWidget *list,
-						       GCallback handler,
-						       gpointer data);
+void                 gui_list_handle_selection        (GtkWidget *list,
+                                                       GCallback handler,
+                                                       gpointer data);
 
-inline gboolean	     gui_list_get_iter		      (guint n,
-						       GtkListStore *tree_model,
-						       GtkTreeIter *iter);
+static inline gboolean
+gui_list_get_iter (guint n, GtkListStore *tree_model, GtkTreeIter *iter)
+{
+    gchar *path;
+    gboolean result;
 
-inline void	     gui_string_list_set_text	      (GtkWidget *list, guint row,
-						       guint col, const gchar *string);
+    path = g_strdup_printf("%u", n);
+    result = gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(tree_model), iter, path);
+    g_free(path);
+    return result;
+}
 
-inline void	     gui_list_select		      (GtkWidget *list, guint row, gboolean use_align, gfloat align);
+inline void          gui_string_list_set_text        (GtkWidget *list,
+                                                      guint row,
+                                                      guint col,
+                                                      const gchar *string);
+
+inline void          gui_list_select                  (GtkWidget *list,
+                                                       guint row,
+                                                       gboolean use_align,
+                                                       gfloat align);
 
 GtkWidget *          gui_button                       (GtkWidget * win,
 						       char *stock,

@@ -2,7 +2,7 @@
  * The Real SoundTracker - ALSA 1.0.x (output) driver, pcm
  *                       - requires ALSA 1.0.0 or newer
  *
- * Copyright (C) 2006 Yury Aliaev
+ * Copyright (C) 2006, 2013 Yury Aliaev
  * The principles were taken from alsa 0.5 driver:
  * regards to Kai Vehmanen :-)
  *
@@ -110,8 +110,6 @@ static void	prefs_periods_changed		(GtkWidget *w, alsa_driver *d);
 static void	prefs_channels_changed		(GtkWidget *w, alsa_driver *d);
 static void	prefs_resolution_changed	(GtkWidget *w, alsa_driver *d);
 
-/* Put all gui_hlp_.* (and some other) functions into the separate file app/drivers/gui_helpers.c
-   before writing alsa1x-input driver -- mutabor */
 
 static void
 alsa_error (const gchar *msg, gint err)
@@ -124,99 +122,6 @@ alsa_error (const gchar *msg, gint err)
     g_sprintf(buf, "%s: %s\n", _(msg), converted);
     error_error(buf);
     g_free(converted);
-}
-
-static inline void
-gui_hlp_set_radio_active (GtkWidget **radiobutton, guint i)
-{
-    if(GTK_WIDGET_IS_SENSITIVE(radiobutton[i]))
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radiobutton[i]), TRUE);
-}
-
-typedef struct _compare_data {
-    guint value;
-    gint number;
-} compare_data;
-
-static gboolean
-compare_func (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
-{
-    compare_data *cmp_data = (compare_data*)data;
-    guint cur_val;
-
-    gtk_tree_model_get(model, iter, 0, &cur_val, -1);
-
-    if(cur_val == cmp_data->value) {
-	gint *indices = gtk_tree_path_get_indices(path);
-
-	cmp_data->number = indices[0];
-	return TRUE; /* The desired element is found */
-    }
-
-    return FALSE;
-}
-
-static gboolean
-gui_hlp_set_list_item (GtkWidget *combobox, GtkTreeModel *model, guint item)
-{
-    compare_data cmp_data;
-
-    cmp_data.value = item;
-    cmp_data.number = -1;
-    gtk_tree_model_foreach(model, compare_func, &cmp_data);
-
-    if(cmp_data.number >= 0) {
-	gtk_combo_box_set_active(GTK_COMBO_BOX(combobox), cmp_data.number);
-	return TRUE;
-    }
-
-    return FALSE;
-}
-
-typedef struct _str_cmp_data {
-    const gchar *str;
-    gboolean success;
-    GtkComboBox *combobox;
-} str_cmp_data;
-
-static gboolean
-str_cmp_func (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
-{
-    gchar *item_str = NULL;
-    str_cmp_data *scd = (str_cmp_data *)data;
-
-    gtk_tree_model_get(model, iter, 0, &item_str, -1);
-    if(!item_str)
-	return TRUE; /* Aborting due to error */
-
-    if(!g_ascii_strcasecmp(item_str, scd->str)) {
-	scd->success = TRUE;
-	gtk_combo_box_set_active_iter(scd->combobox, iter);
-	g_free(item_str);
-	return TRUE;
-    }
-
-    g_free(item_str);
-    return FALSE;
-}
-
-static void
-gui_hlp_combo_box_prepend_text_or_set_active (GtkComboBox *combobox, const gchar *text, gboolean force_active)
-{
-    str_cmp_data scd;
-
-    GtkTreeModel *model = gtk_combo_box_get_model(combobox);
-
-    scd.str = text;
-    scd.success = FALSE;
-    scd.combobox = combobox;
-    gtk_tree_model_foreach(model, str_cmp_func, &scd);
-
-    if(!scd.success) {
-	gtk_combo_box_prepend_text(combobox, text);
-	if(force_active)
-	    gtk_combo_box_set_active(combobox, 0);
-    }
 }
 
 static void
@@ -364,14 +269,14 @@ update_controls_a (alsa_driver *d)
 {
     gtk_widget_set_sensitive(d->prefs_resolution_w[0], d->can8);
     gtk_widget_set_sensitive(d->prefs_resolution_w[1], d->can16);
-    gui_hlp_set_radio_active(d->prefs_resolution_w, d->bits / 8 - 1);
+    gui_set_radio_active(d->prefs_resolution_w, d->bits / 8 - 1);
 
     gtk_widget_set_sensitive(d->prefs_channels_w[0], d->canmono);
     gtk_widget_set_sensitive(d->prefs_channels_w[1], d->canstereo);
-    gui_hlp_set_radio_active(d->prefs_channels_w, d->stereo);
+    gui_set_radio_active(d->prefs_channels_w, d->stereo);
 
     update_freqs_list(d, FALSE);
-    if(!gui_hlp_set_list_item(d->prefs_mixfreq, d->model, d->playrate))
+    if(!gui_set_active_combo_item(d->prefs_mixfreq, d->model, d->playrate))
 	set_highest_freq(d);
 
     update_bufsize_range(d);
@@ -518,7 +423,7 @@ device_test (GtkWidget *w, alsa_driver *d)
     if(g_ascii_strcasecmp(d->device, new_device)) {
 	g_free(d->device);
 	d->device = g_strdup(new_device);
-	gui_hlp_combo_box_prepend_text_or_set_active(GTK_COMBO_BOX(d->alsa_device), d->device, FALSE);
+	gui_combo_box_prepend_text_or_set_active(GTK_COMBO_BOX(d->alsa_device), d->device, FALSE);
     }
 
     for(i = 0; i < NUM_FORMATS; i++){
@@ -718,7 +623,7 @@ static void
 prefs_init_from_structure (alsa_driver *d)
 {
     d->hwtest = FALSE;
-    gui_hlp_combo_box_prepend_text_or_set_active(GTK_COMBO_BOX(d->alsa_device), d->device, TRUE);
+    gui_combo_box_prepend_text_or_set_active(GTK_COMBO_BOX(d->alsa_device), d->device, TRUE);
     update_controls_a(d);
     d->hwtest = TRUE;
 }
@@ -1203,7 +1108,7 @@ alsa_loadsettings (void *dp,
 
 	devlist = prefs_get_str_array(f, "alsa1x-device-list", &size);
 	for(i = 0; i < size; i++)
-		gui_hlp_combo_box_prepend_text_or_set_active(GTK_COMBO_BOX(d->alsa_device), devlist[i], FALSE);
+		gui_combo_box_prepend_text_or_set_active(GTK_COMBO_BOX(d->alsa_device), devlist[i], FALSE);
 
     gtk_combo_box_set_active(GTK_COMBO_BOX(d->alsa_device), 0);
 

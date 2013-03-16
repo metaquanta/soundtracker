@@ -1029,23 +1029,37 @@ track_editor_cmd_mvalue (Tracker *t, gboolean mode)
     tpos = t->cursor_item;
 
     if(tpos>=3) {
-        note = &t->curpattern->channels[t->cursor_ch][(t->patpos - gui_get_current_jump_value()) % t->curpattern->length];
+		gint from = t->patpos - gui_get_current_jump_value();
 
-        if(tpos<5)
-            nparam = note->volume & 0xf;
-        else
-            nparam = note->fxparam;
+		if(from >= 0) {
+			note = &t->curpattern->channels[t->cursor_ch][from];
 
-        if(mode==TRUE)
-            nparam = (nparam + 1) & 0xff;
-        else
-            nparam = (nparam - 1) & 0xff;
+			if(tpos<5) {
+				nparam = note->volume;
+				if(nparam < 0x10 || nparam > 0x50) {
+					nparam &= 0xf;
+					mode ? nparam++ : nparam--;
 
-        note = &t->curpattern->channels[t->cursor_ch][t->patpos];
-        if(tpos<5)
-            note->volume |= nparam & 0xf;
-        else
-            note->fxparam = nparam;
+					note = &t->curpattern->channels[t->cursor_ch][t->patpos];
+					note->volume &= 0xf0;
+					note->volume |= nparam & 0xf;
+				} else {
+					if(mode && nparam < 0x50)
+						nparam++;
+					if(!mode && nparam > 0x10)
+						nparam--;
+
+					note = &t->curpattern->channels[t->cursor_ch][t->patpos];
+					note->volume = nparam;
+				}
+			} else {
+				nparam = note->fxparam;
+				mode ? nparam++ : nparam--;
+
+				note = &t->curpattern->channels[t->cursor_ch][t->patpos];
+				note->fxparam = nparam & 0xff;
+			}
+		}
 
         tracker_step_cursor_row(t, gui_get_current_jump_value());
         xm_set_modified(1);

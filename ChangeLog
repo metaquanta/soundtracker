@@ -1,3 +1,9 @@
+2013-03-14  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui-subs.[ch], app/drivers/alsa1x-output.c: GUI helpers are moved to
+	gui-subs;
+	* app/track-editor.c: Increase/Decrease command value functions now work
+	better.
+
 2013-03-13  Yury Aliaev  <mutab0r@rambler.ru>
 	* configure.in, app/Makefile.am: Installing ST suid root is made
 	conditional and disabled by default;

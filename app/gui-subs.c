@@ -405,18 +405,6 @@ gui_list_handle_selection (GtkWidget *list, GCallback handler, gpointer data)
     g_signal_connect_after(sel, "changed", handler, data);
 }
 
-inline gboolean
-gui_list_get_iter (guint n, GtkListStore *tree_model, GtkTreeIter *iter)
-{
-    gchar *path;
-    gboolean result;
-    
-    path = g_strdup_printf("%u", n);
-    result = gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(tree_model), iter, path);
-    g_free(path);
-    return result;
-}
-
 inline void
 gui_string_list_set_text (GtkWidget *list, guint row, guint col, const gchar *string)
 {
@@ -600,4 +588,90 @@ gui_set_escape_close (GtkWidget *window)
 
 	gtk_accel_group_connect(group, GDK_Escape, 0, 0, closure);
 	gtk_window_add_accel_group(GTK_WINDOW(window), group);
+}
+
+typedef struct _compare_data {
+    guint value;
+    gint number;
+} compare_data;
+
+static gboolean
+compare_func (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
+{
+	compare_data *cmp_data = (compare_data*)data;
+	guint cur_val;
+
+	gtk_tree_model_get(model, iter, 0, &cur_val, -1);
+
+	if(cur_val == cmp_data->value) {
+		gint *indices = gtk_tree_path_get_indices(path);
+
+		cmp_data->number = indices[0];
+		return TRUE; /* The desired element is found */
+	}
+
+	return FALSE;
+}
+
+gboolean
+gui_set_active_combo_item (GtkWidget *combobox, GtkTreeModel *model, guint item)
+{
+	compare_data cmp_data;
+
+	cmp_data.value = item;
+	cmp_data.number = -1;
+	gtk_tree_model_foreach(model, compare_func, &cmp_data);
+
+	if(cmp_data.number >= 0) {
+		gtk_combo_box_set_active(GTK_COMBO_BOX(combobox), cmp_data.number);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+typedef struct _str_cmp_data {
+    const gchar *str;
+    gboolean success;
+    GtkComboBox *combobox;
+} str_cmp_data;
+
+static gboolean
+str_cmp_func (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
+{
+	gchar *item_str = NULL;
+	str_cmp_data *scd = (str_cmp_data *)data;
+
+	gtk_tree_model_get(model, iter, 0, &item_str, -1);
+	if(!item_str)
+		return TRUE; /* Aborting due to error */
+
+	if(!g_ascii_strcasecmp(item_str, scd->str)) {
+		scd->success = TRUE;
+		gtk_combo_box_set_active_iter(scd->combobox, iter);
+		g_free(item_str);
+		return TRUE;
+	}
+
+	g_free(item_str);
+	return FALSE;
+}
+
+void
+gui_combo_box_prepend_text_or_set_active (GtkComboBox *combobox, const gchar *text, gboolean force_active)
+{
+	str_cmp_data scd;
+
+	GtkTreeModel *model = gtk_combo_box_get_model(combobox);
+
+	scd.str = text;
+	scd.success = FALSE;
+	scd.combobox = combobox;
+	gtk_tree_model_foreach(model, str_cmp_func, &scd);
+
+	if(!scd.success) {
+		gtk_combo_box_prepend_text(combobox, text);
+		if(force_active)
+			gtk_combo_box_set_active(combobox, 0);
+	}
 }

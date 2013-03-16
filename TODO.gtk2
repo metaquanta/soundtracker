@@ -13,8 +13,8 @@ The problem seems wider. Multibyte UTF-8 charachters requiure to extend length o
 and modify encoding procedures.
 45) Volume ramping->normalize does somethong wrong (subsequently decreases positive half-periods),
 at 8 bit samples only, st_sample_cutoff_lowest_8_bits() and the maximum value is negative;
-46) Increment/Decrement cmd value menus work very strange;
 49) Update or even rewrite JACK driver;
+50) Enable stereo and 8 bit sampling from OSS;
 
 Some remarks about asm mixer bug: at the sample end and loop points there are ugly clicks
 (ramping works badly). Also when the previous channel has amplitude > 0, the following one
