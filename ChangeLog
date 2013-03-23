@@ -1,3 +1,24 @@
+2013-03-??  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/driver-inout.h, app/mixer.h, app/module-info.[ch],
+	app/sample-display.[ch], app/sample-editor.[ch], app/drivers/oss-import.c:
+	Sampling at arbitrary resolution and mono/stereo mode is implemented.
+	Sampling functions now work a bit faster because of less memory copying.
+	Both recording and sample loading allow stereo samples to be stored at two
+	subsequent samples;
+	* app/drivers/alsa1x.c: (renamed from alsa1x-output.c) Recording from ALSA
+	is implemented as well as endianess handling. Automatic detection of
+	available hardware devices is added;
+	* app/main.c, app/menubar.c, app/midi.h, app/midi-settings-09x.c,
+	app/midi-settings.h, app/midi-utils.h, configure.in, Makefile.am,
+	app/Makefile.am: old ALSA support is dropped.
+
+2013-03-22  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/audioconfig.[ch], app/gui-subs.[ch], app/keys.c, app/module-info.c,
+	app/tracker-settings.c: Improved look, cleanups and improvments.
+
+2013-03-20  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/clavier.[ch]: Improved sample map look when using > 16 samples.
+
 2013-03-14  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui-subs.[ch], app/drivers/alsa1x-output.c: GUI helpers are moved to
 	gui-subs;

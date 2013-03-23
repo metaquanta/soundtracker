@@ -532,8 +532,8 @@ keys_dialog (void)
     GtkWidget *mainbox, *box1, *box2, *box3, *box4, *thing, *frame, *gc;
     int i;
     gchar *listtitles[2] = {
-	_("Function"),
-	_("Assignment")
+	N_("Function"),
+	N_("Assignment")
     };
 
     if(configwindow != NULL) {

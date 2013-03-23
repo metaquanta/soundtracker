@@ -71,7 +71,7 @@ struct _Clavier
   GtkDrawingArea drawingarea;
 
   PangoContext *context;
-  PangoLayout *layout;
+  PangoLayout *layout, *layout2;
   int fonth, fontw;
   GdkGC *fontbgc, *fontwgc;
   GdkColor colors[CLAVIERCOL_LAST];

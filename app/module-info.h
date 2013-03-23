@@ -39,6 +39,8 @@ void            modinfo_update_all                 (void);
 void            modinfo_set_current_instrument     (int);
 void            modinfo_set_current_sample         (int);
 
+gint            modinfo_get_current_sample         (void);
+
 void
 modinfo_delete_unused_instruments (void);
 

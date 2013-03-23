@@ -115,8 +115,8 @@ modinfo_page_create (GtkNotebook *nb)
     GtkListStore *list_store;
     GtkTreeIter iter;
     GtkTreeModel *model;
-    gchar *ititles[3] = { "n", _("Instrument Name"), _("#smpl") };
-    gchar *stitles[2] = { "n", _("Sample Name") };
+    gchar *ititles[3] = { "n", N_("Instrument Name"), N_("#smpl") };
+    gchar *stitles[2] = { "n", N_("Sample Name") };
     GType itypes[3] = {G_TYPE_INT, G_TYPE_STRING, G_TYPE_INT};
     GType stypes[2] = {G_TYPE_INT, G_TYPE_STRING};
     gfloat ialignments[3] = {0.5, 0.0, 0.5};
@@ -151,7 +151,7 @@ modinfo_page_create (GtkNotebook *nb)
 					sexpands, GTK_SELECTION_BROWSE, TRUE, TRUE);
     list_store = GUI_GET_LIST_STORE(slist);
     model = gui_list_freeze(slist);
-    for(i = 1; i <= 16; i++) {
+    for(i = 1; i <= 128; i++) {
 	gtk_list_store_append(list_store, &iter);
 	gtk_list_store_set(list_store, &iter, 0, i, 1, "", -1);
     }
@@ -237,7 +237,7 @@ modinfo_update_instrument (int n)
 		       2, st_instrument_num_samples(&xm->instruments[n]), -1);
 
     if(n == curi) {
-	for(i = 0; i < 16; i++)
+	for(i = 0; i < 128; i++)
 	    modinfo_update_sample(i);
     }
 }
@@ -279,7 +279,7 @@ modinfo_set_current_instrument (int n)
     curi = n;
     gui_list_select(ilist, n, FALSE, 0.0);
 
-    for(i = 0; i < 16; i++)
+    for(i = 0; i < 128; i++)
 	modinfo_update_sample(i);
 }
 
@@ -289,6 +289,12 @@ modinfo_set_current_sample (int n)
     g_return_if_fail(n >= 0 && n <= 127);
     curs = n;
     gui_list_select(slist, n, FALSE, 0.0);
+}
+
+gint
+modinfo_get_current_sample (void)
+{
+    return curs;
 }
 
 void

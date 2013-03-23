@@ -221,8 +221,7 @@ AM_CONDITIONAL(DRIVER_OSS, test x$oss_support = xyes)
 
 dnl -----------------------------------------------------------------------
 dnl Test for ALSA-lib
-dnl ALSA 0.9.x: snd_card_load() in libasound.
-dnl ALSA 0.5.x: snd_pcm_channel_params() in libasound.
+dnl ALSA 0.9.x: snd_pcm_plug_open() in libasound.
 dnl -----------------------------------------------------------------------
 
 AC_ARG_ENABLE(alsa,
@@ -235,24 +234,9 @@ if test x$alsa_support != xno; then
      AC_DEFINE([DRIVER_ALSA_09x], 1, [Set if new (v0.9) ALSA driver wanted])
      LIBS="$LIBS -lasound"
     ],
-    [AC_CHECK_LIB(asound,snd_pcm_capture_params,
-       [alsa_support=veryold
-        AC_DEFINE([DRIVER_ALSA], 1, [Set if very old ALSA driver wanted])
-        LIBS="$LIBS -lasound"
-       ]
-     )
-     AC_CHECK_LIB(asound,snd_pcm_channel_params,
-       [alsa_support=old
-        AC_DEFINE([DRIVER_ALSA_050], 1, [Set if old (v0.5) ALSA driver wanted])
-        LIBS="$LIBS -lasound"
-       ]
-     )
-    ]
   )
 fi
 
-AM_CONDITIONAL(DRIVER_ALSA, test x$alsa_support = xveryold)
-AM_CONDITIONAL(DRIVER_ALSA_050, test x$alsa_support = xold)
 AM_CONDITIONAL(DRIVER_ALSA_09x, test x$alsa_support = xnew)
 
 dnl -----------------------------------------------------------------------

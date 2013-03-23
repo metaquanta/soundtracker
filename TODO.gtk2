@@ -2,8 +2,6 @@
 9) Contains a lot of obsolete code.
 14) some CPU-consuming code in the instrument list selection callback (really 
 in the callback) and main notebook switch callback;
-21) Native Alsa 1.x driver: make Alsa 1.x the requirement instead of 0.9.x; signedness handling;
-add avalable devices navigation (from csound->rtalsa.c); remove all alsa except 1.0; recording;
 22) ESD driver reported to produce greater delay at start than in ST-gtk1;
 36) Pressing Ctrl-O in Instrument editor crashes ST at some machines;
 39) wet3.xm: "invalid UTF8 pango warnings" (modinfo page)
@@ -15,6 +13,10 @@ and modify encoding procedures.
 at 8 bit samples only, st_sample_cutoff_lowest_8_bits() and the maximum value is negative;
 49) Update or even rewrite JACK driver;
 50) Enable stereo and 8 bit sampling from OSS;
+51) Check whether mono and stereo scopes are displayed with the same scale;
+52) When recording and selecting 2-samples mode sometimes (after 3 attempts?) sample names in the
+module info page don't be updated immediately;
+53) Occasional crashes when pressing "Monitor" button at Sample editor;
 
 Some remarks about asm mixer bug: at the sample end and loop points there are ugly clicks
 (ramping works badly). Also when the previous channel has amplitude > 0, the following one

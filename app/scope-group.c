@@ -173,11 +173,11 @@ scope_group_timeout (ScopeGroup *s)
 
     for(i = 0; i < s->numchan; i++) {
 	if(o2 > o1) {
-	    sample_display_set_data_16(s->scopes[i], scopebufs[i] + o1, l, TRUE);
+	    sample_display_set_data(s->scopes[i], scopebufs[i] + o1, ST_MIXER_FORMAT_S16_LE, l, TRUE);
 	} else {
 	    memcpy(buf, scopebufs[i] + o1, 2 * (scopebuf_length - o1));
 	    memcpy(buf + scopebuf_length - o1, scopebufs[i], 2 * o2);
-	    sample_display_set_data_16(s->scopes[i], buf, l, TRUE);
+	    sample_display_set_data(s->scopes[i], buf, ST_MIXER_FORMAT_S16_LE, l, TRUE);
 	}
     }
 
@@ -185,7 +185,7 @@ scope_group_timeout (ScopeGroup *s)
 
   ende:
     for(i = 0; i < s->numchan; i++) {
-	sample_display_set_data_8(s->scopes[i], NULL, 0, FALSE);
+	sample_display_set_data(s->scopes[i], NULL, ST_MIXER_FORMAT_S8, 0, FALSE);
     }
     return TRUE;
 }
@@ -211,7 +211,7 @@ scope_group_stop_updating (ScopeGroup *s)
     s->gtktimer = -1;
 
     for(i = 0; i < s->numchan; i++) {
-	sample_display_set_data_8(s->scopes[i], NULL, 0, FALSE);
+	sample_display_set_data(s->scopes[i], NULL, ST_MIXER_FORMAT_S8, 0, FALSE);
     }
 }
 

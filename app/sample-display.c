@@ -63,6 +63,8 @@ static int  sample_display_startoffset_to_xpos (SampleDisplay *s,
 						int offset);
 static gint sample_display_idle_draw_function  (SampleDisplay *s);
 
+G_DEFINE_TYPE(SampleDisplay, sample_display, GTK_TYPE_WIDGET);
+
 static void
 sample_display_idle_draw (SampleDisplay *s)
 {
@@ -84,10 +86,11 @@ sample_display_enable_zero_line (SampleDisplay *s,
     }
 }
 
-static void
+/* Len is in samples, not bytes! */
+void
 sample_display_set_data (SampleDisplay *s,
 			 void *data,
-			 int type,
+			 STMixerFormat type,
 			 int len,
 			 gboolean copy)
 {
@@ -99,17 +102,17 @@ sample_display_set_data (SampleDisplay *s,
     } else {
 	if(copy) {
 	    if(s->datacopy) {
-		if(s->datacopylen < len * type / 8) {
+		if(s->datacopylen < len * mixer_get_resolution(type)) {
 		    g_free(s->data);
-		    s->data = g_new(gint8, len * type / 8);
-		    s->datacopylen = len * type / 8;
+		    s->data = g_new(gint8, len * mixer_get_resolution(type));
+		    s->datacopylen = len * mixer_get_resolution(type);
 		}
 	    } else {
-		s->data = g_new(gint8, len * type / 8);
-		s->datacopylen = len * type / 8;
+		s->data = g_new(gint8, len * mixer_get_resolution(type));
+		s->datacopylen = len * mixer_get_resolution(type);
 	    }
 	    g_assert(s->data != NULL);
-	    memcpy(s->data, data, len * type / 8);
+	    memcpy(s->data, data, len * mixer_get_resolution(type));
 	    s->datalen = len;
 	} else {
 	    if(s->datacopy) {
@@ -136,24 +139,6 @@ sample_display_set_data (SampleDisplay *s,
     s->loop_start = -1;
 
     gtk_widget_queue_draw(GTK_WIDGET(s));    
-}
-
-void
-sample_display_set_data_16 (SampleDisplay *s,
-			    gint16 *data,
-			    int len,
-			    gboolean copy)
-{
-    sample_display_set_data(s, data, 16, len, copy);
-}
-
-void
-sample_display_set_data_8 (SampleDisplay *s,
-			   gint8 *data,
-			   int len,
-			   gboolean copy)
-{
-    sample_display_set_data(s, data, 8, len, copy);
 }
 
 void 
@@ -353,31 +338,123 @@ sample_display_draw_data (GdkDrawable *win,
 
     gc = color ? s->bg_gc : s->fg_gc;
 
-    if(s->datatype == 16) {
-	c = ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))];
-	
-	while(width >= 0) {
-	    d = ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))];
-	    gdk_draw_line(win, gc,
-			  x - 1, ((32767 - c) * sh) >> 16,
-			  x,     ((32767 - d) * sh) >> 16);
-	    c = d;
-	    x++;
-	    width--;
+	switch(s->datatype) {//!!! Big-endian!
+	case ST_MIXER_FORMAT_S16_LE:
+		c = ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))];
+
+		while(width >= 0) {
+			d = ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))];
+			gdk_draw_line(win, gc,
+			              x - 1, ((32767 - c) * sh) >> 16,
+			              x,     ((32767 - d) * sh) >> 16);
+			c = d;
+			x++;
+			width--;
+		}
+		break;
+	case ST_MIXER_FORMAT_U16_LE:
+		c = ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))];
+
+		while(width >= 0) {
+			d = ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))];
+			gdk_draw_line(win, gc,
+			              x - 1, ((65535 - c) * sh) >> 16,
+			              x,     ((65535 - d) * sh) >> 16);
+			c = d;
+			x++;
+			width--;
+		}
+		break;
+	case ST_MIXER_FORMAT_S8:
+		c = ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))];
+
+		while(width >= 0) {
+			d = ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))];
+			gdk_draw_line(win, gc,
+			              x - 1, ((127 - c) * sh) >> 8,
+			              x,     ((127 - d) * sh) >> 8);
+			c = d;
+			x++;
+			width--;
+		}
+		break;
+	case ST_MIXER_FORMAT_U8:
+		c = ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))];
+
+		while(width >= 0) {
+			d = ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))];
+			gdk_draw_line(win, gc,
+			              x - 1, ((255 - c) * sh) >> 8,
+			              x,     ((255 - d) * sh) >> 8);
+			c = d;
+			x++;
+			width--;
+		}
+		break;
+	/* Average left and right channels if stereo */
+	case ST_MIXER_FORMAT_S16_LE | ST_MIXER_FORMAT_STEREO:
+		c = (((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))] +
+		     ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1)) + 1]) >> 1;
+
+		while(width >= 0) {
+			d = (((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))] +
+			     ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x)) + 1]) >> 1;
+			gdk_draw_line(win, gc,
+			              x - 1, ((32767 - c) * sh) >> 16,
+			              x,     ((32767 - d) * sh) >> 16);
+			c = d;
+			x += 2;
+			width--;
+		}
+		break;
+	case ST_MIXER_FORMAT_U16_LE | ST_MIXER_FORMAT_STEREO:
+		c = (((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))] +
+		     ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1)) + 1]) >> 1;
+
+		while(width >= 0) {
+			d = (((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))] +
+			     ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x)) + 1]) >> 1;
+			gdk_draw_line(win, gc,
+			              x - 1, ((65535 - c) * sh) >> 16,
+			              x,     ((65535 - d) * sh) >> 16);
+			c = d;
+			x += 2;
+			width--;
+		}
+		break;
+	case ST_MIXER_FORMAT_S8 | ST_MIXER_FORMAT_STEREO:
+		c = (((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))] +
+		     ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1)) + 1]) >> 1;
+
+		while(width >= 0) {
+			d = (((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))] +
+			     ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x)) + 1]) >> 1;
+			gdk_draw_line(win, gc,
+			              x - 1, ((127 - c) * sh) >> 8,
+			              x,     ((127 - d) * sh) >> 8);
+			c = d;
+			x += 2;
+			width--;
+		}
+		break;
+	case ST_MIXER_FORMAT_U8 | ST_MIXER_FORMAT_STEREO:
+		c = (((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))] +
+		     ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1)) + 1]) >> 1;
+
+		while(width >= 0) {
+			d = (((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))] +
+			     ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x)) + 1]) >> 1;
+			gdk_draw_line(win, gc,
+			              x - 1, ((255 - c) * sh) >> 8,
+			              x,     ((255 - d) * sh) >> 8);
+			c = d;
+			x += 2;
+			width--;
+		}
+		break;
+	default:
+		break; /* Draw nothing on unknown format */
 	}
-    } else {
-	c = ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))];
-	
-	while(width >= 0) {
-	    d = ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))];
-	    gdk_draw_line(win, gc,
-			  x - 1, ((127 - c) * sh) >> 8,
-			  x,     ((127 - d) * sh) >> 8);
-	    c = d;
-	    x++;
-	    width--;
-	}
-    }
 }
 
 static int
@@ -829,8 +906,8 @@ sample_display_class_init (SampleDisplayClass *class)
     const int *p;
     GdkColor *c;
 
-    object_class = (GObjectClass*) class;
-    widget_class = (GtkWidgetClass*) class;
+    object_class = G_OBJECT_CLASS(class);
+    widget_class = GTK_WIDGET_CLASS(class);
 
     widget_class->realize = sample_display_realize;
     widget_class->size_allocate = sample_display_size_allocate;
@@ -885,33 +962,6 @@ static void
 sample_display_init (SampleDisplay *s)
 {
     s->idle_handler = 0;
-}
-
-guint
-sample_display_get_type (void)
-{
-    static guint sample_display_type = 0;
-
-    if (!sample_display_type) {
-	GTypeInfo sample_display_info =
-	{
-	    sizeof(SampleDisplayClass),
-	    	(GBaseInitFunc) NULL,
-		(GBaseFinalizeFunc) NULL,
-	    (GClassInitFunc) sample_display_class_init,
-	    (GClassFinalizeFunc) NULL,
-	    NULL,
-	    sizeof(SampleDisplay),
-	    0,
-	    (GInstanceInitFunc) sample_display_init,
-	    
-	};
-
-	sample_display_type = g_type_register_static(gtk_widget_get_type (),
-	    "SampleDisplay", &sample_display_info, (GTypeFlags)0);
-    }
-
-    return sample_display_type;
 }
 
 GtkWidget*

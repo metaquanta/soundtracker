@@ -122,4 +122,12 @@ typedef enum {
     ST_MIXER_FORMAT_STEREO = 16,
 } STMixerFormat;
 
+static const guint res[] = {1, 2, 2, 1, 2, 2, 1, 1}; /* In bytes, first and last ones for safety */
+
+static inline guint
+mixer_get_resolution (STMixerFormat f)
+{
+	return res[f];
+}
+
 #endif /* _MIXER_H */

@@ -61,7 +61,7 @@ void     audio_mix            (void *dest,
 			       int mixfreq,
 			       int mixformat);
 
-void     sample_editor_sampled            (void *dest,
+gboolean sample_editor_sampled            (void *dest,
 					   guint32 count,
 					   int mixfreq,
 					   int mixformat);

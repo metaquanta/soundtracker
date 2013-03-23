@@ -292,7 +292,7 @@ gui_update_range_adjustment (GtkRange *range,
 }
 
 GtkWidget *
-gui_stringlist_in_scrolled_window (int n, gchar **tp,  GtkWidget *hbox, gboolean expandfill)
+gui_stringlist_in_scrolled_window (const int n, gchar * const *tp,  GtkWidget *hbox, gboolean expandfill)
 {
     GType *types;
     GtkWidget *list;
@@ -345,7 +345,7 @@ static gboolean hover_changed (GtkTreeView *widget, GdkEvent* event, gpointer da
 }
 
 GtkWidget *
-gui_list_in_scrolled_window (int n, gchar **tp,  GtkWidget *hbox,
+gui_list_in_scrolled_window (const int n, gchar * const *tp,  GtkWidget *hbox,
 			     GType *types, gfloat *alignments, gboolean *expands,
 			     GtkSelectionMode mode, gboolean expand, gboolean fill)
 {
@@ -361,7 +361,7 @@ gui_list_in_scrolled_window (int n, gchar **tp,  GtkWidget *hbox,
     list = gtk_tree_view_new_with_model(GTK_TREE_MODEL(list_store));
     for(i = 0; i < n; i++) {
 	renderer = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(tp[i], renderer, "text", i, NULL);
+	column = gtk_tree_view_column_new_with_attributes(_(tp[i]), renderer, "text", i, NULL);
 	if(alignments) {
 	    g_object_set(G_OBJECT(renderer), "xalign", alignments[i], NULL);
 	    gtk_tree_view_column_set_alignment(column, alignments[i]);

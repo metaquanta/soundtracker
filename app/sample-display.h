@@ -25,6 +25,10 @@
 #include <gdk/gdk.h>
 #include <gtk/gtkwidget.h>
 
+#include "mixer.h"
+
+G_BEGIN_DECLS
+
 #define SAMPLE_DISPLAY(obj)          GTK_CHECK_CAST (obj, sample_display_get_type (), SampleDisplay)
 #define SAMPLE_DISPLAY_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, sample_display_get_type (), SampleDisplayClass)
 #define IS_SAMPLE_DISPLAY(obj)       GTK_CHECK_TYPE (obj, sample_display_get_type ())
@@ -90,13 +94,14 @@ struct _SampleDisplayClass
 guint          sample_display_get_type            (void);
 GtkWidget*     sample_display_new                 (gboolean edit);
 
-void           sample_display_set_data_16         (SampleDisplay *s, gint16 *data, int len, gboolean copy);
-void           sample_display_set_data_8          (SampleDisplay *s, gint8 *data, int len, gboolean copy);
+void           sample_display_set_data            (SampleDisplay *s, void *data, STMixerFormat type, int len, gboolean copy);
 void           sample_display_set_loop            (SampleDisplay *s, int start, int end);
 void           sample_display_set_selection       (SampleDisplay *s, int start, int end);
 void           sample_display_set_mixer_position  (SampleDisplay *s, int offset);
 void           sample_display_enable_zero_line    (SampleDisplay *s, gboolean enable);
 
 void           sample_display_set_window          (SampleDisplay *s, int start, int end);
+
+G_END_DECLS
 
 #endif /* _SAMPLE_DISPLAY_H */

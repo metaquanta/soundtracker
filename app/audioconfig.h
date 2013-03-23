@@ -29,11 +29,12 @@ void        audioconfig_dialog                   (void);
 void        audioconfig_load_config              (void);
 void        audioconfig_load_mixer_config        (void);
 void        audioconfig_save_config              (void);
-void	    audioconfig_shutdown		 (void);
+void        audioconfig_shutdown                 (void);
 
+extern      GtkWidget                            *configwindow;
 // Currently initialized in main.c
-extern GList *drivers[2];
-extern GList *mixers;
+extern      GList                                *drivers[2];
+extern      GList                                *mixers;
 
 #define DRIVER_OUTPUT 0
 #define DRIVER_INPUT  1

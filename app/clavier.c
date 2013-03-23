@@ -174,9 +174,11 @@ clavier_init (Clavier *clavier)
 
 	clavier->context = gtk_widget_create_pango_context(GTK_WIDGET(clavier));
 	clavier->layout = pango_layout_new(clavier->context);
+	clavier->layout2 = pango_layout_new(clavier->context);
 	desc = pango_font_description_from_string("Fixed 8");
 	g_assert(desc != NULL);
 	pango_layout_set_font_description(clavier->layout, desc);
+	pango_layout_set_font_description(clavier->layout2, desc);
 	pango_font_description_free(desc);
 
 	pango_layout_set_text(clavier->layout, "0", -1); /* let's just hope this is a non-proportional font */
@@ -512,21 +514,32 @@ clavier_draw_label (Clavier *clavier,
 
     ClavierKeyInfo *this = &(clavier->key_info[keynum]);
     GtkWidget *widget = GTK_WIDGET(clavier);
-    gchar string[10] = "";
+    gchar string[4] = "";
 
 	if(clavier->keylabels) {
 		gint8 label = clavier->keylabels[keynum];
 
 		if(label != prev_label) {
-			sprintf(string, "%x", clavier->keylabels[keynum]);
+			sprintf(string, "%x", label & 0xf);
 			pango_layout_set_text(clavier->layout, string, -1);
+			if(label > 0xf) {
+				sprintf(string, "%x", label >> 4);
+				pango_layout_set_text(clavier->layout2, string, -1);
+			}
 			prev_label = label;
 		}
 
+		if(label > 0xf) {
+			if(clavier->key_info[keynum].is_black) {
+				gdk_draw_layout(widget->window, clavier->fontbgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 10, clavier->layout2);
+			} else {
+				gdk_draw_layout(widget->window, clavier->fontwgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 20, clavier->layout2);
+			}
+		}
 		if(clavier->key_info[keynum].is_black) {
-			gdk_draw_layout(widget->window, clavier->fontbgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 10, clavier->layout);
+			gdk_draw_layout(widget->window, clavier->fontbgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 10 + clavier->fonth, clavier->layout);
 		} else {
-			gdk_draw_layout(widget->window, clavier->fontwgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 20, clavier->layout);
+			gdk_draw_layout(widget->window, clavier->fontwgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 20 + clavier->fonth, clavier->layout);
 		}
 	}
 }

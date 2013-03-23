@@ -43,6 +43,7 @@
 
 GList *drivers[2] = { NULL, NULL };
 GList *mixers = NULL;
+GtkWidget *configwindow = NULL;
 
 static GtkWidget *audioconfig_mixer_list;
 static st_mixer *audioconfig_current_mixer = NULL;
@@ -184,9 +185,10 @@ audioconfig_notebook_add_page (GtkNotebook *nbook, guint n)
     GtkListStore *list_store;
     GtkTreeIter iter;
 
-    listtitles[0] = gettext("Driver Module");
+    listtitles[0] = N_("Driver Module");
 
     box1 = gtk_hbox_new(FALSE, 4);
+    gtk_container_set_border_width(GTK_CONTAINER(box1), 4);
     gtk_widget_show(box1);
 
     // Driver selection list
@@ -209,7 +211,7 @@ audioconfig_notebook_add_page (GtkNotebook *nbook, guint n)
 	if(driver == *audio_objects[n].driver)
 	    active = i;
 	widget = driver->common.getwidget(audio_driver_objects[n][i]);
-	alignment = gtk_alignment_new(0.4, 0.5, 0.0, 0.0);
+	alignment = gtk_alignment_new(0.5, 0.0, 0.0, 0.0);
 	gtk_container_add(GTK_CONTAINER(alignment), widget);
 	gtk_notebook_append_page(GTK_NOTEBOOK(dnbook), alignment, NULL);
 	gtk_widget_show_all(alignment);
@@ -229,7 +231,6 @@ audioconfig_notebook_add_page (GtkNotebook *nbook, guint n)
 void
 audioconfig_dialog (void)
 {
-    static GtkWidget *configwindow = NULL;
     GtkWidget *mainbox, *thing, *nbook, *box2, *frame;
     static gchar *listtitles2[2];
     int i;

@@ -270,7 +270,7 @@ GtkWidget*
 trackersettings_new (void)
 {
     TrackerSettings *ts;
-    gchar *clisttitles[] = { _("Font list") };
+    gchar *clisttitles[] = { N_("Font list") };
     GtkWidget *hbox1, *thing;
     guint selected;
 

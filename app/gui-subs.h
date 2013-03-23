@@ -143,7 +143,7 @@ void                 gui_combo_box_prepend_text_or_set_active (GtkComboBox *comb
                                                                const gchar *text,
                                                                gboolean force_active);
 
-GtkWidget *          gui_list_in_scrolled_window      (int n, gchar **tp,  GtkWidget *hbox,
+GtkWidget *          gui_list_in_scrolled_window      (const int n, gchar * const *tp,  GtkWidget *hbox,
                                                        GType *types,
                                                        gfloat *alignments,
                                                        gboolean *expands,
@@ -151,8 +151,8 @@ GtkWidget *          gui_list_in_scrolled_window      (int n, gchar **tp,  GtkWi
                                                        gboolean expand,
                                                        gboolean fill);
 
-GtkWidget *          gui_stringlist_in_scrolled_window(int n,
-                                                       gchar **tp,
+GtkWidget *          gui_stringlist_in_scrolled_window(const int n,
+                                                       gchar * const *tp,
                                                        GtkWidget *hbox, gboolean expandfill);
 
 void                 gui_list_clear                   (GtkWidget *list);

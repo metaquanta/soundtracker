@@ -80,14 +80,12 @@ oss_poll_ready_sampling (gpointer data,
 			 GdkInputCondition condition)
 {
     oss_driver * const d = data;
-    int size;
 
-    size = (d->stereo + 1) * (d->bits / 8) * d->fragsize;
-
-	if(read(d->soundfd, d->sndbuf, size) != size)
+	if(read(d->soundfd, d->sndbuf, d->fragsize) != d->fragsize)
 		perror("OSS input: read()");
 
-    sample_editor_sampled(d->sndbuf, d->fragsize, d->playrate, d->mf);
+	if(sample_editor_sampled(d->sndbuf, d->fragsize, d->playrate, d->mf))
+		d->sndbuf = calloc(1, d->fragsize);
 }
 
 static void
@@ -226,7 +224,7 @@ oss_open (void *dp)
 {
     oss_driver * const d = dp;
     int mf;
-    int i, size;
+    int i;
 
     /* O_NONBLOCK is required for the es1370 driver in Linux
        2.2.9, for example. It's open() behaviour is not
@@ -289,18 +287,10 @@ oss_open (void *dp)
 
     d->sndbuf = calloc(1, d->fragsize);
 
-    if(d->stereo == 1) {
-	d->fragsize /= 2;
-    }
-    if(d->bits == 16) {
-	d->fragsize /= 2;
-    }
-
     d->polltag = gdk_input_add(d->soundfd, GDK_INPUT_READ, oss_poll_ready_sampling, d);
 
     // At least my ES1370 requires an initial read...
-	size = (d->stereo + 1) * (d->bits / 8) * d->fragsize;
-	if(read(d->soundfd, d->sndbuf, size) != size)
+	if(read(d->soundfd, d->sndbuf, d->fragsize) != d->fragsize)
 		perror("OSS input: read()");
 
     return TRUE;

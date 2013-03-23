@@ -97,7 +97,8 @@ enum {
     MODE_MONO = 0,
     MODE_STEREO_LEFT,
     MODE_STEREO_RIGHT,
-    MODE_STEREO_MIX
+    MODE_STEREO_MIX,
+    MODE_STEREO_2
 };
 
 static gboolean wavload_through_library;
@@ -138,14 +139,13 @@ static GtkWidget *samplingwindow = NULL;
 
 struct recordbuf {
     struct recordbuf *next;
-    int length;
-    gint16 data[0];
+    guint length;
+    void *data;
 };
 
 static struct recordbuf *recordbufs, *current;
-static const int recordbuflen = 10000;
-static int currentoffs;
-static int recordedlen, sampling;
+static guint recordedlen, sampling, rate;
+static STMixerFormat format;
 
 // = Editing operations variables
 
@@ -630,7 +630,7 @@ sample_editor_update (void)
     char buf[20];
     int m = xm_get_modified();
 
-    sample_display_set_data_16(sampledisplay, NULL, 0, FALSE);
+    sample_display_set_data(sampledisplay, NULL, ST_MIXER_FORMAT_S16_LE, 0, FALSE);
 
     if(!sts || !sts->sample.data) {
 	gtk_widget_set_sensitive(se->vertical_boxes[0], FALSE);
@@ -666,7 +666,7 @@ sample_editor_update (void)
     sample_editor_set_selection_label(-1, 0);
 
     if(s->data) {
-	sample_display_set_data_16(sampledisplay, s->data, s->length, FALSE);
+	sample_display_set_data(sampledisplay, s->data, ST_MIXER_FORMAT_S16_LE, s->length, FALSE);
 
 	if(s->looptype != ST_MIXER_SAMPLE_LOOPTYPE_NONE) {
 	    sample_editor_blocked_set_display_loop(s->loopstart, s->loopend);
@@ -1182,24 +1182,30 @@ sample_editor_copy_clicked (void)
 }
 
 static void
-sample_editor_init_sample (const char *samplename)
+sample_editor_init_sample_full (STSample *sample, const char *samplename)
 {
     STInstrument *instr;
 
-    st_clean_sample(current_sample, NULL);
-    
+    st_clean_sample(sample, NULL);
+
     instr = instrument_editor_get_instrument();
     if(st_instrument_num_samples(instr) == 0) {
 	st_clean_instrument(instr, samplename);
 	memset(instr->samplemap, gui_get_current_sample(), sizeof(instr->samplemap));
     }
 	
-    st_clean_sample(current_sample, samplename);
-    
-    current_sample->volume = 64;
-    current_sample->finetune = 0;
-    current_sample->panning = 128;
-    current_sample->relnote = 0;
+    st_clean_sample(sample, samplename);
+
+    sample->volume = 64;
+    sample->finetune = 0;
+    sample->panning = 128;
+    sample->relnote = 0;
+}
+
+static inline void
+sample_editor_init_sample (const char *samplename)
+{
+	sample_editor_init_sample_full(current_sample, samplename);
 }
 
 void
@@ -1298,8 +1304,8 @@ sample_editor_reverse_clicked (void)
 
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
 
-static void
-sample_editor_load_wav_main (int mode)
+static gboolean
+sample_editor_load_wav_main (const int mode)
 { 
     /* Initialized global variables:
 
@@ -1316,7 +1322,7 @@ sample_editor_load_wav_main (int mode)
 	 wavload_endianness, wavload_unsignedwords;
     */
 
-    void *sbuf, *sbuf_loadto;
+    void *sbuf, *sbuf_loadto, *tmp, *sbuf2 = NULL;
 #if USE_SNDFILE
     sf_count_t len;
 #else
@@ -1324,19 +1330,44 @@ sample_editor_load_wav_main (int mode)
 #endif
     int i, count;
     float rate;
+    STSample *next = NULL;
+
+	if(mode == MODE_STEREO_2) {
+		gint n_cur;
+
+		if((n_cur = modinfo_get_current_sample()) == 127) {
+			gui_warning_dialog(N_("You have selected the last sample of the instrument, but going "
+			                      "to load the second stereo channel to the next sample. Please select "
+			                      "a sample slot with lower number or use another loading mode."));
+			return TRUE;
+		}
+		next = &(instrument_editor_get_instrument()->samples[n_cur + 1]);
+		if(next->sample.length) {
+			if(!gui_ok_cancel_modal(mainwindow, N_("The next sample which is about to be overwriten is not empty!\n"
+			                                       "Would you like to overwrite it?")))
+				return TRUE;
+		}
+	}
 
     statusbar_update(STATUS_LOADING_SAMPLE, TRUE);
-    
+
     len = 2 * wavload_frameCount * wavload_channelCount;
-    if(!(sbuf = malloc(len))) {
+    if(!(tmp = malloc(len))) {
 	gui_error_dialog(N_("Out of memory for sample data."));
 	goto errnobuf;
     }
+	if(mode == MODE_MONO)
+		sbuf = tmp;
+	else if(!(sbuf = malloc(2 * wavload_frameCount))) {
+		gui_error_dialog(N_("Out of memory for sample data."));
+		free(tmp);
+		goto errnobuf;
+	}
 
     if(wavload_sampleWidth == 16) {
-	sbuf_loadto = sbuf;
+	sbuf_loadto = tmp;
     } else {
-	sbuf_loadto = sbuf + len / 2;
+	sbuf_loadto = tmp + len / 2;
     }
 
     if(wavload_through_library) {
@@ -1363,6 +1394,33 @@ sample_editor_load_wav_main (int mode)
 	fclose(f);
     }
 
+    if(wavload_sampleWidth == 8) {
+	if(wavload_through_library || wavload_unsignedwords) {
+	    st_sample_8bit_signed_unsigned(sbuf_loadto, len / 2);
+	}
+	st_convert_sample(sbuf_loadto,
+			  tmp,
+			  8,
+			  16,
+			  len / 2);
+    } else {
+	if(wavload_through_library) {
+	    // I think that is what the virtualByteOrder stuff is for.
+	    // le_16_array_to_host_order(sbuf, len / 2);
+	} else {
+#ifdef WORDS_BIGENDIAN
+	    if(wavload_endianness == 0) {
+#else
+	    if(wavload_endianness == 1) {
+#endif
+		byteswap_16_array(tmp, len / 2);
+	    }
+	    if(wavload_unsignedwords) {
+		st_sample_16bit_signed_unsigned(sbuf_loadto, len / 2);
+	    }
+	}
+    }
+
     sample_editor_lock_sample();
     sample_editor_init_sample(wavload_samplename);
     current_sample->sample.data = sbuf;
@@ -1385,35 +1443,26 @@ sample_editor_load_wav_main (int mode)
 				     &current_sample->relnote,
 				     &current_sample->finetune);
 
-    if(wavload_sampleWidth == 8) {
-	if(wavload_through_library || wavload_unsignedwords) {
-	    st_sample_8bit_signed_unsigned(sbuf_loadto, len / 2);
+	if(mode == MODE_STEREO_2) {
+		if(!(sbuf2 = malloc(2 * wavload_frameCount))) {
+			gui_error_dialog(N_("Out of memory for sample data."));
+			goto errnodata;
+		}
+
+		g_mutex_lock(next->sample.lock);
+		sample_editor_init_sample_full(next, wavload_samplename);
+		next->sample.data = sbuf2;
+		next->treat_as_8bit = (wavload_sampleWidth == 8);
+		next->sample.length = wavload_frameCount;
+
+		xm_freq_note_to_relnote_finetune(rate,
+		                                 4 * 12 + 1, // at C-4
+		                                 &next->relnote,
+		                                 &next->finetune);
 	}
-	st_convert_sample(sbuf_loadto,
-			  sbuf,
-			  8,
-			  16,
-			  len / 2);
-    } else {
-	if(wavload_through_library) {
-	    // I think that is what the virtualByteOrder stuff is for.
-	    // le_16_array_to_host_order(sbuf, len / 2);
-	} else {
-#ifdef WORDS_BIGENDIAN
-	    if(wavload_endianness == 0) {
-#else
-	    if(wavload_endianness == 1) {
-#endif
-		byteswap_16_array(sbuf, len / 2);
-	    }
-	    if(wavload_unsignedwords) {
-		st_sample_16bit_signed_unsigned(sbuf_loadto, len / 2);
-	    }
-	}
-    }
 
     if(mode != MODE_MONO) {
-	gint16 *a = sbuf, *b = sbuf;
+	gint16 *a = tmp, *b = sbuf, *c = sbuf2;
 
 	count = wavload_frameCount;
 
@@ -1423,6 +1472,12 @@ sample_editor_load_wav_main (int mode)
 	    for(i = 0; i < count; i++, a+=2, b+=1)
 		*b = (a[0] + a[1]) / 2;
 	    break;
+	case MODE_STEREO_2:
+		for(i = 0; i < count; i++, a+=2, b+=1, c+=1) {
+			*b = a[0];
+			*c = a[1];
+		}
+		break;
 	case MODE_STEREO_LEFT:
 	    for(i = 0; i < count; i++, a+=2, b+=1)
 		*b = a[0];
@@ -1436,7 +1491,15 @@ sample_editor_load_wav_main (int mode)
 	    break;
 	}
     }
+	if(sbuf != tmp)
+		free(tmp);
 
+	if(mode == MODE_STEREO_2) {
+		if(gui_playing_mode) {
+			mixer->updatesample(&next->sample);
+		}
+		g_mutex_unlock(next->sample.lock);
+	}
     sample_editor_unlock_sample();
 
     instrument_editor_update();
@@ -1448,6 +1511,8 @@ sample_editor_load_wav_main (int mode)
   errnodata:
     statusbar_update(STATUS_IDLE, FALSE);
     free(sbuf);
+	if(sbuf != tmp)
+		free(tmp);
   errnobuf:
     if(wavload_through_library) {
 #if USE_SNDFILE
@@ -1457,25 +1522,28 @@ sample_editor_load_wav_main (int mode)
 #endif
 	wavload_file = NULL;
     }
+    return FALSE;
 }
 
+#define NUM_BUTTONS 4
 static void
-sample_editor_open_stereowav_dialog (void)
+sample_editor_open_stereo_dialog (GtkWidget **window, GtkWidget **mixbutton, const gchar *text)
 {
-    static GtkWidget *window = NULL, *mixbutton;
     GtkWidget *label, *separator, *bbox, *box1;
-    GtkWidget *buttons[3];
-    gint response, i;
-         
-    if(!window) {
-	window = gtk_dialog_new_with_buttons (_("Load stereo sample"), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
-					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
-	buttons[0] = gtk_dialog_add_button(GTK_DIALOG(window), _("Left"), GTK_RESPONSE_YES);
-	mixbutton = buttons[1] = gtk_dialog_add_button(GTK_DIALOG(window), _("Mix"), GTK_RESPONSE_APPLY);
-	buttons[2] = gtk_dialog_add_button(GTK_DIALOG(window), _("Right"), GTK_RESPONSE_NO);
+    GtkWidget *buttons[NUM_BUTTONS];
+    gint i;
 
-	gui_dialog_adjust(window, GTK_RESPONSE_APPLY);
-	box1 = gtk_dialog_get_content_area(GTK_DIALOG(window));
+    if(!*window) {
+	*window = gtk_dialog_new_with_buttons (_("Load stereo sample"), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
+					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
+	buttons[0] = gtk_dialog_add_button(GTK_DIALOG(*window), _("Left"), MODE_STEREO_LEFT);
+	*mixbutton = buttons[1] = gtk_dialog_add_button(GTK_DIALOG(*window), _("Mix"), MODE_STEREO_MIX);
+	buttons[2] = gtk_dialog_add_button(GTK_DIALOG(*window), _("Right"), MODE_STEREO_RIGHT);
+	buttons[3] = gtk_dialog_add_button(GTK_DIALOG(*window), _("2 smpls"), MODE_STEREO_2);
+	gtk_widget_set_tooltip_text(buttons[3], _("Load left and right channels into the current sample and the next one"));
+
+	gui_dialog_adjust(*window, 2);
+	box1 = gtk_dialog_get_content_area(GTK_DIALOG(*window));
 	gtk_box_set_spacing(GTK_BOX(box1), 2);
 
 	separator = gtk_hseparator_new();
@@ -1488,36 +1556,50 @@ sample_editor_open_stereowav_dialog (void)
 	gtk_widget_show(bbox);
 
     /* A bit trick to move buttons to vbox from action area, but leaving them active */
-	for(i = 0; i < 3; i++) {
+	for(i = 0; i < NUM_BUTTONS; i++) {
 	    g_object_ref(buttons[i]);
-	    gtk_container_remove(GTK_CONTAINER(GTK_DIALOG(window)->action_area), buttons[i]);
+	    gtk_container_remove(GTK_CONTAINER(gtk_dialog_get_action_area(GTK_DIALOG(*window))), buttons[i]);
 	    gtk_box_pack_end(GTK_BOX(bbox), buttons[i], FALSE, TRUE, 0);
 	}
 
-	label = gtk_label_new (_("You have selected a stereo sample!\n(SoundTracker can only handle mono samples!)\n\nPlease choose which channel to load:"));
-	gtk_label_set_justify (GTK_LABEL (label),GTK_JUSTIFY_CENTER);
-	gtk_box_pack_start (GTK_BOX (box1), label, FALSE, TRUE, 0);
-	gtk_widget_show (label);
+	label = gtk_label_new(_(text));
+	gtk_label_set_justify(GTK_LABEL (label),GTK_JUSTIFY_CENTER);
+	gtk_box_pack_start(GTK_BOX (box1), label, FALSE, TRUE, 0);
+	gtk_widget_show(label);
     } else
-	gtk_window_present(GTK_WINDOW(window));
+	gtk_window_present(GTK_WINDOW(*window));
+}
 
-	gtk_widget_grab_focus(mixbutton);
-    response = gtk_dialog_run(GTK_DIALOG(window));
-    gtk_widget_hide(window);
+static void
+sample_editor_open_stereowav_dialog (void)
+{
+	static GtkWidget *window = NULL, *mixbutton;
+	gboolean replay;
 
-    switch (response) {
-    case GTK_RESPONSE_YES:
-	sample_editor_load_wav_main(MODE_STEREO_LEFT);
-	break;
-    case GTK_RESPONSE_APPLY:
-	sample_editor_load_wav_main(MODE_STEREO_MIX);
-	break;
-    case GTK_RESPONSE_NO:
-	sample_editor_load_wav_main(MODE_STEREO_RIGHT);
-	break;
-    default: /* All other events including DELETE_EVENT */
-	break;
-    }
+	sample_editor_open_stereo_dialog(&window, &mixbutton,
+	                                 N_("You have selected a stereo sample!\n(SoundTracker can only handle mono samples!)\n\nPlease choose which channel to load:"));
+
+	do {
+		gint response;
+
+		replay = FALSE;
+
+		gtk_widget_grab_focus(mixbutton);
+		response = gtk_dialog_run(GTK_DIALOG(window));
+		gtk_widget_hide(window);
+		switch (response) {
+		case MODE_STEREO_LEFT:
+		case MODE_STEREO_MIX:
+		case MODE_STEREO_RIGHT:
+			sample_editor_load_wav_main(response);
+			break;
+		case MODE_STEREO_2:
+			replay = sample_editor_load_wav_main(MODE_STEREO_2);
+			break;
+		default: /* All other events including DELETE_EVENT */
+			break;
+		}
+	} while(replay);
 }
 
 static void
@@ -1932,87 +2014,86 @@ sampler_page_enable_widgets (int enable)
 static void
 sample_editor_monitor_clicked (void)
 {
-    GtkWidget *mainbox, *thing;
-
     if(!sampling_driver || !sampling_driver_object) {
 	gui_error_dialog(N_("No sampling driver available"));
 	return;
     }
 
-    if(samplingwindow != NULL) {
-	gtk_window_present(GTK_WINDOW(samplingwindow));
-	return;
-    }
-    
-    samplingwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(samplingwindow), _("Sampling Window"));
-    gtk_window_set_transient_for(GTK_WINDOW(samplingwindow), GTK_WINDOW(mainwindow));
-    g_signal_connect(samplingwindow, "delete_event",
+	if(!samplingwindow) {
+		GtkWidget *mainbox, *thing;
+
+		samplingwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+		gtk_window_set_title(GTK_WINDOW(samplingwindow), _("Sampling Window"));
+		gtk_window_set_transient_for(GTK_WINDOW(samplingwindow), GTK_WINDOW(mainwindow));
+		g_signal_connect(samplingwindow, "delete_event",
 			G_CALLBACK(sample_editor_stop_sampling), NULL);
-	gui_set_escape_close(samplingwindow);
+		gui_set_escape_close(samplingwindow);
 
-    mainbox = gtk_vbox_new(FALSE, 2);
-    gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-    gtk_container_add(GTK_CONTAINER(samplingwindow), mainbox);
-    gtk_widget_show(mainbox);
+		mainbox = gtk_vbox_new(FALSE, 2);
+		gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
+		gtk_container_add(GTK_CONTAINER(samplingwindow), mainbox);
+		gtk_widget_show(mainbox);
 
-    thing = sample_editor_create_sampling_widgets();
-    gtk_box_pack_start(GTK_BOX(mainbox), thing, TRUE, TRUE, 0);
-    gtk_widget_show(thing);
+		thing = sample_editor_create_sampling_widgets();
+		gtk_box_pack_start(GTK_BOX(mainbox), thing, TRUE, TRUE, 0);
+		gtk_widget_show(thing);
 
-    sampler_page_enable_widgets(TRUE);
+		gtk_widget_show (samplingwindow);
+	} else
+		gtk_window_present(GTK_WINDOW(samplingwindow));
 
-    recordbufs = NULL;
-    sampling = 0;
-    recordedlen = 0;
-    currentoffs = recordbuflen;
-    current = NULL;
+	sampler_page_enable_widgets(TRUE);
 
-    gtk_widget_show (samplingwindow);
+	recordbufs = NULL;
+	sampling = 0;
+	recordedlen = 0;
+	current = NULL;
+	rate = 44100;
+	format = ST_MIXER_FORMAT_S16_LE;
 
-    if(!sampling_driver->common.open(sampling_driver_object)) {
-	sample_editor_stop_sampling();
-    }
+	if(!sampling_driver->common.open(sampling_driver_object)) {
+		sample_editor_stop_sampling();
+		gui_error_dialog(N_("Sampling failed!"));
+	}
 }
 
-void
-sample_editor_sampled (void *dest,
+/* Count is in bytes, not samples. The function returns TRUE if the buffer is acquired and the driver shall allocate a new one */
+gboolean
+sample_editor_sampled (void *src,
 		       guint32 count,
 		       int mixfreq,
 		       int mixformat)
 {
-    int x;
+	gboolean sampled = FALSE;
 
-    g_assert(mixformat == ST_MIXER_FORMAT_S16_LE);
+	sample_display_set_data(monitorscope, src, mixformat, (mixformat & ST_MIXER_FORMAT_STEREO) ? count >> 1 : count, FALSE);//!!! Check 8/16 bit, streo/mono, that all data is displayed correctly
 
-    sample_display_set_data_16(monitorscope, dest, count, FALSE);
+	if(sampling) {
+		struct recordbuf *newbuf = malloc(sizeof(struct recordbuf));
 
-    while(sampling && count > 0) {
-	if(currentoffs == recordbuflen) {
-	    struct recordbuf *newbuf = malloc(sizeof(struct recordbuf) + recordbuflen * 2);
-	    if(!newbuf) {
-		gui_error_dialog(N_("Out of memory while sampling!"));
-		sampling = 0;
-		break;
-	    }
-	    newbuf->next = NULL;
-	    newbuf->length = 0;
-	    currentoffs = 0;
-	    if(!recordbufs)
-		recordbufs = newbuf;
-	    else
-		current->next = newbuf;
-	    current = newbuf;
+		if(!newbuf) {
+			/* It is called from audio thread AFAIK */
+			error_error(N_("Out of memory while sampling!"));
+			sampling = 0;
+			return FALSE;
+		}
+		newbuf->next = NULL;
+		newbuf->length = count;
+		newbuf->data = src;
+
+		if(!recordbufs){
+			recordbufs = newbuf;
+			rate = mixfreq;
+			format = mixformat;
+		} else
+			current->next = newbuf;
+
+		current = newbuf;
+		sampled = TRUE;
+		recordedlen += count;
 	}
 
-	x = MIN(count, recordbuflen - currentoffs);
-	memcpy(current->data + currentoffs, dest, x * 2);
-	dest += x * 2;
-	count -= x;
-	current->length += x;
-	currentoffs += x;
-	recordedlen += x;
-    }
+	return sampled;
 }
 
 gboolean
@@ -2031,6 +2112,7 @@ sample_editor_stop_sampling (void)
     /* clear the recorded sample */
     for(r = recordbufs; r; r = r2) {
 	r2 = r->next;
+	free(r->data);
 	free(r);
     }
 
@@ -2042,52 +2124,279 @@ static void
 sample_editor_ok_clicked (void)
 {
     STInstrument *instr;
+	STSample *next = NULL;
     struct recordbuf *r, *r2;
-    gint16 *sbuf;
-    char *samplename = _("<just sampled>");
-    double rate = 44100.0;
+    gint16 *sbuf, *sbuf2= NULL;
+    const char *samplename = _("<just sampled>");
+    guint multiply, mode = 0;
+    gboolean stereo = format & ST_MIXER_FORMAT_STEREO;
 
     sampling_driver->common.release(sampling_driver_object);
-
     gtk_widget_hide(samplingwindow);
 
     g_return_if_fail(current_sample != NULL);
 
+	format &= 0x7;
+	multiply = mixer_get_resolution(format) - 1; /* 0 - 8 bit, 1 - 16, used for shifts */
+	if(!stereo && !multiply) /* 8bit mono */
+		recordedlen = recordedlen << 1;
+	else if (stereo && multiply) /* 16 bit stereo */
+		recordedlen = recordedlen >> 1;
+
+	if(!(sbuf = malloc(recordedlen))) {
+		gui_error_dialog(N_("Out of memory for sample data."));
+		return;
+	}
+
+	if(stereo) {
+		static GtkWidget *window = NULL, *mixbutton;
+		gboolean replay;
+
+		sample_editor_open_stereo_dialog(&window, &mixbutton,
+		                                 N_("You have recorded a stereo sample!\n(SoundTracker can only handle mono samples!)\n\nPlease choose which channel to use:"));
+
+		do {
+			gint n_cur;
+
+			replay = FALSE;
+
+			gtk_widget_grab_focus(mixbutton);
+			mode = gtk_dialog_run(GTK_DIALOG(window));
+			gtk_widget_hide(window);
+			switch(mode) {
+			case MODE_STEREO_LEFT:
+			case MODE_STEREO_MIX:
+			case MODE_STEREO_RIGHT:
+				break;
+			case MODE_STEREO_2:
+				if((n_cur = modinfo_get_current_sample()) == 127) {
+					gui_warning_dialog(N_("You have selected the last sample of the instrument, but going "
+					                      "to load the second stereo channel to the next sample. Please select "
+					                      "a sample slot with lower number or use another loading mode."));
+					replay = TRUE;
+				}
+				next = &(instrument_editor_get_instrument()->samples[n_cur + 1]);
+				if(next->sample.length)
+					replay = !gui_ok_cancel_modal(mainwindow, N_("The next sample which is about to be overwriten is not empty!\n"
+					                                             "Would you like to overwrite it?"));
+				break;
+			default:
+				/* clear the recorded sample and exit */
+				for(r = recordbufs; r; r = r2) {
+					r2 = r->next;
+					free(r->data);
+					free(r);
+				}
+				return;
+			}
+		} while(replay);
+	}
+
+	if(mode == MODE_STEREO_2)
+		if(!(sbuf2 = malloc(recordedlen))) {
+			gui_error_dialog(N_("Out of memory for sample data."));
+			free(sbuf);
+			return;
+		}
+
     sample_editor_lock_sample();
-
     st_clean_sample(current_sample, NULL);
-
     instr = instrument_editor_get_instrument();
     if(st_instrument_num_samples(instr) == 0)
 	st_clean_instrument(instr, samplename);
-
     st_clean_sample(current_sample, samplename);
-    
-    sbuf = malloc(recordedlen * 2);
     current_sample->sample.data = sbuf;
-    
-    for(r = recordbufs; r; r = r2) {
-	r2 = r->next;
-	memcpy(sbuf, r->data, r->length * 2);
-	sbuf += r->length;
-	free(r);
-    }
+
+	if(mode == MODE_STEREO_2) {
+
+		g_mutex_lock(next->sample.lock);
+		st_clean_sample(next, samplename);
+		next->sample.data = sbuf2;
+		next->treat_as_8bit = !multiply;
+		next->sample.length = recordedlen >> 1;/* Sample size is given in 16-bit words */
+		next->volume = 64;
+		next->panning = 128;
+
+		xm_freq_note_to_relnote_finetune(rate,
+		                                 4 * 12 + 1, // at C-4
+		                                 &next->relnote,
+		                                 &next->finetune);
+	}
+
+	for(r = recordbufs; r; r = r2) {
+		guint j;
+
+		r2 = r->next;
+
+#ifdef WORDS_BIGENDIAN
+		if(format == ST_MIXER_FORMAT_S16_LE || format == ST_MIXER_FORMAT_U16_LE)
+#else
+		if(format == ST_MIXER_FORMAT_S16_BE || format == ST_MIXER_FORMAT_U16_BE)
+#endif
+			byteswap_16_array(r->data, r->length);
+
+		if(stereo) { /* Looks awfully, but this is the only way to handle this plenty of format combination */
+			switch(mode) {
+			case MODE_STEREO_LEFT:
+				switch(format) {
+				case ST_MIXER_FORMAT_S16_LE:
+				case ST_MIXER_FORMAT_S16_BE:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+						*sbuf = ((gint16 *)r->data)[j];
+					break;
+				case ST_MIXER_FORMAT_U16_LE:
+				case ST_MIXER_FORMAT_U16_BE:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+						*sbuf = ((gint16 *)r->data)[j] - 32768;
+					break;
+				case ST_MIXER_FORMAT_S8:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+						*sbuf = ((gint8 *)r->data)[j] << 8;
+					break;
+				case ST_MIXER_FORMAT_U8:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+						*sbuf = (((gint8 *)r->data)[j] << 8) - 32768;
+					break;
+				default:
+					memset(sbuf, 0, r->length);
+					sbuf += r->length; /* Unknown format */
+				}
+				break;
+			case MODE_STEREO_MIX:
+				switch(format) {
+				case ST_MIXER_FORMAT_S16_LE:
+				case ST_MIXER_FORMAT_S16_BE:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+						*sbuf = (((gint16 *)r->data)[j] + ((gint16 *)r->data)[j + 1]) >> 1;
+					break;
+				case ST_MIXER_FORMAT_U16_LE:
+				case ST_MIXER_FORMAT_U16_BE:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+						*sbuf = ((((gint16 *)r->data)[j] + ((gint16 *)r->data)[j + 1]) >> 1) - 32768;
+					break;
+				case ST_MIXER_FORMAT_S8:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+						*sbuf = (((gint8 *)r->data)[j] + ((gint8 *)r->data)[j + 1]) << 7;
+					break;
+				case ST_MIXER_FORMAT_U8:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+						*sbuf = ((((gint8 *)r->data)[j] + ((gint8 *)r->data)[j + 1]) << 7) - 32768;
+					break;
+				default:
+					memset(sbuf, 0, r->length);
+					sbuf += r->length; /* Unknown format */
+				}
+				break;
+			case MODE_STEREO_RIGHT:
+				switch(format) {
+				case ST_MIXER_FORMAT_S16_LE:
+				case ST_MIXER_FORMAT_S16_BE:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+						*sbuf = ((gint16 *)r->data)[j + 1];
+					break;
+				case ST_MIXER_FORMAT_U16_LE:
+				case ST_MIXER_FORMAT_U16_BE:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+						*sbuf = ((gint16 *)r->data)[j + 1] - 32768;
+					break;
+				case ST_MIXER_FORMAT_S8:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+						*sbuf = ((gint8 *)r->data)[j + 1] << 8;
+					break;
+				case ST_MIXER_FORMAT_U8:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+						*sbuf = (((gint8 *)r->data)[j + 1] << 8) - 32768;
+					break;
+				default:
+					memset(sbuf, 0, r->length);
+					sbuf += r->length; /* Unknown format */
+				}
+				break;
+			case MODE_STEREO_2:
+				switch(format) {
+				case ST_MIXER_FORMAT_S16_LE:
+				case ST_MIXER_FORMAT_S16_BE:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++, sbuf2++) {
+						*sbuf = ((gint16 *)r->data)[j];
+						*sbuf2 = ((gint16 *)r->data)[j + 1];
+					}
+					break;
+				case ST_MIXER_FORMAT_U16_LE:
+				case ST_MIXER_FORMAT_U16_BE:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++, sbuf2++) {
+						*sbuf = ((gint16 *)r->data)[j] - 32768;
+						*sbuf2 = ((gint16 *)r->data)[j + 1] - 32768;
+					}
+					break;
+				case ST_MIXER_FORMAT_S8:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++, sbuf2++) {
+						*sbuf = ((gint8 *)r->data)[j] << 8;
+						*sbuf2 = ((gint8 *)r->data)[j + 1] << 8;
+					}
+					break;
+				case ST_MIXER_FORMAT_U8:
+					for(j = 0; j < r->length >> multiply; j += 2, sbuf++, sbuf2++) {
+						*sbuf = (((gint8 *)r->data)[j] << 8) - 32768;
+						*sbuf2 = (((gint8 *)r->data)[j + 1] << 8) - 32768;
+					}
+					break;
+				default:
+					memset(sbuf, 0, r->length);  /* Unknown format */
+					memset(sbuf2, 0, r->length);
+					sbuf += r->length;
+					sbuf2 += r->length;
+				}
+			}
+		} else {
+			switch(format) {
+			case ST_MIXER_FORMAT_S16_LE:
+			case ST_MIXER_FORMAT_S16_BE:
+				memcpy(sbuf, r->data, r->length);
+				sbuf += r->length;
+				break;
+			case ST_MIXER_FORMAT_U16_LE:
+			case ST_MIXER_FORMAT_U16_BE:
+				for(j = 0; j < r->length >> multiply; j++, sbuf++)
+					*sbuf = ((gint16 *)r->data)[j] - 32768;
+				break;
+			case ST_MIXER_FORMAT_S8:
+				for(j = 0; j < r->length >> multiply; j++, sbuf++)
+					*sbuf = ((gint8 *)r->data)[j] << 8;
+				break;
+			case ST_MIXER_FORMAT_U8:
+				for(j = 0; j < r->length >> multiply; j++, sbuf++)
+					*sbuf = (((gint8 *)r->data)[j] << 8) - 32768;
+				break;
+			default:
+				memset(sbuf, 0, r->length);  /* Unknown format */
+				sbuf += r->length;
+			}
+		}
+		free(r->data);
+		free(r);
+	}
 
     if(recordedlen > mixer->max_sample_length) {
 	gui_warning_dialog(N_("Recorded sample is too long for current mixer module. Using it anyway."));
     }
 
-    current_sample->sample.length = recordedlen;
+    current_sample->sample.length = recordedlen >> 1;/* Sample size is given in 16-bit words */
     current_sample->volume = 64;
     current_sample->panning = 128;
-    current_sample->treat_as_8bit = FALSE;
+    current_sample->treat_as_8bit = !multiply;
 
-    xm_freq_note_to_relnote_finetune(rate,
+    xm_freq_note_to_relnote_finetune((double)rate,
 				     4 * 12 + 1, // at C-4
 				     &current_sample->relnote,
 				     &current_sample->finetune);
 
     sample_editor_unlock_sample();
+	if(mode == MODE_STEREO_2) {
+		if(gui_playing_mode) {
+			mixer->updatesample(&next->sample);
+		}
+		g_mutex_unlock(next->sample.lock);
+	}
 
     instrument_editor_update();
     sample_editor_update();

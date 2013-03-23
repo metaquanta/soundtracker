@@ -7,16 +7,8 @@ if DRIVER_OSS
   libdrivers_a_SOURCES += oss-output.c oss-input.c
 endif
 
-if DRIVER_ALSA
-  libdrivers_a_SOURCES += alsa-output.c alsa-input.c
-endif
-
-if DRIVER_ALSA_050
-  libdrivers_a_SOURCES += alsa2-output.c alsa2-input.c
-endif
-
 if DRIVER_ALSA_09x
-  libdrivers_a_SOURCES += alsa1x-output.c
+  libdrivers_a_SOURCES += alsa1x.c
 endif
 
 if DRIVER_ESD

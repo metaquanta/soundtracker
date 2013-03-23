@@ -33,22 +33,16 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 @DRIVER_OSS_TRUE@am__append_1 = oss-output.c oss-input.c
-@DRIVER_ALSA_TRUE@am__append_2 = alsa-output.c alsa-input.c
-@DRIVER_ALSA_050_TRUE@am__append_3 = alsa2-output.c alsa2-input.c
-@DRIVER_ALSA_09x_TRUE@am__append_4 = alsa1x-output.c
-@DRIVER_ESD_TRUE@am__append_5 = esd-output.c
-@DRIVER_JACK_TRUE@am__append_6 = jack-output.c
-@DRIVER_IRIX_TRUE@am__append_7 = irix-output.c
-@DRIVER_SUN_TRUE@am__append_8 = sun-output.c sun-input.c
-@DRIVER_SDL_TRUE@am__append_9 = sdl-output.c
+@DRIVER_ALSA_09x_TRUE@am__append_2 = alsa1x.c
+@DRIVER_ESD_TRUE@am__append_3 = esd-output.c
+@DRIVER_JACK_TRUE@am__append_4 = jack-output.c
+@DRIVER_IRIX_TRUE@am__append_5 = irix-output.c
+@DRIVER_SUN_TRUE@am__append_6 = sun-output.c sun-input.c
+@DRIVER_SDL_TRUE@am__append_7 = sdl-output.c
 subdir = app/drivers
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/lib-ld.m4 \
-	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
-	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.in
+am__aclocal_m4_deps = $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -60,28 +54,21 @@ ARFLAGS = cru
 libdrivers_a_AR = $(AR) $(ARFLAGS)
 libdrivers_a_LIBADD =
 am__libdrivers_a_SOURCES_DIST = dummy-drivers.c file-output.c \
-	oss-output.c oss-input.c alsa-output.c alsa-input.c \
-	alsa2-output.c alsa2-input.c alsa1x-output.c esd-output.c \
-	jack-output.c irix-output.c sun-output.c sun-input.c \
-	sdl-output.c
+	oss-output.c oss-input.c alsa1x.c esd-output.c jack-output.c \
+	irix-output.c sun-output.c sun-input.c sdl-output.c
 @DRIVER_OSS_TRUE@am__objects_1 = oss-output.$(OBJEXT) \
 @DRIVER_OSS_TRUE@	oss-input.$(OBJEXT)
-@DRIVER_ALSA_TRUE@am__objects_2 = alsa-output.$(OBJEXT) \
-@DRIVER_ALSA_TRUE@	alsa-input.$(OBJEXT)
-@DRIVER_ALSA_050_TRUE@am__objects_3 = alsa2-output.$(OBJEXT) \
-@DRIVER_ALSA_050_TRUE@	alsa2-input.$(OBJEXT)
-@DRIVER_ALSA_09x_TRUE@am__objects_4 = alsa1x-output.$(OBJEXT)
-@DRIVER_ESD_TRUE@am__objects_5 = esd-output.$(OBJEXT)
-@DRIVER_JACK_TRUE@am__objects_6 = jack-output.$(OBJEXT)
-@DRIVER_IRIX_TRUE@am__objects_7 = irix-output.$(OBJEXT)
-@DRIVER_SUN_TRUE@am__objects_8 = sun-output.$(OBJEXT) \
+@DRIVER_ALSA_09x_TRUE@am__objects_2 = alsa1x.$(OBJEXT)
+@DRIVER_ESD_TRUE@am__objects_3 = esd-output.$(OBJEXT)
+@DRIVER_JACK_TRUE@am__objects_4 = jack-output.$(OBJEXT)
+@DRIVER_IRIX_TRUE@am__objects_5 = irix-output.$(OBJEXT)
+@DRIVER_SUN_TRUE@am__objects_6 = sun-output.$(OBJEXT) \
 @DRIVER_SUN_TRUE@	sun-input.$(OBJEXT)
-@DRIVER_SDL_TRUE@am__objects_9 = sdl-output.$(OBJEXT)
+@DRIVER_SDL_TRUE@am__objects_7 = sdl-output.$(OBJEXT)
 am_libdrivers_a_OBJECTS = dummy-drivers.$(OBJEXT) \
 	file-output.$(OBJEXT) $(am__objects_1) $(am__objects_2) \
 	$(am__objects_3) $(am__objects_4) $(am__objects_5) \
-	$(am__objects_6) $(am__objects_7) $(am__objects_8) \
-	$(am__objects_9)
+	$(am__objects_6) $(am__objects_7)
 libdrivers_a_OBJECTS = $(am_libdrivers_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -128,7 +115,9 @@ EXEEXT = @EXEEXT@
 GDK_PIXBUF = @GDK_PIXBUF@
 GDK_PIXBUF_CFLAGS = @GDK_PIXBUF_CFLAGS@
 GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
+GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GMSGFMT = @GMSGFMT@
+GMSGFMT_015 = @GMSGFMT_015@
 GREP = @GREP@
 GTKHTML_CFLAGS = @GTKHTML_CFLAGS@
 GTKHTML_LIBS = @GTKHTML_LIBS@
@@ -151,8 +140,8 @@ LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
-MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
+MSGFMT_015 = @MSGFMT_015@
 MSGMERGE = @MSGMERGE@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
@@ -179,6 +168,8 @@ ST_S_JACK_LIBS = @ST_S_JACK_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 XGETTEXT = @XGETTEXT@
+XGETTEXT_015 = @XGETTEXT_015@
+XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -233,8 +224,7 @@ top_srcdir = @top_srcdir@
 noinst_LIBRARIES = libdrivers.a
 libdrivers_a_SOURCES = dummy-drivers.c file-output.c $(am__append_1) \
 	$(am__append_2) $(am__append_3) $(am__append_4) \
-	$(am__append_5) $(am__append_6) $(am__append_7) \
-	$(am__append_8) $(am__append_9)
+	$(am__append_5) $(am__append_6) $(am__append_7)
 INCLUDES = -I.. ${ST_S_JACK_INCLUDES}
 EXTRA_DIST = dsound-output.c
 all: all-am
@@ -284,11 +274,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alsa-input.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alsa-output.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alsa1x-output.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alsa2-input.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alsa2-output.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alsa1x.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dummy-drivers.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esd-output.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-output.Po@am__quote@

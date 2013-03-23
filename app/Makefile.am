@@ -46,11 +46,6 @@ if !NO_GDK_PIXBUF
   soundtracker_SOURCES += scalablepic.c scalablepic.h
 endif
 
-if DRIVER_ALSA_050
-  soundtracker_SOURCES += midi-050.c midi-utils-050.c midi-settings-050.c \
-	midi.h midi-settings.h midi-utils.h
-endif
-
 if DRIVER_ALSA_09x
   soundtracker_SOURCES += midi-09x.c midi-utils-09x.c midi-settings-09x.c \
 	midi.h midi-settings.h midi-utils.h

@@ -139,7 +139,7 @@ menubar_save_settings_now (void)
     keys_save_config();
     audioconfig_save_config();
     trackersettings_write_settings();
-#if (defined(DRIVER_ALSA_050) || defined(DRIVER_ALSA_09x))
+#if defined(DRIVER_ALSA_09x)
     midi_save_config();
 #endif
     prefs_save();
@@ -262,7 +262,7 @@ menubar_init_prefs ()
 	GtkWidget *record_keyreleases = gui_get_widget("edit_record_keyreleases");
 	GtkWidget *display_scopes = gui_get_widget("settings_display_scopes");
 	GtkWidget *backing_store = gui_get_widget("settings_tracker_flicker_free");
-#if ! (defined(DRIVER_ALSA_050) || defined(DRIVER_ALSA_09x))
+#if ! defined(DRIVER_ALSA_09x)
 	GtkWidget *settings_midi = gui_get_widget("settings_midi");
 #endif
 #if USE_SNDFILE == 0 && defined (NO_AUDIOFILE)
@@ -286,7 +286,7 @@ menubar_init_prefs ()
 #if USE_SNDFILE == 0 && defined (NO_AUDIOFILE)
     gtk_widget_set_sensitive(savewav, FALSE);
 #endif
-#if ! (defined(DRIVER_ALSA_050) || defined(DRIVER_ALSA_09x))
+#if ! defined(DRIVER_ALSA_09x)
     gtk_widget_set_sensitive(settings_midi, FALSE);
 #endif
 #if !defined(USE_GTKHTML)

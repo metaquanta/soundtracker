@@ -22,7 +22,7 @@
 
 #include <config.h>
 
-#if defined(DRIVER_ALSA_050) || defined(DRIVER_ALSA_09x)
+#if defined(DRIVER_ALSA_09x)
 
 #include <glib.h>
 
