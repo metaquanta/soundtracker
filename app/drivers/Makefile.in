@@ -32,7 +32,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@DRIVER_OSS_TRUE@am__append_1 = oss-output.c oss-input.c
+@DRIVER_OSS_TRUE@am__append_1 = oss.c
 @DRIVER_ALSA_09x_TRUE@am__append_2 = alsa1x.c
 @DRIVER_ESD_TRUE@am__append_3 = esd-output.c
 @DRIVER_JACK_TRUE@am__append_4 = jack-output.c
@@ -53,11 +53,10 @@ AR = ar
 ARFLAGS = cru
 libdrivers_a_AR = $(AR) $(ARFLAGS)
 libdrivers_a_LIBADD =
-am__libdrivers_a_SOURCES_DIST = dummy-drivers.c file-output.c \
-	oss-output.c oss-input.c alsa1x.c esd-output.c jack-output.c \
-	irix-output.c sun-output.c sun-input.c sdl-output.c
-@DRIVER_OSS_TRUE@am__objects_1 = oss-output.$(OBJEXT) \
-@DRIVER_OSS_TRUE@	oss-input.$(OBJEXT)
+am__libdrivers_a_SOURCES_DIST = dummy-drivers.c file-output.c oss.c \
+	alsa1x.c esd-output.c jack-output.c irix-output.c sun-output.c \
+	sun-input.c sdl-output.c
+@DRIVER_OSS_TRUE@am__objects_1 = oss.$(OBJEXT)
 @DRIVER_ALSA_09x_TRUE@am__objects_2 = alsa1x.$(OBJEXT)
 @DRIVER_ESD_TRUE@am__objects_3 = esd-output.$(OBJEXT)
 @DRIVER_JACK_TRUE@am__objects_4 = jack-output.$(OBJEXT)
@@ -280,8 +279,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-output.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/irix-output.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jack-output.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/oss-input.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/oss-output.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/oss.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sdl-output.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sun-input.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sun-output.Po@am__quote@

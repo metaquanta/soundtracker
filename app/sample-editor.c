@@ -2066,7 +2066,7 @@ sample_editor_sampled (void *src,
 {
 	gboolean sampled = FALSE;
 
-	sample_display_set_data(monitorscope, src, mixformat, (mixformat & ST_MIXER_FORMAT_STEREO) ? count >> 1 : count, FALSE);//!!! Check 8/16 bit, streo/mono, that all data is displayed correctly
+	sample_display_set_data(monitorscope, src, mixformat, count >> (mixer_get_resolution(mixformat & 0x7) - 1), FALSE);
 
 	if(sampling) {
 		struct recordbuf *newbuf = malloc(sizeof(struct recordbuf));
@@ -2241,101 +2241,101 @@ sample_editor_ok_clicked (void)
 				switch(format) {
 				case ST_MIXER_FORMAT_S16_LE:
 				case ST_MIXER_FORMAT_S16_BE:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+					for(j = 0; j < r->length >> 1; j += 2, sbuf++)
 						*sbuf = ((gint16 *)r->data)[j];
 					break;
 				case ST_MIXER_FORMAT_U16_LE:
 				case ST_MIXER_FORMAT_U16_BE:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+					for(j = 0; j < r->length >> 1; j += 2, sbuf++)
 						*sbuf = ((gint16 *)r->data)[j] - 32768;
 					break;
 				case ST_MIXER_FORMAT_S8:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+					for(j = 0; j < r->length; j += 2, sbuf++)
 						*sbuf = ((gint8 *)r->data)[j] << 8;
 					break;
 				case ST_MIXER_FORMAT_U8:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+					for(j = 0; j < r->length; j += 2, sbuf++)
 						*sbuf = (((gint8 *)r->data)[j] << 8) - 32768;
 					break;
 				default:
 					memset(sbuf, 0, r->length);
-					sbuf += r->length; /* Unknown format */
+					sbuf += r->length >> 1; /* Unknown format */
 				}
 				break;
 			case MODE_STEREO_MIX:
 				switch(format) {
 				case ST_MIXER_FORMAT_S16_LE:
 				case ST_MIXER_FORMAT_S16_BE:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+					for(j = 0; j < r->length >> 1; j += 2, sbuf++)
 						*sbuf = (((gint16 *)r->data)[j] + ((gint16 *)r->data)[j + 1]) >> 1;
 					break;
 				case ST_MIXER_FORMAT_U16_LE:
 				case ST_MIXER_FORMAT_U16_BE:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+					for(j = 0; j < r->length >> 1; j += 2, sbuf++)
 						*sbuf = ((((gint16 *)r->data)[j] + ((gint16 *)r->data)[j + 1]) >> 1) - 32768;
 					break;
 				case ST_MIXER_FORMAT_S8:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+					for(j = 0; j < r->length; j += 2, sbuf++)
 						*sbuf = (((gint8 *)r->data)[j] + ((gint8 *)r->data)[j + 1]) << 7;
 					break;
 				case ST_MIXER_FORMAT_U8:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+					for(j = 0; j < r->length; j += 2, sbuf++)
 						*sbuf = ((((gint8 *)r->data)[j] + ((gint8 *)r->data)[j + 1]) << 7) - 32768;
 					break;
 				default:
 					memset(sbuf, 0, r->length);
-					sbuf += r->length; /* Unknown format */
+					sbuf += r->length >> 1; /* Unknown format */
 				}
 				break;
 			case MODE_STEREO_RIGHT:
 				switch(format) {
 				case ST_MIXER_FORMAT_S16_LE:
 				case ST_MIXER_FORMAT_S16_BE:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+					for(j = 0; j < r->length >> 1; j += 2, sbuf++)
 						*sbuf = ((gint16 *)r->data)[j + 1];
 					break;
 				case ST_MIXER_FORMAT_U16_LE:
 				case ST_MIXER_FORMAT_U16_BE:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+					for(j = 0; j < r->length >> 1; j += 2, sbuf++)
 						*sbuf = ((gint16 *)r->data)[j + 1] - 32768;
 					break;
 				case ST_MIXER_FORMAT_S8:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+					for(j = 0; j < r->length; j += 2, sbuf++)
 						*sbuf = ((gint8 *)r->data)[j + 1] << 8;
 					break;
 				case ST_MIXER_FORMAT_U8:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++)
+					for(j = 0; j < r->length; j += 2, sbuf++)
 						*sbuf = (((gint8 *)r->data)[j + 1] << 8) - 32768;
 					break;
 				default:
 					memset(sbuf, 0, r->length);
-					sbuf += r->length; /* Unknown format */
+					sbuf += r->length >> 1; /* Unknown format */
 				}
 				break;
 			case MODE_STEREO_2:
 				switch(format) {
 				case ST_MIXER_FORMAT_S16_LE:
 				case ST_MIXER_FORMAT_S16_BE:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++, sbuf2++) {
+					for(j = 0; j < r->length >> 1; j += 2, sbuf++, sbuf2++) {
 						*sbuf = ((gint16 *)r->data)[j];
 						*sbuf2 = ((gint16 *)r->data)[j + 1];
 					}
 					break;
 				case ST_MIXER_FORMAT_U16_LE:
 				case ST_MIXER_FORMAT_U16_BE:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++, sbuf2++) {
+					for(j = 0; j < r->length >> 1; j += 2, sbuf++, sbuf2++) {
 						*sbuf = ((gint16 *)r->data)[j] - 32768;
 						*sbuf2 = ((gint16 *)r->data)[j + 1] - 32768;
 					}
 					break;
 				case ST_MIXER_FORMAT_S8:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++, sbuf2++) {
+					for(j = 0; j < r->length; j += 2, sbuf++, sbuf2++) {
 						*sbuf = ((gint8 *)r->data)[j] << 8;
 						*sbuf2 = ((gint8 *)r->data)[j + 1] << 8;
 					}
 					break;
 				case ST_MIXER_FORMAT_U8:
-					for(j = 0; j < r->length >> multiply; j += 2, sbuf++, sbuf2++) {
+					for(j = 0; j < r->length; j += 2, sbuf++, sbuf2++) {
 						*sbuf = (((gint8 *)r->data)[j] << 8) - 32768;
 						*sbuf2 = (((gint8 *)r->data)[j + 1] << 8) - 32768;
 					}
@@ -2343,8 +2343,8 @@ sample_editor_ok_clicked (void)
 				default:
 					memset(sbuf, 0, r->length);  /* Unknown format */
 					memset(sbuf2, 0, r->length);
-					sbuf += r->length;
-					sbuf2 += r->length;
+					sbuf += r->length >> 1;
+					sbuf2 += r->length >> 1;
 				}
 			}
 		} else {
@@ -2352,24 +2352,24 @@ sample_editor_ok_clicked (void)
 			case ST_MIXER_FORMAT_S16_LE:
 			case ST_MIXER_FORMAT_S16_BE:
 				memcpy(sbuf, r->data, r->length);
-				sbuf += r->length;
+				sbuf += r->length >> 1;
 				break;
 			case ST_MIXER_FORMAT_U16_LE:
 			case ST_MIXER_FORMAT_U16_BE:
-				for(j = 0; j < r->length >> multiply; j++, sbuf++)
+				for(j = 0; j < r->length >> 1; j++, sbuf++)
 					*sbuf = ((gint16 *)r->data)[j] - 32768;
 				break;
 			case ST_MIXER_FORMAT_S8:
-				for(j = 0; j < r->length >> multiply; j++, sbuf++)
+				for(j = 0; j < r->length; j++, sbuf++)
 					*sbuf = ((gint8 *)r->data)[j] << 8;
 				break;
 			case ST_MIXER_FORMAT_U8:
-				for(j = 0; j < r->length >> multiply; j++, sbuf++)
+				for(j = 0; j < r->length; j++, sbuf++)
 					*sbuf = (((gint8 *)r->data)[j] << 8) - 32768;
 				break;
 			default:
 				memset(sbuf, 0, r->length);  /* Unknown format */
-				sbuf += r->length;
+				sbuf += r->length >> 1;
 			}
 		}
 		free(r->data);

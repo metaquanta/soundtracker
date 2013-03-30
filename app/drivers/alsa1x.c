@@ -5,7 +5,7 @@
  * Copyright (C) 2006, 2013 Yury Aliaev
  * The principles were taken from alsa 0.5 driver:
  * regards to Kai Vehmanen :-)
- * Device detection code is based on aplay.c
+ * Device detection and error recovery code is based on aplay.c
  * Copyright (c) by Jaroslav Kysela <perex@perex.cz>
  * Based on vplay program by Michael Beck
  *
@@ -222,9 +222,9 @@ set_highest_freq (alsa_driver *d)
 
 static inline void
 set_max_spin(GtkWidget *spinbtn)
-{
+{ /* I hope 2^17 will be sane for uutomatim maximum buffer size */
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spinbtn),
-			      gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(spinbtn))->upper);
+			      MIN(gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(spinbtn))->upper, 17));
 }
 
 static inline void
@@ -305,11 +305,14 @@ update_controls_a (alsa_driver *d)
 }
 
 static gint
-pcm_open_and_load_hwparams(alsa_driver *d)
+pcm_open_and_load_hwparams(alsa_driver *d, gboolean force_nonblock)
 {
     gint err;
 
-    if((err = snd_pcm_open(&(d->soundfd), d->device, d->playback ? SND_PCM_STREAM_PLAYBACK : SND_PCM_STREAM_CAPTURE, SND_PCM_NONBLOCK)) < 0) {
+	/* CAPTURE mode for real usage should be opened in blocking mode to avoid strange bugs at some cards */
+    if((err = snd_pcm_open(&(d->soundfd), d->device,
+                           d->playback ? SND_PCM_STREAM_PLAYBACK : SND_PCM_STREAM_CAPTURE,
+                           d->playback || force_nonblock ? SND_PCM_NONBLOCK : 0)) < 0) {
 	alsa_error(N_("ALSA device opening error"), err);
 	return -1;
     }
@@ -326,7 +329,7 @@ check_period_sizes (alsa_driver *d)
 {
     /* Almost everything (luckily except sampling frequency) can affect period size: buffer size,
        format, channel numbers... So we need to recheck it after at least one of the parameters is
-       changed -- mutab0r */
+       changed -- mutabor */
     gint err;
     guint address = PARAMS_TO_ADDRESS(d);
 
@@ -337,7 +340,7 @@ check_period_sizes (alsa_driver *d)
     if((address == d->address_old) && (d->buffer_size == d->bufsize_old))
 	return;
 
-    if(pcm_open_and_load_hwparams(d) < 0)
+    if(pcm_open_and_load_hwparams(d, TRUE) < 0)
 	return;
 
     if((err = snd_pcm_hw_params_set_format(d->soundfd, d->hwparams,
@@ -372,6 +375,8 @@ check_period_sizes (alsa_driver *d)
 	alsa_error(N_("Unable to get minimal period size"), err);
 	return;
     }
+    if(!d->persizemin)
+	d->persizemin = 1;
     if ((err = snd_pcm_hw_params_get_period_size_max(d->hwparams, &(d->persizemax), 0)) < 0) {
 	alsa_error(N_("Unable to get maximal period size"), err);
 	return;
@@ -460,7 +465,7 @@ device_test (GtkWidget *w, alsa_driver *d)
     d->maxbufsize[MONO16] = 32768;
     d->maxbufsize[STEREO16] = 16384;
 
-    if(pcm_open_and_load_hwparams(d) < 0)
+    if(pcm_open_and_load_hwparams(d, TRUE) < 0)
 	return;
 
     if(!snd_pcm_hw_params_test_format(d->soundfd, d->hwparams, SND_PCM_FORMAT_U8)) {
@@ -553,7 +558,7 @@ device_test (GtkWidget *w, alsa_driver *d)
 
 	if(d->canstereo) {
 	    snd_pcm_close(d->soundfd);
-	    if(pcm_open_and_load_hwparams(d) < 0)
+	    if(pcm_open_and_load_hwparams(d, TRUE) < 0)
 		return;
 	    if(set_rates(d, 2, STEREO8) < 0) {
 		snd_pcm_close(d->soundfd);
@@ -564,7 +569,7 @@ device_test (GtkWidget *w, alsa_driver *d)
 
     if(d->can16) {
 	snd_pcm_close(d->soundfd);
-	if(pcm_open_and_load_hwparams(d) < 0)
+	if(pcm_open_and_load_hwparams(d, TRUE) < 0)
 	    return;
 	if((err = snd_pcm_hw_params_set_format(d->soundfd, d->hwparams,
 					d->signedness16 ? SND_PCM_FORMAT_S16 : SND_PCM_FORMAT_U16)) < 0) {
@@ -580,7 +585,7 @@ device_test (GtkWidget *w, alsa_driver *d)
 	}
 	if(d->canstereo) {
 	    snd_pcm_close(d->soundfd);
-	    if(pcm_open_and_load_hwparams(d) < 0)
+	    if(pcm_open_and_load_hwparams(d, TRUE) < 0)
 		return;
 	    if(set_rates(d, 2, STEREO16) < 0) {
 		snd_pcm_close(d->soundfd);
@@ -943,26 +948,70 @@ alsa_getwidget (void *dp)
 }
 
 static void
+poll_remove (alsa_driver *d)
+{
+	if(d->playback && d->polltag) {
+		audio_poll_remove(d->polltag);
+		d->polltag = NULL;
+	} else if(!d->playback && d->polltag_in) {
+		gdk_input_remove(d->polltag_in);
+		d->polltag_in = 0;
+	}
+}
+
+static void
 alsa_poll_ready_playing (gpointer data,
 			gint source,
 			GdkInputCondition condition)
 {
     alsa_driver * const d = data;
-    snd_pcm_sframes_t w;
+    guint size = d->stereo + (d->bits >> 4);
+	snd_pcm_sframes_t towrite = d->p_fragsize;
+	gint8 *buffer = d->sndbuf;
 
-    if(!d->firstpoll) {
-        w = snd_pcm_writei(d->soundfd, d->sndbuf, d->p_fragsize);
-	if(d->verbose)
-	    g_print("Written: %li from %li samples\n", w, d->p_fragsize);
-        if(w != d->p_fragsize) {
-	    if(w < 0) {
-		fprintf(stderr, "driver_alsa2: writei() returned -1.\n--- \"%s\"\n", snd_strerror(w));
-	    } else {
-		fprintf(stderr, "driver_alsa2: writei() is not completely done.\n");
-	    }
-	}
+	if(!d->firstpoll) {
+		while(towrite > 0) {
+			gint res;
+			snd_pcm_sframes_t w = snd_pcm_writei(d->soundfd, buffer, towrite);
 
-    } else {
+			switch(w) {
+			case -EAGAIN:
+				continue;
+			case -ESTRPIPE:
+				while ((res = snd_pcm_resume(d->soundfd)) == -EAGAIN)
+					usleep(100000); /* wait until suspend flag is released */
+				if(res < 0) {
+					if(d->verbose)
+						fprintf(stderr, "Stream restarting failed\n");
+					if((res = snd_pcm_prepare(d->soundfd)) < 0) {
+						alsa_error(N_("Unable to restart stream from suspending"), res);
+						poll_remove(d);
+						return;
+					}
+				}
+				continue;
+			case -EPIPE:
+				if((res = snd_pcm_prepare(d->soundfd)) < 0) {
+					alsa_error(N_("Stream preparation error"), res);
+					poll_remove(d);
+					return;
+				}
+				continue;
+			default:
+				if(w < 0) {
+					alsa_error(N_("Sound playing error"), w);
+					poll_remove(d);
+					return;
+				}
+				break;
+			}
+			if(d->verbose)
+				g_print("Written: %li from %li samples\n", w, d->p_fragsize);
+
+			towrite -= w;
+			buffer += w << size;
+		}
+	} else {
 		snd_pcm_status_t *status;
 		snd_timestamp_t tstamp;
 
@@ -983,40 +1032,59 @@ alsa_poll_ready_sampling (gpointer data,
 			GdkInputCondition condition)
 {
     alsa_driver * const d = data;
-    snd_pcm_sframes_t w;
-    guint size;
+    guint size = d->stereo + (d->bits >> 4);
+	snd_pcm_sframes_t toread = d->p_fragsize;
+	gint8 *buffer = d->sndbuf;
 
-    if(!d->firstpoll) {
-        w = snd_pcm_readi(d->soundfd, d->sndbuf, d->p_fragsize);
-	if(d->verbose)
-	    g_print("Read: %li from %li samples\n", w, d->p_fragsize);
-        if(w != d->p_fragsize) {
-	    if(w < 0) {
-		fprintf(stderr, "driver_alsa2: readi() returned -1.\n--- \"%s\"\n", snd_strerror(w));
-	    } else {
-		fprintf(stderr, "driver_alsa2: readi() is not completely done.\n");
-	    }
-	}
-    } else {
-		snd_pcm_status_t *status;
-		snd_timestamp_t tstamp;
+	while(toread > 0) {
+		gint res;
+		snd_pcm_sframes_t w = snd_pcm_readi(d->soundfd, buffer, toread);
 
-		snd_pcm_status_alloca(&status);
-		snd_pcm_status(d->soundfd, status);
-		snd_pcm_status_get_tstamp(status, &tstamp);
-		d->starttime = (double)tstamp.tv_sec + (double)tstamp.tv_usec / 1e6;
+		switch(w) {
+		case -EAGAIN:
+			continue;
+		case -ESTRPIPE:
+			while ((res = snd_pcm_resume(d->soundfd)) == -EAGAIN)
+				usleep(100000); /* wait until suspend flag is released */
+			if(res < 0) {
+				if(d->verbose)
+					fprintf(stderr, "Stream restarting failed\n");
+				if((res = snd_pcm_prepare(d->soundfd)) < 0) {
+					alsa_error(N_("Unable to restart stream from suspending"), res);
+					poll_remove(d);
+					return;
+				}
+			}
+			continue;
+		case -EPIPE:
+			if((res = snd_pcm_prepare(d->soundfd)) < 0) {
+				alsa_error(N_("Stream preparation error"), res);
+				poll_remove(d);
+				return;
+			}
+			continue;
+		default:
+			if(w < 0) {
+				alsa_error(N_("Sound recording error"), w);
+				poll_remove(d);
+				return;
+			}
+			break;
+		}
+		if(d->verbose)
+			g_print("Read: %li from %li samples\n", w, d->p_fragsize);
 
-		d->firstpoll = FALSE;
+		toread -= w;
+		buffer += w << size;
 	}
 
 	/* TRUE means that the buffer is acquired by sampler and a new one is required */
-	size = d->stereo + (d->bits >> 4);
 	if(sample_editor_sampled(d->sndbuf, d->p_fragsize << size, d->p_mixfreq, d->mf))
 		d->sndbuf = calloc(1 << size, d->p_fragsize);
 }
 
 static alsa_driver *
-alsa_new (void)
+alsa_new (gboolean playback)
 {
     gint err;
     guint i;
@@ -1062,6 +1130,7 @@ alsa_new (void)
 
     d->verbose = FALSE;
     d->hwtest = TRUE;
+    d->playback = playback;
 
     if((err = snd_output_stdio_attach(&(d->output), stdout,0)) < 0) {
 	alsa_error(N_("Error attaching sound output"), err);
@@ -1071,27 +1140,20 @@ alsa_new (void)
     snd_pcm_hw_params_malloc(&(d->hwparams));
     snd_pcm_sw_params_malloc(&(d->swparams));
 
+    alsa_make_config_widgets(d);
     return d;
 }
 
 static void *
 alsa_new_out (void)
 {
-    alsa_driver *d = alsa_new();
-
-    d->playback = TRUE;
-    alsa_make_config_widgets(d);
-	return d;
+    return alsa_new(TRUE);
 }
 
 static void *
 alsa_new_in (void)
 {
-    alsa_driver *d = alsa_new();
-
-    d->playback = FALSE;
-    alsa_make_config_widgets(d);
-	return d;
+    return alsa_new(FALSE);
 }
 
 static void
@@ -1116,13 +1178,8 @@ alsa_release (void *dp)
 	d->sndbuf = NULL;
     }
 
-	if(d->playback) {
-		audio_poll_remove(d->polltag);
-		d->polltag = NULL;
-	} else {
-		gdk_input_remove(d->polltag_in);
-		d->polltag_in = 0;
-	}
+	poll_remove(d);
+
     if(d->pfd) {
         free(d->pfd);
 	d->pfd = NULL;
@@ -1142,7 +1199,7 @@ alsa_open (void *dp)
     gint mf, err;
     guint pers;
 
-    if(pcm_open_and_load_hwparams(d) < 0)
+    if(pcm_open_and_load_hwparams(d, FALSE) < 0)
 	goto out;
 
     // --
@@ -1254,8 +1311,7 @@ alsa_open (void *dp)
    
     if(d->verbose)
         snd_pcm_dump(d->soundfd, d->output);
-//    d->sndbuf = calloc((d->stereo + 1) * (d->bits / 8), d->p_fragsize);!!! check if these are equal
-    d->sndbuf = calloc((d->stereo + 1) << ((d->bits >> 3) - 1), d->p_fragsize);
+    d->sndbuf = calloc((d->stereo + 1) << (d->bits >> 4), d->p_fragsize);
 
     d->pfd = malloc(sizeof(struct pollfd));
     if ((err = snd_pcm_poll_descriptors(d->soundfd, d->pfd, 1)) < 0) {

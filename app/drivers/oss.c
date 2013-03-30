@@ -1,8 +1,9 @@
 
 /*
- * The Real SoundTracker - OSS (output) driver.
+ * The Real SoundTracker - OSS (input/output) driver.
  *
  * Copyright (C) 1998-2001 Michael Krause
+ * Copyright (C) 2013 Yury Alyaev
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,8 +42,6 @@
 #endif
 #include <sys/time.h>
 
-#include <glib.h>
-#include <glib/gprintf.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 
@@ -68,14 +67,14 @@ typedef struct oss_driver {
     int mf;
     gboolean realtimecaps;
 
-    GMutex *configmutex;
-
     int soundfd;
     void *sndbuf;
     gpointer polltag;
+    gint polltag_i;
     int firstpoll;
 
-    gchar *p_devdsp;
+    gchar *p_devdsp_saved;
+    const gchar *p_devdsp;
     int p_resolution;
     int p_channels;
     int p_mixfreq;
@@ -83,6 +82,8 @@ typedef struct oss_driver {
 
     double outtime;
     double playtime;
+
+    gboolean sampling;
 } oss_driver;
 
 static const int mixfreqs[] = { 8000, 16000, 22050, 44100, -1 };
@@ -121,6 +122,20 @@ oss_poll_ready_playing (gpointer data,
 }
 
 static void
+oss_poll_ready_sampling (gpointer data,
+                         gint source,
+                         GdkInputCondition condition)
+{
+	oss_driver * const d = data;
+
+	if(read(d->soundfd, d->sndbuf, d->fragsize) != d->fragsize)
+		perror("OSS input: read()");
+
+	if(sample_editor_sampled(d->sndbuf, d->fragsize, d->playrate, d->mf))
+		d->sndbuf = calloc(1, d->fragsize);
+}
+
+static void
 prefs_init_from_structure (oss_driver *d)
 {
     int i;
@@ -139,15 +154,15 @@ prefs_init_from_structure (oss_driver *d)
 
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(d->bufsizespin_w), d->p_fragsize);
 
-    gtk_entry_set_text(GTK_ENTRY(d->prefs_devdsp_w), d->p_devdsp);
+    gtk_entry_set_text(GTK_ENTRY(d->prefs_devdsp_w), d->p_devdsp_saved);
 }
 
 static void
 prefs_update_estimate (oss_driver *d)
 {
     char buf[128];
-    
-    g_sprintf(buf, _("Estimated audio delay: %f milliseconds"), 1000 * (double)(1 << d->p_fragsize) / (double)d->p_mixfreq);
+
+    sprintf(buf, _("Estimated audio delay: %f milliseconds"), 1000 * (double)(1 << d->p_fragsize) / (double)d->p_mixfreq);
     gtk_label_set_text(GTK_LABEL(d->estimatelabel_w), buf);
 }
 
@@ -169,8 +184,10 @@ static void
 prefs_mixfreq_changed (void *a,
 		       oss_driver *d)
 {
-    d->p_mixfreq = mixfreqs[find_current_toggle(d->prefs_mixfreq_w, 4)];
-    prefs_update_estimate(d);
+	d->p_mixfreq = mixfreqs[find_current_toggle(d->prefs_mixfreq_w, 4)];
+
+	if(!d->sampling)
+		prefs_update_estimate(d);
 }
 
 static void
@@ -181,16 +198,17 @@ prefs_fragsize_changed (GtkSpinButton *w,
 
     d->p_fragsize = gtk_spin_button_get_value_as_int(w);
 
-    g_sprintf(buf, _("(%d samples)"), 1 << d->p_fragsize);
+    sprintf(buf, _("(%d samples)"), 1 << d->p_fragsize);
     gtk_label_set_text(GTK_LABEL(d->bufsizelabel_w), buf);
-    prefs_update_estimate(d);
+	if(!d->sampling)
+		prefs_update_estimate(d);
 }
 
 static void
 oss_devdsp_changed (void *a,
 		    oss_driver *d)
 {
-    strncpy(d->p_devdsp, gtk_entry_get_text(GTK_ENTRY(d->prefs_devdsp_w)), 127);
+    d->p_devdsp = gtk_entry_get_text(GTK_ENTRY(d->prefs_devdsp_w));
 }
 
 static void
@@ -203,7 +221,8 @@ oss_make_config_widgets (oss_driver *d)
 
     d->configwidget = mainbox = gtk_vbox_new(FALSE, 2);
 
-    thing = gtk_label_new(_("These changes won't take effect until you restart playing."));
+    thing = gtk_label_new(_(d->sampling ? N_("These changes won't take effect until you restart sampling.")
+                                        : N_("These changes won't take effect until you restart playing.")));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
     
@@ -215,14 +234,14 @@ oss_make_config_widgets (oss_driver *d)
     gtk_widget_show(box2);
     gtk_box_pack_start(GTK_BOX(mainbox), box2, FALSE, TRUE, 0);
 
-    thing = gtk_label_new(_("Output device (e.g. '/dev/dsp'):"));
+    thing = gtk_label_new(_(d->sampling ? N_("Input device (e.g. '/dev/dsp'):")
+                                        : N_("Output device (e.g. '/dev/dsp'):")));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
     add_empty_hbox(box2);
     thing = gtk_entry_new_with_max_length(126);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
-    gtk_entry_set_text(GTK_ENTRY(thing), d->p_devdsp);
     g_signal_connect_after(thing, "changed",
 			     G_CALLBACK(oss_devdsp_changed), d);
     d->prefs_devdsp_w = thing;
@@ -284,11 +303,13 @@ oss_make_config_widgets (oss_driver *d)
     gtk_widget_show(box2);
     gtk_box_pack_start(GTK_BOX(mainbox), box2, FALSE, TRUE, 0);
 
-    add_empty_hbox(box2);
-    d->estimatelabel_w = thing = gtk_label_new("");
-    gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
-    gtk_widget_show(thing);
-    add_empty_hbox(box2);
+	if(!d->sampling) {
+		add_empty_hbox(box2);
+		d->estimatelabel_w = thing = gtk_label_new("");
+		gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
+		gtk_widget_show(thing);
+		add_empty_hbox(box2);
+	}
 
     prefs_init_from_structure(d);
 }
@@ -301,12 +322,13 @@ oss_getwidget (void *dp)
     return d->configwidget;
 }
 
-static void *
-oss_new (void)
+static oss_driver *
+oss_new (gboolean sampling)
 {
     oss_driver *d = g_new(oss_driver, 1);
 
-    d->p_devdsp = g_strdup("/dev/dsp");
+    d->p_devdsp_saved = g_strdup("/dev/dsp");
+    d->p_devdsp = d->p_devdsp_saved;
     d->p_mixfreq = 44100;
     d->p_channels = 2;
     d->p_resolution = 16;
@@ -314,11 +336,23 @@ oss_new (void)
     d->soundfd = -1;
     d->sndbuf = NULL;
     d->polltag = NULL;
-    d->configmutex = g_mutex_new();
+    d->sampling = sampling;
 
     oss_make_config_widgets(d);
 
     return d;
+}
+
+static void *
+oss_new_playback (void)
+{
+    return oss_new(FALSE);
+}
+
+static void *
+oss_new_sampling (void)
+{
+    return oss_new(TRUE);
 }
 
 static void
@@ -327,7 +361,7 @@ oss_destroy (void *dp)
     oss_driver * const d = dp;
 
     gtk_widget_destroy(d->configwidget);
-    g_mutex_free(d->configmutex);
+    g_free(d->p_devdsp_saved);
 
     g_free(dp);
 }
@@ -361,13 +395,18 @@ oss_try_stereo (oss_driver *d, int f)
 static void
 oss_release (void *dp)
 {
-    oss_driver * const d = dp;
+	oss_driver * const d = dp;
 
-    free(d->sndbuf);
-    d->sndbuf = NULL;
+	free(d->sndbuf);
+	d->sndbuf = NULL;
 
-    audio_poll_remove(d->polltag);
-    d->polltag = NULL;
+	if(!d->sampling && d->polltag) {
+		audio_poll_remove(d->polltag);
+		d->polltag = NULL;
+	} else if(d->sampling && d->polltag_i) {
+		gdk_input_remove(d->polltag_i);
+		d->polltag_i = 0;
+	}
 
     if(d->soundfd >= 0) {
 	ioctl(d->soundfd, SNDCTL_DSP_RESET, 0);
@@ -387,9 +426,10 @@ oss_open (void *dp)
     /* O_NONBLOCK is required for the es1370 driver in Linux
        2.2.9, for example. It's open() behaviour is not
        OSS-conformant (though Thomas Sailer says it's okay). */
-    if((d->soundfd = open(d->p_devdsp, O_WRONLY | O_NONBLOCK)) < 0) {
+    if((d->soundfd = open(d->p_devdsp, d->sampling ? O_RDONLY | O_NONBLOCK : O_WRONLY | O_NONBLOCK)) < 0) {
 	char buf[256];
-	g_sprintf(buf, _("Couldn't open %s for sound output:\n%s"), d->p_devdsp, strerror(errno));
+	sprintf(buf, _("Couldn't open %s for %s:\n%s"), d->p_devdsp,
+	          d->sampling ? "sampling" : "sound output", strerror(errno));
 	error_error(buf);
 	goto out;
     }
@@ -422,7 +462,9 @@ oss_open (void *dp)
 	    d->bits = 8;
 	    mf = ST_MIXER_FORMAT_U8;
 	} else {
-	    error_error(_("Required sound output format not supported.\n"));
+		gchar buf[256];
+		sprintf(buf, _("Required %s format not supported.\n"), d->sampling ? "sampling" : "sound output");
+	    error_error(buf);
 	    goto out;
 	}
     }
@@ -438,30 +480,44 @@ oss_open (void *dp)
 
     d->playrate = d->p_mixfreq;
     ioctl(d->soundfd, SNDCTL_DSP_SPEED, &d->playrate);
-	
-    i = 0x00020000 + d->p_fragsize + d->stereo + (d->bits / 8 - 1);
-    ioctl(d->soundfd, SNDCTL_DSP_SETFRAGMENT, &i);
 
-    // Find out how many fragments OSS actually uses and how large they are.
-    ioctl(d->soundfd, SNDCTL_DSP_GETOSPACE, &info);
-    d->fragsize = info.fragsize;
-    d->numfrags = info.fragstotal;
+	if(d->sampling) {
+		i = 0x00040000 + d->p_fragsize + d->stereo + (d->bits / 8 - 1);
+		ioctl(d->soundfd, SNDCTL_DSP_SETFRAGMENT, &i);
+		ioctl(d->soundfd, SNDCTL_DSP_GETBLKSIZE, &d->fragsize);
+	} else {
+		i = 0x00020000 + d->p_fragsize + d->stereo + (d->bits / 8 - 1);
+		ioctl(d->soundfd, SNDCTL_DSP_SETFRAGMENT, &i);
 
-    ioctl(d->soundfd, SNDCTL_DSP_GETCAPS, &i);
-    d->realtimecaps = i & DSP_CAP_REALTIME;
+		// Find out how many fragments OSS actually uses and how large they are.
+		ioctl(d->soundfd, SNDCTL_DSP_GETOSPACE, &info);
+		d->fragsize = info.fragsize;
+		d->numfrags = info.fragstotal;
+
+		ioctl(d->soundfd, SNDCTL_DSP_GETCAPS, &i);
+		d->realtimecaps = i & DSP_CAP_REALTIME;
+	}
 
     d->sndbuf = calloc(1, d->fragsize);
 
-    if(d->stereo == 1) {
-	d->fragsize /= 2;
-    }
-    if(d->bits == 16) {
-	d->fragsize /= 2;
-    }
+	if(d->sampling) {
+		if(d->stereo == 1) {
+			d->fragsize /= 2;
+		}
+		if(d->bits == 16) {
+			d->fragsize /= 2;
+		}
 
-    d->polltag = audio_poll_add(d->soundfd, GDK_INPUT_WRITE, oss_poll_ready_playing, d);
-    d->firstpoll = TRUE;
-    d->playtime = 0;
+		d->polltag_i = gdk_input_add(d->soundfd, GDK_INPUT_READ, oss_poll_ready_sampling, d);
+
+		// At least my ES1370 requires an initial read...
+		if(read(d->soundfd, d->sndbuf, d->fragsize) != d->fragsize)
+		perror("OSS input: read()");
+	} else {
+		d->polltag = audio_poll_add(d->soundfd, GDK_INPUT_WRITE, oss_poll_ready_playing, d);
+		d->firstpoll = TRUE;
+		d->playtime = 0;
+	}
 
     return TRUE;
 
@@ -507,8 +563,8 @@ oss_loadsettings (void *dp,
     gchar *buf;
 
 	if((buf = prefs_get_string(f, "oss-devdsp", NULL))) {
-		g_free(d->p_devdsp);
-		d->p_devdsp = buf;
+		g_free(d->p_devdsp_saved);
+		d->p_devdsp = d->p_devdsp_saved = buf;
 	}
 	d->p_resolution = prefs_get_int(f, "oss-resolution", d->p_resolution);
 	d->p_channels = prefs_get_int(f, "oss-channels", d->p_channels);
@@ -538,7 +594,25 @@ oss_savesettings (void *dp,
 st_io_driver driver_out_oss = {
     { "OSS Output",
 
-      oss_new,
+      oss_new_playback,
+      oss_destroy,
+
+      oss_open,
+      oss_release,
+
+      oss_getwidget,
+      oss_loadsettings,
+      oss_savesettings,
+    },
+
+    oss_get_play_time,
+    oss_get_play_rate
+};
+
+st_io_driver driver_in_oss = {
+    { "OSS Input",
+
+      oss_new_sampling,
       oss_destroy,
 
       oss_open,

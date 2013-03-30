@@ -1,4 +1,13 @@
-2013-03-??  Yury Aliaev  <mutab0r@rambler.ru>
+2013-03-30  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/drivers/alsa1x.c: Error recovery isimplemented (inspired by aplay.c).
+
+2013-03-26  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/drivers/oss.c: Combined OSS driver for both input and output is done,
+	some bugs are fixed. OSS sampling now supports 8/16 bit, mono/stereo;
+	* app/drivers/alsa1x.c, app/sample-editor.c: Bugs introduced by new code are
+	fixed.
+
+2013-03-23  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/driver-inout.h, app/mixer.h, app/module-info.[ch],
 	app/sample-display.[ch], app/sample-editor.[ch], app/drivers/oss-import.c:
 	Sampling at arbitrary resolution and mono/stereo mode is implemented.

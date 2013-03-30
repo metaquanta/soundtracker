@@ -4,7 +4,7 @@ noinst_LIBRARIES = libdrivers.a
 libdrivers_a_SOURCES = dummy-drivers.c file-output.c
 
 if DRIVER_OSS
-  libdrivers_a_SOURCES += oss-output.c oss-input.c
+  libdrivers_a_SOURCES += oss.c
 endif
 
 if DRIVER_ALSA_09x
