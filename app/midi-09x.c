@@ -347,6 +347,12 @@ void midi_init() {
 
 } /* midi_init() */
 
+/* It's better to close handle, as Valgring advices */
+void midi_fini(void)
+{
+      close_handle( midi_handle);
+}
+
 /**************************************************
  * Callback for MIDI input events.
  *

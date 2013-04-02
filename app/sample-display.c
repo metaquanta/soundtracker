@@ -394,11 +394,11 @@ sample_display_draw_data (GdkDrawable *win,
 	/* Average left and right channels if stereo */
 	case ST_MIXER_FORMAT_S16_LE | ST_MIXER_FORMAT_STEREO:
 		c = (((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))] +
-		     ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1)) + 1]) >> 1;
+		     ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1) + 1)]) >> 1;
 
 		while(width >= 0) {
 			d = (((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))] +
-			     ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x)) + 1]) >> 1;
+			     ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x) + 1)]) >> 1;
 			gdk_draw_line(win, gc,
 			              x - 1, ((32767 - c) * sh) >> 16,
 			              x,     ((32767 - d) * sh) >> 16);
@@ -409,11 +409,11 @@ sample_display_draw_data (GdkDrawable *win,
 		break;
 	case ST_MIXER_FORMAT_U16_LE | ST_MIXER_FORMAT_STEREO:
 		c = (((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))] +
-		     ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1)) + 1]) >> 1;
+		     ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1) + 1)]) >> 1;
 
 		while(width >= 0) {
 			d = (((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))] +
-			     ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x)) + 1]) >> 1;
+			     ((gint16*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x) + 1)]) >> 1;
 			gdk_draw_line(win, gc,
 			              x - 1, ((65535 - c) * sh) >> 16,
 			              x,     ((65535 - d) * sh) >> 16);
@@ -424,11 +424,11 @@ sample_display_draw_data (GdkDrawable *win,
 		break;
 	case ST_MIXER_FORMAT_S8 | ST_MIXER_FORMAT_STEREO:
 		c = (((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))] +
-		     ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1)) + 1]) >> 1;
+		     ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1) + 1)]) >> 1;
 
 		while(width >= 0) {
 			d = (((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))] +
-			     ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x)) + 1]) >> 1;
+			     ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x) + 1)]) >> 1;
 			gdk_draw_line(win, gc,
 			              x - 1, ((127 - c) * sh) >> 8,
 			              x,     ((127 - d) * sh) >> 8);
@@ -439,11 +439,11 @@ sample_display_draw_data (GdkDrawable *win,
 		break;
 	case ST_MIXER_FORMAT_U8 | ST_MIXER_FORMAT_STEREO:
 		c = (((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1))] +
-		     ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1)) + 1]) >> 1;
+		     ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x - 1) + 1)]) >> 1;
 
 		while(width >= 0) {
 			d = (((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x))] +
-			     ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x)) + 1]) >> 1;
+			     ((gint8*)s->data)[OFFSET_RANGE(s->datalen, XPOS_TO_OFFSET(x) + 1)]) >> 1;
 			gdk_draw_line(win, gc,
 			              x - 1, ((255 - c) * sh) >> 8,
 			              x,     ((255 - d) * sh) >> 8);

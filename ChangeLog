@@ -1,3 +1,8 @@
+2013-04-02  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/main.c, app/midi-09x.c, app/midi.h, app/sample-display.c,
+	app/sample-editor.c: Fixed wrong memory access and leaks detected 
+	by Valgrind.
+
 2013-03-30  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/drivers/alsa1x.c: Error recovery isimplemented (inspired by aplay.c).
 

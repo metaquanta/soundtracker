@@ -35,6 +35,7 @@
 /* Function prototypes */
 
 void midi_init (void);
+void midi_fini (void);
 
 #endif
 

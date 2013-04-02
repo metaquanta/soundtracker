@@ -258,6 +258,7 @@ main (int argc,
 	track_editor_save_config();
 #if defined(DRIVER_ALSA_09x)
 	midi_save_config();
+	midi_fini();
 #endif
 	prefs_save();
 	prefs_close();

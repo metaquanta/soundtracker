@@ -2115,6 +2115,7 @@ sample_editor_stop_sampling (void)
 	free(r->data);
 	free(r);
     }
+    recordbufs = NULL;
 
     /* Stop delete event propagation */
     return TRUE;
@@ -2187,6 +2188,7 @@ sample_editor_ok_clicked (void)
 					free(r->data);
 					free(r);
 				}
+				recordbufs = NULL;
 				return;
 			}
 		} while(replay);
@@ -2375,6 +2377,7 @@ sample_editor_ok_clicked (void)
 		free(r->data);
 		free(r);
 	}
+	recordbufs = NULL;
 
     if(recordedlen > mixer->max_sample_length) {
 	gui_warning_dialog(N_("Recorded sample is too long for current mixer module. Using it anyway."));
