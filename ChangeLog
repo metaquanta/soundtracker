@@ -1,3 +1,6 @@
+2013-04-04  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/file-operations.c, app/preferences.c: Code cleanups.
+
 2013-04-02  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/main.c, app/midi-09x.c, app/midi.h, app/sample-display.c,
 	app/sample-editor.c: Fixed wrong memory access and leaks detected 

@@ -480,7 +480,7 @@ fileops_open_dialog (GtkWidget *w,
 
 	response = gtk_dialog_run(GTK_DIALOG(fileops[n].dialog));
 	gtk_widget_hide(fileops[n].dialog);/* TODO move to GFile */
-	if(response == GTK_RESPONSE_ACCEPT) {//!!! Check local encoding
+	if(response == GTK_RESPONSE_ACCEPT) {
 		file_chosen(&fileops[n]);
 	}
 }

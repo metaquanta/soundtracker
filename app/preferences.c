@@ -207,7 +207,7 @@ prefs_get_bool_array (const gchar *section,
 
 	g_assert(kf != NULL);
 
-	ret = g_key_file_get_boolean_list(kf, section, key, length, &error);//!!! Test missing
+	ret = g_key_file_get_boolean_list(kf, section, key, length, &error);
 	if(error) {
 		g_error_free(error);
 		error = NULL;
