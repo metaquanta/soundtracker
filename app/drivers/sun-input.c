@@ -38,7 +38,6 @@
 #include <glib/gprintf.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
-#include "i18n.h"
 #include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
