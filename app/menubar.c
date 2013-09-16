@@ -54,7 +54,6 @@ static gboolean mark_mode_toggle_ignore = FALSE;
 extern ScopeGroup *scopegroup;
 
 
-//!!! Provide more infos
 void
 about_dialog (void)
 {
@@ -64,7 +63,7 @@ about_dialog (void)
     gtk_show_about_dialog(GTK_WINDOW(mainwindow), "name", "SoundTracker", "version", VERSION,
 			  "authors", authors, "license", "GPL", "copyright",
 			  "Copyright (C) 1998-2008 Michael Krause\n<rawstyle@soundtracker.org>\n"
-			  "Copyright (C) 2008-2012 Yury Alyaev\n<mutab0r@rambler.ru>"
+			  "Copyright (C) 2008-2013 Yury Alyaev\n<mutab0r@rambler.ru>"
 			  "\n\nIncludes OpenCP player from Niklas Beisert and Tammo Hinrichs.",
 			  NULL);
 }
@@ -148,13 +147,22 @@ menubar_save_settings_now (void)
 void
 menubar_handle_cutcopypaste (GtkWidget *p, gpointer a)
 {
+	static const gchar *signals[] = {"cut-clipboard", "copy-clipboard", "paste-clipboard"};
+
     Tracker *t = tracker;
     int ci = gui_get_current_instrument() - 1;
     STInstrument *curins = &xm->instruments[ci];
+    GtkWidget *focus_widget = GTK_WINDOW(mainwindow)->focus_widget;
+    gint i = GPOINTER_TO_INT(a);
 
-    switch(GPOINTER_TO_INT(a)){
+	if(GTK_IS_ENTRY(focus_widget)) {
+		g_signal_emit_by_name(focus_widget, signals[i], NULL);
+		return;
+	}
+
+    switch(i){
     case 0:		//Cut
-	switch(notebook_current_page){
+	switch(notebook_current_page) {
 	case NOTEBOOK_PAGE_TRACKER:
 	    track_editor_cut_selection(NULL, t);
 	    break;
