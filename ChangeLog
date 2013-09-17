@@ -1,4 +1,8 @@
 2013-09-17  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui.c: The right behavior of Ctrl + A shortcut in entries is
+	restored.
+
+2013-09-16  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/menubar.c: The right behavior of Ctrl + C/V/X shortcuts in entries
 	is restored.
 

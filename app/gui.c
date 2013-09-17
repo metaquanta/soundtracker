@@ -193,6 +193,12 @@ gui_highlight_rows_toggled (GtkWidget *widget)
 void
 gui_accidentals_clicked (GtkWidget *widget, gpointer data)
 {
+	GtkWidget *focus_widget = GTK_WINDOW(mainwindow)->focus_widget;
+
+	if(GTK_IS_ENTRY(focus_widget)) { /* Emulate Ctrl + A if the cursor is in an entry */
+		g_signal_emit_by_name(focus_widget, "move-cursor", GTK_MOVEMENT_DISPLAY_LINE_ENDS, -1, FALSE, NULL);
+		g_signal_emit_by_name(focus_widget, "move-cursor", GTK_MOVEMENT_DISPLAY_LINE_ENDS, 1, TRUE, NULL);
+	}
     gui_settings.sharp = !gui_settings.sharp;
     gtk_widget_hide(alt[gui_settings.sharp ? 1 : 0]);
     gtk_widget_show(alt[gui_settings.sharp ? 0 : 1]);
