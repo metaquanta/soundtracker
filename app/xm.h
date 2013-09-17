@@ -62,7 +62,8 @@ typedef struct XMPattern {
 typedef struct STSample {
     st_mixer_sample_info sample;
 
-    char name[23];
+    gchar name[23], utf_name[89];
+    gboolean needs_conversion, no_cb;
 
     guint8 volume;               /* eigenvolume (0..64) */
     gint8 finetune;              /* finetune (-128 ... 127) */
@@ -96,7 +97,8 @@ typedef struct STEnvelope {
 } STEnvelope;
 
 typedef struct STInstrument {
-    char name[24];
+    gchar name[24], utf_name[93];
+    gboolean needs_conversion, no_cb;
 
     STEnvelope vol_env;
     STEnvelope pan_env;
@@ -118,7 +120,8 @@ typedef struct STInstrument {
    structures, as you can see... */
 
 typedef struct XM {
-    char name[21];
+    char name[21], utf_name[81];
+    gboolean needs_conversion;
     char modified;                   // indicates necessity of security questions before quitting etc.
 
     int flags;                       /* see XM_FLAGS_ defines below */

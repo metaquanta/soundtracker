@@ -4,13 +4,7 @@
 in the callback) and main notebook switch callback;
 22) ESD driver reported to produce greater delay at start than in ST-gtk1;
 36) Pressing Ctrl-O in Instrument editor crashes ST at some machines;
-39) wet3.xm: "invalid UTF8 pango warnings" (modinfo page)
-42) replace recode.[ch] with g_convert() functions to/from UTF-8 (check for pseudographics support)
-Hmm, seems FT2 uses its own encoding, not standard Latin. The custom coding procedures are still required...
-The problem seems wider. Multibyte UTF-8 charachters requiure to extend length of some fields like xm->name
-and modify encoding procedures. Block signals from entries when setting its text internally. Clean up
-st_clean_instrument regarding name and utf_name. Sample name is being clipped if its name consists of
-multibyte charachters and the current sample is switched to another and then returned back.
+42) Check padding (zeroes, spaces) for XI.
 45) Volume ramping->normalize does somethong wrong (subsequently decreases positive half-periods),
 at 8 bit samples only, st_sample_cutoff_lowest_8_bits() and the maximum value is negative;
 49) Update or even rewrite JACK driver;
@@ -23,6 +17,8 @@ Possibly it is a bug of ALSA itself. Test with file output;
 (whatever else?) operations (done except Ctrl + A);
 57) Crash when pressing f in effect type column (jump is 1), after the filling it full seting jump to 2
 and pressing 5 in effect parameter column;
+58) Check (wet.xm) why after opening originsl ft2 xm and saving it as is some fields in the instrument
+header are different;
 
 Some remarks about asm mixer bug: at the sample end and loop points there are ugly clicks
 (ramping works badly). Also when the previous channel has amplitude > 0, the following one

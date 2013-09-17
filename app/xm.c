@@ -286,6 +286,19 @@ xm_save_xm_pattern (XMPattern *p,
     }
 }
 
+/* As a result of the recoding from FT2 to utf-8 the line becomes space-padded.
+   So we replace trailing spaces with zeroes */
+static void
+string_seal(gchar *str, const guint length)
+{
+	gchar *ptr = g_utf8_offset_to_pointer(str, length - 1);
+
+	while(ptr && ptr[0] == 0x20) {
+		ptr[0] = 0;
+		ptr = g_utf8_find_prev_char(str, ptr);
+	}
+}
+
 static gboolean
 xm_load_xm_samples (STSample samples[],
 		    int num_samples,
@@ -314,19 +327,23 @@ xm_load_xm_samples (STSample samples[],
 		s->sample.looptype = sh[14];
 		s->panning = sh[15];
 		s->relnote = sh[16];
-		strncpy(s->name, (char*)sh + 18, 22);
+		memcpy(s->name, (char*)sh + 18, 22);
 		s->name[22] = '\0';
-		recode_ibmpc_to_latin1(s->name, 22);
+		recode_to_utf(s->name, s->utf_name, 22);
+		string_seal(s->utf_name, 22);
+		s->needs_conversion = FALSE;
+		s->no_cb = TRUE;
 	}
 
     for(i = 0; i < num_samples; i++) {
 	s = &samples[i];
 	if(s->sample.length == 0) {
 	    /* no sample in this slot, delete all info except sample name */
-	    char name[23];
+	    char name[23], utf_name[89];
 	    strncpy(name, s->name, 22);
+	    strcpy(utf_name, s->utf_name);
 	    name[22] = 0;
-	    st_clean_sample(s, (const char*)&name);
+	    st_clean_sample(s, (const char*)&utf_name, (const char*)&name);
 	    continue;
 	}
 	s->treat_as_8bit = !(s->sample.looptype & 0x10);
@@ -384,9 +401,10 @@ xm_load_xm_samples (STSample samples[],
 static gboolean
 xm_save_xm_samples (STSample samples[],
 		    FILE *f,
-		    int num_samples)
+		    int num_samples,
+		    gboolean *illegal_chars)
 {
-    int i, k;
+    guint i, k, len;
     guint8 sh[40];
     STSample *s;
     gboolean is_error = FALSE;
@@ -404,8 +422,13 @@ xm_save_xm_samples (STSample samples[],
 	sh[15] = s->panning;
 	sh[16] = s->relnote;
 	sh[17] = 0;
-	strncpy((char*)sh + 18, s->name, 22);
-	recode_latin1_to_ibmpc((char*) sh + 18, 22);
+	if(s->needs_conversion) {
+		*illegal_chars |= recode_from_utf(s->utf_name, s->name, 22);
+		s->needs_conversion = FALSE;
+	}
+	len = strlen(s->name);
+    memcpy((char*)sh + 18, s->name, len); /* Copy the string without the trailing zero */
+	memset((char*)sh + 18 + len, 0x20, 22 - len); /* Sample name is space-padded */
 	is_error |= fwrite(sh, 1, sizeof(sh), f) != sizeof(sh);
     }
     
@@ -485,8 +508,11 @@ xm_load_xm_instrument (STInstrument *instr,
 		return 0;
 	}
     iheader_size = get_le_32(a);
-    strncpy(instr->name, (char*)a + 4, 22);
-    recode_ibmpc_to_latin1(instr->name, 22);
+    memcpy(instr->name, (char*)a + 4, 22);
+    recode_to_utf(instr->name, instr->utf_name, 22);
+    string_seal(instr->utf_name, 22);
+    instr->needs_conversion = FALSE;
+    instr->no_cb = FALSE;
 
     if(iheader_size <= 29) {
 	return 1;
@@ -595,8 +621,11 @@ xm_load_xi (STInstrument *instr,
 		gui_error_dialog(N_("Instrument header reading error"));
 		return FALSE;
 	}
-    strncpy(instr->name, (char*)a, 22);
-    recode_ibmpc_to_latin1(instr->name, 22);
+    memcpy(instr->name, (char*)a, 22);
+    recode_to_utf(instr->name, instr->utf_name, 22);
+    string_seal(instr->utf_name, 22);
+    instr->needs_conversion = FALSE;
+    instr->no_cb = FALSE;
 
 	if(fread(a, 1, 23, f) != 23) {
 		gui_error_dialog(N_("Instrument header reading error"));
@@ -670,14 +699,17 @@ xm_save_xi (STInstrument *instr,
 {
     guint8 a[48];
     int num_samples;
-    gboolean is_error = FALSE;
+    gboolean is_error = FALSE, illegal_chars = FALSE;
 
     num_samples = st_instrument_num_save_samples(instr);
 
     is_error |= fwrite("Extended Instrument: ", 1, 21, f) != 21;
 
+	if(instr->needs_conversion) {
+		illegal_chars |= recode_from_utf(instr->utf_name, instr->name, 22);
+		instr->needs_conversion = FALSE;
+	}
     strncpy((char*)a, instr->name, 22);
-    recode_latin1_to_ibmpc((char*)a, 22);
     is_error |= fwrite(a, 1, 22, f) != 22;
 
     a[0] = 0x1a;
@@ -714,7 +746,10 @@ xm_save_xi (STInstrument *instr,
     put_le_16(a + 22, num_samples);
     is_error |= fwrite(a, 1, 24, f) != 24;
 
-    is_error |= xm_save_xm_samples(instr->samples, f, num_samples);
+    is_error |= xm_save_xm_samples(instr->samples, f, num_samples, &illegal_chars);
+    if(illegal_chars)
+		gui_warning_dialog(N_("Some characters instrument or samples names "
+		                      "cannot be stored in XM format. They will be skipped."));
 
     return is_error;
 }
@@ -722,17 +757,23 @@ xm_save_xi (STInstrument *instr,
 static gboolean
 xm_save_xm_instrument (STInstrument *instr,
                        FILE *f,
-                       gboolean save_smpls)
+                       gboolean save_smpls,
+                       gboolean *illegal_chars)
 {
     guint8 h[48];
-    int num_samples;
+    guint num_samples, len;
     gboolean is_error = FALSE;
 
     num_samples = st_instrument_num_save_samples(instr);
 
     memset(h, 0, sizeof(h));
-    strncpy((char*)h + 4, instr->name, 22);
-    recode_latin1_to_ibmpc((char*)h + 4, 22);
+	if(instr->needs_conversion) {
+		*illegal_chars |= recode_from_utf(instr->utf_name, instr->name, 22);
+		instr->needs_conversion = FALSE;
+	}
+	len = strlen(instr->name);
+    memcpy((char*)h + 4, instr->name, len); /* Copy the string without the trailing zero */
+	memset((char*)h + 4 + len, 0, 22 - len); /* Instrument name is zero-padded */
 
     if(!save_smpls)
 	num_samples = 0;
@@ -777,13 +818,13 @@ xm_save_xm_instrument (STInstrument *instr,
     h[13] = instr->vibrate;
     h[12] = instr->vibdepth;
     h[11] = instr->vibsweep;
-	
+
     put_le_16(h + 14, instr->volfade);
-    
+
     is_error |= fwrite(&h, 1, 38, f) != 38;
 
 	if (save_smpls)
-		is_error |= xm_save_xm_samples(instr->samples, f, num_samples);
+		is_error |= xm_save_xm_samples(instr->samples, f, num_samples, illegal_chars);
 	return is_error;
 }
 
@@ -882,6 +923,7 @@ xm_load_mod (FILE *f,int *status)
 		goto ende;
 	}
 	buf[22] = 0;
+	/* In MOD files actually only valid ASCII charachters are used */
 	st_clean_instrument(&xm->instruments[i], buf);
 	if(fread(sh[i], 1, 8, f) != 8) {
 		gui_error_dialog(N_("Sample header reading error."));
@@ -1034,9 +1076,8 @@ XM_Load (const char *filename,int *status)
 	gui_warning_dialog(N_("XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n"));
     }
 
-    if(get_le_16(xh + 58) != 0x0104) { /* In future -- replace with confirmation dialog */
+    if(get_le_16(xh + 58) != 0x0104) { /* TODO replace with confirmation dialog */
 	gui_warning_dialog(N_("Version != 0x0104. The results may be unpredictable"));
-//	goto fileerr;
     }
 
     *status |= LFSTAT_IS_MODULE;  /* see notes in File_Load() about
@@ -1047,8 +1088,10 @@ XM_Load (const char *filename,int *status)
 	goto fileerr;
     xm_init_locks(xm);
 
-    strncpy(xm->name, (char*) xh + 17, 20);
-    recode_ibmpc_to_latin1(xm->name, 20);
+    memcpy(xm->name, (char*) xh + 17, 20);
+    recode_to_utf(xm->name, xm->utf_name, 20);
+    string_seal(xm->utf_name, 20);
+    xm->needs_conversion = FALSE;
     xm->song_length = get_le_16(xh + 64);
     xm->restart_position = get_le_16(xh + 66);
 
@@ -1123,10 +1166,10 @@ XM_Save (XM *xm,
 	 gboolean save_smpls)
 {
     FILE *f;
-    int i;
+    guint i, len;
     guint8 xh[80];
     int num_patterns, num_instruments;
-    gboolean is_error = FALSE;
+    gboolean is_error = FALSE, illegal_chars = FALSE;
 
     f = fopen(filename, "wb");
     if(!f)
@@ -1136,8 +1179,13 @@ XM_Save (XM *xm,
     num_instruments = st_num_save_instruments(xm);
 
     memcpy(xh + 0, "Extended Module: ", 17);
-    memcpy(xh + 17, xm->name, 20);
-    recode_latin1_to_ibmpc((char*)xh + 17, 20);
+	if(xm->needs_conversion) {
+		illegal_chars |= recode_from_utf(xm->utf_name, xm->name, 20);
+		xm->needs_conversion = FALSE;
+	}
+	len = strlen(xm->name);
+    memcpy(xh + 17, xm->name, len); /* Copy the string without the trailing zero */
+	memset(xh + 17 + len, 0x20, 20 - len); /* Module name is space-padded */
     xh[37] = 0x1a;
     memcpy(xh + 38, "rst's SoundTracker  ", 20);
     put_le_16(xh + 58, 0x104);
@@ -1158,7 +1206,11 @@ XM_Save (XM *xm,
 	is_error |= xm_save_xm_pattern(&xm->patterns[i], xm->num_channels, f);
 
     for(i = 0; i < num_instruments; i++)
-        is_error |= xm_save_xm_instrument(&xm->instruments[i], f, save_smpls);
+        is_error |= xm_save_xm_instrument(&xm->instruments[i], f, save_smpls, &illegal_chars);
+
+	if(illegal_chars)
+		gui_warning_dialog(N_("Some characters in either module, instruments or samples names "
+		                      "cannot be stored in XM format. They will be skipped."));
 
 	is_error |= ferror(f);
 	return (fclose(f) != 0) || is_error;

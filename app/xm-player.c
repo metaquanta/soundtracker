@@ -765,7 +765,7 @@ xm_player_handle_glissando (channel *ch)
 {
     if(ch->chGlissando) {
 	if(ismod) {
-	    fprintf(stderr, "Glissando (E31) for ProTracker modules not supported yet (in module '%s').\n", xm->name);
+	    fprintf(stderr, "Glissando (E31) for ProTracker modules not supported yet (in module '%s').\n", xm->utf_name);
 	    return ch->chPitch;
 	} else {
 	    if(linearfreq)

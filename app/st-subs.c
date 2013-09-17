@@ -295,7 +295,7 @@ st_instrument_num_save_samples (STInstrument *instr)
     int i, n;
 
     for(i = 0, n = 0; i < sizeof(instr->samples) / sizeof(instr->samples[0]); i++) {
-	if(instr->samples[i].sample.length != 0 || instr->samples[i].name[0] != 0)
+	if(instr->samples[i].sample.length != 0 || instr->samples[i].utf_name[0] != 0)
 	    n = i + 1;
     }
     return n;
@@ -307,7 +307,7 @@ st_num_save_instruments (XM *xm)
     int i, n;
 
     for(i = 0, n = 0; i < 128; i++) {
-	if(st_instrument_num_save_samples(&xm->instruments[i]) != 0 || xm->instruments[i].name[0] != 0)
+	if(st_instrument_num_save_samples(&xm->instruments[i]) != 0 || xm->instruments[i].utf_name[0] != 0)
 	    n = i + 1;
     }
     return n;
@@ -331,7 +331,7 @@ st_copy_instrument (STInstrument *src, STInstrument *dest)
 {
     int i;
     guint32 length;
-    GMutex *lock[16];
+    GMutex *lock[128]; /* Be careful with hardcoded arrays' lengths! */
 
     st_clean_instrument(dest, NULL);
 
@@ -354,12 +354,16 @@ st_clean_instrument (STInstrument *instr,
     int i;
 
     for(i = 0; i < sizeof(instr->samples) / sizeof(instr->samples[0]); i++)
-	st_clean_sample(&instr->samples[i], NULL);
+	st_clean_sample(&instr->samples[i], NULL, NULL);
 
-    if(!name)
+    if(!name) {
 	memset(instr->name, 0, sizeof(instr->name));
-    else
-	strncpy(instr->name, name, 22);
+	memset(instr->utf_name, 0, sizeof(instr->utf_name));
+	instr->needs_conversion = FALSE;
+    } else {
+	strncpy(instr->utf_name, name, 88); /* 4-bytes utf-8 charachter maximum */
+	instr->needs_conversion = TRUE;
+    }
     memset(instr->samplemap, 0, sizeof(instr->samplemap));
     memset(&instr->vol_env, 0, sizeof(instr->vol_env));
     memset(&instr->pan_env, 0, sizeof(instr->pan_env));
@@ -367,18 +371,28 @@ st_clean_instrument (STInstrument *instr,
     instr->vol_env.points[0].val = 64;
     instr->pan_env.num_points = 1;
     instr->pan_env.points[0].val = 32;
+    instr->no_cb = FALSE;
 }
 
 void
 st_clean_sample (STSample *s,
-		 const char *name)
+		 const char *utf_name, const char *name)
 {
     GMutex *lock = s->sample.lock;
     free(s->sample.data);
     memset(s, 0, sizeof(STSample));
-    if(name)
-	strncpy(s->name, name, 22);
+	if(utf_name) {
+		strncpy(s->utf_name, utf_name, 88);
+		if(!name)
+			s->needs_conversion = TRUE;
+		else {
+			strncpy(s->name, name, 22);
+			s->needs_conversion = FALSE;
+		}
+	} else
+		s->needs_conversion = FALSE;
     s->sample.loopend = 1;
+    s->no_cb = FALSE;
     if(lock)
 	s->sample.lock = lock;
     else

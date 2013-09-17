@@ -3,6 +3,7 @@
  * The Real SoundTracker - DOS Charset recoder (header)
  *
  * Copyright (C) 1998-2001 Michael Krause
+ * Copyright (C) 2013 Yury Alyaev
  *
  * The tables have been taken from recode-3.4.1/ibmpc.c:
  * Copyright (C) 1990, 1993, 1994 Free Software Foundation, Inc.
@@ -26,7 +27,9 @@
 #ifndef _RECODE_H
 #define _RECODE_H
 
-void       recode_ibmpc_to_latin1                (char *string, int len);
-void       recode_latin1_to_ibmpc                (char *string, int len);
+#include <glib.h>
+
+gboolean   recode_from_utf                       (const gchar *from, gchar *to, guint len);
+void       recode_to_utf                         (const gchar *from, gchar *to, guint len);
 
 #endif /* _RECODE_H */

@@ -448,8 +448,11 @@ instrument_editor_update (void)
 	gtk_widget_set_sensitive(disableboxes[n], o);
     }
 
-    if(current_instrument)
-	gtk_entry_set_text(GTK_ENTRY(gui_curins_name), current_instrument->name);
+    if(current_instrument){
+	current_instrument->no_cb = TRUE; /* Preventing callback when changing instrument name entry */
+	gtk_entry_set_text(GTK_ENTRY(gui_curins_name), current_instrument->utf_name);
+	current_instrument->no_cb = FALSE;
+	}
 
     if(!o) {
 	envelope_box_set_envelope(ENVELOPE_BOX(volenv), NULL);

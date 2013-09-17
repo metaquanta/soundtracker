@@ -67,8 +67,12 @@ freqmode_changed (void)
 static void
 songname_changed (GtkEntry *entry)
 {
-    strncpy(xm->name, gtk_entry_get_text(entry), 20);
-    xm->name[20] = 0;
+	gchar *term;
+
+    g_utf8_strncpy(xm->utf_name, gtk_entry_get_text(entry), 20);
+    term = g_utf8_offset_to_pointer(xm->utf_name, 21);
+    term[0] = 0;
+    xm->needs_conversion = TRUE;
     xm_set_modified(1);
 }
 
@@ -233,7 +237,7 @@ modinfo_update_instrument (int n)
 
     if(!gui_list_get_iter(n, list_store, &iter))
        return; /* Some bullshit happens :-/ */
-    gtk_list_store_set(list_store, &iter, 1, xm->instruments[n].name,
+    gtk_list_store_set(list_store, &iter, 1, xm->instruments[n].utf_name,
 		       2, st_instrument_num_samples(&xm->instruments[n]), -1);
 
     if(n == curi) {
@@ -251,7 +255,7 @@ modinfo_update_sample (int n)
     if(!gui_list_get_iter(n, list_store, &iter))
        return; /* Some bullshit happens :-/ */
     gtk_list_store_set(list_store, &iter, 1,
-		       xm->instruments[curi].samples[n].name, -1);
+		       xm->instruments[curi].samples[n].utf_name, -1);
 }
 
 void
@@ -263,7 +267,7 @@ modinfo_update_all (void)
     for(i = 0; i < 128; i++)
 	modinfo_update_instrument(i);
 
-    gtk_entry_set_text(GTK_ENTRY(songname), xm->name);
+    gtk_entry_set_text(GTK_ENTRY(songname), xm->utf_name);
 
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(ptmode_toggle), xm->flags & XM_FLAGS_IS_MOD);
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(freqmode_w[xm->flags & XM_FLAGS_AMIGA_FREQ]), TRUE);

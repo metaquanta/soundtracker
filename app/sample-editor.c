@@ -644,7 +644,9 @@ sample_editor_update (void)
 	return;
     }
 
-    gtk_entry_set_text(GTK_ENTRY(gui_cursmpl_name), sts->name);
+	sts->no_cb = TRUE; /* To prevent the callback */
+    gtk_entry_set_text(GTK_ENTRY(gui_cursmpl_name), sts->utf_name);
+	sts->no_cb = FALSE;
 
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_volume), sts->volume);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_panning), sts->panning - 128);
@@ -988,7 +990,7 @@ sample_editor_clear_clicked (void)
 
     sample_editor_lock_sample();
 
-    st_clean_sample(current_sample, NULL);
+    st_clean_sample(current_sample, NULL, NULL);
 
     instr = instrument_editor_get_instrument();
     if(st_instrument_num_samples(instr) == 0) {
@@ -1186,7 +1188,7 @@ sample_editor_init_sample_full (STSample *sample, const char *samplename)
 {
     STInstrument *instr;
 
-    st_clean_sample(sample, NULL);
+    st_clean_sample(sample, NULL, NULL);
 
     instr = instrument_editor_get_instrument();
     if(st_instrument_num_samples(instr) == 0) {
@@ -1194,7 +1196,7 @@ sample_editor_init_sample_full (STSample *sample, const char *samplename)
 	memset(instr->samplemap, gui_get_current_sample(), sizeof(instr->samplemap));
     }
 	
-    st_clean_sample(sample, samplename);
+    st_clean_sample(sample, NULL, samplename);
 
     sample->volume = 64;
     sample->finetune = 0;
@@ -1222,7 +1224,7 @@ sample_editor_paste_clicked (void)
     if(!oldsample->sample.data) {
 	/* pasting into empty sample */
 	sample_editor_lock_sample();
-	sample_editor_init_sample(_("<just pasted>"));
+	sample_editor_init_sample(_("<just pasted>"));/* Use only charachers from FT2 codeset in the translation! */
 	oldsample->treat_as_8bit = copybuffer_sampleinfo.treat_as_8bit;
 	oldsample->volume = copybuffer_sampleinfo.volume;
 	oldsample->finetune = copybuffer_sampleinfo.finetune;
@@ -2128,7 +2130,7 @@ sample_editor_ok_clicked (void)
 	STSample *next = NULL;
     struct recordbuf *r, *r2;
     gint16 *sbuf, *sbuf2= NULL;
-    const char *samplename = _("<just sampled>");
+    const char *samplename = _("<just sampled>"); /* The translation can use only charachters from FT2 codeset */
     guint multiply, mode = 0;
     gboolean stereo = format & ST_MIXER_FORMAT_STEREO;
 
@@ -2202,17 +2204,17 @@ sample_editor_ok_clicked (void)
 		}
 
     sample_editor_lock_sample();
-    st_clean_sample(current_sample, NULL);
+    st_clean_sample(current_sample, NULL, NULL);
     instr = instrument_editor_get_instrument();
     if(st_instrument_num_samples(instr) == 0)
 	st_clean_instrument(instr, samplename);
-    st_clean_sample(current_sample, samplename);
+    st_clean_sample(current_sample, NULL, samplename);
     current_sample->sample.data = sbuf;
 
 	if(mode == MODE_STEREO_2) {
 
 		g_mutex_lock(next->sample.lock);
-		st_clean_sample(next, samplename);
+		st_clean_sample(next, NULL, samplename);
 		next->sample.data = sbuf2;
 		next->treat_as_8bit = !multiply;
 		next->sample.length = recordedlen >> 1;/* Sample size is given in 16-bit words */

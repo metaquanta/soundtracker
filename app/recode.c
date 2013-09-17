@@ -23,179 +23,125 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <glib.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "recode.h"
 
-static unsigned char ibmpc_convert_rulers[48] =
-  {
-    '#',			/* 176 */
-    '#',			/* 177 */
-    '#',			/* 178 */
-    '|',			/* 179 */
-    '+',			/* 180 */
-    '|',			/* 181 */
-    '+',			/* 182 */
-    '.',			/* 183 */
-    '.',			/* 184 */
-    '|',			/* 185 */
-    '|',			/* 186 */
-    '.',			/* 187 */
-    '\'',			/* 188 */
-    '\'',			/* 189 */
-    '\'',			/* 190 */
-    '.',			/* 191 */
-    '`',			/* 192 */
-    '+',			/* 193 */
-    '+',			/* 194 */
-    '+',			/* 195 */
-    '-',			/* 196 */
-    '+',			/* 197 */
-    '|',			/* 198 */
-    '+',			/* 199 */
-    '`',			/* 200 */
-    '.',			/* 201 */
-    '=',			/* 202 */
-    '=',			/* 203 */
-    '|',			/* 204 */
-    '=',			/* 205 */
-    '=',			/* 206 */
-    '=',			/* 207 */
-    '+',			/* 208 */
-    '=',			/* 209 */
-    '+',			/* 210 */
-    '`',			/* 211 */
-    '`',			/* 212 */
-    '.',			/* 213 */
-    '.',			/* 214 */
-    '+',			/* 215 */
-    '=',			/* 216 */
-    '\'',			/* 217 */
-    '.',			/* 218 */
-    '#',			/* 219 */
-    '#',			/* 220 */
-    '#',			/* 221 */
-    '#',			/* 222 */
-    '#',			/* 223 */
+struct pair {
+	guchar length;
+	guchar symbol;
+	gchar *utf;
+};
+
+/* Data for FT2 custom encoding to utf-8 code conversions (non-ASCII characters).  */
+
+static struct pair known_pairs[] =
+  { /* FT2 encoding table is a bit rearranged for speedup the recoding
+       First utf8 charachters are placed, than aliases of ASCII characters */
+    { 2, 0x01, "\xc3\xb7"},			/* division sign */
+    { 2, 0x02, "\xc3\x97"},			/* multiply sign */
+    { 3, 0x03, "\xe2\x86\x93"},		/* arrow down */
+    { 2, 0x04, "\xc3\xa4"},			/* small letter a with diaeresis */
+    { 3, 0x05, "\xe2\x86\x91"},		/* arrow up */
+    { 2, 0x06, "\xc3\xa5"},			/* small letter a with a ring above */
+    { 3, 0x07, "\xe2\x81\xb0"},		/* digit zero in upper register */
+    { 2, 0x08, "\xc2\xb9"},			/* digit one in upper register */
+    { 2, 0x09, "\xc2\xb2"},			/* digit two in upper register */
+    { 2, 0x0a, "\xc2\xb3"},			/* digit three in upper register */
+    { 3, 0x0b, "\xe2\x81\xb4"},		/* digit four in upper register */
+    { 3, 0x0c, "\xe2\x81\xb5"},		/* digit five in upper register */
+    { 3, 0x0d, "\xe2\x81\xb6"},		/* digit six in upper register */
+    { 2, 0x0e, "\xc3\x84"},			/* capital letter A with diaeresis */
+    { 2, 0x0f, "\xc3\x85"},			/* capital letter A with a ring above */
+
+    { 3, 0x10, "\xe2\x81\xb7"},		/* digit seven in upper register */
+    { 3, 0x11, "\xe2\x81\xb8"},		/* digit eight in upper register */
+    { 3, 0x12, "\xe2\x81\xb9"},		/* digit nine in upper register */
+    { 2, 0x14, "\xc3\xb6"},			/* small letter o with diaeresis */
+    { 2, 0x19, "\xc3\x96"},			/* capital letter O with diaeresis */
+    { 2, 0x1b, "\xc2\xbd"},			/* 1/2 fraction */
+    { 3, 0x1c, "\xe2\xac\x86"},		/* bold arrow up */
+    { 3, 0x1d, "\xe2\xac\x87"},		/* bold arrow down */
+    { 3, 0x1e, "\xe2\xac\x85"},		/* bold arrow left */
+    { 3, 0x1f, "\xe2\x9e\xa1"},		/* bold arrow right */
+    { 2, 0xff, "\xc2\xa9"},			/* copyright sign */
+
+    { 1, 0x00, " "},				/* FT2 character table contains TOO MANY spaces */
+    { 1, 0x7f, " "},				/* yet another space */
+    { 1, 0xfe, " "},				/* yet another space */
+    { 1, 0x13, "A"},
+    { 1, 0x15, "B"},
+    { 1, 0x16, "C"},
+    { 1, 0x17, "D"},
+    { 1, 0x18, "E"},
+    { 1, 0x1a, "F"},
+    { 1, 0xa0, "A"},				/* These letters were in slightly different font */
+    { 1, 0xa1, "B"},
+    { 1, 0xa2, "C"},
+    { 1, 0xa3, "D"},
+    { 1, 0xa4, "E"},
+    { 1, 0xa5, "F"},
+    { 0, 0xa6, ""},					/* Something strange, just loose it */
+    { 0, 0xa7, ""},					/* Something strange, just loose it */
   };
-
-typedef struct known_pair KNOWN_PAIR;
-
-struct known_pair
-  {
-    unsigned char left;		/* first character in pair */
-    unsigned char right;	/* second character in pair */
-  };
-
-/* Data for IBM PC to ISO Latin-1 code conversions.  */
-
-static KNOWN_PAIR ibmpc_known_pairs[] =
-  {
-    { 20, 182},			/* pilcrow sign */
-    { 21, 167},			/* section sign */
-
-    {128, 199},			/* capital letter C with cedilla */
-    {129, 252},			/* small letter u with diaeresis */
-    {130, 233},			/* small letter e with acute accent */
-    {131, 226},			/* small letter a with circumflex accent */
-    {132, 228},			/* small letter a with diaeresis */
-    {133, 224},			/* small letter a with grave accent */
-    {134, 229},			/* small letter a with ring above */
-    {135, 231},			/* small letter c with cedilla */
-    {136, 234},			/* small letter e with circumflex accent */
-    {137, 235},			/* small letter e with diaeresis */
-    {138, 232},			/* small letter e with grave accent */
-    {139, 239},			/* small letter i with diaeresis */
-    {140, 238},			/* small letter i with circumflex accent */
-    {141, 236},			/* small letter i with grave accent */
-    {142, 196},			/* capital letter A with diaeresis */
-    {143, 197},			/* capital letter A with ring above */
-    {144, 201},			/* capital letter E with acute accent */
-    {145, 230},			/* small ligature a with e */
-    {146, 198},			/* capital ligature A with E */
-    {147, 244},			/* small letter o with circumblex accent */
-    {148, 246},			/* small letter o with diaeresis */
-    {149, 242},			/* small letter o with grave accent */
-    {150, 251},			/* small letter u with circumflex accent */
-    {151, 249},			/* small letter u with grave accent */
-    {152, 255},			/* small letter y with diaeresis */
-    {153, 214},			/* capital letter O with diaeresis */
-    {154, 220},			/* capital letter U with diaeresis */
-    {155, 162},			/* cent sign */
-    {156, 163},			/* pound sign */
-    {157, 165},			/* yen sign */
-
-    {160, 225},			/* small letter a with acute accent */
-    {161, 237},			/* small letter i with acute accent */
-    {162, 243},			/* small letter o with acute accent */
-    {163, 250},			/* small letter u with acute accent */
-    {164, 241},			/* small letter n with tilde */
-    {165, 209},			/* capital letter N with tilde */
-    {166, 170},			/* feminine ordinal indicator */
-    {167, 186},			/* masculine ordinal indicator */
-    {168, 191},			/* inverted question mark */
-
-    {170, 172},			/* not sign */
-    {171, 189},			/* vulgar fraction one half */
-    {172, 188},			/* vulgar fraction one quarter */
-    {173, 161},			/* inverted exclamation mark */
-    {174, 171},			/* left angle quotation mark */
-    {175, 187},			/* right angle quotation mark */
-
-    {225, 223},			/* small german letter sharp s */
-
-    {230, 181},			/* small Greek letter mu micro sign */
-
-    {241, 177},			/* plus-minus sign */
-
-    {246, 247},			/* division sign */
-
-    {248, 176},			/* degree sign */
-
-    {250, 183},			/* middle dot */
-
-    {253, 178},			/* superscript two */
-
-    {255, 160},			/* no-break space */
-  };
-#define NUMBER_OF_PAIRS (sizeof (ibmpc_known_pairs) / sizeof (KNOWN_PAIR))
+#define NUMBER_OF_PAIRS (sizeof(known_pairs) / sizeof(struct pair))
+/* Symbols encoded with utf-8 multibyte sequences */
+#define UTF_PAIRS 26
 
 void
-recode_ibmpc_to_latin1 (char *string, int len)
+recode_to_utf (const gchar *src, gchar *dest, guint len)
 {
-    guint8 c;
-    int i;
+	guint i, j, destptr = 0;
 
-    while((c = *string) && len) {
-	if(c >= 176 && c <= 223) {
-	    c = ibmpc_convert_rulers[c - 176];
-	} else {
-	    for(i = 0; i < NUMBER_OF_PAIRS; i++) {
-		if(ibmpc_known_pairs[i].left == c) {
-		    c = ibmpc_known_pairs[i].right;
-		    break;
+	for(i = 0; i < len; i++) {
+		guchar c = src[i];
+
+		if(c >= 0x20 && c <= 0x7e)
+			dest[destptr++] = c;
+		else if(c >= 0xa8 && c <= 0xfd)
+			dest[destptr++] = c - 128;
+		else { /* The rest of the charset shall be processed via encoding table */
+			if(c >= 0x80 && c <= 0x9f)
+				c -= 128;
+			for(j = 0; j < NUMBER_OF_PAIRS; j++)
+				if(c == known_pairs[j].symbol) {
+					strncpy(&dest[destptr], known_pairs[j].utf, known_pairs[j].length);
+					destptr += known_pairs[j].length;
+					break;
+				}
+			if(j == NUMBER_OF_PAIRS)
+				fprintf(stderr, "muh, code: 0x%x\n", c); /* Something's wrond in the code logick */
 		}
-	    }
 	}
-	*string++ = c;
-	len--;
-    }
+	dest[destptr] = 0; /* Null-terminating the resulting utf string */
 }
 
-void
-recode_latin1_to_ibmpc (char *string, int len)
+gboolean
+recode_from_utf (const gchar *src, gchar *dest, guint len)
 {
-    guint8 c;
-    int i;
+	guint i, j, index = 0;
+	guchar c = src[0];
+	gchar *ptr;
+	gboolean illegal = FALSE;
 
-    while((c = *string) && len) {
-	for(i = 0; i < NUMBER_OF_PAIRS; i++) {
-	    if(ibmpc_known_pairs[i].right == c) {
-		c = ibmpc_known_pairs[i].left;
-		break;
-	    }
+	memset(dest, 0, len);
+	ptr = (gchar *)src;
+	for(i = 0; i < len && c != 0; i++) {
+		if(c >= 0x20 && c <= 0x7e) { /* ASCII valid for FT2 */
+			dest[index++] = c;
+		} else {
+			for(j = 0; j < UTF_PAIRS; j++) {
+				if(!memcmp(known_pairs[j].utf, ptr, known_pairs[j].length)) {
+					dest[index++] = known_pairs[j].symbol;
+					break;
+				}
+			}
+			if(j == UTF_PAIRS)
+				illegal = TRUE;
+		}
+		ptr = g_utf8_next_char(ptr);
+		c = ptr[0];
 	}
-	*string++ = c;
-	len--;
-    }
+	return illegal;
 }

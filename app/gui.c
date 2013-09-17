@@ -616,10 +616,16 @@ current_instrument_changed (GtkSpinButton *spin)
 static void
 current_instrument_name_changed (void)
 {
+	gchar *term;
     STInstrument *i = &xm->instruments[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
 
-    strncpy(i->name, gtk_entry_get_text(GTK_ENTRY(gui_curins_name)), 22);
-    i->name[22] = 0;
+	if(i->no_cb) /* Instrument name is not modified, only current instrument is changed */
+		return;
+
+    g_utf8_strncpy(i->utf_name, gtk_entry_get_text(GTK_ENTRY(gui_curins_name)), 22);
+    term = g_utf8_offset_to_pointer(i->utf_name, 23);
+    term[0] = 0;
+    i->needs_conversion = TRUE;
     modinfo_update_instrument(gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1);
     xm_set_modified(1);
 }
@@ -633,7 +639,7 @@ current_sample_changed (GtkSpinButton *spin)
     STInstrument *i = &xm->instruments[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
     STSample *s = &i->samples[smpl = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
 
-    gtk_entry_set_text(GTK_ENTRY(gui_cursmpl_name), s->name);
+    gtk_entry_set_text(GTK_ENTRY(gui_cursmpl_name), s->utf_name);
     sample_editor_set_sample(s);
     modinfo_set_current_sample(smpl);
     xm_set_modified(m);
@@ -642,11 +648,17 @@ current_sample_changed (GtkSpinButton *spin)
 static void
 current_sample_name_changed (void)
 {
+	gchar *term;
     STInstrument *i = &xm->instruments[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
     STSample *s = &i->samples[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
 
-    strncpy(s->name, gtk_entry_get_text(GTK_ENTRY(gui_cursmpl_name)), 22);
-    s->name[22] = 0;
+	if(s->no_cb) /* The sample name is not modified; only current sample is changed */
+		return;
+
+    g_utf8_strncpy(s->utf_name, gtk_entry_get_text(GTK_ENTRY(gui_cursmpl_name)), 22);
+    term = g_utf8_offset_to_pointer(i->utf_name, 23);
+    term[0] = 0;
+    s->needs_conversion = TRUE;
     modinfo_update_sample(gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin)));
     xm_set_modified(1);
 }

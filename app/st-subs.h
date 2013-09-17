@@ -69,7 +69,7 @@ void          st_copy_instrument		       (STInstrument *src, STInstrument *dest)
 gboolean      st_instrument_used_in_song               (XM *xm, int instr);
 
 /* --- Sample functions --- */
-void          st_clean_sample                          (STSample *s, const char *name);
+void          st_clean_sample                          (STSample *s, const char *utf_name, const char *name);
 void          st_sample_fix_loop                       (STSample *s);
 void          st_convert_sample                        (void *src,
 							void *dst,
