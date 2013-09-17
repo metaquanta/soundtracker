@@ -1,6 +1,10 @@
 2013-09-17  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c: The right behavior of Ctrl + A shortcut in entries is
-	restored.
+	restored;
+	* app/gui.c, app/instrument-editor.c, app/module-info.c, app/recode.[ch],
+	app/sample-editor.c, app/st-subs.[ch], app/xm-player.c, app/xm.[ch]:
+	Correct charachter set conversion between FT2 codeset and utf-8 is
+	implemented as well as correct module/instruments'/samples' name padding.
 
 2013-09-16  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/menubar.c: The right behavior of Ctrl + C/V/X shortcuts in entries

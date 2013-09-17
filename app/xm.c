@@ -286,6 +286,16 @@ xm_save_xm_pattern (XMPattern *p,
     }
 }
 
+/* Removing space-padding */
+static inline void
+seal_ascii(gchar *str, const guint len)
+{
+	gint i;
+
+	for(i = len - 1; i >= 0 && str[i] == 0x20; i--)
+		str[i] = 0;
+}
+
 /* As a result of the recoding from FT2 to utf-8 the line becomes space-padded.
    So we replace trailing spaces with zeroes */
 static void
@@ -331,8 +341,9 @@ xm_load_xm_samples (STSample samples[],
 		s->name[22] = '\0';
 		recode_to_utf(s->name, s->utf_name, 22);
 		string_seal(s->utf_name, 22);
+		seal_ascii(s->name, 22);
 		s->needs_conversion = FALSE;
-		s->no_cb = TRUE;
+		s->no_cb = FALSE;
 	}
 
     for(i = 0; i < num_samples; i++) {
@@ -402,7 +413,8 @@ static gboolean
 xm_save_xm_samples (STSample samples[],
 		    FILE *f,
 		    int num_samples,
-		    gboolean *illegal_chars)
+		    gboolean *illegal_chars,
+		    char pad)
 {
     guint i, k, len;
     guint8 sh[40];
@@ -427,8 +439,10 @@ xm_save_xm_samples (STSample samples[],
 		s->needs_conversion = FALSE;
 	}
 	len = strlen(s->name);
-    memcpy((char*)sh + 18, s->name, len); /* Copy the string without the trailing zero */
-	memset((char*)sh + 18 + len, 0x20, 22 - len); /* Sample name is space-padded */
+	if(pad != 0x20)
+		seal_ascii(s->name, 22);
+    memcpy(&((char*)sh)[18], s->name, len); /* Copy the string without the trailing zero */
+	memset(&((char*)sh)[18 + len], pad, 22 - len); /* Sample name is space- or zero-padded (in XM or XI) */
 	is_error |= fwrite(sh, 1, sizeof(sh), f) != sizeof(sh);
     }
     
@@ -511,6 +525,7 @@ xm_load_xm_instrument (STInstrument *instr,
     memcpy(instr->name, (char*)a + 4, 22);
     recode_to_utf(instr->name, instr->utf_name, 22);
     string_seal(instr->utf_name, 22);
+    seal_ascii(instr->name, 22); /* For any case... */
     instr->needs_conversion = FALSE;
     instr->no_cb = FALSE;
 
@@ -624,6 +639,7 @@ xm_load_xi (STInstrument *instr,
     memcpy(instr->name, (char*)a, 22);
     recode_to_utf(instr->name, instr->utf_name, 22);
     string_seal(instr->utf_name, 22);
+    seal_ascii(instr->name, 22);
     instr->needs_conversion = FALSE;
     instr->no_cb = FALSE;
 
@@ -698,7 +714,7 @@ xm_save_xi (STInstrument *instr,
 	    FILE *f)
 {
     guint8 a[48];
-    int num_samples;
+    guint num_samples, len;
     gboolean is_error = FALSE, illegal_chars = FALSE;
 
     num_samples = st_instrument_num_save_samples(instr);
@@ -709,7 +725,9 @@ xm_save_xi (STInstrument *instr,
 		illegal_chars |= recode_from_utf(instr->utf_name, instr->name, 22);
 		instr->needs_conversion = FALSE;
 	}
-    strncpy((char*)a, instr->name, 22);
+	len = strlen(instr->name);
+    memcpy((char*)a, instr->name, len); /* Copy the string without the trailing zero */
+	memset(&((char*)a)[len], 0x20, 22 - len); /* Instrument name is space-padded */
     is_error |= fwrite(a, 1, 22, f) != 22;
 
     a[0] = 0x1a;
@@ -746,7 +764,7 @@ xm_save_xi (STInstrument *instr,
     put_le_16(a + 22, num_samples);
     is_error |= fwrite(a, 1, 24, f) != 24;
 
-    is_error |= xm_save_xm_samples(instr->samples, f, num_samples, &illegal_chars);
+    is_error |= xm_save_xm_samples(instr->samples, f, num_samples, &illegal_chars, 0);
     if(illegal_chars)
 		gui_warning_dialog(N_("Some characters instrument or samples names "
 		                      "cannot be stored in XM format. They will be skipped."));
@@ -772,8 +790,8 @@ xm_save_xm_instrument (STInstrument *instr,
 		instr->needs_conversion = FALSE;
 	}
 	len = strlen(instr->name);
-    memcpy((char*)h + 4, instr->name, len); /* Copy the string without the trailing zero */
-	memset((char*)h + 4 + len, 0, 22 - len); /* Instrument name is zero-padded */
+    memcpy(&((char*)h)[4], instr->name, len); /* Copy the string without the trailing zero */
+	memset(&((char*)h)[4 + len], 0, 22 - len); /* Instrument name is zero-padded */
 
     if(!save_smpls)
 	num_samples = 0;
@@ -824,7 +842,7 @@ xm_save_xm_instrument (STInstrument *instr,
     is_error |= fwrite(&h, 1, 38, f) != 38;
 
 	if (save_smpls)
-		is_error |= xm_save_xm_samples(instr->samples, f, num_samples, illegal_chars);
+		is_error |= xm_save_xm_samples(instr->samples, f, num_samples, illegal_chars, 0x20);
 	return is_error;
 }
 
@@ -1184,8 +1202,8 @@ XM_Save (XM *xm,
 		xm->needs_conversion = FALSE;
 	}
 	len = strlen(xm->name);
-    memcpy(xh + 17, xm->name, len); /* Copy the string without the trailing zero */
-	memset(xh + 17 + len, 0x20, 20 - len); /* Module name is space-padded */
+    memcpy(&xh[17], xm->name, len); /* Copy the string without the trailing zero */
+	memset(&xh[17 + len], 0x20, 20 - len); /* Module name is space-padded */
     xh[37] = 0x1a;
     memcpy(xh + 38, "rst's SoundTracker  ", 20);
     put_le_16(xh + 58, 0x104);

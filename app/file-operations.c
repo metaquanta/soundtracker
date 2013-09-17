@@ -275,8 +275,8 @@ file_chosen(struct file_op *fops)
 		else {
 			if(g_file_test(filename, G_FILE_TEST_IS_REGULAR || G_FILE_TEST_IS_SYMLINK)) {
 				fops->callback(newname);
-					if(fops->need_return)
-						gui_go_to_page(current_page);
+				if(fops->need_return)
+					gui_go_to_page(current_page);
 			} else if(g_file_test(filename, G_FILE_TEST_IS_DIR))
 				set_filepath(fops->dialog, newname);
 		}
@@ -385,7 +385,7 @@ foreach_fn(gpointer lm, gpointer data)
 		add_filters(GTK_FILE_CHOOSER(fc), elem->formats);
 
 	gtk_box_pack_start(GTK_BOX(box), fc, TRUE, TRUE, 0);
-	g_signal_connect_swapped(fc, "file-activated", G_CALLBACK(file_chosen), &fileops[index]);/* TODO check for directories! */
+	g_signal_connect_swapped(fc, "file-activated", G_CALLBACK(file_chosen), &fileops[index]);
 	if(elem->is_single_click) {
 		g_signal_connect_swapped(fc, "selection-changed", G_CALLBACK(file_chosen), &fileops[index]);
 		g_signal_connect(fc, "current-folder-changed", G_CALLBACK(trigger_on), NULL);
@@ -479,7 +479,7 @@ fileops_open_dialog (GtkWidget *w,
 	}
 
 	response = gtk_dialog_run(GTK_DIALOG(fileops[n].dialog));
-	gtk_widget_hide(fileops[n].dialog);/* TODO move to GFile */
+	gtk_widget_hide(fileops[n].dialog);
 	if(response == GTK_RESPONSE_ACCEPT) {
 		file_chosen(&fileops[n]);
 	}
