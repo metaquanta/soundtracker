@@ -166,8 +166,8 @@ static void play_current_pattern_row(void);
 /* gui initialization / helpers */
 static void gui_enable(int enable);
 static void offset_current_pattern(int offset);
-static void offset_current_instrument(int offset);
-static void offset_current_sample(int offset);
+void gui_offset_current_instrument(int offset);
+void gui_offset_current_sample(int offset);
 
 static void gui_auto_switch_page (void);
 static void gui_load_xm (const char *filename);
@@ -705,7 +705,7 @@ gui_handle_standard_keys (int shift,
     case GDK_Left:
 	if(ctrl) {
 	    /* previous instrument */
-	    offset_current_instrument(shift ? -5 : -1);
+	    gui_offset_current_instrument(shift ? -5 : -1);
 	    handled = TRUE;
 	} else if(alt) {
 	    /* previous pattern */
@@ -723,7 +723,7 @@ gui_handle_standard_keys (int shift,
     case GDK_Right:
 	if(ctrl) {
 	    /* next instrument */
-	    offset_current_instrument(shift ? 5 : 1);
+	    gui_offset_current_instrument(shift ? 5 : 1);
 	    handled = TRUE;
 	} else if(alt) {
 	    /* next pattern */
@@ -741,14 +741,14 @@ gui_handle_standard_keys (int shift,
     case GDK_Up:
 	if(ctrl) {
 	    /* next sample */
-	    offset_current_sample(shift ? 4 : 1);
+	    gui_offset_current_sample(shift ? 4 : 1);
 	    handled = TRUE;
 	}
 	break;
     case GDK_Down:
 	if(ctrl) {
 	    /* previous sample */
-	    offset_current_sample(shift ? -4 : -1);
+	    gui_offset_current_sample(shift ? -4 : -1);
 	    handled = TRUE;
 	}
 	break;
@@ -1454,11 +1454,14 @@ offset_current_pattern (int offset)
 void
 gui_set_current_instrument (int n)
 {
+	GtkWidget *focus;
     int m = xm_get_modified();
 
     g_return_if_fail(n >= 1 && n <= 128);
     if(n != gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))) {
+	focus = GTK_WINDOW(mainwindow)->focus_widget; /* gtk_spin_button_set_value changes focus widget */
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(curins_spin), n);
+	gtk_window_set_focus(GTK_WINDOW(mainwindow), focus);
     }
     xm_set_modified(m);
 }
@@ -1466,10 +1469,14 @@ gui_set_current_instrument (int n)
 void
 gui_set_current_sample (int n)
 {
+	GtkWidget *focus;
     int m = xm_get_modified();
+
     g_return_if_fail(n >= 0 && n <= 127);
     if(n != gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))) {
+	focus = GTK_WINDOW(mainwindow)->focus_widget; /* gtk_spin_button_set_value changes focus widget */
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cursmpl_spin), n);
+	gtk_window_set_focus(GTK_WINDOW(mainwindow), focus);
     }
     xm_set_modified(m);
 }
@@ -1510,8 +1517,8 @@ gui_get_current_instrument (void)
     return gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin));
 }
 
-static void
-offset_current_instrument (int offset)
+void
+gui_offset_current_instrument (int offset)
 {
     int nv, v;
 
@@ -1526,8 +1533,8 @@ offset_current_instrument (int offset)
     gui_set_current_instrument(nv);
 }
 
-static void
-offset_current_sample (int offset)
+void
+gui_offset_current_sample (int offset)
 {
     int nv, v;
 

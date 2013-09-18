@@ -1,6 +1,8 @@
 2013-09-18  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/track-editor.c: Buffer overflow is fixed (utf-8 strings require
 	more place);
+	* app/gui.[ch], app/modue-info.c: Navigation with TAB and Up/Down arrows
+	is implemented at Module info page.
 
 2013-09-17  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c: The right behavior of Ctrl + A shortcut in entries is

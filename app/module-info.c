@@ -25,6 +25,7 @@
 #include <glib.h>
 #include <glib/gprintf.h>
 #include <glib/gi18n.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "module-info.h"
 #include "gui.h"
@@ -218,6 +219,7 @@ modinfo_page_handle_keys (int shift,
 			  gboolean pressed)
 {
     int i;
+    gboolean handled = FALSE, samples_focused;
 
     i = keys_get_key_meaning(keyval, ENCODE_MODIFIERS(shift, ctrl, alt));
     if(i != -1 && KEYS_MEANING_TYPE(i) == KEYS_MEANING_NOTE) {
@@ -225,7 +227,34 @@ modinfo_page_handle_keys (int shift,
 	return TRUE;
     }
 
-    return FALSE;
+	if(!pressed)
+		return FALSE;
+
+	samples_focused = (GTK_WINDOW(mainwindow)->focus_widget == slist);
+	switch(keyval) {
+	case GDK_Tab:
+	case GDK_ISO_Left_Tab:
+		gtk_window_set_focus(GTK_WINDOW(mainwindow), samples_focused ? ilist : slist);
+		handled = TRUE;
+		break;
+	case GDK_Up:
+		if(samples_focused)
+			gui_offset_current_sample(shift ? -4 : -1);
+		else
+			gui_offset_current_instrument(shift ? -5 : -1);
+		handled = TRUE;
+		break;
+	case GDK_Down:
+		if(samples_focused)
+			gui_offset_current_sample(shift ? 4 : 1);
+		else
+			gui_offset_current_instrument(shift ? 5 : 1);
+		handled = TRUE;
+		break;
+	default:
+		break;
+	}
+    return handled;
 }
 
 void

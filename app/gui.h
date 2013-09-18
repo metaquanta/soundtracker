@@ -120,4 +120,6 @@ GtkWidget*           gui_get_widget                   (const gchar *name);
 void                 gui_popup_menu_attach            (GtkWidget *menu, GtkWidget *widget, gpointer *user_data);
 
 void                 gui_update_title                 (const gchar *filename);
+void                 gui_offset_current_instrument    (int offset);
+void                 gui_offset_current_sample        (int offset);
 #endif /* _GUI_H */
