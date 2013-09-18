@@ -12,10 +12,6 @@ module info page don't be updated immediately;
 54) Using high frequences at ALSA playback (at some cards > 48000, at other > 64000) gives wrong notes.
 Possibly it is a bug of ALSA itself. Test with file output;
 55) Cleanup sun audio driver;
-56) When the focus is at some entry and it is active, don't handle cut/copy/paste/select all
-(whatever else?) operations (done except Ctrl + A);
-57) Crash when pressing f in effect type column (jump is 1), after the filling it full seting jump to 2
-and pressing 5 in effect parameter column;
 58) Check (wet.xm) why after opening originsl ft2 xm and saving it as is some fields in the instrument
 header are different;
 

@@ -127,7 +127,7 @@ Play/Play pat/Stop/arrows icons from Gtk+/Gnome icon theme (optional).
 
 ESC keyboard shortcut to leave all dialogs
 
-Arrows in file selection/module info
+Arrows in file selection
 
 When out of editing mode, note keys pressing produce sounds independent on the
 cursor position (note/instr/eff column, muted channel)

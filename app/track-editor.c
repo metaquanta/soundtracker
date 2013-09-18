@@ -64,7 +64,7 @@ static int update_freq = 30;
 static int gtktimer = -1;
 
 static guint track_editor_editmode_status_idle_handler = 0;
-static gchar track_editor_editmode_status_ed_buf[128];
+static gchar track_editor_editmode_status_ed_buf[512];
 
 /* jazz edit stuff */
 static GtkWidget *jazzbox;
@@ -103,7 +103,7 @@ show_editmode_status(void)
 {
     Tracker *t = tracker;
     XMNote *note = &t->curpattern->channels[t->cursor_ch][t->patpos];
-    gchar tmp_buf[128];
+    gchar tmp_buf[512];
     int cmd_p1, cmd_p2;
     
     static const gchar *fx_commands[]={
@@ -567,7 +567,7 @@ track_editor_handle_keys (int shift,
     int c, i, m, tip;
     Tracker *t = tracker;
     gboolean handled = FALSE;
-    
+
     m = i = keys_get_key_meaning(keyval, ENCODE_MODIFIERS(shift, ctrl, alt));
     tip = KEYS_MEANING_TYPE(i);
 
