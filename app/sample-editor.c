@@ -974,9 +974,6 @@ sample_editor_resolution_changed (void)
 	return;
 
     s = &sts->sample;
-    if(n == 0 && !sts->treat_as_8bit) {
-	st_sample_cutoff_lowest_8_bits(s->data, s->length);
-    }
 
     sts->treat_as_8bit = (n == 0);
 
@@ -1254,10 +1251,6 @@ sample_editor_paste_clicked (void)
 		      16,
 		      16,
 		      copybufferlen);
-    if(oldsample->treat_as_8bit) {
-	st_sample_cutoff_lowest_8_bits(newsample + ss,
-				       copybufferlen);
-    }
     memcpy(newsample + (ss + copybufferlen),
 	   oldsample->sample.data + ss,
 	   (oldsample->sample.length - ss) * 2);
@@ -2563,11 +2556,6 @@ sample_editor_perform_ramp (GtkWidget *w, gint action,
 	*p++ = CLAMP((int)q, -32768, +32767);
     }
 
-    if(current_sample->treat_as_8bit) {
-	st_sample_cutoff_lowest_8_bits(current_sample->sample.data + ss,
-				       se - ss);
-    }
-    
     sample_editor_unlock_sample();
     xm_set_modified(1);
     sample_editor_update();

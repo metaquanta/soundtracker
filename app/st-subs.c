@@ -630,18 +630,6 @@ st_convert_sample (void *src,
 }
 
 void
-st_sample_cutoff_lowest_8_bits (gint16 *data,
-				int count)
-{
-    while(count) {
-	gint16 d = *data;
-	d &= 0xff00;
-	*data++ = d;
-	count--;
-    }
-}
-
-void
 st_sample_8bit_signed_unsigned (gint8 *data,
 				int count)
 {

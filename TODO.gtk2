@@ -4,8 +4,6 @@
 in the callback) and main notebook switch callback;
 22) ESD driver reported to produce greater delay at start than in ST-gtk1;
 36) Pressing Ctrl-O in Instrument editor crashes ST at some machines;
-45) Volume ramping->normalize does somethong wrong (subsequently decreases positive half-periods),
-at 8 bit samples only, st_sample_cutoff_lowest_8_bits() and the maximum value is negative;
 49) Update or even rewrite JACK driver;
 52) When recording and selecting 2-samples mode sometimes (after 3 attempts?) sample names in the
 module info page don't be updated immediately;

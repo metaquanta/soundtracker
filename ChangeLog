@@ -2,7 +2,11 @@
 	* app/track-editor.c: Buffer overflow is fixed (utf-8 strings require
 	more place);
 	* app/gui.[ch], app/modue-info.c: Navigation with TAB and Up/Down arrows
-	is implemented at Module info page.
+	is implemented at Module info page;
+	* app/sample-editor.c, app/st-subs.[ch]: The internal truncating of samples
+	treated as 8 bit is removed, because it causes the significant precision
+	loss. The samples are now actually rounded only at module/instrument
+	saving.
 
 2013-09-17  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c: The right behavior of Ctrl + A shortcut in entries is

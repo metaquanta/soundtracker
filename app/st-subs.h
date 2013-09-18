@@ -76,8 +76,6 @@ void          st_convert_sample                        (void *src,
 							int srcformat,
 							int dstformat,
 							int count);
-void          st_sample_cutoff_lowest_8_bits           (gint16 *data,
-							int count);
 void          st_sample_8bit_signed_unsigned           (gint8 *data,
 							int count);
 void          st_sample_16bit_signed_unsigned          (gint16 *data,
