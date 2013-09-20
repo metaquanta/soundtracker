@@ -7,11 +7,13 @@ in the callback) and main notebook switch callback;
 49) Update or even rewrite JACK driver;
 52) When recording and selecting 2-samples mode sometimes (after 3 attempts?) sample names in the
 module info page don't be updated immediately;
-54) Using high frequences at ALSA playback (at some cards > 48000, at other > 64000) gives wrong notes.
-Possibly it is a bug of ALSA itself. Test with file output;
+54) Using discretization frequency > 64 kHz gives wrong notes (pitch is 2 times higher, independent on
+the discretization frequency). It is a mixer bug, file output does the same;
 55) Cleanup sun audio driver;
 58) Check (wet.xm) why after opening originsl ft2 xm and saving it as is some fields in the instrument
 header are different;
+59) In wav file creation dialog files are displayed only if "All types" are selected. SOmething's wrong
+with extensions...
 
 Some remarks about asm mixer bug: at the sample end and loop points there are ugly clicks
 (ramping works badly). Also when the previous channel has amplitude > 0, the following one

@@ -136,8 +136,6 @@ cursor position (note/instr/eff column, muted channel)
 playing like in Jazz mode, when the new pressed key doesn't finish the sounds
 triggered previously (polyphonic).
 
-Sample rate setting for File output.
-
 More careful handling of note recording positions in real-time with delay calculation and human-made delay pre-compensation.
 
 Last edited song list.
@@ -157,7 +155,7 @@ Caito-based drawing functions are even much slower.
 Track (and maybe not only) Cut/Copy/Paste/Kill notes shortcuts shall work only if in
 editing mode. Test other CCP operations
 
-Pressing "Ctrl" restricts point dragging to vertical or horizontal direction.
+Envelope editor: pressing "Ctrl" restricts point dragging to vertical or horizontal direction.
 
 Check if in some dialogs items are very close to each other and increase spacing.
 

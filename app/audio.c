@@ -53,6 +53,8 @@
 #include "gui-subs.h"
 #include "tracer.h"
 
+extern st_io_driver driver_out_file;
+
 st_mixer *mixer = NULL;
 st_io_driver *playback_driver = NULL;
 st_io_driver *editing_driver = NULL;
@@ -221,7 +223,6 @@ static void
 audio_ctlpipe_render_song_to_file (gchar *filename)
 {
     audio_backpipe_id a = AUDIO_BACKPIPE_DRIVER_OPEN_FAILED;
-    extern st_io_driver driver_out_file;
 
     g_assert(playback_driver != NULL);
     g_assert(mixer != NULL);
@@ -229,11 +230,7 @@ audio_ctlpipe_render_song_to_file (gchar *filename)
     g_assert(!playing);
 
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
-    if(file_driver_object != NULL) {
-	driver_out_file.common.destroy(file_driver_object);
-    }
-    file_driver_object = driver_out_file.common.new();
-    *((gchar**)file_driver_object) = g_strdup(filename);
+    *((gchar**)file_driver_object) = filename;
 
     if(driver_out_file.common.open(file_driver_object)) {
 	current_driver_object = file_driver_object;
@@ -249,6 +246,38 @@ audio_ctlpipe_render_song_to_file (gchar *filename)
 	if(write(backpipe, &a, sizeof(a)) != sizeof(a))
 		fprintf(stderr, "\n\n*** audio_thread: write incomplete\n\n\n");
 }
+
+#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+GtkWidget*
+audio_file_output_getwidget (void)
+{
+	return driver_out_file.common.getwidget(file_driver_object);
+}
+
+void
+audio_file_output_load_config (void)
+{
+	file_driver_object = driver_out_file.common.new();
+	driver_out_file.common.loadsettings(file_driver_object, "file-output");
+}
+
+void
+audio_file_output_shutdown (void)
+{
+    if(file_driver_object != NULL) {
+	driver_out_file.common.destroy(file_driver_object);
+	file_driver_object = NULL;
+    }
+}
+
+void
+audio_file_output_save_config (void)
+{
+    if(file_driver_object != NULL) {
+	driver_out_file.common.savesettings(file_driver_object, "file-output");
+    }
+}
+#endif
 
 static void
 audio_ctlpipe_play_pattern (int pattern,

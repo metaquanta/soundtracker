@@ -128,11 +128,15 @@ extern event_waiter *audio_bpm_ew;
 
 extern st_mixer *mixer;
 
-gboolean     audio_init               (int ctlpipe, int backpipe);
+gboolean     audio_init                    (int ctlpipe, int backpipe);
 
-void         audio_set_mixer          (st_mixer *mixer);
+void         audio_set_mixer               (st_mixer *mixer);
 
-void         readpipe                 (int fd, void *p, int count);
+void         readpipe                      (int fd, void *p, int count);
+void         audio_file_output_shutdown    (void);
+void         audio_file_output_save_config (void);
+void         audio_file_output_load_config (void);
+GtkWidget*   audio_file_output_getwidget   (void);
 
 /* --- Functions called by the player */
 

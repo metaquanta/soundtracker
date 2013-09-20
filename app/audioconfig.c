@@ -211,7 +211,7 @@ audioconfig_notebook_add_page (GtkNotebook *nbook, guint n)
 	if(driver == *audio_objects[n].driver)
 	    active = i;
 	widget = driver->common.getwidget(audio_driver_objects[n][i]);
-	alignment = gtk_alignment_new(0.5, 0.0, 0.0, 0.0);
+	alignment = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
 	gtk_container_add(GTK_CONTAINER(alignment), widget);
 	gtk_notebook_append_page(GTK_NOTEBOOK(dnbook), alignment, NULL);
 	gtk_widget_show_all(alignment);
@@ -231,7 +231,7 @@ audioconfig_notebook_add_page (GtkNotebook *nbook, guint n)
 void
 audioconfig_dialog (void)
 {
-    GtkWidget *mainbox, *thing, *nbook, *box2, *frame;
+    GtkWidget *mainbox, *thing, *nbook, *box2, *frame, *label, *alignment;
     static gchar *listtitles2[2];
     int i;
 
@@ -259,6 +259,13 @@ audioconfig_dialog (void)
     for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
 	audioconfig_notebook_add_page(GTK_NOTEBOOK(nbook), i);
     }
+
+	/* File output driver at a separate page */
+    thing = audio_file_output_getwidget();
+    label = gtk_label_new(_("File output"));
+	alignment = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
+	gtk_container_add(GTK_CONTAINER(alignment), thing);
+    gtk_notebook_append_page(GTK_NOTEBOOK(nbook), alignment, label);
 
     // Mixer selection
     frame = gtk_frame_new(NULL);
@@ -326,6 +333,9 @@ audioconfig_load_config (void)
 	    audioconfig_driver_load_config(&audio_objects[i]);
 	}
     }
+#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+    audio_file_output_load_config();
+#endif
 }
 
 void
@@ -374,6 +384,9 @@ audioconfig_save_config (void)
 	}
 
 	prefs_put_string("mixer", "mixer", audioconfig_current_mixer->id);
+#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+    audio_file_output_save_config();
+#endif
 }
 
 void
@@ -390,4 +403,7 @@ audioconfig_shutdown (void)
 	    driver->common.destroy(audio_driver_objects[i][j]);
 	}
     }
+#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+    audio_file_output_shutdown();
+#endif
 }
