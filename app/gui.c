@@ -1889,7 +1889,7 @@ gui_final (int argc,
 	static const gchar **mod_formats[] = {xm_f, mod_f, NULL};
 	static const gchar *save_mod_f[] = {N_("FastTracker modules (*.xm)"), "*.[xX][mM]", NULL};
 	static const gchar **save_mod_formats[] = {save_mod_f, NULL};
-	static const gchar *wav_f[] = {N_("Microsoft RIFF (*.wav)"), "*.[wW][aA][wW]", NULL};
+	static const gchar *wav_f[] = {N_("Microsoft RIFF (*.wav)"), "*.[wW][aA][vV]", NULL};
 	static const gchar **wav_formats[] = {wav_f, NULL};
 	static const gchar *xp_f[] = {N_("Extended pattern (*.xp)"), "*.[xX][pP]", NULL};
 	static const gchar **xp_formats[] = {xp_f, NULL};

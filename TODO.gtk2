@@ -12,8 +12,6 @@ the discretization frequency). It is a mixer bug, file output does the same;
 55) Cleanup sun audio driver;
 58) Check (wet.xm) why after opening originsl ft2 xm and saving it as is some fields in the instrument
 header are different;
-59) In wav file creation dialog files are displayed only if "All types" are selected. SOmething's wrong
-with extensions...
 
 Some remarks about asm mixer bug: at the sample end and loop points there are ugly clicks
 (ramping works badly). Also when the previous channel has amplitude > 0, the following one
