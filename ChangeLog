@@ -1,3 +1,6 @@
+2013-09-20  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/sample-editor.c: Compilation with audiofile is fixed;
+
 2013-09-18  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/track-editor.c: Buffer overflow is fixed (utf-8 strings require
 	more place);

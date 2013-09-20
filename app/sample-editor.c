@@ -262,13 +262,14 @@ sample_editor_page_create (GtkNotebook *nb)
 	static const gchar *w64_f[] = {N_("SoundFoundry WAVE 64 files (*.w64)"), "*.[wW]64", NULL};
 
 	static const gchar **in_f[] = {aiff_f, au_f, avr_f, caf_f, htk_f, iff_f, mat_f, paf_f, pvf_f, raw_f, sd2_f, sds_f, sf_f,
-	                                voc_f, w64_f, wavex_f, flac_f, wve_f, ogg_f, rf64_f, NULL};
+	                               voc_f, w64_f, wavex_f, flac_f, wve_f, ogg_f, rf64_f, NULL};
 #endif
 
-#if !defined (NO_AUDIOFILE) && !defined (USE_SNDFILE)
+#if !USE_SNDFILE && !defined (NO_AUDIOFILE)
 	static const gchar *smp_f[] = {N_("Sample Vision files (*.smp)"), "*.[sS][mM][pP]", NULL};
 
-	static const gchar **in_f[] = {aiff_f, au_f, avr_f, caf_f, iff_f, sf_f, voc_f, wavex_f, smp_f, NULL};
+	static const gchar **in_f[] = {aiff_f, au_f, avr_f, caf_f, iff_f, sf_f, voc_f, wavex_f, smp_f, rf64_f, ogg_f,
+	                               wve_f, flac_f, NULL};
 #endif
 
     box = gtk_vbox_new(FALSE, 2);
