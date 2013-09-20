@@ -254,8 +254,8 @@ instrument_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(box), box2, TRUE, TRUE, 0);
     gtk_widget_show(box2);
 
-    file_selection_create(DIALOG_LOAD_INSTRUMENT, _("Load Instrument"), gui_settings.loadinstr_path, instrument_editor_load_instrument, 5, TRUE, FALSE, TRUE, formats);
-    file_selection_create(DIALOG_SAVE_INSTRUMENT, _("Save Instrument"), gui_settings.saveinstr_path, instrument_editor_save_instrument, 6, FALSE, TRUE, TRUE, formats);
+    file_selection_create(DIALOG_LOAD_INSTRUMENT, _("Load Instrument"), gui_settings.loadinstr_path, instrument_editor_load_instrument, 5, TRUE, FALSE, TRUE, formats, N_("Load instrument in the current instrument slot"));
+    file_selection_create(DIALOG_SAVE_INSTRUMENT, _("Save Instrument"), gui_settings.saveinstr_path, instrument_editor_save_instrument, 6, FALSE, TRUE, TRUE, formats, N_("Save the current instrument"));
 
     thing = gtk_button_new_with_label(_("Load XI"));
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);

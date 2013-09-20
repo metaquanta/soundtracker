@@ -3,7 +3,10 @@
 	* app/audio.c, app/audio.h, app/audioconfig.c, app/drivers/file-output.c:
 	File output driver is now configurable (samplerate and number of channels),
 	sndfile and audiofile variants share a lot of code;
-	* app/gui.c: The buggy displaying of .wav files is fixed.
+	* app/gui.c: The buggy displaying of .wav files is fixed;
+	* app/file-operations.[ch], app/file-operations.h, app/gui.c,
+	app/instrument-editor.c, app/sample-editor.c: Tooltips are added to file
+	selection page toggles.
 
 2013-09-18  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/track-editor.c: Buffer overflow is fixed (utf-8 strings require

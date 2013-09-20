@@ -43,6 +43,7 @@ struct file_op_tmp {
 	void (*clickfunc)();
 	gboolean is_single_click, is_save, need_return;
 	const gchar ***formats;
+	const gchar *tip;
 };
 
 struct file_op {
@@ -127,7 +128,8 @@ add_filters(GtkFileChooser *fc, const char **formats[])
 
 void
 file_selection_create (guint index, const gchar * title, const gchar *path, void(*clickfunc)(),
-                       gint order, gboolean is_single_click, gboolean is_save, gboolean need_return, const gchar **formats[])
+                       gint order, gboolean is_single_click, gboolean is_save, gboolean need_return,
+                       const gchar **formats[], const gchar *tip)
 {
 	static gboolean firsttime = TRUE;
 	static guint num_allocated = 0, already_allocated = 0;
@@ -162,6 +164,7 @@ file_selection_create (guint index, const gchar * title, const gchar *path, void
 		fileop_pool[num_allocated - 1].index = index;
 		fileop_pool[num_allocated - 1].path = path;
 		fileop_pool[num_allocated - 1].formats = formats;
+		fileop_pool[num_allocated - 1].tip = tip;
 
 		fileop_list = g_slist_insert_sorted(fileop_list, &fileop_pool[num_allocated - 1], cmpfunc);
 
@@ -370,6 +373,8 @@ foreach_fn(gpointer lm, gpointer data)
 	/* Radio buttons */
 	thing = gtk_radio_button_new_with_label (thing ? gtk_radio_button_get_group (GTK_RADIO_BUTTON (thing)) : NULL,
 	                                         elem->title);
+	if(elem->tip)
+		gtk_widget_set_tooltip_text(thing, _(elem->tip));
 	gtk_widget_show(thing);
 	gtk_box_pack_start(GTK_BOX (leftbox), thing, FALSE, FALSE, 0);
 	g_signal_connect_swapped(thing, "clicked", G_CALLBACK(typeradio_changed), (gpointer)(num++));
