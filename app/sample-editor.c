@@ -994,9 +994,8 @@ sample_editor_clear_clicked (void)
     if(st_instrument_num_samples(instr) == 0) {
 	instrument_editor_clear_current_instrument();
     } else {
-	instrument_editor_update();
+	instrument_editor_update(TRUE);
 	sample_editor_update();
-	modinfo_update_all();
     }
 
     sample_editor_unlock_sample();
@@ -1194,7 +1193,7 @@ sample_editor_init_sample_full (STSample *sample, const char *samplename)
 	memset(instr->samplemap, gui_get_current_sample(), sizeof(instr->samplemap));
     }
 	
-    st_clean_sample(sample, NULL, samplename);
+    st_clean_sample(sample, samplename, NULL);
 
     sample->volume = 64;
     sample->finetune = 0;
@@ -1264,7 +1263,7 @@ sample_editor_paste_clicked (void)
     sample_editor_unlock_sample();
     sample_editor_update();
     if(update_ie)
-	instrument_editor_update();
+	instrument_editor_update(TRUE);
     xm_set_modified(1);
 }
 
@@ -1498,7 +1497,7 @@ sample_editor_load_wav_main (const int mode)
 	}
     sample_editor_unlock_sample();
 
-    instrument_editor_update();
+    instrument_editor_update(TRUE);
     sample_editor_update();
     xm_set_modified(1);
     statusbar_update(STATUS_SAMPLE_LOADED, FALSE);
@@ -2202,13 +2201,13 @@ sample_editor_ok_clicked (void)
     instr = instrument_editor_get_instrument();
     if(st_instrument_num_samples(instr) == 0)
 	st_clean_instrument(instr, samplename);
-    st_clean_sample(current_sample, NULL, samplename);
+    st_clean_sample(current_sample, samplename, NULL);
     current_sample->sample.data = sbuf;
 
 	if(mode == MODE_STEREO_2) {
 
 		g_mutex_lock(next->sample.lock);
-		st_clean_sample(next, NULL, samplename);
+		st_clean_sample(next, samplename, NULL);
 		next->sample.data = sbuf2;
 		next->treat_as_8bit = !multiply;
 		next->sample.length = recordedlen >> 1;/* Sample size is given in 16-bit words */
@@ -2397,7 +2396,7 @@ sample_editor_ok_clicked (void)
 		g_mutex_unlock(next->sample.lock);
 	}
 
-    instrument_editor_update();
+    instrument_editor_update(TRUE);
     sample_editor_update();
     xm_set_modified(1);
 }

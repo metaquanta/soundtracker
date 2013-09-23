@@ -150,8 +150,8 @@ menubar_handle_cutcopypaste (GtkWidget *p, gpointer a)
 	static const gchar *signals[] = {"cut-clipboard", "copy-clipboard", "paste-clipboard"};
 
     Tracker *t = tracker;
-    int ci = gui_get_current_instrument() - 1;
-    STInstrument *curins = &xm->instruments[ci];
+
+    STInstrument *curins = &xm->instruments[gui_get_current_instrument() - 1];
     GtkWidget *focus_widget = GTK_WINDOW(mainwindow)->focus_widget;
     gint i = GPOINTER_TO_INT(a);
 
@@ -170,9 +170,8 @@ menubar_handle_cutcopypaste (GtkWidget *p, gpointer a)
 	case NOTEBOOK_PAGE_MODULE_INFO:
 	    instrument_editor_cut_instrument(curins);
 	    xm_set_modified(1);
-	    instrument_editor_update();
+	    instrument_editor_update(TRUE);
 	    sample_editor_update();
-	    modinfo_update_instrument(ci);
 	    break;
 	case NOTEBOOK_PAGE_SAMPLE_EDITOR:
 	    sample_editor_copy_cut_common(TRUE, TRUE);
@@ -203,9 +202,8 @@ menubar_handle_cutcopypaste (GtkWidget *p, gpointer a)
 	case NOTEBOOK_PAGE_MODULE_INFO:
 	    instrument_editor_paste_instrument(curins);
 	    xm_set_modified(1);
-	    instrument_editor_update();
+	    instrument_editor_update(TRUE);
 	    sample_editor_update();
-	    modinfo_update_instrument(ci);
 	    break;
 	case NOTEBOOK_PAGE_SAMPLE_EDITOR:
 	    sample_editor_paste_clicked();

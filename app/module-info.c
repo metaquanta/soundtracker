@@ -207,7 +207,7 @@ modinfo_delete_unused_instruments (void)
     }
 
     sample_editor_update();
-    instrument_editor_update();
+    instrument_editor_update(FALSE);
     modinfo_update_all();
 }
 

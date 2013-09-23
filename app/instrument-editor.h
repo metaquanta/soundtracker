@@ -33,9 +33,9 @@ gboolean        instrument_editor_handle_keys       (int shift,
 						     guint32 keyval,
 						     gboolean pressed);
 
-void            instrument_editor_set_instrument    (STInstrument *);
+void            instrument_editor_set_instrument    (STInstrument *, const gint ins);
 STInstrument*   instrument_editor_get_instrument    (void);
-void            instrument_editor_update            (void);                     /* instrument data has changed, redraw */
+void            instrument_editor_update            (gboolean full); /* instrument data has changed, redraw */
 void            instrument_editor_clear_current_instrument (void);
 
 void		instrument_editor_cut_instrument    (STInstrument *instr);

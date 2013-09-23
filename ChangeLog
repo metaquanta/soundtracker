@@ -1,3 +1,8 @@
+2013-09-23  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui.c, app/instrument-editor.[ch], app/instrument-editor.h,
+	app/menubar.c, app/module-info.c, app/sample-editor.c: Some bugs related
+	to instruments' and samples' lists updating are fixed.
+
 2013-09-20  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/sample-editor.c: Compilation with audiofile is fixed;
 	* app/audio.c, app/audio.h, app/audioconfig.c, app/drivers/file-output.c:

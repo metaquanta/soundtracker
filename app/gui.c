@@ -613,7 +613,7 @@ current_instrument_changed (GtkSpinButton *spin)
     STInstrument *i = &xm->instruments[ins = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
     STSample *s = &i->samples[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
 
-    instrument_editor_set_instrument(i);
+    instrument_editor_set_instrument(i, ins);
     sample_editor_set_sample(s);
     modinfo_set_current_instrument(ins);
     xm_set_modified(m);
@@ -1303,7 +1303,7 @@ void
 gui_free_xm (void)
 {
     gui_play_stop();
-    instrument_editor_set_instrument(NULL);
+    instrument_editor_set_instrument(NULL, 0);
     sample_editor_set_sample(NULL);
     tracker_set_pattern(tracker, NULL);
     XM_Free(xm);

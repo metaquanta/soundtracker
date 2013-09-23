@@ -5,8 +5,6 @@ in the callback) and main notebook switch callback;
 22) ESD driver reported to produce greater delay at start than in ST-gtk1;
 36) Pressing Ctrl-O in Instrument editor crashes ST at some machines;
 49) Update or even rewrite JACK driver;
-52) When recording and selecting 2-samples mode sometimes (after 3 attempts?) sample names in the
-module info page don't be updated immediately;
 54) Using discretization frequency > 64 kHz gives wrong notes (pitch is 2 times higher, independent on
 the discretization frequency). It is a mixer bug, file output does the same;
 55) Cleanup sun audio driver;

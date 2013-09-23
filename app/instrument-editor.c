@@ -46,6 +46,7 @@ static GtkWidget *clavier;
 static GtkWidget *curnote_label;
 
 static STInstrument *current_instrument, *tmp_instrument = NULL;
+static gint current_instrument_number = 0;
 
 static void
 instrument_page_volfade_changed (int value)
@@ -165,8 +166,7 @@ instrument_editor_load_instrument (gchar *fn)
 	gui_error_dialog(N_("Can't open file."));
     }
 
-    current_instrument = NULL;
-    instrument_editor_set_instrument(instr);
+	instrument_editor_update(TRUE);
     sample_editor_set_sample(&instr->samples[0]);
 }
 
@@ -204,9 +204,9 @@ instrument_editor_clear_current_instrument (void)
 
     st_clean_instrument(current_instrument, NULL);
 
-    instrument_editor_update();
+    instrument_editor_update(TRUE);
     sample_editor_update();
-    modinfo_update_all();
+    xm_set_modified(TRUE);
 }
 
 void
@@ -254,8 +254,12 @@ instrument_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(box), box2, TRUE, TRUE, 0);
     gtk_widget_show(box2);
 
-    file_selection_create(DIALOG_LOAD_INSTRUMENT, _("Load Instrument"), gui_settings.loadinstr_path, instrument_editor_load_instrument, 5, TRUE, FALSE, TRUE, formats, N_("Load instrument in the current instrument slot"));
-    file_selection_create(DIALOG_SAVE_INSTRUMENT, _("Save Instrument"), gui_settings.saveinstr_path, instrument_editor_save_instrument, 6, FALSE, TRUE, TRUE, formats, N_("Save the current instrument"));
+    file_selection_create(DIALOG_LOAD_INSTRUMENT, _("Load Instrument"), gui_settings.loadinstr_path,
+                          instrument_editor_load_instrument, 5, TRUE, FALSE, TRUE, formats,
+                          N_("Load instrument in the current instrument slot"));
+    file_selection_create(DIALOG_SAVE_INSTRUMENT, _("Save Instrument"), gui_settings.saveinstr_path,
+                          instrument_editor_save_instrument, 6, FALSE, TRUE, TRUE, formats,
+                          N_("Save the current instrument"));
 
     thing = gtk_button_new_with_label(_("Load XI"));
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
@@ -407,11 +411,12 @@ instrument_editor_paste_instrument (STInstrument *instr)
 }
 
 void
-instrument_editor_set_instrument (STInstrument *i)
+instrument_editor_set_instrument (STInstrument *i, const gint ins)
 {
     current_instrument = i;
+    current_instrument_number = ins;
 
-    instrument_editor_update();
+    instrument_editor_update(FALSE);
 }
 
 STInstrument*
@@ -439,7 +444,7 @@ instrument_editor_handle_keys (int shift,
 }
 
 void
-instrument_editor_update (void)
+instrument_editor_update (gboolean full)
 {
     int o, n, m = xm_get_modified();
 
@@ -458,19 +463,22 @@ instrument_editor_update (void)
 	envelope_box_set_envelope(ENVELOPE_BOX(volenv), NULL);
 	envelope_box_set_envelope(ENVELOPE_BOX(panenv), NULL);
 	clavier_set_key_labels(CLAVIER(clavier), NULL);
-	return;
+    } else {
+
+	envelope_box_set_envelope(ENVELOPE_BOX(volenv), &current_instrument->vol_env);
+	envelope_box_set_envelope(ENVELOPE_BOX(panenv), &current_instrument->pan_env);
+
+	gui_subs_set_slider_value(&instrument_page_sliders[0], current_instrument->volfade);
+	gui_subs_set_slider_value(&instrument_page_sliders[1], current_instrument->vibrate);
+	gui_subs_set_slider_value(&instrument_page_sliders[2], current_instrument->vibdepth);
+	gui_subs_set_slider_value(&instrument_page_sliders[3], current_instrument->vibsweep);
+	gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(instrument_editor_vibtype_w[current_instrument->vibtype]), TRUE);
+
+	clavier_set_key_labels(CLAVIER(clavier), current_instrument->samplemap);
+
+	xm_set_modified(m);
     }
 
-    envelope_box_set_envelope(ENVELOPE_BOX(volenv), &current_instrument->vol_env);
-    envelope_box_set_envelope(ENVELOPE_BOX(panenv), &current_instrument->pan_env);
-
-    gui_subs_set_slider_value(&instrument_page_sliders[0], current_instrument->volfade);
-    gui_subs_set_slider_value(&instrument_page_sliders[1], current_instrument->vibrate);
-    gui_subs_set_slider_value(&instrument_page_sliders[2], current_instrument->vibdepth);
-    gui_subs_set_slider_value(&instrument_page_sliders[3], current_instrument->vibsweep);
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(instrument_editor_vibtype_w[current_instrument->vibtype]), TRUE);
-
-    clavier_set_key_labels(CLAVIER(clavier), current_instrument->samplemap);
-
-    xm_set_modified(m);
+    if(full)
+	modinfo_update_instrument(current_instrument_number);
 }
