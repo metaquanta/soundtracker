@@ -1,3 +1,8 @@
+2013-09-27  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/drivers/esd-output.c: Error reporting is now displayed in correct
+	encoding. Seems there is no notable delay when working thru Pulseaudio
+	server.
+
 2013-09-23  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c, app/instrument-editor.[ch], app/instrument-editor.h,
 	app/menubar.c, app/module-info.c, app/sample-editor.c: Some bugs related

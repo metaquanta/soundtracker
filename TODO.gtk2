@@ -2,9 +2,12 @@
 9) Contains a lot of obsolete code.
 14) some CPU-consuming code in the instrument list selection callback (really 
 in the callback) and main notebook switch callback;
-22) ESD driver reported to produce greater delay at start than in ST-gtk1;
+22) Convert ESD driver into the modern Pulseaudio API.
 36) Pressing Ctrl-O in Instrument editor crashes ST at some machines;
-49) Update or even rewrite JACK driver;
+49) Update or even rewrite JACK driver (for old and new jack);
+Add "Activate" mathod to the driver called when the driver becomes active
+(after config loading for the default one and when switching to it into audio config dialog).
+Make also "Deactivate" method for the opposite job.
 54) Using discretization frequency > 64 kHz gives wrong notes (pitch is 2 times higher, independent on
 the discretization frequency). It is a mixer bug, file output does the same;
 55) Cleanup sun audio driver;

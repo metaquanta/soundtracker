@@ -158,9 +158,11 @@ esd_open (void *dp)
 
     d->out_sock = esd_play_stream_fallback(out_format, d->out_rate, NULL, "SoundTracker ESD Output");
     if(d->out_sock <= 0) {
-	char buf[256];
-	g_sprintf(buf, _("Couldn't connect to ESD for sound output:\n%s"), strerror(errno));
+	char buf[256], *error;
+	g_sprintf(buf, _("Couldn't connect to ESD for sound output:\n%s"),
+	          error = g_locale_to_utf8(strerror(errno), -1, NULL, NULL, NULL));
 	error_error(buf);
+	g_free(error);
 	return FALSE;
     }
 
