@@ -29,7 +29,8 @@
 
 G_BEGIN_DECLS
 
-#define SAMPLE_DISPLAY(obj)          GTK_CHECK_CAST (obj, sample_display_get_type (), SampleDisplay)
+#define TYPE_SAMPLE_DISPLAY          (sample_display_get_type())
+#define SAMPLE_DISPLAY(obj)          (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_SAMPLE_DISPLAY, SampleDisplay))
 #define SAMPLE_DISPLAY_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, sample_display_get_type (), SampleDisplayClass)
 #define IS_SAMPLE_DISPLAY(obj)       GTK_CHECK_TYPE (obj, sample_display_get_type ())
 #define SAMPLE_DISPLAY_GET_CLASS(obj)	G_TYPE_INSTANCE_GET_CLASS((obj), sample_display_get_type(), SampleDisplayClass)
@@ -91,7 +92,7 @@ struct _SampleDisplayClass
     void (*window_changed)(SampleDisplay *s, int start, int end);
 };
 
-guint          sample_display_get_type            (void);
+GType          sample_display_get_type            (void) G_GNUC_CONST;
 GtkWidget*     sample_display_new                 (gboolean edit);
 
 void           sample_display_set_data            (SampleDisplay *s, void *data, STMixerFormat type, int len, gboolean copy);
