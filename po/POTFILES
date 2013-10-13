@@ -1,15 +1,14 @@
      ../app/audio.c \
      ../app/audioconfig.c \
      ../app/clavier.c \
-     ../app/drivers/alsa-input.c \
-     ../app/drivers/alsa-output.c \
-     ../app/drivers/alsa2-input.c \
-     ../app/drivers/alsa2-output.c \
+     ../app/drivers/alsa1x.c \
+     ../app/drivers/dummy-drivers.c \
      ../app/drivers/esd-output.c \
      ../app/drivers/file-output.c \
-     ../app/drivers/oss-input.c \
-     ../app/drivers/oss-output.c \
+     ../app/drivers/irix-output.c \
+     ../app/drivers/oss.c \
      ../app/drivers/jack-output.c \
+     ../app/drivers/sdl-output.c \
      ../app/drivers/sun-output.c \
      ../app/drivers/sun-input.c \
      ../app/envelope-box.c \
@@ -41,5 +40,5 @@
      ../app/transposition.c \
      ../app/xm-player.c \
      ../app/xm.c \
-     ../app/midi-settings-050.c \
-     ../app/midi-settings-09x.c
+     ../app/midi-settings-09x.c \
+     ../app/midi-09x.c

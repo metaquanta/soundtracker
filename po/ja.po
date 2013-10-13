@@ -8,144 +8,309 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SoundTracker 0.3.10\n"
 "Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
-"POT-Creation-Date: 2008-01-14 13:34+0300\n"
+"POT-Creation-Date: 2013-10-13 23:27+0400\n"
 "PO-Revision-Date: 2003-08-05 06:54+0900\n"
 "Last-Translator: Junichi Uekawa <dancer@debian.org>\n"
 "Language-Team: Debian Japanese project <debian-japanese@lists.debian.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=EUC-JP\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: app/audioconfig.c:63
+#: app/audio.c:678 app/gui.c:340 app/gui.c:349 app/gui.c:359 app/gui.c:369
+#: app/gui.c:423 app/gui.c:992 app/gui.c:1007 app/gui.c:1018 app/gui.c:1029
+#: app/gui.c:1139 app/gui.c:1244 app/gui.c:1279 app/gui.c:1361 app/gui.c:1385
+#: app/gui.c:1396
+msgid "Connection with audio thread failed!"
+msgstr ""
+
+#: app/audioconfig.c:62
 msgid "Playback Output"
 msgstr "演奏出力"
 
-#: app/audioconfig.c:70
+#: app/audioconfig.c:69
 msgid "Editing Output"
 msgstr "編集出力"
 
-#: app/audioconfig.c:77
+#: app/audioconfig.c:76
 msgid "Sampling"
 msgstr "サンプリング"
 
-#: app/audioconfig.c:203
+#: app/audioconfig.c:188
 msgid "Driver Module"
 msgstr "ドライバ・モジュール"
 
-#: app/audioconfig.c:253
+#: app/audioconfig.c:241
 msgid "Mixer Module"
 msgstr "ミキサ・モジュール"
 
-#: app/audioconfig.c:254
+#: app/audioconfig.c:242 app/drivers/alsa1x.c:734
 msgid "Description"
 msgstr "説明"
 
-#: app/audioconfig.c:264 app/audioconfig.c:267
+#: app/audioconfig.c:249
 msgid "Audio Configuration"
 msgstr "オーディオ設定"
 
-#: app/audioconfig.c:291
+#: app/audioconfig.c:269
+msgid "File output"
+msgstr ""
+
+#: app/audioconfig.c:277
 msgid "Mixers"
 msgstr "ミキサ"
 
-#: app/drivers/alsa-input.c:126 app/drivers/alsa-output.c:135
-#: app/drivers/alsa2-input.c:126 app/drivers/alsa2-output.c:136
-#, c-format
-msgid "(%d bytes)"
-msgstr "(%dバイト)"
-
-#: app/drivers/alsa-input.c:129 app/drivers/alsa2-input.c:129
-#, c-format
-msgid "Estimated audio delay: %f microseconds"
-msgstr "推定オーディオ・ディレイ: %fマイクロ秒"
-
-#: app/drivers/alsa-input.c:194 app/drivers/alsa-output.c:200
-#: app/drivers/alsa2-input.c:194 app/drivers/alsa2-output.c:199
-#: app/drivers/oss-output.c:207 app/drivers/sun-output.c:199
-msgid "These changes won't take effect until you restart playing."
-msgstr "演奏を再開するまでこれらの変更はなされません。"
-
-#: app/drivers/alsa-input.c:206 app/drivers/alsa-output.c:212
-#: app/drivers/alsa2-input.c:206 app/drivers/alsa2-output.c:211
-#: app/drivers/oss-output.c:235 app/drivers/sun-output.c:227
-#: app/sample-editor.c:1619
-msgid "Resolution:"
-msgstr "解像度:"
-
-#: app/drivers/alsa-input.c:216 app/drivers/alsa-output.c:222
-#: app/drivers/alsa2-input.c:216 app/drivers/alsa2-output.c:221
-#: app/drivers/oss-output.c:245 app/drivers/sun-output.c:238
-#: app/sample-editor.c:1649
-msgid "Channels:"
-msgstr "チャンネル:"
-
-#: app/drivers/alsa-input.c:226 app/drivers/alsa-output.c:232
-#: app/drivers/alsa2-input.c:226 app/drivers/alsa2-output.c:231
-#: app/drivers/oss-output.c:255 app/drivers/sun-output.c:249
-msgid "Frequency [Hz]:"
-msgstr "周波数 [Hz]:"
-
-#: app/drivers/alsa-input.c:236 app/drivers/alsa-output.c:242
-#: app/drivers/alsa2-input.c:236 app/drivers/alsa2-output.c:241
-#: app/drivers/oss-output.c:265 app/drivers/sun-output.c:260
-msgid "Buffer Size:"
-msgstr "バッファ・サイズ:"
-
-#: app/drivers/alsa-input.c:269 app/drivers/alsa-output.c:275
-#: app/drivers/alsa2-input.c:269 app/drivers/alsa2-output.c:274
-msgid "ALSA card number:"
-msgstr "ALSAカード番号:"
-
-#: app/drivers/alsa-input.c:284 app/drivers/alsa-output.c:290
-#: app/drivers/alsa2-input.c:284 app/drivers/alsa2-output.c:289
-msgid "ALSA device number:"
-msgstr "ALSAデバイス番号:"
-
-#: app/drivers/alsa-input.c:375
-#, c-format
-msgid ""
-"Couldn't open ALSA device for sound input (card:%d, device:%d):\n"
-"%s"
-msgstr ""
-"サウンド出力に対してALSAデバイス(カード:%d、デバイス:%d)が開けませんでした:\n"
-"%s"
-
-#: app/drivers/alsa-input.c:427 app/drivers/alsa-output.c:427
-#: app/drivers/oss-input.c:269 app/drivers/oss-output.c:426
-msgid "Required sound output format not supported.\n"
-msgstr "要求されたサウンド出力フォーマットがサポートされていません。\n"
-
-#: app/drivers/alsa-input.c:440 app/drivers/alsa-output.c:442
-msgid "Required sound output parameters not supported.\n"
-msgstr "要求されたサウンド出力フォーマットがサポートされていません。\n"
-
-#: app/drivers/alsa-output.c:138 app/drivers/alsa2-output.c:139
-#: app/drivers/oss-output.c:151 app/drivers/sun-output.c:139
+#: app/drivers/alsa1x.c:258 app/drivers/oss.c:165 app/drivers/sun-output.c:138
 #, c-format
 msgid "Estimated audio delay: %f milliseconds"
 msgstr "推定オーディオ・ディレイ: %fミリ秒"
 
-#: app/drivers/alsa-output.c:378 app/drivers/alsa2-input.c:376
-#: app/drivers/alsa2-output.c:380
-#, c-format
-msgid ""
-"Couldn't open ALSA device for sound output (card:%d, device:%d):\n"
-"%s"
+#: app/drivers/alsa1x.c:316
+#, fuzzy
+msgid "ALSA device opening error"
+msgstr "ALSAデバイス番号:"
+
+#: app/drivers/alsa1x.c:320
+msgid "hw params obtaining error"
 msgstr ""
-"サウンド出力に対してALSAデバイス(カード:%d、デバイス:%d)が開けませんでした:\n"
-"%s"
 
-#: app/drivers/alsa2-input.c:437 app/drivers/alsa2-output.c:441
-msgid "Required output-channel parameters not supported.\n"
-msgstr "要求されたチャンネル出力パラメータがサポートされていません。\n"
+#: app/drivers/alsa1x.c:349 app/drivers/alsa1x.c:548 app/drivers/alsa1x.c:576
+#: app/drivers/alsa1x.c:1216
+msgid "Unable to set audio format"
+msgstr ""
 
-#: app/drivers/alsa2-input.c:442 app/drivers/alsa2-output.c:446
-msgid "Unable to prepare ALSA channel.\n"
+#: app/drivers/alsa1x.c:354 app/drivers/alsa1x.c:1231
+#, fuzzy
+msgid "Unable to set channels number"
 msgstr "ALSAチャンネルを準備できません．\n"
 
-#: app/drivers/alsa2-input.c:455 app/drivers/alsa2-output.c:459
-msgid "Alsa setup error.\n"
-msgstr "ALSAセットアップエラー．\n"
+#: app/drivers/alsa1x.c:366 app/drivers/alsa1x.c:1253
+msgid "Unable to set appropriate buffer size"
+msgstr ""
+
+#: app/drivers/alsa1x.c:375
+msgid "Unable to get minimal period size"
+msgstr ""
+
+#: app/drivers/alsa1x.c:381
+msgid "Unable to get maximal period size"
+msgstr ""
+
+#: app/drivers/alsa1x.c:401
+msgid "Unable to set channles number"
+msgstr ""
+
+#: app/drivers/alsa1x.c:405
+msgid "Unable to get minimal sample rate"
+msgstr ""
+
+#: app/drivers/alsa1x.c:411
+msgid "Unable to get maximal sample rate"
+msgstr ""
+
+#: app/drivers/alsa1x.c:417
+msgid "Unable to get minimal buffer size"
+msgstr ""
+
+#: app/drivers/alsa1x.c:423
+msgid "Unable to get maximal buffer size"
+msgstr ""
+
+#: app/drivers/alsa1x.c:523
+msgid "Unable to get minimal channels number"
+msgstr ""
+
+#: app/drivers/alsa1x.c:528
+msgid "Unable to get maximal channels number"
+msgstr ""
+
+#: app/drivers/alsa1x.c:666
+#, fuzzy, c-format
+msgid " = %u samples"
+msgstr "(%dサンプル)"
+
+#: app/drivers/alsa1x.c:681
+#, c-format
+msgid " = %u"
+msgstr ""
+
+#: app/drivers/alsa1x.c:734
+msgid "Dev"
+msgstr ""
+
+#: app/drivers/alsa1x.c:741
+msgid "no soundcards found..."
+msgstr ""
+
+#: app/drivers/alsa1x.c:746
+msgid "Devices list"
+msgstr ""
+
+#: app/drivers/alsa1x.c:804
+#, fuzzy
+msgid "8 bit"
+msgstr "8ビット"
+
+#: app/drivers/alsa1x.c:804
+#, fuzzy
+msgid "16 bit"
+msgstr "16ビット"
+
+#: app/drivers/alsa1x.c:805 app/drivers/file-output.c:138
+#: app/sample-editor.c:1617
+msgid "Mono"
+msgstr "モノラル"
+
+#: app/drivers/alsa1x.c:805 app/drivers/file-output.c:138
+#: app/sample-editor.c:1617
+msgid "Stereo"
+msgstr "ステレオ"
+
+#: app/drivers/alsa1x.c:809 app/drivers/oss.c:225 app/drivers/sun-output.c:202
+msgid "These changes won't take effect until you restart playing."
+msgstr "演奏を再開するまでこれらの変更はなされません。"
+
+#: app/drivers/alsa1x.c:810
+#, fuzzy
+msgid "These changes won't take effect until you restart capturing."
+msgstr "サンプリングを再開するまでこれらの変更はなされません。"
+
+#: app/drivers/alsa1x.c:822
+msgid "Device:"
+msgstr ""
+
+#: app/drivers/alsa1x.c:832
+msgid "List available hardware devices"
+msgstr ""
+
+#: app/drivers/alsa1x.c:845 app/drivers/oss.c:253 app/drivers/sun-output.c:230
+#: app/sample-editor.c:1648
+msgid "Resolution:"
+msgstr "解像度:"
+
+#: app/drivers/alsa1x.c:855 app/drivers/file-output.c:145
+#: app/drivers/oss.c:263 app/drivers/sun-output.c:241 app/sample-editor.c:1678
+msgid "Channels:"
+msgstr "チャンネル:"
+
+#: app/drivers/alsa1x.c:865 app/drivers/file-output.c:153
+#: app/drivers/oss.c:273 app/drivers/sun-output.c:252
+msgid "Frequency [Hz]:"
+msgstr "周波数 [Hz]:"
+
+#: app/drivers/alsa1x.c:884 app/drivers/oss.c:283 app/drivers/sun-output.c:263
+msgid "Buffer Size:"
+msgstr "バッファ・サイズ:"
+
+#: app/drivers/alsa1x.c:907
+#, fuzzy
+msgid "Number of Periods:"
+msgstr "チャンネル数:"
+
+#: app/drivers/alsa1x.c:932
+msgid ""
+"The playback will start and stop immediately, but the reaction to the "
+"interactive events will happens after this delay"
+msgstr ""
+
+#: app/drivers/alsa1x.c:987 app/drivers/alsa1x.c:1053
+msgid "Unable to restart stream from suspending"
+msgstr ""
+
+#: app/drivers/alsa1x.c:995 app/drivers/alsa1x.c:1061
+msgid "Stream preparation error"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1002
+msgid "Sound playing error"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1068
+msgid "Sound recording error"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1136
+msgid "Error attaching sound output"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1209
+msgid "Unable to set access"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1241
+msgid "Unable to set sample rate"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1259
+msgid "Unable to set periods number"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1263
+msgid "Unable to get period size"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1268
+#, fuzzy
+msgid "Error setting hw parameters"
+msgstr "パターンのロード中にエラー。"
+
+#: app/drivers/alsa1x.c:1276
+msgid "Unable to determine current swparams for playback"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1277
+msgid "Unable to determine current swparams for capture"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1283
+msgid "Unable to set start threshold mode for playback"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1284
+msgid "Unable to set start threshold mode for capture"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1290
+msgid "Unable to set avail min for playback"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1291
+msgid "Unable to set avail min for capture"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1297
+msgid "Unable to set sw params for playback"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1298
+msgid "Unable to set sw params for capture"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1304
+#, fuzzy
+msgid "Unable to prepare playback"
+msgstr "ALSAチャンネルを準備できません．\n"
+
+#: app/drivers/alsa1x.c:1305
+#, fuzzy
+msgid "Unable to prepare capture"
+msgstr "ALSAチャンネルを準備できません．\n"
+
+#: app/drivers/alsa1x.c:1318
+msgid "Unable to obtain poll descriptors for playback"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1319
+msgid "Unable to obtain poll descriptors for capture"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1330
+msgid "Unable to start capture"
+msgstr ""
+
+#: app/drivers/dummy-drivers.c:40
+msgid "No driver available for your system."
+msgstr ""
 
 #: app/drivers/esd-output.c:97
 msgid ""
@@ -168,57 +333,44 @@ msgstr ""
 "サウンド出力をESDに接続できませんでした:\n"
 "%s"
 
-#: app/drivers/file-output.c:92 app/drivers/file-output.c:297
-msgid "no settings (yet), sorry!"
-msgstr "すみません、(まだ)設定されていません!"
-
-#: app/drivers/file-output.c:167 app/drivers/file-output.c:374
-#: app/sample-editor.c:1865
+#: app/drivers/file-output.c:259 app/sample-editor.c:1894
 msgid "Can't open file for writing."
 msgstr "書き込みのためにファイルが開けません。"
 
-#: app/drivers/oss-input.c:113 app/drivers/sun-input.c:107
+#: app/drivers/irix-output.c:98
+msgid "no settings (yet), sorry!"
+msgstr "すみません、(まだ)設定されていません!"
+
+#: app/drivers/oss.c:201 app/drivers/sun-output.c:173
+#, c-format
+msgid "(%d samples)"
+msgstr "(%dサンプル)"
+
+#: app/drivers/oss.c:224 app/drivers/sun-input.c:105
 msgid "These changes won't take effect until you restart sampling."
 msgstr "サンプリングを再開するまでこれらの変更はなされません。"
 
-#: app/drivers/oss-input.c:125
+#: app/drivers/oss.c:237
 msgid "Input device (e.g. '/dev/dsp'):"
 msgstr "入力デバイス (例： 「/dev/dsp」):"
 
-#: app/drivers/oss-input.c:236
-#, c-format
+#: app/drivers/oss.c:238
+msgid "Output device (e.g. '/dev/dsp'):"
+msgstr "出力デバイス (例：「/dev/dsp」)"
+
+#: app/drivers/oss.c:431
+#, fuzzy, c-format
 msgid ""
-"Couldn't open %s for sampling:\n"
+"Couldn't open %s for %s:\n"
 "%s"
 msgstr ""
 "サンプリングするのに %s が開けませんでした:\n"
 "%s"
 
-#: app/drivers/oss-output.c:185 app/drivers/sun-output.c:174
-#, c-format
-msgid "(%d samples)"
-msgstr "(%dサンプル)"
-
-#: app/drivers/oss-output.c:219
-msgid "Output device (e.g. '/dev/dsp'):"
-msgstr "出力デバイス (例：「/dev/dsp」)"
-
-#: app/drivers/oss-output.c:393
-#, c-format
-msgid ""
-"Couldn't open %s for sound output:\n"
-"%s"
-msgstr ""
-"サウンド出力に対して %s が開けませんでした:\n"
-"%s"
-
-#: app/drivers/jack-output.c:255
-msgid "transport master"
-msgstr "トランスポートマスター"
-
-#: app/drivers/jack-output.c:260
-msgid "declick"
-msgstr "デクリック"
+#: app/drivers/oss.c:466
+#, fuzzy, c-format
+msgid "Required %s format not supported.\n"
+msgstr "要求されたサウンド出力フォーマットがサポートされていません。\n"
 
 #: app/drivers/jack-output.c:280
 #, c-format
@@ -229,88 +381,90 @@ msgstr "%d Hz で %d フレームで実行中"
 msgid "Jack server not running?"
 msgstr "Jack サーバが実行中ではない？"
 
-#: app/drivers/jack-output.c:328
-msgid "soundtracker"
-msgstr "soundtracker"
-
-#: app/drivers/jack-output.c:348
+#: app/drivers/jack-output.c:354
 msgid "out_1"
 msgstr "out_1"
 
-#: app/drivers/jack-output.c:349
+#: app/drivers/jack-output.c:355
 msgid "out_2"
 msgstr "out_2"
 
-#: app/drivers/sun-output.c:211
+#: app/drivers/sdl-output.c:76
+#, fuzzy
+msgid "Experimental SDL support."
+msgstr "サポートされていない操作です。"
+
+#: app/drivers/sun-output.c:214
 msgid "Output device (e.g. '/dev/audio'):"
 msgstr "出力デバイス (例：「/dev/audio」)"
 
-#: app/drivers/sun-output.c:391 app/drivers/sun-output.c:462
-#: app/drivers/sun-input.c:231 app/drivers/sun-input.c:313
+#: app/drivers/sun-output.c:394 app/drivers/sun-output.c:465
+#: app/drivers/sun-input.c:229 app/drivers/sun-input.c:311
 #, c-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: app/drivers/sun-output.c:397
+#: app/drivers/sun-output.c:400
 #, c-format
 msgid "%s: Cannot play (%s)"
 msgstr "%s: 再生できません (%s)"
 
-#: app/drivers/sun-output.c:404 app/drivers/sun-input.c:252
+#: app/drivers/sun-output.c:407 app/drivers/sun-input.c:250
 #, c-format
 msgid "%s: Cannot handle %dHz (%s)"
 msgstr "%s: %dHz に対応していません (%s)"
 
-#: app/drivers/sun-output.c:433 app/drivers/sun-input.c:282
+#: app/drivers/sun-output.c:436 app/drivers/sun-input.c:280
 #, c-format
 msgid "%s: Required sound encoding not supported.\n"
 msgstr "%s: 要求されたサウンドエンコーディングがサポートされていません。\n"
 
-#: app/drivers/sun-output.c:456 app/drivers/sun-input.c:307
+#: app/drivers/sun-output.c:459 app/drivers/sun-input.c:305
 #, c-format
 msgid "%s: Cannot set block size (%s)"
 msgstr "%s: ブロックサイズを設定できません (%s)"
 
-#: app/drivers/sun-input.c:119
+#: app/drivers/sun-input.c:117
 msgid "Input device (e.g. '/dev/audio'):"
 msgstr "入力デバイス (例： 「/dev/audio」):"
 
-#: app/drivers/sun-input.c:244
+#: app/drivers/sun-input.c:242
 #, c-format
 msgid "%s: Cannot record (%s)"
 msgstr "%s: 録音できません (%s)"
 
-#: app/envelope-box.c:892
+#: app/envelope-box.c:1261
 msgid "Length"
 msgstr "長さ"
 
-#: app/envelope-box.c:893
+#: app/envelope-box.c:1262
 msgid "Current"
 msgstr "カレント"
 
-#: app/envelope-box.c:894
+#: app/envelope-box.c:1263
 msgid "Offset"
 msgstr "オフセット"
 
-#: app/envelope-box.c:895
+#: app/envelope-box.c:1264
 msgid "Value"
 msgstr "値"
 
-#: app/envelope-box.c:901 app/playlist.c:551
+#: app/envelope-box.c:1270 app/playlist.c:550
 msgid "Insert"
 msgstr "挿入"
 
-#: app/envelope-box.c:907 app/playlist.c:560
+#: app/envelope-box.c:1276 app/playlist.c:559
 msgid "Delete"
 msgstr "削除"
 
-#: app/envelope-box.c:999
+#: app/envelope-box.c:1350
+#, fuzzy
 msgid ""
 "Graphical\n"
 "Envelope\n"
 "Editor\n"
-"only in\n"
-"GNOME Version"
+"only with\n"
+"GooCanvas"
 msgstr ""
 "GNOME版\n"
 "のみの\n"
@@ -318,312 +472,233 @@ msgstr ""
 "エンベロープ\n"
 "編集です"
 
-#: app/envelope-box.c:1014
+#: app/envelope-box.c:1365
 msgid "Sustain"
 msgstr "サスティーン"
 
-#: app/envelope-box.c:1022
+#: app/envelope-box.c:1373
 msgid "Point"
 msgstr "ポイント"
 
-#: app/envelope-box.c:1024
+#: app/envelope-box.c:1375
 msgid "Loop"
 msgstr "ループ"
 
-#: app/envelope-box.c:1032 app/sample-editor.c:277
+#: app/envelope-box.c:1383 app/sample-editor.c:305
 msgid "Start"
 msgstr "開始"
 
-#: app/envelope-box.c:1033 app/sample-editor.c:278
+#: app/envelope-box.c:1384 app/sample-editor.c:306
 msgid "End"
 msgstr "終了"
 
-#: app/file-operations.c:168
-msgid "Load Module"
-msgstr "モジュール・ロード"
+#: app/file-operations.c:104
+msgid "All supported types"
+msgstr ""
 
-#: app/file-operations.c:169
-msgid "Save Module"
-msgstr "モジュール保存"
+#: app/file-operations.c:124
+msgid "All files"
+msgstr ""
 
-#: app/file-operations.c:170
-msgid "Render WAV"
-msgstr "WAVレンダ"
-
-#: app/file-operations.c:171
-msgid "Save Song"
-msgstr "曲保存"
-
-#: app/file-operations.c:172 app/sample-editor.c:385
-msgid "Load Sample"
-msgstr "サンプル・ロード"
-
-#: app/file-operations.c:173
-msgid "Save Sample"
-msgstr "サンプル保存"
-
-#: app/file-operations.c:174
-msgid "Load Instrument"
-msgstr "楽器ロード"
-
-#: app/file-operations.c:175
-msgid "Save Instrument"
-msgstr "楽器保存"
-
-#: app/file-operations.c:181
+#: app/file-operations.c:196
 msgid "File"
 msgstr "ファイル"
 
-#: app/file-operations.c:232
+#: app/file-operations.c:237
+#, c-format
+msgid ""
+"The file named \"%s\" already exists.\n"
+"Do you want to replace it?"
+msgstr ""
+
+#: app/file-operations.c:474
 msgid "Operation not supported."
 msgstr "サポートされていない操作です。"
 
-#: app/gui-settings.c:96
-#, fuzzy
-msgid "Tracker background"
-msgstr "トラッカー周波数"
-
-#: app/gui-settings.c:97
-msgid "Cursor background"
-msgstr ""
-
-#: app/gui-settings.c:98
-#, fuzzy
-msgid "Major lines highlighting"
-msgstr "行ハイライトを有効に"
-
-#: app/gui-settings.c:99
-#, fuzzy
-msgid "Minor lines highlighting"
-msgstr "行ハイライトを有効に"
-
-#: app/gui-settings.c:100
-#, fuzzy
-msgid "Selection"
-msgstr "選択:"
-
-#: app/gui-settings.c:101
-#, fuzzy
-msgid "Notes"
-msgstr "音符"
-
-#: app/gui-settings.c:102
-#, fuzzy
-msgid "Delimiters"
-msgstr "削除"
-
-#: app/gui-settings.c:103
-#, fuzzy
-msgid "Channel numbers"
-msgstr "チャンネル:"
-
-#: app/gui-settings.c:104
-msgid "Cursor idle"
-msgstr ""
-
-#: app/gui-settings.c:105
-msgid "Cursor editing"
-msgstr ""
-
-#: app/gui-settings.c:121
+#: app/gui-settings.c:53
 msgid "Scopes Frequency"
 msgstr "スコープ周波数"
 
-#: app/gui-settings.c:124
+#: app/gui-settings.c:56
 msgid "Tracker Frequency"
 msgstr "トラッカー周波数"
 
-#: app/gui-settings.c:389 app/gui-settings.c:633
+#: app/gui-settings.c:318 app/gui-settings.c:530
 #, fuzzy
 msgid "Tracker colors configuration"
 msgstr "キーボード設定"
 
-#: app/gui-settings.c:391
+#: app/gui-settings.c:320
 #, fuzzy
 msgid "Reset"
 msgstr "リバース"
 
-#: app/gui-settings.c:397
+#: app/gui-settings.c:324
 msgid "Reset tracker colors to standard ST"
 msgstr ""
 
-#: app/gui-settings.c:464 app/gui-settings.c:467
+#: app/gui-settings.c:395
 msgid "GUI Configuration"
 msgstr "GUI設定"
 
-#: app/gui-settings.c:501
+#: app/gui-settings.c:416
 msgid "Hexadecimal row numbers"
 msgstr "16進行数"
 
-#: app/gui-settings.c:508
+#: app/gui-settings.c:422
 msgid "Use upper case letters for hex numbers"
 msgstr "16進数には大文字を使ってください"
 
-#: app/gui-settings.c:515
+#: app/gui-settings.c:428
 msgid "Asynchronous (IT-style) pattern editing"
 msgstr "非同期(ITスタイル)パターン編集"
 
-#: app/gui-settings.c:522
+#: app/gui-settings.c:434
 msgid "Fxx command updates Tempo/BPM sliders"
 msgstr "Fxx 命令はTempo/BPMスライダを更新します"
 
-#: app/gui-settings.c:529
+#: app/gui-settings.c:440
 msgid "Switch to tracker after loading/saving"
 msgstr "ロード/セーブした後にトラッカーに移動する"
 
-#: app/gui-settings.c:536
+#: app/gui-settings.c:446
 msgid "Save window geometry on exit"
 msgstr "終了時にウィンドウ設定を保存"
 
-#: app/gui-settings.c:543
+#: app/gui-settings.c:452
 msgid "Use note name B instead of H"
 msgstr "Hのかわりに音名Bを使う"
 
-#: app/gui-settings.c:550
+#: app/gui-settings.c:458
 msgid "Save and restore permanent channels"
 msgstr ""
 
-#: app/gui-settings.c:564
+#: app/gui-settings.c:470
 msgid "Scopes buffer size [MB]"
 msgstr "スコープ・バッファ・サイズ [MB]"
 
-#: app/gui-settings.c:583
+#: app/gui-settings.c:485
 msgid "Track line format:"
 msgstr "トラック行書式"
 
-#: app/gui-settings.c:632
-msgid "Col. scheme"
+#: app/gui-settings.c:529
+msgid "Color scheme"
 msgstr ""
 
-#: app/gui-subs.c:33 app/gui.c:2400
+#: app/gui-subs.c:34 app/gui.c:2390
 msgid "Ready."
 msgstr "準備完了．"
 
-#: app/gui-subs.c:34
+#: app/gui-subs.c:35
 msgid "Playing song..."
 msgstr "曲演奏..."
 
-#: app/gui-subs.c:35
+#: app/gui-subs.c:36
 msgid "Playing pattern..."
 msgstr "パターン演奏"
 
-#: app/gui-subs.c:36
+#: app/gui-subs.c:37
 msgid "Loading module..."
 msgstr "モジュール・ロード..."
 
-#: app/gui-subs.c:37
+#: app/gui-subs.c:38
 msgid "Module loaded."
 msgstr "モジュールがロードされました。"
 
-#: app/gui-subs.c:38
+#: app/gui-subs.c:39
 msgid "Saving module..."
 msgstr "モジュール保存..."
 
-#: app/gui-subs.c:39
+#: app/gui-subs.c:40
 msgid "Module saved."
 msgstr "モジュールが保存されました。"
 
-#: app/gui-subs.c:40
+#: app/gui-subs.c:41
 msgid "Loading sample..."
 msgstr "サンプル・ロード..."
 
-#: app/gui-subs.c:41
+#: app/gui-subs.c:42
 msgid "Sample loaded."
 msgstr "サンプルがロードされました。"
 
-#: app/gui-subs.c:42
+#: app/gui-subs.c:43
 msgid "Saving sample..."
 msgstr "サンプル保存..."
 
-#: app/gui-subs.c:43
+#: app/gui-subs.c:44
 msgid "Sample saved."
 msgstr "サンプルが保存されました。"
 
-#: app/gui-subs.c:44
+#: app/gui-subs.c:45
 msgid "Loading instrument..."
 msgstr "楽器ロード..."
 
-#: app/gui-subs.c:45
+#: app/gui-subs.c:46
 msgid "Instrument loaded."
 msgstr "楽器がロードされました。"
 
-#: app/gui-subs.c:46
+#: app/gui-subs.c:47
 msgid "Saving instrument..."
 msgstr "楽器保存..."
 
-#: app/gui-subs.c:47
+#: app/gui-subs.c:48
 msgid "Instrument saved."
 msgstr "楽器が保存されました。"
 
-#: app/gui-subs.c:48
+#: app/gui-subs.c:49
 msgid "Saving song..."
 msgstr "曲保存..."
 
-#: app/gui-subs.c:49
+#: app/gui-subs.c:50
 msgid "Song saved."
 msgstr "曲が保存されました。"
 
-#: app/gui-subs.c:586 app/gui-subs.c:657
-msgid "Question"
-msgstr "質問"
+#: app/gui-subs.c:498 app/gui-subs.c:518
+#, c-format
+msgid ""
+"An error occured when filename character set conversion:\n"
+"%s\n"
+"The file operation probably failed."
+msgstr ""
 
-#: app/gui-subs.c:595
-msgid "Yes"
-msgstr "はい"
+#: app/gui-subs.c:552
+#, c-format
+msgid ""
+"%s.\n"
+"Loading widgets' description from %s file failed!\n"
+msgstr ""
 
-#: app/gui-subs.c:603
-msgid "No"
-msgstr "いいえ"
-
-#: app/gui-subs.c:610 app/gui-subs.c:674 app/sample-editor.c:1527
-#: app/sample-editor.c:1702 app/sample-editor.c:2029 app/sample-editor.c:2490
-#: app/midi-settings-050.c:637 app/midi-settings-09x.c:640
-msgid "Cancel"
-msgstr "取消"
-
-#: app/gui-subs.c:692
-msgid "Warning"
-msgstr "警告"
-
-#: app/gui-subs.c:718
-msgid "Error!"
-msgstr "エラー!"
-
-#: app/gui.c:143
+#: app/gui.c:133
 msgid "Tempo"
 msgstr "テンポ"
 
-#: app/gui.c:248 app/gui.c:258 app/gui.c:2105
+#: app/gui.c:239 app/gui.c:2131
 msgid "Row highlighting configuration"
 msgstr "行ハイライト設定"
 
-#: app/gui.c:277 app/sample-editor.c:2251
-msgid "Close"
-msgstr "閉じる"
-
-#: app/gui.c:304
+#: app/gui.c:252
 msgid "Highlight rows (major / minor):"
 msgstr "行をハイライト (メジャー / マイナー): "
 
-#: app/gui.c:481
+#: app/gui.c:382
+#, fuzzy
+msgid "Saving module failed"
+msgstr "モジュール保存..."
+
+#: app/gui.c:446
 msgid ""
 "Odd pattern rows contain data which will be lost after shrinking.\n"
 "Do you want to continue anyway?"
 msgstr ""
 
-#: app/gui.c:509
+#: app/gui.c:471
 msgid ""
 "The pattern is too long for expanding.\n"
 "Some data at the end of the pattern will be lost.\n"
 "Do you want to continue anyway?"
 msgstr ""
 
-#: app/gui.c:558 app/instrument-editor.c:213 app/sample-editor.c:1727
-#: app/sample-editor.c:1923 app/sample-editor.c:1968
-msgid "No file selected."
-msgstr "ファイルが選択されていません"
-
-#: app/gui.c:566
+#: app/gui.c:512
 msgid ""
 "Are you sure you want to free the current project?\n"
 "All changes will be lost!"
@@ -631,16 +706,12 @@ msgstr ""
 "カレント・プロジェクトを解放したいのは確かですか?\n"
 "全ての変更が失われます!"
 
-#: app/gui.c:580 app/gui.c:595 app/gui.c:610 app/gui.c:628
-#: app/sample-editor.c:1937 app/sample-editor.c:1987
-msgid "Are you sure you want to overwrite the file?"
-msgstr "ファイルを上書きしたいのは確かですか?"
-
-#: app/gui.c:641
-msgid "Error when opening pattern file!"
+#: app/gui.c:576
+#, fuzzy, c-format
+msgid "Error when opening pattern file %s!"
 msgstr "パターンファイルの読み込み中にエラー。"
 
-#: app/gui.c:654
+#: app/gui.c:595
 msgid ""
 "The length of the pattern being loaded doesn't match with that of current "
 "pattern in module.\n"
@@ -650,232 +721,299 @@ msgstr ""
 "合致しません。\n"
 "現在のパターン長を変更しますか？"
 
-#: app/gui.c:1731
+#: app/gui.c:1716
 msgid "SoundTracker Startup"
 msgstr "SoundTracker起動"
 
-#: app/gui.c:1791 app/gui.c:1828
+#: app/gui.c:1775 app/gui.c:1807
 msgid "Loading..."
 msgstr "ロード..."
 
-#: app/gui.c:1817
+#: app/gui.c:1796
 msgid "Use SoundTracker!"
 msgstr "SoundTracker をつかうぞ！"
 
-#: app/gui.c:1888
-msgid "Load XM..."
-msgstr "XMロード..."
+#: app/gui.c:1830
+msgid ""
+"Are you sure you want to quit?\n"
+"All changes will be lost!"
+msgstr ""
+"終了したいのは確かですか?\n"
+"全ての変更が失われます!"
+
+#: app/gui.c:1889 app/gui.c:1892
+msgid "FastTracker modules (*.xm)"
+msgstr ""
 
 #: app/gui.c:1890
-msgid "Save XM..."
-msgstr "XM保存..."
+msgid "Original SoundTracker modules (*.mod)"
+msgstr ""
 
-#: app/gui.c:1893
-msgid "Render module as WAV..."
-msgstr "WAVとしてモジュールをレンダリングする..."
-
-#: app/gui.c:1896
-msgid "Save song as XM..."
-msgstr "XMとして曲保存..."
+#: app/gui.c:1895 app/sample-editor.c:250
+msgid "Microsoft RIFF (*.wav)"
+msgstr ""
 
 #: app/gui.c:1898
+#, fuzzy
+msgid "Extended pattern (*.xp)"
+msgstr "編集したパターン"
+
+#: app/gui.c:1905
+#, c-format
+msgid "%s.\n"
+msgstr ""
+
+#: app/gui.c:1931
+msgid "Load Module"
+msgstr "モジュール・ロード"
+
+#: app/gui.c:1931
+msgid "Load the selected module into the tracker"
+msgstr ""
+
+#: app/gui.c:1932
+msgid "Save Module"
+msgstr "モジュール保存"
+
+#: app/gui.c:1932
+#, fuzzy
+msgid "Save the current module"
+msgstr "現在のパターンをセーブ"
+
+#: app/gui.c:1934
+msgid "Render WAV"
+msgstr "WAVレンダ"
+
+#: app/gui.c:1934
+#, fuzzy
+msgid "Render the current module as WAV file"
+msgstr "WAVとしてモジュールをレンダリングする..."
+
+#: app/gui.c:1936
+msgid "Save XM without samples..."
+msgstr "サンプル無しにXM保存..."
+
+#: app/gui.c:1937
 msgid "Load current pattern..."
 msgstr "現在のパターンをロード"
 
-#: app/gui.c:1900
+#: app/gui.c:1938
 msgid "Save current pattern..."
 msgstr "現在のパターンをセーブ"
 
-#: app/gui.c:1971
+#: app/gui.c:1996
 msgid "Play Song"
 msgstr "曲演奏"
 
-#: app/gui.c:1983
+#: app/gui.c:2005
 msgid "Play Pattern"
 msgstr "パターン演奏"
 
-#: app/gui.c:1995
+#: app/gui.c:2014
 msgid "Stop"
 msgstr "停止"
 
-#: app/gui.c:2000
+#: app/gui.c:2019
 msgid "Pat"
 msgstr "パターン"
 
-#: app/gui.c:2006
+#: app/gui.c:2025
 msgid "Edited pattern"
 msgstr "編集したパターン"
 
-#: app/gui.c:2019
+#: app/gui.c:2035
 msgid "When enabled, browsing the playlist does not change the edited pattern."
 msgstr ""
 "有効にしたら，プレイリストを閲覧することでは編集中のパターンは変更されません"
 
-#: app/gui.c:2035
+#: app/gui.c:2051
 msgid "Number of Channels:"
 msgstr "チャンネル数:"
 
-#: app/gui.c:2052
+#: app/gui.c:2068
 msgid "Pattern Length"
 msgstr "パターン長"
 
-#: app/gui.c:2087
+#: app/gui.c:2097
 msgid "Set preferred accidental type"
 msgstr "好みの臨時記号のタイプを指定"
 
-#: app/gui.c:2093
+#: app/gui.c:2103
 msgid "Measure"
 msgstr "間隔"
 
-#: app/gui.c:2094
+#: app/gui.c:2104
 msgid "Enable row highlighting"
 msgstr "行ハイライトを有効に"
 
-#: app/gui.c:2121
+#: app/gui.c:2125
 msgid "Other..."
 msgstr "その他..."
 
-#: app/gui.c:2158
+#: app/gui.c:2154
 msgid "Change effect column editing direction"
 msgstr "エフェクトコラム編集の方向を変える"
 
-#: app/gui.c:2190
+#: app/gui.c:2185
 msgid "Global amplification"
 msgstr "全体的な音量増幅"
 
-#: app/gui.c:2226
+#: app/gui.c:2221
 msgid "Pitchbend"
 msgstr "ピッチベンド"
 
-#: app/gui.c:2234
+#: app/gui.c:2229
 msgid "Reset pitchbend to its normal value"
 msgstr "ピッチベンドを通常の値に戻す"
 
-#: app/gui.c:2246
+#: app/gui.c:2241
 msgid "Editing"
 msgstr "編集"
 
-#: app/gui.c:2253
+#: app/gui.c:2248
 msgid "Octave"
 msgstr "オクターブ"
 
-#: app/gui.c:2262
+#: app/gui.c:2257
 msgid "Jump"
 msgstr "ジャンプ"
 
-#: app/gui.c:2271
+#: app/gui.c:2266
 msgid "Instr"
 msgstr "楽器"
 
-#: app/gui.c:2287
+#: app/gui.c:2282
 msgid "Sample"
 msgstr "サンプル"
 
-#: app/gui.c:2326
+#: app/gui.c:2321
 msgid "Welcome to SoundTracker!"
 msgstr "SoundTrackerにようこそ."
 
-#: app/gui.c:2354
+#: app/gui.c:2348
 msgid "%M:%S"
 msgstr "%M:%S"
 
-#: app/instrument-editor.c:82
+#: app/gui.c:2418
+#, c-format
+msgid "GUI creation error: Widget '%s' is not found in %s file.\n"
+msgstr ""
+
+#: app/instrument-editor.c:80
 msgid "VolFade"
 msgstr "音量フェード"
 
-#: app/instrument-editor.c:83
+#: app/instrument-editor.c:81
 msgid "VibSpeed"
 msgstr "バイブレーション速度"
 
-#: app/instrument-editor.c:84
+#: app/instrument-editor.c:82
 msgid "VibDepth"
 msgstr "バイブレーション深度"
 
-#: app/instrument-editor.c:85
+#: app/instrument-editor.c:83
 msgid "VibSweep"
 msgstr "バイブレーション・スイープ"
 
-#: app/instrument-editor.c:164 app/instrument-editor.c:187
+#: app/instrument-editor.c:166 app/instrument-editor.c:196
 msgid "Can't open file."
 msgstr "ファイルが開けません。"
 
-#: app/instrument-editor.c:230
+#: app/instrument-editor.c:190
+#, fuzzy
+msgid "Saving instrument failed."
+msgstr "楽器保存..."
+
+#: app/instrument-editor.c:216
 msgid "Sine"
 msgstr "正弦波"
 
-#: app/instrument-editor.c:230
+#: app/instrument-editor.c:216
 msgid "Square"
 msgstr "矩形波"
 
-#: app/instrument-editor.c:230
+#: app/instrument-editor.c:216
 msgid "Saw Down"
 msgstr "下向鋸波"
 
-#: app/instrument-editor.c:230
+#: app/instrument-editor.c:216
 msgid "Saw Up"
 msgstr "上向鋸波"
 
-#: app/instrument-editor.c:234
+#: app/instrument-editor.c:218
+msgid "FastTracker instrumets (*.xi)"
+msgstr ""
+
+#: app/instrument-editor.c:223
 msgid "Instrument Editor"
 msgstr "楽器編集"
 
-#: app/instrument-editor.c:243
+#: app/instrument-editor.c:232
 msgid "Volume envelope"
 msgstr "音量エンベロープ"
 
-#: app/instrument-editor.c:251
+#: app/instrument-editor.c:240
 msgid "Panning envelope"
 msgstr "エンベロープをパンニングする"
 
-#: app/instrument-editor.c:268
-msgid "Load Instrument..."
-msgstr "楽器ロード..."
+#: app/instrument-editor.c:257
+msgid "Load Instrument"
+msgstr "楽器ロード"
 
-#: app/instrument-editor.c:270
-msgid "Save Instrument..."
-msgstr "楽器保存..."
+#: app/instrument-editor.c:259
+msgid "Load instrument in the current instrument slot"
+msgstr ""
 
-#: app/instrument-editor.c:272
+#: app/instrument-editor.c:260
+msgid "Save Instrument"
+msgstr "楽器保存"
+
+#: app/instrument-editor.c:262
+#, fuzzy
+msgid "Save the current instrument"
+msgstr "現在の楽器"
+
+#: app/instrument-editor.c:264
 msgid "Load XI"
 msgstr "XIロード"
 
-#: app/instrument-editor.c:278
+#: app/instrument-editor.c:270
 msgid "Save XI"
 msgstr "XI保存"
 
-#: app/instrument-editor.c:297
+#: app/instrument-editor.c:289
 msgid "Vibrato Type:"
 msgstr "ビブラート型:"
 
-#: app/instrument-editor.c:369
+#: app/instrument-editor.c:361
 msgid "Note:"
 msgstr "音符"
 
-#: app/instrument-editor.c:387
+#: app/instrument-editor.c:379
 msgid "Initialize"
 msgstr "初期化"
 
-#: app/keys.c:58
+#: app/keys.c:54
 msgid "<none>"
 msgstr "<無>"
 
-#: app/keys.c:130
+#: app/keys.c:126
 msgid "The key that inserts the special keyoff note for FastTracker modules."
 msgstr "挿入されたキーはFastTrackerモジュールに関する特別なキーオフ音符です。"
 
-#: app/keys.c:132
+#: app/keys.c:128
 msgid "The key that increases \"jump\" value."
 msgstr "\"jump\"の値を増やすキー"
 
-#: app/keys.c:134
+#: app/keys.c:130
 msgid "The key that decreases \"jump\" value."
 msgstr "\"jump\"の値を減らすキー"
 
-#: app/keys.c:146
+#: app/keys.c:142
 msgid "Upper Octave Keys..."
 msgstr "オクターブ上のキー..."
 
-#: app/keys.c:147
+#: app/keys.c:143
 msgid ""
 "These are the keys on the upper half of the keyboard. The c key is normally "
 "the key to the right of the TAB key. The rest of the keys should be ordered "
@@ -884,11 +1022,11 @@ msgstr ""
 "鍵盤の上半分にキーがあります。キーcは普通TABキーの右のキーです。残りの\n"
 "キーは、上部の数字キーの行を含んで、ピアノの鍵盤のように並んでいます。"
 
-#: app/keys.c:153
+#: app/keys.c:149
 msgid "Lower Octave Keys..."
 msgstr "オクターブ下のキー..."
 
-#: app/keys.c:154
+#: app/keys.c:150
 msgid ""
 "These are the keys on the lower half of the keyboard. The c key is normally "
 "the first character key to the right of the left Shift key. The rest of the "
@@ -897,31 +1035,31 @@ msgstr ""
 "鍵盤の下半分にキーがあります。キーcは普通左Shiftキーの右の最初の文字キー\n"
 "です。残りのキーは、上部の行を含んで、ピアノの鍵盤のように並んでいます。"
 
-#: app/keys.c:160
+#: app/keys.c:156
 msgid "Other Keys..."
 msgstr "他のキー..."
 
-#: app/keys.c:161
+#: app/keys.c:157
 msgid "Various other keys"
 msgstr "他の各種キー"
 
-#: app/keys.c:526
+#: app/keys.c:535
 msgid "Function"
 msgstr "機能"
 
-#: app/keys.c:527
+#: app/keys.c:536
 msgid "Assignment"
 msgstr "割当"
 
-#: app/keys.c:536 app/keys.c:539
+#: app/keys.c:545
 msgid "Keyboard Configuration"
 msgstr "キーボード設定"
 
-#: app/keys.c:583
+#: app/keys.c:591
 msgid "Key Group Explanation"
 msgstr "キー・グループ説明"
 
-#: app/keys.c:600
+#: app/keys.c:605
 msgid "Key Explanation"
 msgstr "キー説明"
 
@@ -929,15 +1067,15 @@ msgstr "キー説明"
 msgid "Modifiers:"
 msgstr "モディファイア"
 
-#: app/keys.c:657
+#: app/keys.c:653
 msgid "Learn selected key"
 msgstr "選択されたキーを覚える"
 
-#: app/keys.c:663
+#: app/keys.c:658
 msgid "Learn all keys"
 msgstr "全てのキーを覚える"
 
-#: app/keys.c:669
+#: app/keys.c:664
 msgid ""
 "Please press the desired key combination!\n"
 "Click into left list to cancel"
@@ -945,25 +1083,17 @@ msgstr ""
 "お望みの組合せのキーを押してください!\n"
 "取消すには左の一覧でクリックしてください"
 
-#: app/keys.c:767
-msgid ""
-"The keyboard configuration file is defective.\n"
-"Please use the Keyboard Configuration dialog."
-msgstr ""
-"キーボード設定ファイルが不完全です。\n"
-"キーボード設定ダイアログを使用してください。"
-
-#: app/keys.c:996
+#: app/keys.c:919
 #, c-format
 msgid "CH%02d"
 msgstr "CH%02d"
 
-#: app/keys.c:997
+#: app/keys.c:920
 #, c-format
 msgid "Fast jump to channel %d"
 msgstr "チャンネル %d への高速ジャンプ"
 
-#: app/keys.c:1072
+#: app/keys.c:995
 msgid ""
 "Automatic key configuration unsuccessful.\n"
 "Please use the Keyboard Configuration dialog\n"
@@ -973,12 +1103,7 @@ msgstr ""
 "設定メニューのキーボード設定ダイアログを使用\n"
 "してください。"
 
-#: app/menubar.c:104 app/sample-editor.c:2482 app/midi-settings-050.c:635
-#: app/midi-settings-09x.c:638
-msgid "Ok"
-msgstr "了解"
-
-#: app/menubar.c:140
+#: app/menubar.c:92
 msgid ""
 "Are you sure you want to do this?\n"
 "All changes will be lost!"
@@ -986,326 +1111,47 @@ msgstr ""
 "こうしたいのは確かですか?\n"
 "全ての変更が失われます!"
 
-#: app/menubar.c:162
-msgid ""
-"Are you sure you want to quit?\n"
-"All changes will be lost!"
-msgstr ""
-"終了したいのは確かですか?\n"
-"全ての変更が失われます!"
-
-#: app/menubar.c:419
-msgid "_Open..."
-msgstr "開く(_O)..."
-
-#: app/menubar.c:421
-msgid "Save _as..."
-msgstr "保存(_a)..."
-
-#: app/menubar.c:427
-msgid "Save Module as _WAV..."
-msgstr "_WAVとしてモジュールを保存..."
-
-#: app/menubar.c:429
-msgid "Save XM without samples..."
-msgstr "サンプル無しにXM保存..."
-
-#: app/menubar.c:434
-msgid "_Quit"
-msgstr "終了(_Q)"
-
-#: app/menubar.c:441
-msgid "Clear _All"
-msgstr "全て消去(_A)"
-
-#: app/menubar.c:443
-msgid "Clear _Patterns Only"
-msgstr "パターンのみ消去(_P)"
-
-#: app/menubar.c:448
-msgid "_Optimize Module"
-msgstr "モジュール最適化(_O)"
-
-#: app/menubar.c:455 app/menubar.c:466 app/menubar.c:522 app/menubar.c:556
-msgid "C_ut"
-msgstr "切取(_u)"
-
-#: app/menubar.c:457 app/menubar.c:468 app/menubar.c:524 app/menubar.c:558
-msgid "_Copy"
-msgstr "コピー(_C)"
-
-#: app/menubar.c:459 app/menubar.c:470 app/menubar.c:560
-msgid "_Paste"
-msgstr "貼付(_P)"
-
-#: app/menubar.c:475
-msgid "_Kill notes"
-msgstr "音符を消す(_K)"
-
-#: app/menubar.c:480
-msgid "_Insert track"
-msgstr "トラック挿入(_I)"
-
-#: app/menubar.c:482
-msgid "_Delete track"
-msgstr "トラック削除(_D)"
-
-#: app/menubar.c:487
-msgid "Increment cmd value"
-msgstr "cmd値増加"
-
-#: app/menubar.c:489
-msgid "Decrement cmd value"
-msgstr "cmd値減少"
-
-#: app/menubar.c:496
-msgid "_Mark mode"
-msgstr "マーク・モード(_M)"
-
-#: app/menubar.c:498 app/menubar.c:554
-msgid "C_lear block marks"
-msgstr "ブロック・マーク消去(_l)"
-
-#: app/menubar.c:503 app/menubar.c:562
-msgid "_Interpolate effects"
-msgstr "内挿エフェクト(_I)"
-
-#: app/menubar.c:508
-msgid "Transpose half-note up"
-msgstr "半音上げる"
-
-#: app/menubar.c:510
-msgid "Transpose half-note down"
-msgstr "半音下げる"
-
-#: app/menubar.c:512
-msgid "Transpose octave up"
-msgstr "オクターブ上げる"
-
-#: app/menubar.c:514
-msgid "Transpose octave down"
-msgstr "オクターブ下げる"
-
-#: app/menubar.c:526
-#, fuzzy
-msgid "P_aste"
-msgstr "貼付"
-
-#: app/menubar.c:531
-msgid "_Jazz Edit Mode"
-msgstr "_Jazz編集モード"
-
-#: app/menubar.c:534
-msgid "_Record keyreleases"
-msgstr ""
-
-#: app/menubar.c:539
-msgid "Transp_osition..."
-msgstr "移調(_o)..."
-
-#: app/menubar.c:544 app/menubar.c:569 app/menubar.c:707
-msgid "_Pattern"
-msgstr "パターン(_P)"
-
-#: app/menubar.c:545 app/menubar.c:570 app/menubar.c:708
-msgid "_Track"
-msgstr "トラック(_T)"
-
-#: app/menubar.c:546 app/menubar.c:571
-msgid "_Selection"
-msgstr "選択(_S)"
-
-#: app/menubar.c:578
-msgid "_Find Unused Pattern"
-msgstr "未使用パターン検索(_F)"
-
-#: app/menubar.c:580
-msgid "_Copy Current to Unused Pattern"
-msgstr "未使用パターンにカレントをコピー(_C)"
-
-#: app/menubar.c:585
-msgid "C_lear Unused Patterns"
-msgstr "未使用パターン消去(_l)"
-
-#: app/menubar.c:587
-msgid "_Pack Patterns"
-msgstr "パターン・パック(_P)"
-
-#: app/menubar.c:592
-msgid "_Save Current Pattern"
-msgstr "現在のパターンを保存(_S)"
-
-#: app/menubar.c:594
-msgid "L_oad Pattern"
-msgstr "パターンを読み込み(_o)"
-
-#: app/menubar.c:599
-#, fuzzy
-msgid "Sh_rink Current Pattern"
-msgstr "現在のパターン"
-
-#: app/menubar.c:601
-#, fuzzy
-msgid "_Expand Current Pattern"
-msgstr "現在のパターンを保存(_S)"
-
-#: app/menubar.c:608
-msgid "_Toggle Current Channel Permanentness"
-msgstr ""
-
-#: app/menubar.c:610
-msgid "Toggle _All Channels Permanentness"
-msgstr ""
-
-#: app/menubar.c:618
-msgid "_Load XI..."
-msgstr "XIロード(_L)..."
-
-#: app/menubar.c:620
-msgid "_Save XI..."
-msgstr "XI保存(_S)..."
-
-#: app/menubar.c:625
-msgid "_Clear Current"
-msgstr "カレント消去(_C)"
-
-#: app/menubar.c:630
-msgid "_Delete Unused Instruments"
-msgstr "未使用楽器削除(_D)"
-
-#: app/menubar.c:637
-msgid "_Flicker-free scrolling"
-msgstr "フリッカ無しのスクロール(_F)"
-
-#: app/menubar.c:640
-msgid "_Previous font"
-msgstr "前のフォント(_P)"
-
-#: app/menubar.c:642
-msgid "_Next font"
-msgstr "次のフォント(_N)"
-
-#: app/menubar.c:647
-msgid "Change preferred _accidental type"
-msgstr "好みの臨時記号タイプに変更する (_A)"
-
-#: app/menubar.c:649
-msgid "Change effect column editing _direction"
-msgstr "エフェクトコラム編集の方向を変える (_D)"
-
-#: app/menubar.c:657
-msgid "Display _Oscilloscopes"
-msgstr "オシロスコープ表示(_O)"
-
-#: app/menubar.c:660
-msgid "_Tracker"
-msgstr "トラッカー(_T)"
-
-#: app/menubar.c:664
-msgid "_Keyboard Configuration..."
-msgstr "キーボード設定(_K)..."
-
-#: app/menubar.c:666
-msgid "_Audio Configuration..."
-msgstr "オーディオ設定(_A)..."
-
-#: app/menubar.c:668
-msgid "_GUI Configuration..."
-msgstr "GUI設定(_G)..."
-
-#: app/menubar.c:674
-msgid "_MIDI Configuration..."
-msgstr "MIDI設定..."
-
-#: app/menubar.c:679
-msgid "Disable splash screen"
-msgstr "スプラッシュスクリーンを無効にする"
-
-#: app/menubar.c:681
-msgid "_Save Settings now"
-msgstr "設定を今保存(_S)"
-
-#: app/menubar.c:683
-msgid "Save Settings on _Exit"
-msgstr "終了時に設定を保存(_E)"
-
-#: app/menubar.c:690
-msgid "_About..."
-msgstr "情報(_A)..."
-
-#: app/menubar.c:695
-msgid "Show _Tips..."
-msgstr "技の表示(_T)..."
-
-#: app/menubar.c:697
-msgid "_XM Effects..."
-msgstr "_XM効果..."
-
-#: app/menubar.c:704
-msgid "_File"
-msgstr "ファイル(_F)"
-
-#: app/menubar.c:705
-msgid "_Module"
-msgstr "モジュール(_M)"
-
-#: app/menubar.c:706
-msgid "_Edit"
-msgstr "編集(_E)"
-
-#: app/menubar.c:709
-msgid "_Instrument"
-msgstr "楽器(_I)"
-
-#: app/menubar.c:710
-msgid "_Settings"
-msgstr "設定(_S)"
-
-#: app/menubar.c:711
-msgid "_Help"
-msgstr "ヘルプ(_H)"
-
 #: app/mixers/integer32.c:493
 msgid "Integers mixer, no interpolation, no filters, maximum sample length 1M"
 msgstr "整数ミキサー，a補間無し，フィルタ無し，最大サンプルサイズ1M"
 
-#: app/module-info.c:120
+#: app/module-info.c:123
 msgid "Instrument Name"
 msgstr "楽器名"
 
-#: app/module-info.c:120
+#: app/module-info.c:123
 msgid "#smpl"
 msgstr "サンプル数"
 
-#: app/module-info.c:121
+#: app/module-info.c:124
 msgid "Sample Name"
 msgstr "サンプル名"
 
-#: app/module-info.c:128
+#: app/module-info.c:131
 msgid "Linear"
 msgstr "線型"
 
-#: app/module-info.c:128 app/sample-editor.c:237
+#: app/module-info.c:131 app/sample-editor.c:226
 msgid "Amiga"
 msgstr "Amiga"
 
-#: app/module-info.c:133
+#: app/module-info.c:136
 msgid "Module Info"
 msgstr "モジュール情報"
 
-#: app/module-info.c:167
+#: app/module-info.c:170
 msgid "Songname:"
 msgstr "曲名:"
 
-#: app/module-info.c:182
+#: app/module-info.c:183
 msgid "Frequencies:"
 msgstr "周波数:"
 
-#: app/module-info.c:187
+#: app/module-info.c:188
 msgid "ProTracker Mode"
 msgstr "ProTrackerモード"
 
-#: app/module-info.c:403
+#: app/module-info.c:426
 #, c-format
 msgid ""
 "Unused patterns: %d (used: %d)\n"
@@ -1318,218 +1164,361 @@ msgstr ""
 "\n"
 "未利用領域をクリアしてプレイリストの順番を更新しますか？\n"
 
-#: app/playlist.c:553
+#: app/playlist.c:552
 msgid "Insert pattern that is being edited"
 msgstr "編集中のパターンを挿入"
 
-#: app/playlist.c:562
+#: app/playlist.c:561
 msgid "Remove current playlist entry"
 msgstr "現在のプレイリストエントリーを削除"
 
-#: app/playlist.c:570
+#: app/playlist.c:569
 msgid "Add + Cpy"
 msgstr "追加＋コピー"
 
-#: app/playlist.c:572
+#: app/playlist.c:571
 msgid ""
 "Add a free pattern behind current position, and copy current pattern to it"
 msgstr "現在の位置の後に空きパターンを追加し，現在のパターンをコピーする"
 
-#: app/playlist.c:575
+#: app/playlist.c:574
 msgid "Add Free"
 msgstr "空きパターンを追加"
 
-#: app/playlist.c:577
+#: app/playlist.c:576
 msgid "Add a free pattern behind current position"
 msgstr "現在の位置の後に空きパターンを追加"
 
-#: app/playlist.c:587
+#: app/playlist.c:586
 #, fuzzy
 msgid "Len"
 msgstr "長さ"
 
-#: app/playlist.c:601
+#: app/playlist.c:600
 msgid "Song length"
 msgstr "曲長"
 
-#: app/playlist.c:607
+#: app/playlist.c:606
 #, fuzzy
 msgid "Rstrt"
 msgstr "楽器"
 
-#: app/playlist.c:620
+#: app/playlist.c:619
 msgid "Song restart position"
 msgstr "再開始位置"
 
-#: app/preferences.c:75
-#, fuzzy
-msgid ""
-"A directory called '.soundtracker2' has been created in your\n"
-"home directory to store configuration files.\n"
+#: app/preferences.c:91
+msgid "Would you like to import settings from old version of Soundtracker?"
 msgstr ""
-"設定ファイルを記憶するため、あなたのホーム・ディレクトリに\n"
-"ディレクトリ'.soundtracker'が生成されます。\n"
 
-#: app/sample-editor.c:236
+#: app/preferences.c:95
+#, c-format
+msgid ""
+"An error is occured during converting config:\n"
+"%s"
+msgstr ""
+
+#: app/preferences.c:109
+#, c-format
+msgid ""
+"An error is occured during reading or parsing config:\n"
+"%s"
+msgstr ""
+
+#: app/preferences.c:133
+#, c-format
+msgid ""
+"An error is occured during saving config:\n"
+"%s"
+msgstr ""
+
+#: app/sample-editor.c:225
 msgid "No loop"
 msgstr "ループ無し"
 
-#: app/sample-editor.c:238
+#: app/sample-editor.c:227
 msgid "PingPong"
 msgstr "ピンポン"
 
-#: app/sample-editor.c:242 app/sample-editor.c:1581
+#: app/sample-editor.c:231 app/sample-editor.c:1614
 msgid "8 bits"
 msgstr "8ビット"
 
-#: app/sample-editor.c:243 app/sample-editor.c:1581
+#: app/sample-editor.c:232 app/sample-editor.c:1614
 msgid "16 bits"
 msgstr "16ビット"
 
-#: app/sample-editor.c:249
+#: app/sample-editor.c:237
+msgid "Apple/SGI audio (*aif, *.aiff, *.aifc)"
+msgstr ""
+
+#: app/sample-editor.c:238
+msgid "SUN/NeXT audio (*.au, *.snd)"
+msgstr ""
+
+#: app/sample-editor.c:239
+msgid "Audio Visual Research files (*.avr)"
+msgstr ""
+
+#: app/sample-editor.c:240
+msgid "Apple Core Audio files (*.caf)"
+msgstr ""
+
+#: app/sample-editor.c:241
+msgid "Amiga IFF/SV8/SV16 (*.iff)"
+msgstr ""
+
+#: app/sample-editor.c:242
+msgid "Berkeley/IRCAM/CARL audio (*.sf)"
+msgstr ""
+
+#: app/sample-editor.c:243
+msgid "Creative Labs audio (*.voc)"
+msgstr ""
+
+#: app/sample-editor.c:244
+msgid "Microsoft RIFF/NIST Sphere (*.wav)"
+msgstr ""
+
+#: app/sample-editor.c:245
+msgid "FLAC lossless audio (*.flac)"
+msgstr ""
+
+#: app/sample-editor.c:246
+msgid "Psion audio (*.wve)"
+msgstr ""
+
+#: app/sample-editor.c:247
+msgid "OGG compressed audio (*.ogg, *.vorbis)"
+msgstr ""
+
+#: app/sample-editor.c:248
+msgid "RIFF 64 files (*.rf64)"
+msgstr ""
+
+#: app/sample-editor.c:255
+msgid "HMM Tool KIt files (*.htk)"
+msgstr ""
+
+#: app/sample-editor.c:256
+msgid "GNU Octave/Matlab files (*.mat)"
+msgstr ""
+
+#: app/sample-editor.c:257
+msgid "Ensoniq PARIS files (*.paf)"
+msgstr ""
+
+#: app/sample-editor.c:258
+msgid "Portable Voice Format files (*.pvf)"
+msgstr ""
+
+#: app/sample-editor.c:259
+msgid "Headerless raw data (*.raw, *.r8)"
+msgstr ""
+
+#: app/sample-editor.c:260
+msgid "Sound Designer II files (*.sd2)"
+msgstr ""
+
+#: app/sample-editor.c:261
+msgid "Midi Sample Dump Standard files (*.sds)"
+msgstr ""
+
+#: app/sample-editor.c:262
+msgid "SoundFoundry WAVE 64 files (*.w64)"
+msgstr ""
+
+#: app/sample-editor.c:269
+msgid "Sample Vision files (*.smp)"
+msgstr ""
+
+#: app/sample-editor.c:277
 msgid "Sample Editor"
 msgstr "サンプル編集"
 
-#: app/sample-editor.c:289 app/midi-settings-050.c:504
-#: app/midi-settings-09x.c:507
+#: app/sample-editor.c:317 app/midi-settings-09x.c:416
 msgid "Volume"
 msgstr "音量"
 
-#: app/sample-editor.c:290
+#: app/sample-editor.c:318
 msgid "Panning"
 msgstr "パンニング"
 
-#: app/sample-editor.c:291
+#: app/sample-editor.c:319
 msgid "Finetune"
 msgstr "微調整"
 
-#: app/sample-editor.c:311
+#: app/sample-editor.c:339
 msgid "Selection:"
 msgstr "選択:"
 
-#: app/sample-editor.c:315 app/track-editor.c:200 app/track-editor.c:210
+#: app/sample-editor.c:343 app/track-editor.c:195 app/track-editor.c:205
 msgid "None"
 msgstr "無"
 
-#: app/sample-editor.c:321
+#: app/sample-editor.c:349
 msgid "All"
 msgstr "全て"
 
-#: app/sample-editor.c:342
+#: app/sample-editor.c:370
 msgid "Length:"
 msgstr "長さ:"
 
-#: app/sample-editor.c:358
+#: app/sample-editor.c:386
 msgid "Set as loop"
 msgstr "ループとして設定"
 
-#: app/sample-editor.c:366
+#: app/sample-editor.c:394
 msgid "RelNote"
 msgstr "RelNote"
 
-#: app/sample-editor.c:377
-msgid "Load Sample..."
-msgstr "サンプル・ロード..."
+#: app/sample-editor.c:405 app/sample-editor.c:410
+msgid "Load Sample"
+msgstr "サンプル・ロード"
 
-#: app/sample-editor.c:379
-msgid "Save WAV..."
-msgstr "WAV保存..."
+#: app/sample-editor.c:405
+msgid "Load sample into the current samle slot"
+msgstr ""
 
-#: app/sample-editor.c:381
+#: app/sample-editor.c:406
+msgid "Save Sample"
+msgstr "サンプル保存"
+
+#: app/sample-editor.c:406
+#, fuzzy
+msgid "Save the current sample"
+msgstr "サンプル無しにXM保存..."
+
+#: app/sample-editor.c:407
 msgid "Save region as WAV..."
 msgstr "WAVとして範囲保存..."
 
-#: app/sample-editor.c:394
+#: app/sample-editor.c:419
 msgid "Save WAV"
 msgstr "WAV保存"
 
-#: app/sample-editor.c:404
+#: app/sample-editor.c:429
 msgid "Save Region"
 msgstr "範囲保存"
 
-#: app/sample-editor.c:415
+#: app/sample-editor.c:440
 msgid "Monitor"
 msgstr "モニタ"
 
-#: app/sample-editor.c:421
+#: app/sample-editor.c:446
 msgid "Volume Ramp"
 msgstr "ボリュームランプ"
 
-#: app/sample-editor.c:427
+#: app/sample-editor.c:452
 #, fuzzy
 msgid "Trim"
 msgstr "トレモロ"
 
-#: app/sample-editor.c:438
+#: app/sample-editor.c:463
 msgid "Zoom to selection"
 msgstr "選択部分拡大"
 
-#: app/sample-editor.c:444
+#: app/sample-editor.c:469
 msgid "Show all"
 msgstr "全て表示"
 
-#: app/sample-editor.c:450
+#: app/sample-editor.c:475
 msgid "Zoom in (+50%)"
 msgstr "拡大(+50%)"
 
-#: app/sample-editor.c:456
+#: app/sample-editor.c:481
 msgid "Zoom out (-50%)"
 msgstr "縮小(-50%)"
 
-#: app/sample-editor.c:462
+#: app/sample-editor.c:487
 msgid "Reverse"
 msgstr "リバース"
 
-#: app/sample-editor.c:472
+#: app/sample-editor.c:497
 msgid "Cut"
 msgstr "切取"
 
-#: app/sample-editor.c:478
+#: app/sample-editor.c:503
 msgid "Remove"
 msgstr "移動"
 
-#: app/sample-editor.c:484
+#: app/sample-editor.c:509
 msgid "Copy"
 msgstr "コピー"
 
-#: app/sample-editor.c:490
+#: app/sample-editor.c:515
 msgid "Paste"
 msgstr "貼付"
 
-#: app/sample-editor.c:496
+#: app/sample-editor.c:521
 msgid "Clear Sample"
 msgstr "サンプル消去"
 
-#: app/sample-editor.c:502
+#: app/sample-editor.c:527
 #, fuzzy
 msgid "Crop"
 msgstr "コピー"
 
-#: app/sample-editor.c:571
+#: app/sample-editor.c:596
 msgid "(no selection)"
 msgstr "(無選択)"
 
-#: app/sample-editor.c:1076
+#: app/sample-editor.c:1099
 msgid "Out of memory for copybuffer.\n"
 msgstr "コピーバッファのためのメモリが無くなりました\n"
 
-#: app/sample-editor.c:1195
+#: app/sample-editor.c:1224
 msgid "<just pasted>"
 msgstr "<今貼付けされました>"
 
-#: app/sample-editor.c:1308
-msgid "Out of memory for sample data."
-msgstr "サンプルデータのためのメモリが無くなりました。"
-
-#: app/sample-editor.c:1324 app/sample-editor.c:1336
-msgid "Read error."
-msgstr "読み込みエラー。"
-
-#: app/sample-editor.c:1483
+#: app/sample-editor.c:1309
 msgid "Load stereo sample"
 msgstr "ステレオ・サンプル・ロード"
 
-#: app/sample-editor.c:1491
+#: app/sample-editor.c:1311
+msgid "Left"
+msgstr "左"
+
+#: app/sample-editor.c:1312
+msgid "Mix"
+msgstr "ミックス"
+
+#: app/sample-editor.c:1313
+msgid "Right"
+msgstr "右"
+
+#: app/sample-editor.c:1314
+#, fuzzy
+msgid "2 smpls"
+msgstr "サンプル数"
+
+#: app/sample-editor.c:1315
+msgid "Load left and right channels into the current sample and the next one"
+msgstr ""
+
+#: app/sample-editor.c:1379 app/sample-editor.c:2169
+msgid ""
+"You have selected the last sample of the instrument, but going to load the "
+"second stereo channel to the next sample. Please select a sample slot with "
+"lower number or use another loading mode."
+msgstr ""
+
+#: app/sample-editor.c:1386 app/sample-editor.c:2176
+msgid ""
+"The next sample which is about to be overwriten is not empty!\n"
+"Would you like to overwrite it?"
+msgstr ""
+
+#: app/sample-editor.c:1396 app/sample-editor.c:1402 app/sample-editor.c:1488
+#: app/sample-editor.c:2143 app/sample-editor.c:2194
+msgid "Out of memory for sample data."
+msgstr "サンプルデータのためのメモリが無くなりました。"
+
+#: app/sample-editor.c:1419 app/sample-editor.c:1431
+msgid "Read error."
+msgstr "読み込みエラー。"
+
+#: app/sample-editor.c:1575
 msgid ""
 "You have selected a stereo sample!\n"
 "(SoundTracker can only handle mono samples!)\n"
@@ -1541,47 +1530,27 @@ msgstr ""
 "\n"
 "ロードするためのチャンネルを選んでください:"
 
-#: app/sample-editor.c:1502
-msgid "Left"
-msgstr "左"
-
-#: app/sample-editor.c:1508
-msgid "Mix"
-msgstr "ミックス"
-
-#: app/sample-editor.c:1514
-msgid "Right"
-msgstr "右"
-
-#: app/sample-editor.c:1582
+#: app/sample-editor.c:1615
 msgid "Signed"
 msgstr "正負"
 
-#: app/sample-editor.c:1582
+#: app/sample-editor.c:1615
 msgid "Unsigned"
 msgstr "正数"
 
-#: app/sample-editor.c:1583
+#: app/sample-editor.c:1616
 msgid "Little-Endian"
 msgstr "リトルエンディアン"
 
-#: app/sample-editor.c:1583
+#: app/sample-editor.c:1616
 msgid "Big-Endian"
 msgstr "ビッグエンディアン"
 
-#: app/sample-editor.c:1584
-msgid "Mono"
-msgstr "モノラル"
-
-#: app/sample-editor.c:1584
-msgid "Stereo"
-msgstr "ステレオ"
-
-#: app/sample-editor.c:1596
+#: app/sample-editor.c:1625
 msgid "Load raw sample"
 msgstr "生サンプル・ロード"
 
-#: app/sample-editor.c:1604
+#: app/sample-editor.c:1633
 msgid ""
 "You have selected a sample that is not\n"
 "in a known format. You can load the raw data now.\n"
@@ -1593,115 +1562,137 @@ msgstr ""
 "\n"
 "書式を選択してください:"
 
-#: app/sample-editor.c:1630
+#: app/sample-editor.c:1659
 msgid "Word format:"
 msgstr "ワード書式"
 
-#: app/sample-editor.c:1677
+#: app/sample-editor.c:1690
 msgid "Sampling Rate:"
 msgstr "サンプリングレート："
 
-#: app/sample-editor.c:1688
-msgid "8363"
-msgstr "8363"
-
-#: app/sample-editor.c:1696 app/sample-editor.c:2014
-msgid "OK"
-msgstr "了解"
-
-#: app/sample-editor.c:1756
+#: app/sample-editor.c:1780
 msgid "Can't read sample"
 msgstr "サンプルが読み込めません"
 
-#: app/sample-editor.c:1769
+#: app/sample-editor.c:1793
 msgid "Sample is too long for current mixer module. Loading anyway."
 msgstr ""
 "サンプルが現在のミキサ・モジュールには長過ぎます。\n"
 "とにかくロードします。"
 
-#: app/sample-editor.c:1793
+#: app/sample-editor.c:1817
 msgid "Can only handle 8 and 16 bit samples with up to 2 channels"
 msgstr "2チャンネルまでで 8、16ビット・サンプルのみ処理できます"
 
-#: app/sample-editor.c:1978
+#: app/sample-editor.c:1951
 msgid "Please select region first."
 msgstr "領域を選択してください．"
 
-#: app/sample-editor.c:2022
+#: app/sample-editor.c:1977
+msgid "OK"
+msgstr "了解"
+
+#: app/sample-editor.c:1985
 msgid "Start sampling"
 msgstr "サンプリング開始"
 
-#: app/sample-editor.c:2052
+#: app/sample-editor.c:1992
+msgid "Cancel"
+msgstr "取消"
+
+#: app/sample-editor.c:2013
 msgid "No sampling driver available"
 msgstr "サンプリング・ドライバが使用できません"
 
-#: app/sample-editor.c:2062 app/sample-editor.c:2065
+#: app/sample-editor.c:2021
 msgid "Sampling Window"
 msgstr "サンプリング・ウィンドウ"
 
-#: app/sample-editor.c:2114
+#: app/sample-editor.c:2051
+#, fuzzy
+msgid "Sampling failed!"
+msgstr "サンプリングレート："
+
+#: app/sample-editor.c:2071
 msgid "Out of memory while sampling!"
 msgstr "サンプリング中にメモリが無くなりました。"
 
-#: app/sample-editor.c:2165
+#: app/sample-editor.c:2126
 msgid "<just sampled>"
 msgstr "<今サンプリングしました>"
 
-#: app/sample-editor.c:2196
+#: app/sample-editor.c:2152
+#, fuzzy
+msgid ""
+"You have recorded a stereo sample!\n"
+"(SoundTracker can only handle mono samples!)\n"
+"\n"
+"Please choose which channel to use:"
+msgstr ""
+"ステレオ・サンプルが選択されました!\n"
+"(SoundTracker ではモノ・サンプルだけ処理できます!)\n"
+"\n"
+"ロードするためのチャンネルを選んでください:"
+
+#: app/sample-editor.c:2378
 msgid "Recorded sample is too long for current mixer module. Using it anyway."
 msgstr ""
 "録音したサンプルが現在のミキサ・モジュールには長過ぎます。\n"
 "とにかくそれを使います。"
 
-#: app/sample-editor.c:2249
-msgid "Normalize"
-msgstr "規格化"
-
-#: app/sample-editor.c:2250
-msgid "Execute"
-msgstr "実行"
-
-#: app/sample-editor.c:2260 app/sample-editor.c:2263
+#: app/sample-editor.c:2443
 msgid "Volume Ramping"
 msgstr "ボリュームランプ化"
 
-#: app/sample-editor.c:2279
+#: app/sample-editor.c:2444
+msgid "Normalize"
+msgstr "規格化"
+
+#: app/sample-editor.c:2456
 msgid "Perform linear volume fade on Selection"
 msgstr "選択時に音量を線型にフェードする"
 
-#: app/sample-editor.c:2291
+#: app/sample-editor.c:2465
 msgid "Left [%]:"
 msgstr "左 [%]:"
 
-#: app/sample-editor.c:2294 app/sample-editor.c:2311
+#: app/sample-editor.c:2468 app/sample-editor.c:2485
 msgid "H"
 msgstr "H"
 
-#: app/sample-editor.c:2300 app/sample-editor.c:2317
+#: app/sample-editor.c:2470 app/sample-editor.c:2487
+msgid "Half"
+msgstr ""
+
+#: app/sample-editor.c:2474 app/sample-editor.c:2491
 msgid "D"
 msgstr "D"
 
-#: app/sample-editor.c:2308
+#: app/sample-editor.c:2475 app/sample-editor.c:2493
+msgid "Double"
+msgstr ""
+
+#: app/sample-editor.c:2482
 msgid "Right [%]:"
 msgstr "右 [%]:"
 
-#: app/sample-editor.c:2452 app/sample-editor.c:2463
+#: app/sample-editor.c:2575
 msgid "Trim parameters"
 msgstr ""
 
-#: app/sample-editor.c:2508
+#: app/sample-editor.c:2581
 msgid "Trim at the beginning"
 msgstr ""
 
-#: app/sample-editor.c:2515
+#: app/sample-editor.c:2585
 msgid "Trim at the end"
 msgstr ""
 
-#: app/sample-editor.c:2522
+#: app/sample-editor.c:2591
 msgid "Threshold (dB)"
 msgstr ""
 
-#: app/tips-dialog.c:50
+#: app/tips-dialog.c:44
 msgid ""
 "Welcome to SoundTracker!\n"
 "\n"
@@ -1713,7 +1704,7 @@ msgstr ""
 "こういったプログラムに経験がなければ、いくつかXMやMODファイルを持って\n"
 "きて演奏した方がいいね。"
 
-#: app/tips-dialog.c:55
+#: app/tips-dialog.c:49
 msgid ""
 "You can make SoundTracker's edit mode more responsive to keyboard\n"
 "input by decreasing the mixing buffer size of the \"Editing\" object in\n"
@@ -1723,7 +1714,7 @@ msgstr ""
 "を減らせば、SoundTrackerの編集モードでキーボード入力に対してもっと反応す\n"
 "るようにできるよ。"
 
-#: app/tips-dialog.c:59
+#: app/tips-dialog.c:53
 msgid ""
 "You can adjust the loop points in the sample editor by holding Shift\n"
 "and using the left and right mousebuttons.\n"
@@ -1731,7 +1722,7 @@ msgstr ""
 "サンプル・エディタで、シフト・キーを押しながらマウスの右と左のボタンを使\n"
 "って、ループ・ポイントを合せられるよ。\n"
 
-#: app/tips-dialog.c:62
+#: app/tips-dialog.c:56
 msgid ""
 "If you want to know more about tracking, and how the various commands\n"
 "work, have a look at http://www.united-trackers.org/"
@@ -1739,7 +1730,7 @@ msgstr ""
 "トラッキングやいろいろなコマンドがどういうふうに動作するのかもっと知りた\n"
 "ければ、http://www.united-trackers.org/で探してね。"
 
-#: app/tips-dialog.c:65
+#: app/tips-dialog.c:59
 msgid ""
 "You can assign samples of an instrument to the individual keys by\n"
 "activating its sample and then clicking on the keyboard in the\n"
@@ -1748,7 +1739,7 @@ msgstr ""
 "楽器編集ページで、サンプルをアクティブにしてからキーボードをクリック\n"
 "すると個々のキーに楽器のサンプルを割当てられるよ。"
 
-#: app/tips-dialog.c:69
+#: app/tips-dialog.c:63
 msgid ""
 "Is your cursor trapped in a number entry field?\n"
 "Just press Return or Tab to free yourself!"
@@ -1756,335 +1747,504 @@ msgstr ""
 "カーソルが数値入力フィールドに引っかかっていたりしますか？\n"
 "リターンかタブを押せば抜け出せますよ！"
 
-#: app/tips-dialog.c:81
-msgid "SoundTracker Tip of the day"
-msgstr "今日のSoundTrackerの技"
-
-#: app/tips-dialog.c:154
+#: app/tips-dialog.c:111
 msgid "Previous Tip"
 msgstr "前の技"
 
-#: app/tips-dialog.c:162
+#: app/tips-dialog.c:118
 msgid "Next Tip"
 msgstr "次の技"
 
-#: app/tips-dialog.c:174
+#: app/tips-dialog.c:129
 msgid "Show tip next time"
 msgstr "次回も技を見せる"
 
-#: app/track-editor.c:115
+#: app/tips-dialog.c:145
+msgid "SoundTracker Tip of the day"
+msgstr "今日のSoundTrackerの技"
+
+#: app/track-editor.c:110
 msgid "Arpeggio"
 msgstr "アルペジオ"
 
-#: app/track-editor.c:116
+#: app/track-editor.c:111
 msgid "Porta up"
 msgstr "ポルタメントアップ"
 
-#: app/track-editor.c:117
+#: app/track-editor.c:112
 msgid "Porta down"
 msgstr "ポルタメントダウン"
 
-#: app/track-editor.c:118 app/track-editor.c:182
+#: app/track-editor.c:113 app/track-editor.c:177
 msgid "Tone porta"
 msgstr "トーンポルタメント"
 
-#: app/track-editor.c:119 app/track-editor.c:178
+#: app/track-editor.c:114 app/track-editor.c:173
 msgid "Vibrato"
 msgstr "ビブラート"
 
-#: app/track-editor.c:120
+#: app/track-editor.c:115
 msgid "Tone porta + Volume slide"
 msgstr "トーンポルタメント＋ボリュームスライド"
 
-#: app/track-editor.c:121
+#: app/track-editor.c:116
 msgid "Vibrato + Volume slide"
 msgstr "ビブラート+ボリューム・スライド"
 
-#: app/track-editor.c:122
+#: app/track-editor.c:117
 msgid "Tremolo"
 msgstr "トレモロ"
 
-#: app/track-editor.c:123 app/track-editor.c:179
+#: app/track-editor.c:118 app/track-editor.c:174
 msgid "Set panning"
 msgstr "パンニングの設定"
 
-#: app/track-editor.c:124 app/track-editor.c:126
+#: app/track-editor.c:119 app/track-editor.c:121
 msgid "Position jump"
 msgstr "位置ジャンプ"
 
-#: app/track-editor.c:125 app/track-editor.c:127 app/track-editor.c:203
+#: app/track-editor.c:120 app/track-editor.c:122 app/track-editor.c:198
 msgid "Set volume"
 msgstr "音量設定"
 
-#: app/track-editor.c:128
+#: app/track-editor.c:123
 msgid "Pattern break"
 msgstr "パターンブレーク"
 
-#: app/track-editor.c:130
+#: app/track-editor.c:125
 msgid "Set tempo/bpm"
 msgstr "テンポ/bpm設定"
 
-#: app/track-editor.c:131
+#: app/track-editor.c:126
 msgid "Set global volume"
 msgstr "全体ボリューム設定"
 
-#: app/track-editor.c:132
+#: app/track-editor.c:127
 msgid "Global volume slide"
 msgstr "全体ボリューム・スライド"
 
-#: app/track-editor.c:135
+#: app/track-editor.c:130
 msgid "Key off"
 msgstr "キーオフ"
 
-#: app/track-editor.c:136
+#: app/track-editor.c:131
 msgid "Set envelop position"
 msgstr "エンベロープ位置設定"
 
-#: app/track-editor.c:140
+#: app/track-editor.c:135
 msgid "Panning slide"
 msgstr "パンニングスライド"
 
-#: app/track-editor.c:141
+#: app/track-editor.c:136
 msgid "LP filter resonance"
 msgstr "LPフィルタ・レゾナンス"
 
-#: app/track-editor.c:142
+#: app/track-editor.c:137
 msgid "Multi retrig note"
 msgstr "マルチリトリガノート"
 
-#: app/track-editor.c:144
+#: app/track-editor.c:139
 msgid "Tremor"
 msgstr "トレモロ"
 
-#: app/track-editor.c:150
+#: app/track-editor.c:145
 msgid "LP filter cutoff"
 msgstr "LPフィルタ・カットオフ"
 
-#: app/track-editor.c:155
+#: app/track-editor.c:150
 msgid "Fine porta up"
 msgstr "細かいポルタメントアップ"
 
-#: app/track-editor.c:156
+#: app/track-editor.c:151
 msgid "Fine porta down"
 msgstr "細かいポルタメントダウン"
 
-#: app/track-editor.c:157
+#: app/track-editor.c:152
 msgid "Set gliss control"
 msgstr "グリッサンド操作設定"
 
-#: app/track-editor.c:158
+#: app/track-editor.c:153
 msgid "Set vibrato control"
 msgstr "ビブラート操作設定"
 
-#: app/track-editor.c:159
+#: app/track-editor.c:154
 msgid "Set finetune"
 msgstr "微調整設定"
 
-#: app/track-editor.c:160
+#: app/track-editor.c:155
 msgid "Set loop begin/loop"
 msgstr "ループ開始設定/ループ"
 
-#: app/track-editor.c:161
+#: app/track-editor.c:156
 msgid "Set tremolo control"
 msgstr "トレモロ操作設定"
 
-#: app/track-editor.c:163
+#: app/track-editor.c:158
 msgid "Retrig note"
 msgstr "ノートリトリガ"
 
-#: app/track-editor.c:164 app/track-editor.c:176
+#: app/track-editor.c:159 app/track-editor.c:171
 msgid "Fine volume slide up"
 msgstr "細かいボリュームのスライドアップ"
 
-#: app/track-editor.c:165 app/track-editor.c:175
+#: app/track-editor.c:160 app/track-editor.c:170
 msgid "Fine volume slide down"
 msgstr "細かいボリュームのスライドダウン"
 
-#: app/track-editor.c:166
+#: app/track-editor.c:161
 msgid "Note cut"
 msgstr "音符切取"
 
-#: app/track-editor.c:167
+#: app/track-editor.c:162
 msgid "Note delay"
 msgstr "音符の遅延"
 
-#: app/track-editor.c:168
+#: app/track-editor.c:163
 msgid "Pattern delay"
 msgstr "パターンの遅延"
 
-#: app/track-editor.c:173
+#: app/track-editor.c:168
 msgid "Volume slide down"
 msgstr "ボリューム・スライド・ダウン"
 
-#: app/track-editor.c:174
+#: app/track-editor.c:169
 msgid "Volume slide up"
 msgstr "ボリューム・スライド・アップ"
 
-#: app/track-editor.c:177
+#: app/track-editor.c:172
 msgid "Set vibrato speed"
 msgstr "ビブラート速度設定"
 
-#: app/track-editor.c:180
+#: app/track-editor.c:175
 msgid "Panning slide left"
 msgstr "パンニングを左にスライド"
 
-#: app/track-editor.c:181
+#: app/track-editor.c:176
 msgid "Panning slide right"
 msgstr "パンニングを右にスライド"
 
-#: app/track-editor.c:186
+#: app/track-editor.c:181
 msgid "sine"
 msgstr "正弦波"
 
-#: app/track-editor.c:187
+#: app/track-editor.c:182
 msgid "ramp down"
 msgstr "ランプ下げ"
 
-#: app/track-editor.c:188
+#: app/track-editor.c:183
 msgid "square"
 msgstr "矩形波"
 
-#: app/track-editor.c:233 app/track-editor.c:239 app/track-editor.c:256
-#: app/track-editor.c:262
+#: app/track-editor.c:228 app/track-editor.c:234 app/track-editor.c:251
+#: app/track-editor.c:257
 msgid "None ]"
 msgstr "無 ]"
 
-#: app/track-editor.c:362
+#: app/track-editor.c:357
 msgid "Jazz Edit:"
 msgstr "Jazz編集:"
 
-#: app/track-editor.c:407
+#: app/track-editor.c:402
 msgid "Tracker"
 msgstr "トラッカー"
 
-#: app/tracker-settings.c:261
+#: app/tracker.c:88
+#, fuzzy
+msgid "Tracker background"
+msgstr "トラッカー周波数"
+
+#: app/tracker.c:89
+msgid "Cursor background"
+msgstr ""
+
+#: app/tracker.c:90
+#, fuzzy
+msgid "Major lines highlighting"
+msgstr "行ハイライトを有効に"
+
+#: app/tracker.c:91
+#, fuzzy
+msgid "Minor lines highlighting"
+msgstr "行ハイライトを有効に"
+
+#: app/tracker.c:92
+#, fuzzy
+msgid "Selection"
+msgstr "選択:"
+
+#: app/tracker.c:93
+#, fuzzy
+msgid "Notes"
+msgstr "音符"
+
+#: app/tracker.c:94
+#, fuzzy
+msgid "Delimiters"
+msgstr "削除"
+
+#: app/tracker.c:95
+#, fuzzy
+msgid "Channel numbers"
+msgstr "チャンネル:"
+
+#: app/tracker.c:96
+msgid "Cursor idle"
+msgstr ""
+
+#: app/tracker.c:97
+msgid "Cursor editing"
+msgstr ""
+
+#: app/tracker-settings.c:273
 msgid "Font list"
 msgstr "フォント一覧"
 
-#: app/tracker-settings.c:281
+#: app/tracker-settings.c:295
 msgid "Add font"
 msgstr "フォント追加"
 
-#: app/tracker-settings.c:287
+#: app/tracker-settings.c:301
 msgid "Delete font"
 msgstr "フォント削除"
 
-#: app/tracker-settings.c:293
+#: app/tracker-settings.c:307
 msgid "Apply font"
 msgstr "フォント適用"
 
-#: app/tracker-settings.c:309
+#: app/tracker-settings.c:323
 msgid "Select font..."
 msgstr "フォント選択..."
 
-#: app/transposition.c:198
+#: app/transposition.c:199
 msgid "Whole Song"
 msgstr "曲全体"
 
-#: app/transposition.c:199
+#: app/transposition.c:200
 msgid "All Patterns"
 msgstr "全パターン"
 
-#: app/transposition.c:200
+#: app/transposition.c:201
 msgid "Current Pattern"
 msgstr "現在のパターン"
 
-#: app/transposition.c:201
+#: app/transposition.c:202
 msgid "Current Track"
 msgstr "現在のトラック"
 
-#: app/transposition.c:205
+#: app/transposition.c:206
 msgid "Current Instrument"
 msgstr "現在の楽器"
 
-#: app/transposition.c:206
+#: app/transposition.c:207
 msgid "All Instruments"
 msgstr "全楽器"
 
-#: app/transposition.c:210
+#: app/transposition.c:211
 msgid "Half note up"
 msgstr "半音上げる"
 
-#: app/transposition.c:211
+#: app/transposition.c:212
 msgid "Half note down"
 msgstr "半音下げる"
 
-#: app/transposition.c:212
+#: app/transposition.c:213
 msgid "Octave up"
 msgstr "オクターブ上げる"
 
-#: app/transposition.c:213
+#: app/transposition.c:214
 msgid "Octave down"
 msgstr "オクターブ下げる"
 
-#: app/transposition.c:216
+#: app/transposition.c:217
 msgid "Exchange 1 <-> 2"
 msgstr "交換 1 <-> 2"
 
-#: app/transposition.c:217
+#: app/transposition.c:218
 msgid "Change 1 -> 2"
 msgstr "交換 1 -> 2"
 
-#: app/transposition.c:226 app/transposition.c:229
+#: app/transposition.c:226
 msgid "Transposition Tools"
 msgstr "移調ツール"
 
-#: app/transposition.c:250
+#: app/transposition.c:239
 msgid "Scope of the operation:"
 msgstr "操作スコープ:"
 
-#: app/transposition.c:257
+#: app/transposition.c:244
 msgid "Note Transposition"
 msgstr "移調の調"
 
-#: app/transposition.c:288
+#: app/transposition.c:270
 msgid "Instrument Changing"
 msgstr "楽器交換"
 
-#: app/transposition.c:303
+#: app/transposition.c:282
 msgid "Instrument 1:"
 msgstr "楽器 1:"
 
-#: app/transposition.c:305 app/transposition.c:315
+#: app/transposition.c:284 app/transposition.c:293
 msgid "Current instrument"
 msgstr "現在の楽器"
 
-#: app/transposition.c:313
+#: app/transposition.c:291
 msgid "Instrument 2:"
 msgstr "楽器 2:"
 
-#: app/xm.c:197
-#, c-format
-msgid "Pattern length out of range: %d.\n"
+#: app/xm.c:195
+msgid "Pattern header reading error."
+msgstr ""
+
+#: app/xm.c:202
+#, fuzzy, c-format
+msgid "Pattern length out of range: %d."
 msgstr "パターン長が範囲を越えました: %d.\n"
 
-#: app/xm.c:548
+#: app/xm.c:224
+#, fuzzy
+msgid "Error loading notes."
+msgstr "パターンのロード中にエラー。"
+
+#: app/xm.c:329
+msgid "Sample header reading error"
+msgstr ""
+
+#: app/xm.c:372 app/xm.c:388
+msgid "Sample data reading error"
+msgstr ""
+
+#: app/xm.c:521 app/xm.c:547 app/xm.c:626 app/xm.c:636 app/xm.c:647
+#: app/xm.c:703
+#, fuzzy
+msgid "Instrument header reading error"
+msgstr "楽器交換"
+
+#: app/xm.c:538
+msgid "XM Load Error: Number of samples in instrument > 128.\n"
+msgstr ""
+
+#: app/xm.c:551
+msgid "XM Load Error: Sample header size != 40.\n"
+msgstr ""
+
+#: app/xm.c:555
+msgid "Sample map reading error"
+msgstr ""
+
+#: app/xm.c:559
+msgid "Volume envelope points reading error"
+msgstr ""
+
+#: app/xm.c:564
+#, fuzzy
+msgid "Panning envelope points reading error"
+msgstr "エンベロープをパンニングする"
+
+#: app/xm.c:570
+msgid "Envelope parameters reading error"
+msgstr ""
+
+#: app/xm.c:591
+#, fuzzy, c-format
+msgid "XM Load Warning: Invalid vibtype %d, using Sine.\n"
+msgstr "不正なバイブレーション型%d、正弦波を使用します。\n"
+
+#: app/xm.c:631
 msgid "File is no XI instrument."
 msgstr "ファイルがXI楽器ではありません。"
 
-#: app/xm.c:558
+#: app/xm.c:651
 #, c-format
 msgid "Unknown XI version 0x%x\n"
 msgstr "未知のXIバージョン0x%xです\n"
 
-#: app/xm.c:588
+#: app/xm.c:657
+msgid "Instrument sample map reading error"
+msgstr ""
+
+#: app/xm.c:661
+msgid "Instrument volume envelope points reading error"
+msgstr ""
+
+#: app/xm.c:666
+msgid "Instrument panning envelope points reading error"
+msgstr ""
+
+#: app/xm.c:672
+msgid "Instrument envelope parameters reading error"
+msgstr ""
+
+#: app/xm.c:693
 #, c-format
 msgid "Invalid vibtype %d, using Sine.\n"
 msgstr "不正なバイブレーション型%d、正弦波を使用します。\n"
 
-#: app/xm.c:860 app/xm.c:985
+#: app/xm.c:769
+msgid ""
+"Some characters instrument or samples names cannot be stored in XM format. "
+"They will be skipped."
+msgstr ""
+
+#: app/xm.c:931 app/xm.c:953 app/xm.c:963
+msgid "Module header reading error."
+msgstr ""
+
+#: app/xm.c:940
+#, fuzzy
+msgid "Instrument header reading error."
+msgstr "楽器がロードされました。"
+
+#: app/xm.c:947
+msgid "Sample header reading error."
+msgstr ""
+
+#: app/xm.c:959
+msgid "Pattern order table reading error."
+msgstr ""
+
+#: app/xm.c:1009 app/xm.c:1141
 msgid "Error while loading patterns."
 msgstr "パターンのロード中にエラー。"
 
-#: app/xm.c:928
+#: app/xm.c:1036
+#, c-format
+msgid ""
+"%d: Wrong loop start parameter. Don't know how to handle this. %04x %04x "
+"%04x\n"
+msgstr ""
+
+#: app/xm.c:1048
+msgid "Sample data reading error."
+msgstr ""
+
+#: app/xm.c:1080
 msgid "Can't open file"
 msgstr "ファイルが開けません"
 
-#: app/xm.c:991
+#: app/xm.c:1094
+msgid "XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n"
+msgstr ""
+"XMヘッダ長が276ではありません。\n"
+"恐らくpre-0.0.12 SoundTrackerモジュールでは? :-)\n"
+
+#: app/xm.c:1098
+msgid "Version != 0x0104. The results may be unpredictable"
+msgstr ""
+
+#: app/xm.c:1122
+msgid "Invalid number of channels in XM (only 1..32 allowed)."
+msgstr ""
+
+#: app/xm.c:1136
+#, fuzzy
+msgid "Error while loading pattern order table."
+msgstr "パターンのロード中にエラー。"
+
+#: app/xm.c:1147
 msgid "Error while loading instruments."
 msgstr "楽器のロード中にエラー。"
 
-#: app/xm.c:1002
+#: app/xm.c:1158
 #, c-format
 msgid ""
 "Module contains sample(s) that are too long for the current mixer.\n"
@@ -2093,71 +2253,420 @@ msgstr ""
 "モジュールが現在のミキサ・モジュールには長過ぎるサンプルを含んでいます。\n"
 "サンプルの最大長は%dです。"
 
-#: app/xm.c:1400
+#: app/xm.c:1230
+msgid ""
+"Some characters in either module, instruments or samples names cannot be "
+"stored in XM format. They will be skipped."
+msgstr ""
+
+#: app/xm.c:1558
 msgid "Not FastTracker XM and not supported MOD format!"
 msgstr ""
 "FastTracker XMフォーマットでもサポートされたMODフォーマットでもありません!"
 
-#: app/xm.c:1415 app/xm.c:1436
+#: app/xm.c:1573 app/xm.c:1594
 msgid "Error when file reading or unexpected end of file"
 msgstr ""
 "ファイルを読み込み中にエラーが起きました、もしくは予期せぬファイルの終了です"
 
-#: app/xm.c:1419
+#: app/xm.c:1577
 msgid "Incorrect or unsupported version of pattern file!"
 msgstr "不正、もしくはサポートされていないパターンファイルのバージョンです！"
 
-#: app/xm.c:1423
+#: app/xm.c:1581
 msgid "Incorrect pattern length!"
 msgstr "パターン長が不正です！"
 
-#: app/xm.c:1469
+#: app/xm.c:1624 app/xm.c:1650
 msgid "Error during saving pattern!"
 msgstr "パターンのセーブ中にエラー。"
 
-#: app/midi-settings-050.c:497 app/midi-settings-09x.c:500
+#: app/midi-settings-09x.c:409
 msgid "Auto connect"
 msgstr "自動接続"
 
-#: app/midi-settings-050.c:512 app/midi-settings-09x.c:515
+#: app/midi-settings-09x.c:424
 msgid "Channel"
 msgstr "チャンネル"
 
-#: app/midi-settings-050.c:521 app/midi-settings-09x.c:524
+#: app/midi-settings-09x.c:433
 msgid "Client number"
 msgstr "クライアント番号"
 
-#: app/midi-settings-050.c:531 app/midi-settings-09x.c:534
+#: app/midi-settings-09x.c:443
 msgid "Port number"
 msgstr "ポート番号"
 
-#: app/midi-settings-050.c:549 app/midi-settings-09x.c:552
+#: app/midi-settings-09x.c:461
 msgid "Input"
 msgstr "入力"
 
-#: app/midi-settings-050.c:558 app/midi-settings-09x.c:561
+#: app/midi-settings-09x.c:470
 msgid "For future development"
 msgstr "将来のために予約"
 
-#: app/midi-settings-050.c:564 app/midi-settings-09x.c:567
+#: app/midi-settings-09x.c:476
 msgid "Output"
 msgstr "出力"
 
-#: app/midi-settings-050.c:575 app/midi-settings-09x.c:578
+#: app/midi-settings-09x.c:487
 msgid "Debug level"
 msgstr "デバッグレベル"
 
-#: app/midi-settings-050.c:587 app/midi-settings-09x.c:590
+#: app/midi-settings-09x.c:499
 msgid "Misc"
 msgstr "その他"
 
-#: app/midi-settings-050.c:631 app/midi-settings-09x.c:634
+#: app/midi-settings-09x.c:540
 msgid "MIDI Configuration"
 msgstr "MIDI設定"
 
-#: app/midi-settings-050.c:636 app/midi-settings-09x.c:639
-msgid "Apply"
-msgstr "適用"
+#: app/midi-09x.c:235
+#, c-format
+msgid "error opening ALSA MIDI input stream (%s)\n"
+msgstr ""
+
+#: app/midi-09x.c:252
+#, c-format
+msgid "Get client info error: %s\n"
+msgstr ""
+
+#: app/midi-09x.c:263
+#, c-format
+msgid "Set client info error: %s\n"
+msgstr ""
+
+#: app/midi-09x.c:281
+#, c-format
+msgid "error creating sequencer port (%s)\n"
+msgstr ""
+
+#: app/midi-09x.c:326
+#, c-format
+msgid "error subscribing sequencer port (%s)\n"
+msgstr ""
+
+#: app/midi-09x.c:440
+#, c-format
+msgid "error closing handle (%s)\n"
+msgstr ""
+
+#~ msgid "(%d bytes)"
+#~ msgstr "(%dバイト)"
+
+#~ msgid "Estimated audio delay: %f microseconds"
+#~ msgstr "推定オーディオ・ディレイ: %fマイクロ秒"
+
+#~ msgid "ALSA card number:"
+#~ msgstr "ALSAカード番号:"
+
+#~ msgid ""
+#~ "Couldn't open ALSA device for sound input (card:%d, device:%d):\n"
+#~ "%s"
+#~ msgstr ""
+#~ "サウンド出力に対してALSAデバイス(カード:%d、デバイス:%d)が開けませんでし"
+#~ "た:\n"
+#~ "%s"
+
+#~ msgid "Required sound output parameters not supported.\n"
+#~ msgstr "要求されたサウンド出力フォーマットがサポートされていません。\n"
+
+#~ msgid ""
+#~ "Couldn't open ALSA device for sound output (card:%d, device:%d):\n"
+#~ "%s"
+#~ msgstr ""
+#~ "サウンド出力に対してALSAデバイス(カード:%d、デバイス:%d)が開けませんでし"
+#~ "た:\n"
+#~ "%s"
+
+#~ msgid "Required output-channel parameters not supported.\n"
+#~ msgstr "要求されたチャンネル出力パラメータがサポートされていません。\n"
+
+#~ msgid "Alsa setup error.\n"
+#~ msgstr "ALSAセットアップエラー．\n"
+
+#~ msgid ""
+#~ "Couldn't open %s for sound output:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "サウンド出力に対して %s が開けませんでした:\n"
+#~ "%s"
+
+#~ msgid "transport master"
+#~ msgstr "トランスポートマスター"
+
+#~ msgid "declick"
+#~ msgstr "デクリック"
+
+#~ msgid "soundtracker"
+#~ msgstr "soundtracker"
+
+#~ msgid "Save Song"
+#~ msgstr "曲保存"
+
+#~ msgid "Question"
+#~ msgstr "質問"
+
+#~ msgid "Yes"
+#~ msgstr "はい"
+
+#~ msgid "No"
+#~ msgstr "いいえ"
+
+#~ msgid "Warning"
+#~ msgstr "警告"
+
+#~ msgid "Error!"
+#~ msgstr "エラー!"
+
+#~ msgid "Close"
+#~ msgstr "閉じる"
+
+#~ msgid "No file selected."
+#~ msgstr "ファイルが選択されていません"
+
+#~ msgid "Are you sure you want to overwrite the file?"
+#~ msgstr "ファイルを上書きしたいのは確かですか?"
+
+#~ msgid "Load XM..."
+#~ msgstr "XMロード..."
+
+#~ msgid "Save XM..."
+#~ msgstr "XM保存..."
+
+#~ msgid "Save song as XM..."
+#~ msgstr "XMとして曲保存..."
+
+#~ msgid "Load Instrument..."
+#~ msgstr "楽器ロード..."
+
+#~ msgid "Save Instrument..."
+#~ msgstr "楽器保存..."
+
+#~ msgid ""
+#~ "The keyboard configuration file is defective.\n"
+#~ "Please use the Keyboard Configuration dialog."
+#~ msgstr ""
+#~ "キーボード設定ファイルが不完全です。\n"
+#~ "キーボード設定ダイアログを使用してください。"
+
+#~ msgid "Ok"
+#~ msgstr "了解"
+
+#~ msgid "_Open..."
+#~ msgstr "開く(_O)..."
+
+#~ msgid "Save _as..."
+#~ msgstr "保存(_a)..."
+
+#~ msgid "Save Module as _WAV..."
+#~ msgstr "_WAVとしてモジュールを保存..."
+
+#~ msgid "_Quit"
+#~ msgstr "終了(_Q)"
+
+#~ msgid "Clear _All"
+#~ msgstr "全て消去(_A)"
+
+#~ msgid "Clear _Patterns Only"
+#~ msgstr "パターンのみ消去(_P)"
+
+#~ msgid "_Optimize Module"
+#~ msgstr "モジュール最適化(_O)"
+
+#~ msgid "C_ut"
+#~ msgstr "切取(_u)"
+
+#~ msgid "_Copy"
+#~ msgstr "コピー(_C)"
+
+#~ msgid "_Paste"
+#~ msgstr "貼付(_P)"
+
+#~ msgid "_Kill notes"
+#~ msgstr "音符を消す(_K)"
+
+#~ msgid "_Insert track"
+#~ msgstr "トラック挿入(_I)"
+
+#~ msgid "_Delete track"
+#~ msgstr "トラック削除(_D)"
+
+#~ msgid "Increment cmd value"
+#~ msgstr "cmd値増加"
+
+#~ msgid "Decrement cmd value"
+#~ msgstr "cmd値減少"
+
+#~ msgid "_Mark mode"
+#~ msgstr "マーク・モード(_M)"
+
+#~ msgid "C_lear block marks"
+#~ msgstr "ブロック・マーク消去(_l)"
+
+#~ msgid "_Interpolate effects"
+#~ msgstr "内挿エフェクト(_I)"
+
+#~ msgid "Transpose half-note up"
+#~ msgstr "半音上げる"
+
+#~ msgid "Transpose half-note down"
+#~ msgstr "半音下げる"
+
+#~ msgid "Transpose octave up"
+#~ msgstr "オクターブ上げる"
+
+#~ msgid "Transpose octave down"
+#~ msgstr "オクターブ下げる"
+
+#, fuzzy
+#~ msgid "P_aste"
+#~ msgstr "貼付"
+
+#~ msgid "_Jazz Edit Mode"
+#~ msgstr "_Jazz編集モード"
+
+#~ msgid "Transp_osition..."
+#~ msgstr "移調(_o)..."
+
+#~ msgid "_Pattern"
+#~ msgstr "パターン(_P)"
+
+#~ msgid "_Track"
+#~ msgstr "トラック(_T)"
+
+#~ msgid "_Selection"
+#~ msgstr "選択(_S)"
+
+#~ msgid "_Find Unused Pattern"
+#~ msgstr "未使用パターン検索(_F)"
+
+#~ msgid "_Copy Current to Unused Pattern"
+#~ msgstr "未使用パターンにカレントをコピー(_C)"
+
+#~ msgid "C_lear Unused Patterns"
+#~ msgstr "未使用パターン消去(_l)"
+
+#~ msgid "_Pack Patterns"
+#~ msgstr "パターン・パック(_P)"
+
+#~ msgid "_Save Current Pattern"
+#~ msgstr "現在のパターンを保存(_S)"
+
+#~ msgid "L_oad Pattern"
+#~ msgstr "パターンを読み込み(_o)"
+
+#, fuzzy
+#~ msgid "Sh_rink Current Pattern"
+#~ msgstr "現在のパターン"
+
+#, fuzzy
+#~ msgid "_Expand Current Pattern"
+#~ msgstr "現在のパターンを保存(_S)"
+
+#~ msgid "_Load XI..."
+#~ msgstr "XIロード(_L)..."
+
+#~ msgid "_Save XI..."
+#~ msgstr "XI保存(_S)..."
+
+#~ msgid "_Clear Current"
+#~ msgstr "カレント消去(_C)"
+
+#~ msgid "_Delete Unused Instruments"
+#~ msgstr "未使用楽器削除(_D)"
+
+#~ msgid "_Flicker-free scrolling"
+#~ msgstr "フリッカ無しのスクロール(_F)"
+
+#~ msgid "_Previous font"
+#~ msgstr "前のフォント(_P)"
+
+#~ msgid "_Next font"
+#~ msgstr "次のフォント(_N)"
+
+#~ msgid "Change preferred _accidental type"
+#~ msgstr "好みの臨時記号タイプに変更する (_A)"
+
+#~ msgid "Change effect column editing _direction"
+#~ msgstr "エフェクトコラム編集の方向を変える (_D)"
+
+#~ msgid "Display _Oscilloscopes"
+#~ msgstr "オシロスコープ表示(_O)"
+
+#~ msgid "_Tracker"
+#~ msgstr "トラッカー(_T)"
+
+#~ msgid "_Keyboard Configuration..."
+#~ msgstr "キーボード設定(_K)..."
+
+#~ msgid "_Audio Configuration..."
+#~ msgstr "オーディオ設定(_A)..."
+
+#~ msgid "_GUI Configuration..."
+#~ msgstr "GUI設定(_G)..."
+
+#~ msgid "_MIDI Configuration..."
+#~ msgstr "MIDI設定..."
+
+#~ msgid "Disable splash screen"
+#~ msgstr "スプラッシュスクリーンを無効にする"
+
+#~ msgid "_Save Settings now"
+#~ msgstr "設定を今保存(_S)"
+
+#~ msgid "Save Settings on _Exit"
+#~ msgstr "終了時に設定を保存(_E)"
+
+#~ msgid "_About..."
+#~ msgstr "情報(_A)..."
+
+#~ msgid "Show _Tips..."
+#~ msgstr "技の表示(_T)..."
+
+#~ msgid "_XM Effects..."
+#~ msgstr "_XM効果..."
+
+#~ msgid "_File"
+#~ msgstr "ファイル(_F)"
+
+#~ msgid "_Module"
+#~ msgstr "モジュール(_M)"
+
+#~ msgid "_Edit"
+#~ msgstr "編集(_E)"
+
+#~ msgid "_Instrument"
+#~ msgstr "楽器(_I)"
+
+#~ msgid "_Settings"
+#~ msgstr "設定(_S)"
+
+#~ msgid "_Help"
+#~ msgstr "ヘルプ(_H)"
+
+#, fuzzy
+#~ msgid ""
+#~ "A directory called '.soundtracker2' has been created in your\n"
+#~ "home directory to store configuration files.\n"
+#~ msgstr ""
+#~ "設定ファイルを記憶するため、あなたのホーム・ディレクトリに\n"
+#~ "ディレクトリ'.soundtracker'が生成されます。\n"
+
+#~ msgid "Load Sample..."
+#~ msgstr "サンプル・ロード..."
+
+#~ msgid "Save WAV..."
+#~ msgstr "WAV保存..."
+
+#~ msgid "8363"
+#~ msgstr "8363"
+
+#~ msgid "Execute"
+#~ msgstr "実行"
+
+#~ msgid "Apply"
+#~ msgstr "適用"
 
 #~ msgid "Drivers"
 #~ msgstr "ドライバ"
@@ -2396,9 +2905,3 @@ msgstr "適用"
 
 #~ msgid "Nothing to save."
 #~ msgstr "何も保存しない。"
-
-#~ msgid ""
-#~ "XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n"
-#~ msgstr ""
-#~ "XMヘッダ長が276ではありません。\n"
-#~ "恐らくpre-0.0.12 SoundTrackerモジュールでは? :-)\n"

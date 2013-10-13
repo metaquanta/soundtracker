@@ -7,146 +7,309 @@ msgid ""
 msgstr ""
 "Project-Id-Version: soundtracker-0.6.7-pre6\n"
 "Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
-"POT-Creation-Date: 2008-01-14 13:34+0300\n"
+"POT-Creation-Date: 2013-10-13 23:27+0400\n"
 "PO-Revision-Date: 2003-08-15 12:18+0200\n"
 "Last-Translator: Yuri Bongiorno <yuri.bongiorno AT libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: app/audioconfig.c:63
+#: app/audio.c:678 app/gui.c:340 app/gui.c:349 app/gui.c:359 app/gui.c:369
+#: app/gui.c:423 app/gui.c:992 app/gui.c:1007 app/gui.c:1018 app/gui.c:1029
+#: app/gui.c:1139 app/gui.c:1244 app/gui.c:1279 app/gui.c:1361 app/gui.c:1385
+#: app/gui.c:1396
+msgid "Connection with audio thread failed!"
+msgstr ""
+
+#: app/audioconfig.c:62
 msgid "Playback Output"
 msgstr "Output per la riproduzione"
 
-#: app/audioconfig.c:70
+#: app/audioconfig.c:69
 msgid "Editing Output"
 msgstr "Output per l'editing"
 
-#: app/audioconfig.c:77
+#: app/audioconfig.c:76
 msgid "Sampling"
 msgstr "Campionamento"
 
-#: app/audioconfig.c:203
+#: app/audioconfig.c:188
 msgid "Driver Module"
 msgstr "Modulo del driver"
 
-#: app/audioconfig.c:253
+#: app/audioconfig.c:241
 msgid "Mixer Module"
 msgstr "Modulo del mixer"
 
-#: app/audioconfig.c:254
+#: app/audioconfig.c:242 app/drivers/alsa1x.c:734
 msgid "Description"
 msgstr "Descrizione"
 
-#: app/audioconfig.c:264 app/audioconfig.c:267
+#: app/audioconfig.c:249
 msgid "Audio Configuration"
 msgstr "Configurazione dell'audio"
 
-#: app/audioconfig.c:291
+#: app/audioconfig.c:269
+msgid "File output"
+msgstr ""
+
+#: app/audioconfig.c:277
 msgid "Mixers"
 msgstr "Mixer"
 
-#: app/drivers/alsa-input.c:126 app/drivers/alsa-output.c:135
-#: app/drivers/alsa2-input.c:126 app/drivers/alsa2-output.c:136
-#, c-format
-msgid "(%d bytes)"
-msgstr "(%d byte)"
-
-#: app/drivers/alsa-input.c:129 app/drivers/alsa2-input.c:129
-#, c-format
-msgid "Estimated audio delay: %f microseconds"
-msgstr "Ritardo stimato dell'audio: %f microsecondi"
-
-#: app/drivers/alsa-input.c:194 app/drivers/alsa-output.c:200
-#: app/drivers/alsa2-input.c:194 app/drivers/alsa2-output.c:199
-#: app/drivers/oss-output.c:207 app/drivers/sun-output.c:199
-msgid "These changes won't take effect until you restart playing."
-msgstr "Questi cambiamenti hanno effetto dalla prossima riproduzione."
-
-#: app/drivers/alsa-input.c:206 app/drivers/alsa-output.c:212
-#: app/drivers/alsa2-input.c:206 app/drivers/alsa2-output.c:211
-#: app/drivers/oss-output.c:235 app/drivers/sun-output.c:227
-#: app/sample-editor.c:1619
-msgid "Resolution:"
-msgstr "Risoluzione:"
-
-#: app/drivers/alsa-input.c:216 app/drivers/alsa-output.c:222
-#: app/drivers/alsa2-input.c:216 app/drivers/alsa2-output.c:221
-#: app/drivers/oss-output.c:245 app/drivers/sun-output.c:238
-#: app/sample-editor.c:1649
-msgid "Channels:"
-msgstr "Canali:"
-
-#: app/drivers/alsa-input.c:226 app/drivers/alsa-output.c:232
-#: app/drivers/alsa2-input.c:226 app/drivers/alsa2-output.c:231
-#: app/drivers/oss-output.c:255 app/drivers/sun-output.c:249
-msgid "Frequency [Hz]:"
-msgstr "Frequenza [Hz]:"
-
-#: app/drivers/alsa-input.c:236 app/drivers/alsa-output.c:242
-#: app/drivers/alsa2-input.c:236 app/drivers/alsa2-output.c:241
-#: app/drivers/oss-output.c:265 app/drivers/sun-output.c:260
-msgid "Buffer Size:"
-msgstr "Dimensione del buffer:"
-
-#: app/drivers/alsa-input.c:269 app/drivers/alsa-output.c:275
-#: app/drivers/alsa2-input.c:269 app/drivers/alsa2-output.c:274
-msgid "ALSA card number:"
-msgstr "Numero della scheda ALSA:"
-
-#: app/drivers/alsa-input.c:284 app/drivers/alsa-output.c:290
-#: app/drivers/alsa2-input.c:284 app/drivers/alsa2-output.c:289
-msgid "ALSA device number:"
-msgstr "Numero del device ALSA:"
-
-#: app/drivers/alsa-input.c:375
-#, c-format
-msgid ""
-"Couldn't open ALSA device for sound input (card:%d, device:%d):\n"
-"%s"
-msgstr ""
-"Impossibile aprire il device ALSA per l'input del suono (scheda:%d, device:%"
-"d):\n"
-"%s"
-
-#: app/drivers/alsa-input.c:427 app/drivers/alsa-output.c:427
-#: app/drivers/oss-input.c:269 app/drivers/oss-output.c:426
-msgid "Required sound output format not supported.\n"
-msgstr "Il formato sonoro di output richiesto non è supportato.\n"
-
-#: app/drivers/alsa-input.c:440 app/drivers/alsa-output.c:442
-msgid "Required sound output parameters not supported.\n"
-msgstr "I parametri sonori di output richiesti non sono supportati.\n"
-
-#: app/drivers/alsa-output.c:138 app/drivers/alsa2-output.c:139
-#: app/drivers/oss-output.c:151 app/drivers/sun-output.c:139
+#: app/drivers/alsa1x.c:258 app/drivers/oss.c:165 app/drivers/sun-output.c:138
 #, c-format
 msgid "Estimated audio delay: %f milliseconds"
 msgstr "Ritardo stimato dell'audio: %f millisecondi"
 
-#: app/drivers/alsa-output.c:378 app/drivers/alsa2-input.c:376
-#: app/drivers/alsa2-output.c:380
-#, c-format
-msgid ""
-"Couldn't open ALSA device for sound output (card:%d, device:%d):\n"
-"%s"
+#: app/drivers/alsa1x.c:316
+#, fuzzy
+msgid "ALSA device opening error"
+msgstr "Numero del device ALSA:"
+
+#: app/drivers/alsa1x.c:320
+msgid "hw params obtaining error"
 msgstr ""
-"Impossibile aprire il device ALSA per l'output del suono (scheda:%d, device:%"
-"d):\n"
-"%s"
 
-#: app/drivers/alsa2-input.c:437 app/drivers/alsa2-output.c:441
-msgid "Required output-channel parameters not supported.\n"
-msgstr "I parametri di output richiesti non sono supportati.\n"
+#: app/drivers/alsa1x.c:349 app/drivers/alsa1x.c:548 app/drivers/alsa1x.c:576
+#: app/drivers/alsa1x.c:1216
+msgid "Unable to set audio format"
+msgstr ""
 
-#: app/drivers/alsa2-input.c:442 app/drivers/alsa2-output.c:446
-msgid "Unable to prepare ALSA channel.\n"
+#: app/drivers/alsa1x.c:354 app/drivers/alsa1x.c:1231
+#, fuzzy
+msgid "Unable to set channels number"
 msgstr "Impossibile allestire i canali ALSA.\n"
 
-#: app/drivers/alsa2-input.c:455 app/drivers/alsa2-output.c:459
-msgid "Alsa setup error.\n"
-msgstr "Errore di impostazione di Alsa.\n"
+#: app/drivers/alsa1x.c:366 app/drivers/alsa1x.c:1253
+msgid "Unable to set appropriate buffer size"
+msgstr ""
+
+#: app/drivers/alsa1x.c:375
+msgid "Unable to get minimal period size"
+msgstr ""
+
+#: app/drivers/alsa1x.c:381
+msgid "Unable to get maximal period size"
+msgstr ""
+
+#: app/drivers/alsa1x.c:401
+msgid "Unable to set channles number"
+msgstr ""
+
+#: app/drivers/alsa1x.c:405
+msgid "Unable to get minimal sample rate"
+msgstr ""
+
+#: app/drivers/alsa1x.c:411
+msgid "Unable to get maximal sample rate"
+msgstr ""
+
+#: app/drivers/alsa1x.c:417
+msgid "Unable to get minimal buffer size"
+msgstr ""
+
+#: app/drivers/alsa1x.c:423
+msgid "Unable to get maximal buffer size"
+msgstr ""
+
+#: app/drivers/alsa1x.c:523
+msgid "Unable to get minimal channels number"
+msgstr ""
+
+#: app/drivers/alsa1x.c:528
+msgid "Unable to get maximal channels number"
+msgstr ""
+
+#: app/drivers/alsa1x.c:666
+#, fuzzy, c-format
+msgid " = %u samples"
+msgstr "(%d campioni)"
+
+#: app/drivers/alsa1x.c:681
+#, c-format
+msgid " = %u"
+msgstr ""
+
+#: app/drivers/alsa1x.c:734
+msgid "Dev"
+msgstr ""
+
+#: app/drivers/alsa1x.c:741
+msgid "no soundcards found..."
+msgstr ""
+
+#: app/drivers/alsa1x.c:746
+msgid "Devices list"
+msgstr ""
+
+#: app/drivers/alsa1x.c:804
+#, fuzzy
+msgid "8 bit"
+msgstr "8 bit"
+
+#: app/drivers/alsa1x.c:804
+#, fuzzy
+msgid "16 bit"
+msgstr "16 bit"
+
+#: app/drivers/alsa1x.c:805 app/drivers/file-output.c:138
+#: app/sample-editor.c:1617
+msgid "Mono"
+msgstr "Mono"
+
+#: app/drivers/alsa1x.c:805 app/drivers/file-output.c:138
+#: app/sample-editor.c:1617
+msgid "Stereo"
+msgstr "Stereo"
+
+#: app/drivers/alsa1x.c:809 app/drivers/oss.c:225 app/drivers/sun-output.c:202
+msgid "These changes won't take effect until you restart playing."
+msgstr "Questi cambiamenti hanno effetto dalla prossima riproduzione."
+
+#: app/drivers/alsa1x.c:810
+#, fuzzy
+msgid "These changes won't take effect until you restart capturing."
+msgstr "Questi cambiamenti hanno effetto dal prossimo campionamento."
+
+#: app/drivers/alsa1x.c:822
+msgid "Device:"
+msgstr ""
+
+#: app/drivers/alsa1x.c:832
+msgid "List available hardware devices"
+msgstr ""
+
+#: app/drivers/alsa1x.c:845 app/drivers/oss.c:253 app/drivers/sun-output.c:230
+#: app/sample-editor.c:1648
+msgid "Resolution:"
+msgstr "Risoluzione:"
+
+#: app/drivers/alsa1x.c:855 app/drivers/file-output.c:145
+#: app/drivers/oss.c:263 app/drivers/sun-output.c:241 app/sample-editor.c:1678
+msgid "Channels:"
+msgstr "Canali:"
+
+#: app/drivers/alsa1x.c:865 app/drivers/file-output.c:153
+#: app/drivers/oss.c:273 app/drivers/sun-output.c:252
+msgid "Frequency [Hz]:"
+msgstr "Frequenza [Hz]:"
+
+#: app/drivers/alsa1x.c:884 app/drivers/oss.c:283 app/drivers/sun-output.c:263
+msgid "Buffer Size:"
+msgstr "Dimensione del buffer:"
+
+#: app/drivers/alsa1x.c:907
+#, fuzzy
+msgid "Number of Periods:"
+msgstr "Numero di canali:"
+
+#: app/drivers/alsa1x.c:932
+msgid ""
+"The playback will start and stop immediately, but the reaction to the "
+"interactive events will happens after this delay"
+msgstr ""
+
+#: app/drivers/alsa1x.c:987 app/drivers/alsa1x.c:1053
+msgid "Unable to restart stream from suspending"
+msgstr ""
+
+#: app/drivers/alsa1x.c:995 app/drivers/alsa1x.c:1061
+msgid "Stream preparation error"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1002
+msgid "Sound playing error"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1068
+msgid "Sound recording error"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1136
+msgid "Error attaching sound output"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1209
+msgid "Unable to set access"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1241
+msgid "Unable to set sample rate"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1259
+msgid "Unable to set periods number"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1263
+msgid "Unable to get period size"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1268
+#, fuzzy
+msgid "Error setting hw parameters"
+msgstr "Errore durante il caricamento dei pattern."
+
+#: app/drivers/alsa1x.c:1276
+msgid "Unable to determine current swparams for playback"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1277
+msgid "Unable to determine current swparams for capture"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1283
+msgid "Unable to set start threshold mode for playback"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1284
+msgid "Unable to set start threshold mode for capture"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1290
+msgid "Unable to set avail min for playback"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1291
+msgid "Unable to set avail min for capture"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1297
+msgid "Unable to set sw params for playback"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1298
+msgid "Unable to set sw params for capture"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1304
+#, fuzzy
+msgid "Unable to prepare playback"
+msgstr "Impossibile allestire i canali ALSA.\n"
+
+#: app/drivers/alsa1x.c:1305
+#, fuzzy
+msgid "Unable to prepare capture"
+msgstr "Impossibile allestire i canali ALSA.\n"
+
+#: app/drivers/alsa1x.c:1318
+msgid "Unable to obtain poll descriptors for playback"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1319
+msgid "Unable to obtain poll descriptors for capture"
+msgstr ""
+
+#: app/drivers/alsa1x.c:1330
+msgid "Unable to start capture"
+msgstr ""
+
+#: app/drivers/dummy-drivers.c:40
+msgid "No driver available for your system."
+msgstr ""
 
 #: app/drivers/esd-output.c:97
 msgid ""
@@ -169,57 +332,44 @@ msgstr ""
 "Impossibile connettersi a ESD per l'output del suono:\n"
 "%s"
 
-#: app/drivers/file-output.c:92 app/drivers/file-output.c:297
-msgid "no settings (yet), sorry!"
-msgstr "non ci sono (ancora) impostazioni."
-
-#: app/drivers/file-output.c:167 app/drivers/file-output.c:374
-#: app/sample-editor.c:1865
+#: app/drivers/file-output.c:259 app/sample-editor.c:1894
 msgid "Can't open file for writing."
 msgstr "Impossibile aprire il file per la scrittura."
 
-#: app/drivers/oss-input.c:113 app/drivers/sun-input.c:107
+#: app/drivers/irix-output.c:98
+msgid "no settings (yet), sorry!"
+msgstr "non ci sono (ancora) impostazioni."
+
+#: app/drivers/oss.c:201 app/drivers/sun-output.c:173
+#, c-format
+msgid "(%d samples)"
+msgstr "(%d campioni)"
+
+#: app/drivers/oss.c:224 app/drivers/sun-input.c:105
 msgid "These changes won't take effect until you restart sampling."
 msgstr "Questi cambiamenti hanno effetto dal prossimo campionamento."
 
-#: app/drivers/oss-input.c:125
+#: app/drivers/oss.c:237
 msgid "Input device (e.g. '/dev/dsp'):"
 msgstr "Device di input (es. «/dev/dsp»):"
 
-#: app/drivers/oss-input.c:236
-#, c-format
+#: app/drivers/oss.c:238
+msgid "Output device (e.g. '/dev/dsp'):"
+msgstr "Device di output (es. «/dev/dsp»):"
+
+#: app/drivers/oss.c:431
+#, fuzzy, c-format
 msgid ""
-"Couldn't open %s for sampling:\n"
+"Couldn't open %s for %s:\n"
 "%s"
 msgstr ""
 "Impossibile aprire %s per il campionamento:\n"
 "%s"
 
-#: app/drivers/oss-output.c:185 app/drivers/sun-output.c:174
-#, c-format
-msgid "(%d samples)"
-msgstr "(%d campioni)"
-
-#: app/drivers/oss-output.c:219
-msgid "Output device (e.g. '/dev/dsp'):"
-msgstr "Device di output (es. «/dev/dsp»):"
-
-#: app/drivers/oss-output.c:393
-#, c-format
-msgid ""
-"Couldn't open %s for sound output:\n"
-"%s"
-msgstr ""
-"Impossibile aprire %s per l'output del suono:\n"
-"%s"
-
-#: app/drivers/jack-output.c:255
-msgid "transport master"
-msgstr "transport master"
-
-#: app/drivers/jack-output.c:260
-msgid "declick"
-msgstr "declick"
+#: app/drivers/oss.c:466
+#, fuzzy, c-format
+msgid "Required %s format not supported.\n"
+msgstr "Il formato sonoro di output richiesto non è supportato.\n"
 
 #: app/drivers/jack-output.c:280
 #, c-format
@@ -230,88 +380,90 @@ msgstr "In esecuizione a %d Hz con %d frame"
 msgid "Jack server not running?"
 msgstr "Jack server è in esecuzione?"
 
-#: app/drivers/jack-output.c:328
-msgid "soundtracker"
-msgstr "soundtracker"
-
-#: app/drivers/jack-output.c:348
+#: app/drivers/jack-output.c:354
 msgid "out_1"
 msgstr "out_1"
 
-#: app/drivers/jack-output.c:349
+#: app/drivers/jack-output.c:355
 msgid "out_2"
 msgstr "out_2"
 
-#: app/drivers/sun-output.c:211
+#: app/drivers/sdl-output.c:76
+#, fuzzy
+msgid "Experimental SDL support."
+msgstr "Operazione non supportata."
+
+#: app/drivers/sun-output.c:214
 msgid "Output device (e.g. '/dev/audio'):"
 msgstr "Device di output (es. «/dev/audio»):"
 
-#: app/drivers/sun-output.c:391 app/drivers/sun-output.c:462
-#: app/drivers/sun-input.c:231 app/drivers/sun-input.c:313
+#: app/drivers/sun-output.c:394 app/drivers/sun-output.c:465
+#: app/drivers/sun-input.c:229 app/drivers/sun-input.c:311
 #, c-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: app/drivers/sun-output.c:397
+#: app/drivers/sun-output.c:400
 #, c-format
 msgid "%s: Cannot play (%s)"
 msgstr "%s: impossibile riprodurre (%s)"
 
-#: app/drivers/sun-output.c:404 app/drivers/sun-input.c:252
+#: app/drivers/sun-output.c:407 app/drivers/sun-input.c:250
 #, c-format
 msgid "%s: Cannot handle %dHz (%s)"
 msgstr "%s: impossibile gestire %dHz (%s)"
 
-#: app/drivers/sun-output.c:433 app/drivers/sun-input.c:282
+#: app/drivers/sun-output.c:436 app/drivers/sun-input.c:280
 #, c-format
 msgid "%s: Required sound encoding not supported.\n"
 msgstr "%s: la codifica sonora richiesta non è supportata.\n"
 
-#: app/drivers/sun-output.c:456 app/drivers/sun-input.c:307
+#: app/drivers/sun-output.c:459 app/drivers/sun-input.c:305
 #, c-format
 msgid "%s: Cannot set block size (%s)"
 msgstr "%s: impossibile impostare la dimensione del blocco (%s)"
 
-#: app/drivers/sun-input.c:119
+#: app/drivers/sun-input.c:117
 msgid "Input device (e.g. '/dev/audio'):"
 msgstr "Device di input (es. «/dev/audio»):"
 
-#: app/drivers/sun-input.c:244
+#: app/drivers/sun-input.c:242
 #, c-format
 msgid "%s: Cannot record (%s)"
 msgstr "%s: impossibile registrare (%s)"
 
-#: app/envelope-box.c:892
+#: app/envelope-box.c:1261
 msgid "Length"
 msgstr "Lunghezza"
 
-#: app/envelope-box.c:893
+#: app/envelope-box.c:1262
 msgid "Current"
 msgstr "Attuale"
 
-#: app/envelope-box.c:894
+#: app/envelope-box.c:1263
 msgid "Offset"
 msgstr "Offset"
 
-#: app/envelope-box.c:895
+#: app/envelope-box.c:1264
 msgid "Value"
 msgstr "Valore"
 
-#: app/envelope-box.c:901 app/playlist.c:551
+#: app/envelope-box.c:1270 app/playlist.c:550
 msgid "Insert"
 msgstr "Inserisci"
 
-#: app/envelope-box.c:907 app/playlist.c:560
+#: app/envelope-box.c:1276 app/playlist.c:559
 msgid "Delete"
 msgstr "Elimina"
 
-#: app/envelope-box.c:999
+#: app/envelope-box.c:1350
+#, fuzzy
 msgid ""
 "Graphical\n"
 "Envelope\n"
 "Editor\n"
-"only in\n"
-"GNOME Version"
+"only with\n"
+"GooCanvas"
 msgstr ""
 "Editor\n"
 "grafico\n"
@@ -319,312 +471,233 @@ msgstr ""
 "solo nella\n"
 "versione GNOME"
 
-#: app/envelope-box.c:1014
+#: app/envelope-box.c:1365
 msgid "Sustain"
 msgstr "Sustain"
 
-#: app/envelope-box.c:1022
+#: app/envelope-box.c:1373
 msgid "Point"
 msgstr "Punto"
 
-#: app/envelope-box.c:1024
+#: app/envelope-box.c:1375
 msgid "Loop"
 msgstr "Ciclo"
 
-#: app/envelope-box.c:1032 app/sample-editor.c:277
+#: app/envelope-box.c:1383 app/sample-editor.c:305
 msgid "Start"
 msgstr "Inizio"
 
-#: app/envelope-box.c:1033 app/sample-editor.c:278
+#: app/envelope-box.c:1384 app/sample-editor.c:306
 msgid "End"
 msgstr "Fine"
 
-#: app/file-operations.c:168
-msgid "Load Module"
-msgstr "Carica il modulo"
+#: app/file-operations.c:104
+msgid "All supported types"
+msgstr ""
 
-#: app/file-operations.c:169
-msgid "Save Module"
-msgstr "Salva il modulo"
+#: app/file-operations.c:124
+msgid "All files"
+msgstr ""
 
-#: app/file-operations.c:170
-msgid "Render WAV"
-msgstr "Riversa su WAV"
-
-#: app/file-operations.c:171
-msgid "Save Song"
-msgstr "Salva il brano"
-
-#: app/file-operations.c:172 app/sample-editor.c:385
-msgid "Load Sample"
-msgstr "Carica il campione"
-
-#: app/file-operations.c:173
-msgid "Save Sample"
-msgstr "Salva il campione"
-
-#: app/file-operations.c:174
-msgid "Load Instrument"
-msgstr "Carica lo strumento"
-
-#: app/file-operations.c:175
-msgid "Save Instrument"
-msgstr "Salva lo strumento"
-
-#: app/file-operations.c:181
+#: app/file-operations.c:196
 msgid "File"
 msgstr "File"
 
-#: app/file-operations.c:232
+#: app/file-operations.c:237
+#, c-format
+msgid ""
+"The file named \"%s\" already exists.\n"
+"Do you want to replace it?"
+msgstr ""
+
+#: app/file-operations.c:474
 msgid "Operation not supported."
 msgstr "Operazione non supportata."
 
-#: app/gui-settings.c:96
-#, fuzzy
-msgid "Tracker background"
-msgstr "Frequenza del tracker"
-
-#: app/gui-settings.c:97
-msgid "Cursor background"
-msgstr ""
-
-#: app/gui-settings.c:98
-#, fuzzy
-msgid "Major lines highlighting"
-msgstr "Abilita l'evidenziazione delle righe"
-
-#: app/gui-settings.c:99
-#, fuzzy
-msgid "Minor lines highlighting"
-msgstr "Abilita l'evidenziazione delle righe"
-
-#: app/gui-settings.c:100
-#, fuzzy
-msgid "Selection"
-msgstr "Selezione:"
-
-#: app/gui-settings.c:101
-#, fuzzy
-msgid "Notes"
-msgstr "Nota:"
-
-#: app/gui-settings.c:102
-#, fuzzy
-msgid "Delimiters"
-msgstr "Elimina"
-
-#: app/gui-settings.c:103
-#, fuzzy
-msgid "Channel numbers"
-msgstr "Canali:"
-
-#: app/gui-settings.c:104
-msgid "Cursor idle"
-msgstr ""
-
-#: app/gui-settings.c:105
-msgid "Cursor editing"
-msgstr ""
-
-#: app/gui-settings.c:121
+#: app/gui-settings.c:53
 msgid "Scopes Frequency"
 msgstr "Frequenza degli oscilloscopi"
 
-#: app/gui-settings.c:124
+#: app/gui-settings.c:56
 msgid "Tracker Frequency"
 msgstr "Frequenza del tracker"
 
-#: app/gui-settings.c:389 app/gui-settings.c:633
+#: app/gui-settings.c:318 app/gui-settings.c:530
 #, fuzzy
 msgid "Tracker colors configuration"
 msgstr "Configurazione della tastiera"
 
-#: app/gui-settings.c:391
+#: app/gui-settings.c:320
 #, fuzzy
 msgid "Reset"
 msgstr "Capovolgi"
 
-#: app/gui-settings.c:397
+#: app/gui-settings.c:324
 msgid "Reset tracker colors to standard ST"
 msgstr ""
 
-#: app/gui-settings.c:464 app/gui-settings.c:467
+#: app/gui-settings.c:395
 msgid "GUI Configuration"
 msgstr "Configurazione della GUI"
 
-#: app/gui-settings.c:501
+#: app/gui-settings.c:416
 msgid "Hexadecimal row numbers"
 msgstr "Righe numerate in esadecimale"
 
-#: app/gui-settings.c:508
+#: app/gui-settings.c:422
 msgid "Use upper case letters for hex numbers"
 msgstr "Usa le lettere maiuscole per i numeri esadecimali"
 
-#: app/gui-settings.c:515
+#: app/gui-settings.c:428
 msgid "Asynchronous (IT-style) pattern editing"
 msgstr "Modifica asincrona del pattern (stile IT)"
 
-#: app/gui-settings.c:522
+#: app/gui-settings.c:434
 msgid "Fxx command updates Tempo/BPM sliders"
 msgstr "Il comando Fxx aggiorna i cursori Tempo/BPM"
 
-#: app/gui-settings.c:529
+#: app/gui-settings.c:440
 msgid "Switch to tracker after loading/saving"
 msgstr "Va nel tracker dopo il caricamento/salvataggio"
 
-#: app/gui-settings.c:536
+#: app/gui-settings.c:446
 msgid "Save window geometry on exit"
 msgstr "Salva la geometria della finestra all'uscita"
 
-#: app/gui-settings.c:543
+#: app/gui-settings.c:452
 msgid "Use note name B instead of H"
 msgstr "Usa il nome di nota B invece di H"
 
-#: app/gui-settings.c:550
+#: app/gui-settings.c:458
 msgid "Save and restore permanent channels"
 msgstr ""
 
-#: app/gui-settings.c:564
+#: app/gui-settings.c:470
 msgid "Scopes buffer size [MB]"
 msgstr "Dimensione del buffer degli oscilloscopi [MB]"
 
-#: app/gui-settings.c:583
+#: app/gui-settings.c:485
 msgid "Track line format:"
 msgstr "Formato della traccia:"
 
-#: app/gui-settings.c:632
-msgid "Col. scheme"
+#: app/gui-settings.c:529
+msgid "Color scheme"
 msgstr ""
 
-#: app/gui-subs.c:33 app/gui.c:2400
+#: app/gui-subs.c:34 app/gui.c:2390
 msgid "Ready."
 msgstr "Pronto."
 
-#: app/gui-subs.c:34
+#: app/gui-subs.c:35
 msgid "Playing song..."
 msgstr "Riproduzione del brano in corso..."
 
-#: app/gui-subs.c:35
+#: app/gui-subs.c:36
 msgid "Playing pattern..."
 msgstr "Riproduzione del pattern in corso..."
 
-#: app/gui-subs.c:36
+#: app/gui-subs.c:37
 msgid "Loading module..."
 msgstr "Caricamento del modulo in corso..."
 
-#: app/gui-subs.c:37
+#: app/gui-subs.c:38
 msgid "Module loaded."
 msgstr "Modulo caricato."
 
-#: app/gui-subs.c:38
+#: app/gui-subs.c:39
 msgid "Saving module..."
 msgstr "Salvataggio del modulo in corso..."
 
-#: app/gui-subs.c:39
+#: app/gui-subs.c:40
 msgid "Module saved."
 msgstr "Modulo salvato."
 
-#: app/gui-subs.c:40
+#: app/gui-subs.c:41
 msgid "Loading sample..."
 msgstr "Caricamento del campione in corso..."
 
-#: app/gui-subs.c:41
+#: app/gui-subs.c:42
 msgid "Sample loaded."
 msgstr "Campione caricato."
 
-#: app/gui-subs.c:42
+#: app/gui-subs.c:43
 msgid "Saving sample..."
 msgstr "Salvataggio del campione in corso..."
 
-#: app/gui-subs.c:43
+#: app/gui-subs.c:44
 msgid "Sample saved."
 msgstr "Campione salvato."
 
-#: app/gui-subs.c:44
+#: app/gui-subs.c:45
 msgid "Loading instrument..."
 msgstr "Caricamento dello strumento in corso..."
 
-#: app/gui-subs.c:45
+#: app/gui-subs.c:46
 msgid "Instrument loaded."
 msgstr "Strumento caricato."
 
-#: app/gui-subs.c:46
+#: app/gui-subs.c:47
 msgid "Saving instrument..."
 msgstr "Salvataggio dello strumento in corso..."
 
-#: app/gui-subs.c:47
+#: app/gui-subs.c:48
 msgid "Instrument saved."
 msgstr "Strumento salvato."
 
-#: app/gui-subs.c:48
+#: app/gui-subs.c:49
 msgid "Saving song..."
 msgstr "Salvataggio del brano in corso..."
 
-#: app/gui-subs.c:49
+#: app/gui-subs.c:50
 msgid "Song saved."
 msgstr "Brano salvato."
 
-#: app/gui-subs.c:586 app/gui-subs.c:657
-msgid "Question"
-msgstr "Domanda"
+#: app/gui-subs.c:498 app/gui-subs.c:518
+#, c-format
+msgid ""
+"An error occured when filename character set conversion:\n"
+"%s\n"
+"The file operation probably failed."
+msgstr ""
 
-#: app/gui-subs.c:595
-msgid "Yes"
-msgstr "Si"
+#: app/gui-subs.c:552
+#, c-format
+msgid ""
+"%s.\n"
+"Loading widgets' description from %s file failed!\n"
+msgstr ""
 
-#: app/gui-subs.c:603
-msgid "No"
-msgstr "No"
-
-#: app/gui-subs.c:610 app/gui-subs.c:674 app/sample-editor.c:1527
-#: app/sample-editor.c:1702 app/sample-editor.c:2029 app/sample-editor.c:2490
-#: app/midi-settings-050.c:637 app/midi-settings-09x.c:640
-msgid "Cancel"
-msgstr "Annulla"
-
-#: app/gui-subs.c:692
-msgid "Warning"
-msgstr "Attenzione"
-
-#: app/gui-subs.c:718
-msgid "Error!"
-msgstr "Errore"
-
-#: app/gui.c:143
+#: app/gui.c:133
 msgid "Tempo"
 msgstr "Tempo"
 
-#: app/gui.c:248 app/gui.c:258 app/gui.c:2105
+#: app/gui.c:239 app/gui.c:2131
 msgid "Row highlighting configuration"
 msgstr "Configurazione delle righe evidenziate"
 
-#: app/gui.c:277 app/sample-editor.c:2251
-msgid "Close"
-msgstr "Chiudi"
-
-#: app/gui.c:304
+#: app/gui.c:252
 msgid "Highlight rows (major / minor):"
 msgstr "Righe evidenziate (maggiore/minore):"
 
-#: app/gui.c:481
+#: app/gui.c:382
+#, fuzzy
+msgid "Saving module failed"
+msgstr "Salvataggio del modulo in corso..."
+
+#: app/gui.c:446
 msgid ""
 "Odd pattern rows contain data which will be lost after shrinking.\n"
 "Do you want to continue anyway?"
 msgstr ""
 
-#: app/gui.c:509
+#: app/gui.c:471
 msgid ""
 "The pattern is too long for expanding.\n"
 "Some data at the end of the pattern will be lost.\n"
 "Do you want to continue anyway?"
 msgstr ""
 
-#: app/gui.c:558 app/instrument-editor.c:213 app/sample-editor.c:1727
-#: app/sample-editor.c:1923 app/sample-editor.c:1968
-msgid "No file selected."
-msgstr "Nessun file selezionato."
-
-#: app/gui.c:566
+#: app/gui.c:512
 msgid ""
 "Are you sure you want to free the current project?\n"
 "All changes will be lost!"
@@ -632,16 +705,12 @@ msgstr ""
 "Liberarsi dell'attuale progetto?\n"
 "Si perdono i dati non salvati."
 
-#: app/gui.c:580 app/gui.c:595 app/gui.c:610 app/gui.c:628
-#: app/sample-editor.c:1937 app/sample-editor.c:1987
-msgid "Are you sure you want to overwrite the file?"
-msgstr "Sovrascrivere veramente il file?"
-
-#: app/gui.c:641
-msgid "Error when opening pattern file!"
+#: app/gui.c:576
+#, fuzzy, c-format
+msgid "Error when opening pattern file %s!"
 msgstr "Errore durante l'apertura del file del pattern."
 
-#: app/gui.c:654
+#: app/gui.c:595
 msgid ""
 "The length of the pattern being loaded doesn't match with that of current "
 "pattern in module.\n"
@@ -651,234 +720,301 @@ msgstr ""
 "pattern attuale nel modulo.\n"
 "Cambiare veramente la lunghezza del pattern attuale?"
 
-#: app/gui.c:1731
+#: app/gui.c:1716
 msgid "SoundTracker Startup"
 msgstr "Avvio di SoundTracker"
 
-#: app/gui.c:1791 app/gui.c:1828
+#: app/gui.c:1775 app/gui.c:1807
 msgid "Loading..."
 msgstr "Caricamento..."
 
-#: app/gui.c:1817
+#: app/gui.c:1796
 msgid "Use SoundTracker!"
 msgstr "Usa SoundTracker"
 
-#: app/gui.c:1888
-msgid "Load XM..."
-msgstr "Carica XM..."
+#: app/gui.c:1830
+msgid ""
+"Are you sure you want to quit?\n"
+"All changes will be lost!"
+msgstr ""
+"Uscire veramente?\n"
+"Si perdono i dati non salvati."
+
+#: app/gui.c:1889 app/gui.c:1892
+msgid "FastTracker modules (*.xm)"
+msgstr ""
 
 #: app/gui.c:1890
-msgid "Save XM..."
-msgstr "Salva XM..."
+msgid "Original SoundTracker modules (*.mod)"
+msgstr ""
 
-#: app/gui.c:1893
-msgid "Render module as WAV..."
-msgstr "Riversa il modulo su file WAV..."
-
-#: app/gui.c:1896
-msgid "Save song as XM..."
-msgstr "Salva il brano come XM..."
+#: app/gui.c:1895 app/sample-editor.c:250
+msgid "Microsoft RIFF (*.wav)"
+msgstr ""
 
 #: app/gui.c:1898
+#, fuzzy
+msgid "Extended pattern (*.xp)"
+msgstr "Pattern modificato"
+
+#: app/gui.c:1905
+#, c-format
+msgid "%s.\n"
+msgstr ""
+
+#: app/gui.c:1931
+msgid "Load Module"
+msgstr "Carica il modulo"
+
+#: app/gui.c:1931
+msgid "Load the selected module into the tracker"
+msgstr ""
+
+#: app/gui.c:1932
+msgid "Save Module"
+msgstr "Salva il modulo"
+
+#: app/gui.c:1932
+#, fuzzy
+msgid "Save the current module"
+msgstr "Salva il pattern attuale..."
+
+#: app/gui.c:1934
+msgid "Render WAV"
+msgstr "Riversa su WAV"
+
+#: app/gui.c:1934
+#, fuzzy
+msgid "Render the current module as WAV file"
+msgstr "Riversa il modulo su file WAV..."
+
+#: app/gui.c:1936
+msgid "Save XM without samples..."
+msgstr "Salva XM senza i campioni"
+
+#: app/gui.c:1937
 msgid "Load current pattern..."
 msgstr "Carica il pattern attuale..."
 
-#: app/gui.c:1900
+#: app/gui.c:1938
 msgid "Save current pattern..."
 msgstr "Salva il pattern attuale..."
 
-#: app/gui.c:1971
+#: app/gui.c:1996
 msgid "Play Song"
 msgstr "Suona il brano"
 
-#: app/gui.c:1983
+#: app/gui.c:2005
 msgid "Play Pattern"
 msgstr "Suona il pattern"
 
-#: app/gui.c:1995
+#: app/gui.c:2014
 msgid "Stop"
 msgstr "Stop"
 
-#: app/gui.c:2000
+#: app/gui.c:2019
 msgid "Pat"
 msgstr "Pat"
 
-#: app/gui.c:2006
+#: app/gui.c:2025
 msgid "Edited pattern"
 msgstr "Pattern modificato"
 
-#: app/gui.c:2019
+#: app/gui.c:2035
 msgid "When enabled, browsing the playlist does not change the edited pattern."
 msgstr ""
 "Se attivato, il pattern modificato non cambia quando si scorre la lista."
 
-#: app/gui.c:2035
+#: app/gui.c:2051
 msgid "Number of Channels:"
 msgstr "Numero di canali:"
 
-#: app/gui.c:2052
+#: app/gui.c:2068
 msgid "Pattern Length"
 msgstr "Lunghezza del pattern"
 
-#: app/gui.c:2087
+#: app/gui.c:2097
 msgid "Set preferred accidental type"
 msgstr "Imposta il tipo di alterazione preferito"
 
-#: app/gui.c:2093
+#: app/gui.c:2103
 msgid "Measure"
 msgstr "Battuta"
 
-#: app/gui.c:2094
+#: app/gui.c:2104
 msgid "Enable row highlighting"
 msgstr "Abilita l'evidenziazione delle righe"
 
-#: app/gui.c:2121
+#: app/gui.c:2125
 msgid "Other..."
 msgstr "Altro..."
 
-#: app/gui.c:2158
+#: app/gui.c:2154
 msgid "Change effect column editing direction"
 msgstr "Cambia la direzione di modifica nella colonna degli effetti"
 
-#: app/gui.c:2190
+#: app/gui.c:2185
 msgid "Global amplification"
 msgstr "Volume generale"
 
-#: app/gui.c:2226
+#: app/gui.c:2221
 msgid "Pitchbend"
 msgstr "Intonazione"
 
-#: app/gui.c:2234
+#: app/gui.c:2229
 msgid "Reset pitchbend to its normal value"
 msgstr "Riporta l'intonazione al suo valore normale"
 
-#: app/gui.c:2246
+#: app/gui.c:2241
 msgid "Editing"
 msgstr "Modifica"
 
-#: app/gui.c:2253
+#: app/gui.c:2248
 msgid "Octave"
 msgstr "Ottava"
 
-#: app/gui.c:2262
+#: app/gui.c:2257
 msgid "Jump"
 msgstr "Passo"
 
-#: app/gui.c:2271
+#: app/gui.c:2266
 msgid "Instr"
 msgstr "Strumento"
 
-#: app/gui.c:2287
+#: app/gui.c:2282
 msgid "Sample"
 msgstr "Campione"
 
-#: app/gui.c:2326
+#: app/gui.c:2321
 msgid "Welcome to SoundTracker!"
 msgstr "Benvenuto in SoundTracker"
 
-#: app/gui.c:2354
+#: app/gui.c:2348
 msgid "%M:%S"
 msgstr "%M:%S"
 
-#: app/instrument-editor.c:82
+#: app/gui.c:2418
+#, c-format
+msgid "GUI creation error: Widget '%s' is not found in %s file.\n"
+msgstr ""
+
+#: app/instrument-editor.c:80
 msgid "VolFade"
 msgstr "Dissolvenza"
 
-#: app/instrument-editor.c:83
+#: app/instrument-editor.c:81
 msgid "VibSpeed"
 msgstr "Velocità del vibrato"
 
-#: app/instrument-editor.c:84
+#: app/instrument-editor.c:82
 msgid "VibDepth"
 msgstr "Profondità del vibrato"
 
-#: app/instrument-editor.c:85
+#: app/instrument-editor.c:83
 msgid "VibSweep"
 msgstr "Sweep del vibrato"
 
-#: app/instrument-editor.c:164 app/instrument-editor.c:187
+#: app/instrument-editor.c:166 app/instrument-editor.c:196
 msgid "Can't open file."
 msgstr "Impossibile aprire il file."
 
-#: app/instrument-editor.c:230
+#: app/instrument-editor.c:190
+#, fuzzy
+msgid "Saving instrument failed."
+msgstr "Salvataggio dello strumento in corso..."
+
+#: app/instrument-editor.c:216
 msgid "Sine"
 msgstr "Sinusoidale"
 
-#: app/instrument-editor.c:230
+#: app/instrument-editor.c:216
 msgid "Square"
 msgstr "Onda quadra"
 
-#: app/instrument-editor.c:230
+#: app/instrument-editor.c:216
 msgid "Saw Down"
 msgstr "Sega giù"
 
-#: app/instrument-editor.c:230
+#: app/instrument-editor.c:216
 msgid "Saw Up"
 msgstr "Sega su"
 
-#: app/instrument-editor.c:234
+#: app/instrument-editor.c:218
+msgid "FastTracker instrumets (*.xi)"
+msgstr ""
+
+#: app/instrument-editor.c:223
 msgid "Instrument Editor"
 msgstr "Editor degli strumenti"
 
-#: app/instrument-editor.c:243
+#: app/instrument-editor.c:232
 msgid "Volume envelope"
 msgstr "Inviluppo del volume"
 
-#: app/instrument-editor.c:251
+#: app/instrument-editor.c:240
 msgid "Panning envelope"
 msgstr "Inviluppo del pan"
 
-#: app/instrument-editor.c:268
-msgid "Load Instrument..."
-msgstr "Carica lo strumento..."
+#: app/instrument-editor.c:257
+msgid "Load Instrument"
+msgstr "Carica lo strumento"
 
-#: app/instrument-editor.c:270
-msgid "Save Instrument..."
-msgstr "Salva lo strumento..."
+#: app/instrument-editor.c:259
+msgid "Load instrument in the current instrument slot"
+msgstr ""
 
-#: app/instrument-editor.c:272
+#: app/instrument-editor.c:260
+msgid "Save Instrument"
+msgstr "Salva lo strumento"
+
+#: app/instrument-editor.c:262
+#, fuzzy
+msgid "Save the current instrument"
+msgstr "Strumento attuale"
+
+#: app/instrument-editor.c:264
 msgid "Load XI"
 msgstr "Carica XI"
 
-#: app/instrument-editor.c:278
+#: app/instrument-editor.c:270
 msgid "Save XI"
 msgstr "Salva XI"
 
-#: app/instrument-editor.c:297
+#: app/instrument-editor.c:289
 msgid "Vibrato Type:"
 msgstr "Tipo di vibrato:"
 
-#: app/instrument-editor.c:369
+#: app/instrument-editor.c:361
 msgid "Note:"
 msgstr "Nota:"
 
-#: app/instrument-editor.c:387
+#: app/instrument-editor.c:379
 msgid "Initialize"
 msgstr "Inizializza"
 
-#: app/keys.c:58
+#: app/keys.c:54
 msgid "<none>"
 msgstr "<nessuno>"
 
-#: app/keys.c:130
+#: app/keys.c:126
 msgid "The key that inserts the special keyoff note for FastTracker modules."
 msgstr ""
 "Il tasto che inserisce la nota speciale «key off» per i moduli di "
 "FastTracker."
 
-#: app/keys.c:132
+#: app/keys.c:128
 msgid "The key that increases \"jump\" value."
 msgstr "Il tasto che aumenta il valore del «passo»."
 
-#: app/keys.c:134
+#: app/keys.c:130
 msgid "The key that decreases \"jump\" value."
 msgstr "Il tasto che diminuisce il valore del «passo»."
 
-#: app/keys.c:146
+#: app/keys.c:142
 msgid "Upper Octave Keys..."
 msgstr "Tasti dell'ottava superiore..."
 
-#: app/keys.c:147
+#: app/keys.c:143
 msgid ""
 "These are the keys on the upper half of the keyboard. The c key is normally "
 "the key to the right of the TAB key. The rest of the keys should be ordered "
@@ -889,11 +1025,11 @@ msgstr ""
 "essere ordinato come la tastiera del pianoforte, compresa la riga coi "
 "numeri, quella sopra."
 
-#: app/keys.c:153
+#: app/keys.c:149
 msgid "Lower Octave Keys..."
 msgstr "Tasti dell'ottava inferiore..."
 
-#: app/keys.c:154
+#: app/keys.c:150
 msgid ""
 "These are the keys on the lower half of the keyboard. The c key is normally "
 "the first character key to the right of the left Shift key. The rest of the "
@@ -904,31 +1040,31 @@ msgstr ""
 "tasti dovrebbe essere ordinato come la tastiera del pianoforte, compresa la "
 "riga sopra."
 
-#: app/keys.c:160
+#: app/keys.c:156
 msgid "Other Keys..."
 msgstr "Altri tasti..."
 
-#: app/keys.c:161
+#: app/keys.c:157
 msgid "Various other keys"
 msgstr "Altri tasti vari"
 
-#: app/keys.c:526
+#: app/keys.c:535
 msgid "Function"
 msgstr "Funzione"
 
-#: app/keys.c:527
+#: app/keys.c:536
 msgid "Assignment"
 msgstr "Assegnazione"
 
-#: app/keys.c:536 app/keys.c:539
+#: app/keys.c:545
 msgid "Keyboard Configuration"
 msgstr "Configurazione della tastiera"
 
-#: app/keys.c:583
+#: app/keys.c:591
 msgid "Key Group Explanation"
 msgstr "Spiegazione del gruppo di tasti"
 
-#: app/keys.c:600
+#: app/keys.c:605
 msgid "Key Explanation"
 msgstr "Spiegazione del tasto"
 
@@ -936,15 +1072,15 @@ msgstr "Spiegazione del tasto"
 msgid "Modifiers:"
 msgstr "Modificatori:"
 
-#: app/keys.c:657
+#: app/keys.c:653
 msgid "Learn selected key"
 msgstr "Memorizza il tasto selezionato"
 
-#: app/keys.c:663
+#: app/keys.c:658
 msgid "Learn all keys"
 msgstr "Memorizza tutti i tasti"
 
-#: app/keys.c:669
+#: app/keys.c:664
 msgid ""
 "Please press the desired key combination!\n"
 "Click into left list to cancel"
@@ -952,25 +1088,17 @@ msgstr ""
 "Premere la combinazione di tasti desiderata.\n"
 "Cliccare sull'elenco a sinistra per annullare"
 
-#: app/keys.c:767
-msgid ""
-"The keyboard configuration file is defective.\n"
-"Please use the Keyboard Configuration dialog."
-msgstr ""
-"Il file di configurazione della tastiera è difettoso.\n"
-"Usare la finestra di dialogo «Configurazione della tastiera»."
-
-#: app/keys.c:996
+#: app/keys.c:919
 #, c-format
 msgid "CH%02d"
 msgstr "CH%02d"
 
-#: app/keys.c:997
+#: app/keys.c:920
 #, c-format
 msgid "Fast jump to channel %d"
 msgstr "Passa rapidamente al canale %d"
 
-#: app/keys.c:1072
+#: app/keys.c:995
 msgid ""
 "Automatic key configuration unsuccessful.\n"
 "Please use the Keyboard Configuration dialog\n"
@@ -980,12 +1108,7 @@ msgstr ""
 "Usare «Configurazione della tastiera»\n"
 "nel menù «Impostazioni»."
 
-#: app/menubar.c:104 app/sample-editor.c:2482 app/midi-settings-050.c:635
-#: app/midi-settings-09x.c:638
-msgid "Ok"
-msgstr "Ok"
-
-#: app/menubar.c:140
+#: app/menubar.c:92
 msgid ""
 "Are you sure you want to do this?\n"
 "All changes will be lost!"
@@ -993,328 +1116,49 @@ msgstr ""
 "Sicuri di volerlo fare?\n"
 "Si perdono i dati non salvati."
 
-#: app/menubar.c:162
-msgid ""
-"Are you sure you want to quit?\n"
-"All changes will be lost!"
-msgstr ""
-"Uscire veramente?\n"
-"Si perdono i dati non salvati."
-
-#: app/menubar.c:419
-msgid "_Open..."
-msgstr "_Apri"
-
-#: app/menubar.c:421
-msgid "Save _as..."
-msgstr "Sa_lva come..."
-
-#: app/menubar.c:427
-msgid "Save Module as _WAV..."
-msgstr "Salva il modulo come _WAV"
-
-#: app/menubar.c:429
-msgid "Save XM without samples..."
-msgstr "Salva XM senza i campioni"
-
-#: app/menubar.c:434
-msgid "_Quit"
-msgstr "_Esci"
-
-#: app/menubar.c:441
-msgid "Clear _All"
-msgstr "Cancella _tutto"
-
-#: app/menubar.c:443
-msgid "Clear _Patterns Only"
-msgstr "Cancella solamente i _pattern"
-
-#: app/menubar.c:448
-msgid "_Optimize Module"
-msgstr "_Ottimizza il modulo"
-
-#: app/menubar.c:455 app/menubar.c:466 app/menubar.c:522 app/menubar.c:556
-msgid "C_ut"
-msgstr "_Taglia"
-
-#: app/menubar.c:457 app/menubar.c:468 app/menubar.c:524 app/menubar.c:558
-msgid "_Copy"
-msgstr "_Copia"
-
-#: app/menubar.c:459 app/menubar.c:470 app/menubar.c:560
-msgid "_Paste"
-msgstr "_Incolla"
-
-#: app/menubar.c:475
-msgid "_Kill notes"
-msgstr "_Elimina le note"
-
-#: app/menubar.c:480
-msgid "_Insert track"
-msgstr "I_nserisci una traccia"
-
-#: app/menubar.c:482
-msgid "_Delete track"
-msgstr "Eli_mina la traccia"
-
-#: app/menubar.c:487
-msgid "Increment cmd value"
-msgstr "Aumenta il valore «cmd»"
-
-#: app/menubar.c:489
-msgid "Decrement cmd value"
-msgstr "Diminuisci il valore «cmd»"
-
-#: app/menubar.c:496
-msgid "_Mark mode"
-msgstr "Modalità _selezione"
-
-#: app/menubar.c:498 app/menubar.c:554
-msgid "C_lear block marks"
-msgstr "Annu_lla la selezione"
-
-#: app/menubar.c:503 app/menubar.c:562
-msgid "_Interpolate effects"
-msgstr "Interpola gli _effetti"
-
-#: app/menubar.c:508
-msgid "Transpose half-note up"
-msgstr "Alza di un semitono"
-
-#: app/menubar.c:510
-msgid "Transpose half-note down"
-msgstr "Abbassa di un semitono"
-
-#: app/menubar.c:512
-msgid "Transpose octave up"
-msgstr "Alza di un'ottava"
-
-#: app/menubar.c:514
-msgid "Transpose octave down"
-msgstr "Abbassa di un'ottava"
-
-#: app/menubar.c:526
-#, fuzzy
-msgid "P_aste"
-msgstr "Incolla"
-
-#: app/menubar.c:531
-msgid "_Jazz Edit Mode"
-msgstr "Modalità _Jazz Edit"
-
-#: app/menubar.c:534
-msgid "_Record keyreleases"
-msgstr ""
-
-#: app/menubar.c:539
-msgid "Transp_osition..."
-msgstr "Trasp_osizione"
-
-#: app/menubar.c:544 app/menubar.c:569 app/menubar.c:707
-msgid "_Pattern"
-msgstr "_Pattern"
-
-#: app/menubar.c:545 app/menubar.c:570 app/menubar.c:708
-msgid "_Track"
-msgstr "T_raccia"
-
-#: app/menubar.c:546 app/menubar.c:571
-msgid "_Selection"
-msgstr "_Selezione"
-
-#: app/menubar.c:578
-msgid "_Find Unused Pattern"
-msgstr "Tr_ova i pattern non usati"
-
-#: app/menubar.c:580
-msgid "_Copy Current to Unused Pattern"
-msgstr "_Copia l'attuale in un pattern non usato"
-
-#: app/menubar.c:585
-msgid "C_lear Unused Patterns"
-msgstr "Cance_lla i pattern non usati"
-
-#: app/menubar.c:587
-msgid "_Pack Patterns"
-msgstr "Com_patta i pattern"
-
-#: app/menubar.c:592
-msgid "_Save Current Pattern"
-msgstr "_Salva il pattern attuale"
-
-#: app/menubar.c:594
-msgid "L_oad Pattern"
-msgstr "Ca_rica il pattern"
-
-#: app/menubar.c:599
-#, fuzzy
-msgid "Sh_rink Current Pattern"
-msgstr "L'attuale pattern"
-
-#: app/menubar.c:601
-#, fuzzy
-msgid "_Expand Current Pattern"
-msgstr "_Salva il pattern attuale"
-
-#: app/menubar.c:608
-msgid "_Toggle Current Channel Permanentness"
-msgstr ""
-
-#: app/menubar.c:610
-msgid "Toggle _All Channels Permanentness"
-msgstr ""
-
-#: app/menubar.c:618
-msgid "_Load XI..."
-msgstr "Ca_rica XI"
-
-#: app/menubar.c:620
-msgid "_Save XI..."
-msgstr "_Salva XI"
-
-#: app/menubar.c:625
-msgid "_Clear Current"
-msgstr "_Cancella l'attuale"
-
-#: app/menubar.c:630
-msgid "_Delete Unused Instruments"
-msgstr "Eli_mina gli strumenti non usati"
-
-#: app/menubar.c:637
-msgid "_Flicker-free scrolling"
-msgstr "Scorrimento _fluido"
-
-#: app/menubar.c:640
-msgid "_Previous font"
-msgstr "Tipo di carattere _precedente"
-
-#: app/menubar.c:642
-msgid "_Next font"
-msgstr "Tipo di carattere _successivo"
-
-#: app/menubar.c:647
-msgid "Change preferred _accidental type"
-msgstr "Cambia il tipo di _alterazione preferita"
-
-#: app/menubar.c:649
-msgid "Change effect column editing _direction"
-msgstr "Cambia la _direzione di modifica nella colonna degli effetti"
-
-#: app/menubar.c:657
-msgid "Display _Oscilloscopes"
-msgstr "Mostra gli _oscilloscopi"
-
-#: app/menubar.c:660
-msgid "_Tracker"
-msgstr "_Tracker"
-
-#: app/menubar.c:664
-msgid "_Keyboard Configuration..."
-msgstr "_Configurazione della tastiera"
-
-#: app/menubar.c:666
-msgid "_Audio Configuration..."
-msgstr "Configurazione dell'_audio"
-
-#: app/menubar.c:668
-msgid "_GUI Configuration..."
-msgstr "Configurazione della _GUI"
-
-#: app/menubar.c:674
-msgid "_MIDI Configuration..."
-msgstr "Configurazione _MIDI"
-
-#: app/menubar.c:679
-msgid "Disable splash screen"
-msgstr "Disabilita la schermata di avvio"
-
-#: app/menubar.c:681
-msgid "_Save Settings now"
-msgstr "_Salva le impostazioni adesso"
-
-#: app/menubar.c:683
-msgid "Save Settings on _Exit"
-msgstr "Salva le impostazioni all'_uscita"
-
-#: app/menubar.c:690
-msgid "_About..."
-msgstr "I_nformazioni"
-
-#: app/menubar.c:695
-msgid "Show _Tips..."
-msgstr "Mostra i suggerimen_ti"
-
-#: app/menubar.c:697
-msgid "_XM Effects..."
-msgstr "Effetti _XM"
-
-#: app/menubar.c:704
-msgid "_File"
-msgstr "_File"
-
-#: app/menubar.c:705
-msgid "_Module"
-msgstr "Mo_dulo"
-
-#: app/menubar.c:706
-msgid "_Edit"
-msgstr "_Modifica"
-
-#: app/menubar.c:709
-msgid "_Instrument"
-msgstr "_Strumento"
-
-#: app/menubar.c:710
-msgid "_Settings"
-msgstr "_Impostazioni"
-
-#: app/menubar.c:711
-msgid "_Help"
-msgstr "A_iuto"
-
 #: app/mixers/integer32.c:493
 msgid "Integers mixer, no interpolation, no filters, maximum sample length 1M"
 msgstr ""
 "Mixer interi, nessuna interpolazione, nessun filtro, massima lunghezza del "
 "campione 1M"
 
-#: app/module-info.c:120
+#: app/module-info.c:123
 msgid "Instrument Name"
 msgstr "Nome dello strumento"
 
-#: app/module-info.c:120
+#: app/module-info.c:123
 msgid "#smpl"
 msgstr "#smpl"
 
-#: app/module-info.c:121
+#: app/module-info.c:124
 msgid "Sample Name"
 msgstr "Nome del campione"
 
-#: app/module-info.c:128
+#: app/module-info.c:131
 msgid "Linear"
 msgstr "Lineare"
 
-#: app/module-info.c:128 app/sample-editor.c:237
+#: app/module-info.c:131 app/sample-editor.c:226
 msgid "Amiga"
 msgstr "Amiga"
 
-#: app/module-info.c:133
+#: app/module-info.c:136
 msgid "Module Info"
 msgstr "Informazioni sul modulo"
 
-#: app/module-info.c:167
+#: app/module-info.c:170
 msgid "Songname:"
 msgstr "Nome del brano:"
 
-#: app/module-info.c:182
+#: app/module-info.c:183
 msgid "Frequencies:"
 msgstr "Frequenze:"
 
-#: app/module-info.c:187
+#: app/module-info.c:188
 msgid "ProTracker Mode"
 msgstr "Modalità ProTracker"
 
-#: app/module-info.c:403
+#: app/module-info.c:426
 #, c-format
 msgid ""
 "Unused patterns: %d (used: %d)\n"
@@ -1327,220 +1171,363 @@ msgstr ""
 "\n"
 "Cancellare i non usati e riordinare la lista?\n"
 
-#: app/playlist.c:553
+#: app/playlist.c:552
 msgid "Insert pattern that is being edited"
 msgstr "Inserisce il pattern che è stato modificato"
 
-#: app/playlist.c:562
+#: app/playlist.c:561
 msgid "Remove current playlist entry"
 msgstr "Rimuove la voce attuale della lista"
 
-#: app/playlist.c:570
+#: app/playlist.c:569
 msgid "Add + Cpy"
 msgstr "Aggiungi e copia"
 
-#: app/playlist.c:572
+#: app/playlist.c:571
 msgid ""
 "Add a free pattern behind current position, and copy current pattern to it"
 msgstr ""
 "Aggiunge un nuovo pattern dopo la posizione attuale e ci copia dentro il "
 "pattern in uso"
 
-#: app/playlist.c:575
+#: app/playlist.c:574
 msgid "Add Free"
 msgstr "Aggiungi nuovo"
 
-#: app/playlist.c:577
+#: app/playlist.c:576
 msgid "Add a free pattern behind current position"
 msgstr "Aggiunge un pattern nuovo dopo la posizione attuale"
 
-#: app/playlist.c:587
+#: app/playlist.c:586
 #, fuzzy
 msgid "Len"
 msgstr "Lunghezza"
 
-#: app/playlist.c:601
+#: app/playlist.c:600
 msgid "Song length"
 msgstr "Lunghezza del brano"
 
-#: app/playlist.c:607
+#: app/playlist.c:606
 #, fuzzy
 msgid "Rstrt"
 msgstr "Strumento"
 
-#: app/playlist.c:620
+#: app/playlist.c:619
 msgid "Song restart position"
 msgstr "Il brano ricomincia da questa posizione"
 
-#: app/preferences.c:75
-#, fuzzy
-msgid ""
-"A directory called '.soundtracker2' has been created in your\n"
-"home directory to store configuration files.\n"
+#: app/preferences.c:91
+msgid "Would you like to import settings from old version of Soundtracker?"
 msgstr ""
-"Una directory di nome «.soundtracker» è stata creata nella\n"
-"propria home per salvare i file di configurazione.\n"
 
-#: app/sample-editor.c:236
+#: app/preferences.c:95
+#, c-format
+msgid ""
+"An error is occured during converting config:\n"
+"%s"
+msgstr ""
+
+#: app/preferences.c:109
+#, c-format
+msgid ""
+"An error is occured during reading or parsing config:\n"
+"%s"
+msgstr ""
+
+#: app/preferences.c:133
+#, c-format
+msgid ""
+"An error is occured during saving config:\n"
+"%s"
+msgstr ""
+
+#: app/sample-editor.c:225
 msgid "No loop"
 msgstr "Nessun ciclo"
 
-#: app/sample-editor.c:238
+#: app/sample-editor.c:227
 msgid "PingPong"
 msgstr "Ping Pong"
 
-#: app/sample-editor.c:242 app/sample-editor.c:1581
+#: app/sample-editor.c:231 app/sample-editor.c:1614
 msgid "8 bits"
 msgstr "8 bit"
 
-#: app/sample-editor.c:243 app/sample-editor.c:1581
+#: app/sample-editor.c:232 app/sample-editor.c:1614
 msgid "16 bits"
 msgstr "16 bit"
 
-#: app/sample-editor.c:249
+#: app/sample-editor.c:237
+msgid "Apple/SGI audio (*aif, *.aiff, *.aifc)"
+msgstr ""
+
+#: app/sample-editor.c:238
+msgid "SUN/NeXT audio (*.au, *.snd)"
+msgstr ""
+
+#: app/sample-editor.c:239
+msgid "Audio Visual Research files (*.avr)"
+msgstr ""
+
+#: app/sample-editor.c:240
+msgid "Apple Core Audio files (*.caf)"
+msgstr ""
+
+#: app/sample-editor.c:241
+msgid "Amiga IFF/SV8/SV16 (*.iff)"
+msgstr ""
+
+#: app/sample-editor.c:242
+msgid "Berkeley/IRCAM/CARL audio (*.sf)"
+msgstr ""
+
+#: app/sample-editor.c:243
+msgid "Creative Labs audio (*.voc)"
+msgstr ""
+
+#: app/sample-editor.c:244
+msgid "Microsoft RIFF/NIST Sphere (*.wav)"
+msgstr ""
+
+#: app/sample-editor.c:245
+msgid "FLAC lossless audio (*.flac)"
+msgstr ""
+
+#: app/sample-editor.c:246
+msgid "Psion audio (*.wve)"
+msgstr ""
+
+#: app/sample-editor.c:247
+msgid "OGG compressed audio (*.ogg, *.vorbis)"
+msgstr ""
+
+#: app/sample-editor.c:248
+msgid "RIFF 64 files (*.rf64)"
+msgstr ""
+
+#: app/sample-editor.c:255
+msgid "HMM Tool KIt files (*.htk)"
+msgstr ""
+
+#: app/sample-editor.c:256
+msgid "GNU Octave/Matlab files (*.mat)"
+msgstr ""
+
+#: app/sample-editor.c:257
+msgid "Ensoniq PARIS files (*.paf)"
+msgstr ""
+
+#: app/sample-editor.c:258
+msgid "Portable Voice Format files (*.pvf)"
+msgstr ""
+
+#: app/sample-editor.c:259
+msgid "Headerless raw data (*.raw, *.r8)"
+msgstr ""
+
+#: app/sample-editor.c:260
+msgid "Sound Designer II files (*.sd2)"
+msgstr ""
+
+#: app/sample-editor.c:261
+msgid "Midi Sample Dump Standard files (*.sds)"
+msgstr ""
+
+#: app/sample-editor.c:262
+msgid "SoundFoundry WAVE 64 files (*.w64)"
+msgstr ""
+
+#: app/sample-editor.c:269
+msgid "Sample Vision files (*.smp)"
+msgstr ""
+
+#: app/sample-editor.c:277
 msgid "Sample Editor"
 msgstr "Editor del campione"
 
-#: app/sample-editor.c:289 app/midi-settings-050.c:504
-#: app/midi-settings-09x.c:507
+#: app/sample-editor.c:317 app/midi-settings-09x.c:416
 msgid "Volume"
 msgstr "Volume"
 
-#: app/sample-editor.c:290
+#: app/sample-editor.c:318
 msgid "Panning"
 msgstr "Pan"
 
-#: app/sample-editor.c:291
+#: app/sample-editor.c:319
 msgid "Finetune"
 msgstr "Regolazione fine"
 
-#: app/sample-editor.c:311
+#: app/sample-editor.c:339
 msgid "Selection:"
 msgstr "Selezione:"
 
-#: app/sample-editor.c:315 app/track-editor.c:200 app/track-editor.c:210
+#: app/sample-editor.c:343 app/track-editor.c:195 app/track-editor.c:205
 msgid "None"
 msgstr "Niente"
 
-#: app/sample-editor.c:321
+#: app/sample-editor.c:349
 msgid "All"
 msgstr "Tutto"
 
-#: app/sample-editor.c:342
+#: app/sample-editor.c:370
 msgid "Length:"
 msgstr "Lunghezza:"
 
-#: app/sample-editor.c:358
+#: app/sample-editor.c:386
 msgid "Set as loop"
 msgstr "Imposta come ciclo"
 
-#: app/sample-editor.c:366
+#: app/sample-editor.c:394
 msgid "RelNote"
 msgstr "Nota relativa"
 
-#: app/sample-editor.c:377
-msgid "Load Sample..."
-msgstr "Carica il campione..."
+#: app/sample-editor.c:405 app/sample-editor.c:410
+msgid "Load Sample"
+msgstr "Carica il campione"
 
-#: app/sample-editor.c:379
-msgid "Save WAV..."
-msgstr "Salva WAV..."
+#: app/sample-editor.c:405
+msgid "Load sample into the current samle slot"
+msgstr ""
 
-#: app/sample-editor.c:381
+#: app/sample-editor.c:406
+msgid "Save Sample"
+msgstr "Salva il campione"
+
+#: app/sample-editor.c:406
+#, fuzzy
+msgid "Save the current sample"
+msgstr "Salva XM senza i campioni"
+
+#: app/sample-editor.c:407
 msgid "Save region as WAV..."
 msgstr "Salva la regione come WAV..."
 
-#: app/sample-editor.c:394
+#: app/sample-editor.c:419
 msgid "Save WAV"
 msgstr "Salva WAV"
 
-#: app/sample-editor.c:404
+#: app/sample-editor.c:429
 msgid "Save Region"
 msgstr "Salva la regione"
 
-#: app/sample-editor.c:415
+#: app/sample-editor.c:440
 msgid "Monitor"
 msgstr "Monitor"
 
-#: app/sample-editor.c:421
+#: app/sample-editor.c:446
 msgid "Volume Ramp"
 msgstr "Dissolvenza"
 
-#: app/sample-editor.c:427
+#: app/sample-editor.c:452
 #, fuzzy
 msgid "Trim"
 msgstr "Tremor"
 
-#: app/sample-editor.c:438
+#: app/sample-editor.c:463
 msgid "Zoom to selection"
 msgstr "Ingrandisci la selezione"
 
-#: app/sample-editor.c:444
+#: app/sample-editor.c:469
 msgid "Show all"
 msgstr "Visualizza tutto"
 
-#: app/sample-editor.c:450
+#: app/sample-editor.c:475
 msgid "Zoom in (+50%)"
 msgstr "Ingrandimento (+50%)"
 
-#: app/sample-editor.c:456
+#: app/sample-editor.c:481
 msgid "Zoom out (-50%)"
 msgstr "Ingrandimento (-50%)"
 
-#: app/sample-editor.c:462
+#: app/sample-editor.c:487
 msgid "Reverse"
 msgstr "Capovolgi"
 
-#: app/sample-editor.c:472
+#: app/sample-editor.c:497
 msgid "Cut"
 msgstr "Taglia"
 
-#: app/sample-editor.c:478
+#: app/sample-editor.c:503
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: app/sample-editor.c:484
+#: app/sample-editor.c:509
 msgid "Copy"
 msgstr "Copia"
 
-#: app/sample-editor.c:490
+#: app/sample-editor.c:515
 msgid "Paste"
 msgstr "Incolla"
 
-#: app/sample-editor.c:496
+#: app/sample-editor.c:521
 msgid "Clear Sample"
 msgstr "Cancella campione"
 
-#: app/sample-editor.c:502
+#: app/sample-editor.c:527
 #, fuzzy
 msgid "Crop"
 msgstr "Copia"
 
-#: app/sample-editor.c:571
+#: app/sample-editor.c:596
 msgid "(no selection)"
 msgstr "(nessuna selezione)"
 
-#: app/sample-editor.c:1076
+#: app/sample-editor.c:1099
 msgid "Out of memory for copybuffer.\n"
 msgstr "Memoria esaurita per il copybuffer.\n"
 
-#: app/sample-editor.c:1195
+#: app/sample-editor.c:1224
 msgid "<just pasted>"
 msgstr "<appena incollato>"
 
-#: app/sample-editor.c:1308
-msgid "Out of memory for sample data."
-msgstr "Memoria esaurita per i dati del campione."
-
-#: app/sample-editor.c:1324 app/sample-editor.c:1336
-msgid "Read error."
-msgstr "Errore di lettura."
-
-#: app/sample-editor.c:1483
+#: app/sample-editor.c:1309
 msgid "Load stereo sample"
 msgstr "Carica il campione stereo"
 
-#: app/sample-editor.c:1491
+#: app/sample-editor.c:1311
+msgid "Left"
+msgstr "Sinistro"
+
+#: app/sample-editor.c:1312
+msgid "Mix"
+msgstr "Mescolati"
+
+#: app/sample-editor.c:1313
+msgid "Right"
+msgstr "Destro"
+
+#: app/sample-editor.c:1314
+#, fuzzy
+msgid "2 smpls"
+msgstr "#smpl"
+
+#: app/sample-editor.c:1315
+msgid "Load left and right channels into the current sample and the next one"
+msgstr ""
+
+#: app/sample-editor.c:1379 app/sample-editor.c:2169
+msgid ""
+"You have selected the last sample of the instrument, but going to load the "
+"second stereo channel to the next sample. Please select a sample slot with "
+"lower number or use another loading mode."
+msgstr ""
+
+#: app/sample-editor.c:1386 app/sample-editor.c:2176
+msgid ""
+"The next sample which is about to be overwriten is not empty!\n"
+"Would you like to overwrite it?"
+msgstr ""
+
+#: app/sample-editor.c:1396 app/sample-editor.c:1402 app/sample-editor.c:1488
+#: app/sample-editor.c:2143 app/sample-editor.c:2194
+msgid "Out of memory for sample data."
+msgstr "Memoria esaurita per i dati del campione."
+
+#: app/sample-editor.c:1419 app/sample-editor.c:1431
+msgid "Read error."
+msgstr "Errore di lettura."
+
+#: app/sample-editor.c:1575
 msgid ""
 "You have selected a stereo sample!\n"
 "(SoundTracker can only handle mono samples!)\n"
@@ -1552,47 +1539,27 @@ msgstr ""
 "\n"
 "Scegliere quale canale caricare:"
 
-#: app/sample-editor.c:1502
-msgid "Left"
-msgstr "Sinistro"
-
-#: app/sample-editor.c:1508
-msgid "Mix"
-msgstr "Mescolati"
-
-#: app/sample-editor.c:1514
-msgid "Right"
-msgstr "Destro"
-
-#: app/sample-editor.c:1582
+#: app/sample-editor.c:1615
 msgid "Signed"
 msgstr "Con segno"
 
-#: app/sample-editor.c:1582
+#: app/sample-editor.c:1615
 msgid "Unsigned"
 msgstr "Senza segno"
 
-#: app/sample-editor.c:1583
+#: app/sample-editor.c:1616
 msgid "Little-Endian"
 msgstr "Little endian"
 
-#: app/sample-editor.c:1583
+#: app/sample-editor.c:1616
 msgid "Big-Endian"
 msgstr "Big endian"
 
-#: app/sample-editor.c:1584
-msgid "Mono"
-msgstr "Mono"
-
-#: app/sample-editor.c:1584
-msgid "Stereo"
-msgstr "Stereo"
-
-#: app/sample-editor.c:1596
+#: app/sample-editor.c:1625
 msgid "Load raw sample"
 msgstr "Carica campione raw"
 
-#: app/sample-editor.c:1604
+#: app/sample-editor.c:1633
 msgid ""
 "You have selected a sample that is not\n"
 "in a known format. You can load the raw data now.\n"
@@ -1604,113 +1571,135 @@ msgstr ""
 "\n"
 "Scegliere un formato:"
 
-#: app/sample-editor.c:1630
+#: app/sample-editor.c:1659
 msgid "Word format:"
 msgstr "Formato word:"
 
-#: app/sample-editor.c:1677
+#: app/sample-editor.c:1690
 msgid "Sampling Rate:"
 msgstr "Frequenza di campionamento:"
 
-#: app/sample-editor.c:1688
-msgid "8363"
-msgstr "8363"
-
-#: app/sample-editor.c:1696 app/sample-editor.c:2014
-msgid "OK"
-msgstr "OK"
-
-#: app/sample-editor.c:1756
+#: app/sample-editor.c:1780
 msgid "Can't read sample"
 msgstr "Impossibile leggere il campione"
 
-#: app/sample-editor.c:1769
+#: app/sample-editor.c:1793
 msgid "Sample is too long for current mixer module. Loading anyway."
 msgstr "Il campione è troppo lungo per l'attuale mixer. Lo carico comunque."
 
-#: app/sample-editor.c:1793
+#: app/sample-editor.c:1817
 msgid "Can only handle 8 and 16 bit samples with up to 2 channels"
 msgstr "Può solo gestire campioni da 8 e 16 bit fino a 2 canali"
 
-#: app/sample-editor.c:1978
+#: app/sample-editor.c:1951
 msgid "Please select region first."
 msgstr "Selezionare prima una regione."
 
-#: app/sample-editor.c:2022
+#: app/sample-editor.c:1977
+msgid "OK"
+msgstr "OK"
+
+#: app/sample-editor.c:1985
 msgid "Start sampling"
 msgstr "Inizia il campionamento"
 
-#: app/sample-editor.c:2052
+#: app/sample-editor.c:1992
+msgid "Cancel"
+msgstr "Annulla"
+
+#: app/sample-editor.c:2013
 msgid "No sampling driver available"
 msgstr "Nessun driver di campionamento libero"
 
-#: app/sample-editor.c:2062 app/sample-editor.c:2065
+#: app/sample-editor.c:2021
 msgid "Sampling Window"
 msgstr "Finestra di campionamento"
 
-#: app/sample-editor.c:2114
+#: app/sample-editor.c:2051
+#, fuzzy
+msgid "Sampling failed!"
+msgstr "Frequenza di campionamento:"
+
+#: app/sample-editor.c:2071
 msgid "Out of memory while sampling!"
 msgstr "Memoria esaurita durante il campionamento"
 
-#: app/sample-editor.c:2165
+#: app/sample-editor.c:2126
 msgid "<just sampled>"
 msgstr "<appena campionato>"
 
-#: app/sample-editor.c:2196
+#: app/sample-editor.c:2152
+#, fuzzy
+msgid ""
+"You have recorded a stereo sample!\n"
+"(SoundTracker can only handle mono samples!)\n"
+"\n"
+"Please choose which channel to use:"
+msgstr ""
+"È stato selezionato un campione stereo.\n"
+"(SoundTracker può gestire solo campioni mono.)\n"
+"\n"
+"Scegliere quale canale caricare:"
+
+#: app/sample-editor.c:2378
 msgid "Recorded sample is too long for current mixer module. Using it anyway."
 msgstr ""
 "Il campione registrato è troppo lungo per l'attuale mixer. Viene usato "
 "comunque."
 
-#: app/sample-editor.c:2249
-msgid "Normalize"
-msgstr "Normalizza"
-
-#: app/sample-editor.c:2250
-msgid "Execute"
-msgstr "Esegui"
-
-#: app/sample-editor.c:2260 app/sample-editor.c:2263
+#: app/sample-editor.c:2443
 msgid "Volume Ramping"
 msgstr "Dissolvenza"
 
-#: app/sample-editor.c:2279
+#: app/sample-editor.c:2444
+msgid "Normalize"
+msgstr "Normalizza"
+
+#: app/sample-editor.c:2456
 msgid "Perform linear volume fade on Selection"
 msgstr "Esegue una dissolvenza lineare del volume sulla selezione"
 
-#: app/sample-editor.c:2291
+#: app/sample-editor.c:2465
 msgid "Left [%]:"
 msgstr "Sinistra [%]:"
 
-#: app/sample-editor.c:2294 app/sample-editor.c:2311
+#: app/sample-editor.c:2468 app/sample-editor.c:2485
 msgid "H"
 msgstr "50"
 
-#: app/sample-editor.c:2300 app/sample-editor.c:2317
+#: app/sample-editor.c:2470 app/sample-editor.c:2487
+msgid "Half"
+msgstr ""
+
+#: app/sample-editor.c:2474 app/sample-editor.c:2491
 msgid "D"
 msgstr "200"
 
-#: app/sample-editor.c:2308
+#: app/sample-editor.c:2475 app/sample-editor.c:2493
+msgid "Double"
+msgstr ""
+
+#: app/sample-editor.c:2482
 msgid "Right [%]:"
 msgstr "Destra [%]:"
 
-#: app/sample-editor.c:2452 app/sample-editor.c:2463
+#: app/sample-editor.c:2575
 msgid "Trim parameters"
 msgstr ""
 
-#: app/sample-editor.c:2508
+#: app/sample-editor.c:2581
 msgid "Trim at the beginning"
 msgstr ""
 
-#: app/sample-editor.c:2515
+#: app/sample-editor.c:2585
 msgid "Trim at the end"
 msgstr ""
 
-#: app/sample-editor.c:2522
+#: app/sample-editor.c:2591
 msgid "Threshold (dB)"
 msgstr ""
 
-#: app/tips-dialog.c:50
+#: app/tips-dialog.c:44
 msgid ""
 "Welcome to SoundTracker!\n"
 "\n"
@@ -1722,7 +1711,7 @@ msgstr ""
 "Se non si ha familiarità con questo tipo di programma, è meglio\n"
 "prima prendere qualche file XM o MOD e giocarci un po'."
 
-#: app/tips-dialog.c:55
+#: app/tips-dialog.c:49
 msgid ""
 "You can make SoundTracker's edit mode more responsive to keyboard\n"
 "input by decreasing the mixing buffer size of the \"Editing\" object in\n"
@@ -1732,7 +1721,7 @@ msgstr ""
 "tastiera diminuendo la dimensione del buffer dell'oggetto\n"
 "«Editing» in «Configurazione dell'audio»."
 
-#: app/tips-dialog.c:59
+#: app/tips-dialog.c:53
 msgid ""
 "You can adjust the loop points in the sample editor by holding Shift\n"
 "and using the left and right mousebuttons.\n"
@@ -1740,7 +1729,7 @@ msgstr ""
 "È possibile regolare i punti del ciclo nell'editor del campione tenendo\n"
 "premuto «shift» e usando i tasti destro e sinistro del mouse.\n"
 
-#: app/tips-dialog.c:62
+#: app/tips-dialog.c:56
 msgid ""
 "If you want to know more about tracking, and how the various commands\n"
 "work, have a look at http://www.united-trackers.org/"
@@ -1748,7 +1737,7 @@ msgstr ""
 "Per saperne di più sul tracking e su come funzionano i vari comandi,\n"
 "consultare il sito web: http://www.united-trackers.org/"
 
-#: app/tips-dialog.c:65
+#: app/tips-dialog.c:59
 msgid ""
 "You can assign samples of an instrument to the individual keys by\n"
 "activating its sample and then clicking on the keyboard in the\n"
@@ -1759,7 +1748,7 @@ msgstr ""
 "il suo campione e poi cliccando sulla tastiera nella pagina dell'editor\n"
 "degli strumenti."
 
-#: app/tips-dialog.c:69
+#: app/tips-dialog.c:63
 msgid ""
 "Is your cursor trapped in a number entry field?\n"
 "Just press Return or Tab to free yourself!"
@@ -1767,335 +1756,502 @@ msgstr ""
 "Se il cursore è intrappolato nella voce di un campo numerico,\n"
 "basta premere «Invio» o «Tab» per liberarlo."
 
-#: app/tips-dialog.c:81
-msgid "SoundTracker Tip of the day"
-msgstr "Suggerimento del giorno di SoundTracker"
-
-#: app/tips-dialog.c:154
+#: app/tips-dialog.c:111
 msgid "Previous Tip"
 msgstr "Suggerimento precedente"
 
-#: app/tips-dialog.c:162
+#: app/tips-dialog.c:118
 msgid "Next Tip"
 msgstr "Suggerimento successivo"
 
-#: app/tips-dialog.c:174
+#: app/tips-dialog.c:129
 msgid "Show tip next time"
 msgstr "Mostra un suggerimento la prossima volta"
 
-#: app/track-editor.c:115
+#: app/tips-dialog.c:145
+msgid "SoundTracker Tip of the day"
+msgstr "Suggerimento del giorno di SoundTracker"
+
+#: app/track-editor.c:110
 msgid "Arpeggio"
 msgstr "Arpeggio"
 
-#: app/track-editor.c:116
+#: app/track-editor.c:111
 msgid "Porta up"
 msgstr "Porta up"
 
-#: app/track-editor.c:117
+#: app/track-editor.c:112
 msgid "Porta down"
 msgstr "Porta down"
 
-#: app/track-editor.c:118 app/track-editor.c:182
+#: app/track-editor.c:113 app/track-editor.c:177
 msgid "Tone porta"
 msgstr "Tone porta"
 
-#: app/track-editor.c:119 app/track-editor.c:178
+#: app/track-editor.c:114 app/track-editor.c:173
 msgid "Vibrato"
 msgstr "Vibrato"
 
-#: app/track-editor.c:120
+#: app/track-editor.c:115
 msgid "Tone porta + Volume slide"
 msgstr "Tone porta + scorrimento volume"
 
-#: app/track-editor.c:121
+#: app/track-editor.c:116
 msgid "Vibrato + Volume slide"
 msgstr "Vibrato + scorrimento volume"
 
-#: app/track-editor.c:122
+#: app/track-editor.c:117
 msgid "Tremolo"
 msgstr "Tremolo"
 
-#: app/track-editor.c:123 app/track-editor.c:179
+#: app/track-editor.c:118 app/track-editor.c:174
 msgid "Set panning"
 msgstr "Imposta il pan"
 
-#: app/track-editor.c:124 app/track-editor.c:126
+#: app/track-editor.c:119 app/track-editor.c:121
 msgid "Position jump"
 msgstr "Position jump"
 
-#: app/track-editor.c:125 app/track-editor.c:127 app/track-editor.c:203
+#: app/track-editor.c:120 app/track-editor.c:122 app/track-editor.c:198
 msgid "Set volume"
 msgstr "Imposta il volume"
 
-#: app/track-editor.c:128
+#: app/track-editor.c:123
 msgid "Pattern break"
 msgstr "Pattern break"
 
-#: app/track-editor.c:130
+#: app/track-editor.c:125
 msgid "Set tempo/bpm"
 msgstr "Imposta il tempo/bpm"
 
-#: app/track-editor.c:131
+#: app/track-editor.c:126
 msgid "Set global volume"
 msgstr "Imposta il volume generale"
 
-#: app/track-editor.c:132
+#: app/track-editor.c:127
 msgid "Global volume slide"
 msgstr "Scorrimento del volume generale"
 
-#: app/track-editor.c:135
+#: app/track-editor.c:130
 msgid "Key off"
 msgstr "Key off"
 
-#: app/track-editor.c:136
+#: app/track-editor.c:131
 msgid "Set envelop position"
 msgstr "Imposta la posizione dell'inviluppo"
 
-#: app/track-editor.c:140
+#: app/track-editor.c:135
 msgid "Panning slide"
 msgstr "Scorrimento del pan"
 
-#: app/track-editor.c:141
+#: app/track-editor.c:136
 msgid "LP filter resonance"
 msgstr "Risonanza del filtro passa basso"
 
-#: app/track-editor.c:142
+#: app/track-editor.c:137
 msgid "Multi retrig note"
 msgstr "Multi retrig note"
 
-#: app/track-editor.c:144
+#: app/track-editor.c:139
 msgid "Tremor"
 msgstr "Tremor"
 
-#: app/track-editor.c:150
+#: app/track-editor.c:145
 msgid "LP filter cutoff"
 msgstr "Frequenza di taglio del filtro passa basso"
 
-#: app/track-editor.c:155
+#: app/track-editor.c:150
 msgid "Fine porta up"
 msgstr "Fine porta up"
 
-#: app/track-editor.c:156
+#: app/track-editor.c:151
 msgid "Fine porta down"
 msgstr "Fine porta down"
 
-#: app/track-editor.c:157
+#: app/track-editor.c:152
 msgid "Set gliss control"
 msgstr "Imposta il glissando"
 
-#: app/track-editor.c:158
+#: app/track-editor.c:153
 msgid "Set vibrato control"
 msgstr "Imposta il controllo del vibrato"
 
-#: app/track-editor.c:159
+#: app/track-editor.c:154
 msgid "Set finetune"
 msgstr "Imposta la regolazione fine"
 
-#: app/track-editor.c:160
+#: app/track-editor.c:155
 msgid "Set loop begin/loop"
 msgstr "Imposta inizio/fine ciclo"
 
-#: app/track-editor.c:161
+#: app/track-editor.c:156
 msgid "Set tremolo control"
 msgstr "Imposta il controllo del tremolo"
 
-#: app/track-editor.c:163
+#: app/track-editor.c:158
 msgid "Retrig note"
 msgstr "Retrig note"
 
-#: app/track-editor.c:164 app/track-editor.c:176
+#: app/track-editor.c:159 app/track-editor.c:171
 msgid "Fine volume slide up"
 msgstr "Scorrimento fine del volume in alto"
 
-#: app/track-editor.c:165 app/track-editor.c:175
+#: app/track-editor.c:160 app/track-editor.c:170
 msgid "Fine volume slide down"
 msgstr "Scorrimento fine del volume in basso"
 
-#: app/track-editor.c:166
+#: app/track-editor.c:161
 msgid "Note cut"
 msgstr "Taglia nota"
 
-#: app/track-editor.c:167
+#: app/track-editor.c:162
 msgid "Note delay"
 msgstr "Ritarda nota"
 
-#: app/track-editor.c:168
+#: app/track-editor.c:163
 msgid "Pattern delay"
 msgstr "Ritarda pattern"
 
-#: app/track-editor.c:173
+#: app/track-editor.c:168
 msgid "Volume slide down"
 msgstr "Scorrimento del volume in basso"
 
-#: app/track-editor.c:174
+#: app/track-editor.c:169
 msgid "Volume slide up"
 msgstr "Scorrimento del volume in alto"
 
-#: app/track-editor.c:177
+#: app/track-editor.c:172
 msgid "Set vibrato speed"
 msgstr "Imposta la velocità del vibrato"
 
-#: app/track-editor.c:180
+#: app/track-editor.c:175
 msgid "Panning slide left"
 msgstr "Scorrimento del pan a sinistra"
 
-#: app/track-editor.c:181
+#: app/track-editor.c:176
 msgid "Panning slide right"
 msgstr "Scorrimento del pan a destra"
 
-#: app/track-editor.c:186
+#: app/track-editor.c:181
 msgid "sine"
 msgstr "sinusoidale"
 
-#: app/track-editor.c:187
+#: app/track-editor.c:182
 msgid "ramp down"
 msgstr "piano inclinato"
 
-#: app/track-editor.c:188
+#: app/track-editor.c:183
 msgid "square"
 msgstr "onda quadra"
 
-#: app/track-editor.c:233 app/track-editor.c:239 app/track-editor.c:256
-#: app/track-editor.c:262
+#: app/track-editor.c:228 app/track-editor.c:234 app/track-editor.c:251
+#: app/track-editor.c:257
 msgid "None ]"
 msgstr "Nessuno ]"
 
-#: app/track-editor.c:362
+#: app/track-editor.c:357
 msgid "Jazz Edit:"
 msgstr "Jazz Edit:"
 
-#: app/track-editor.c:407
+#: app/track-editor.c:402
 msgid "Tracker"
 msgstr "Tracker"
 
-#: app/tracker-settings.c:261
+#: app/tracker.c:88
+#, fuzzy
+msgid "Tracker background"
+msgstr "Frequenza del tracker"
+
+#: app/tracker.c:89
+msgid "Cursor background"
+msgstr ""
+
+#: app/tracker.c:90
+#, fuzzy
+msgid "Major lines highlighting"
+msgstr "Abilita l'evidenziazione delle righe"
+
+#: app/tracker.c:91
+#, fuzzy
+msgid "Minor lines highlighting"
+msgstr "Abilita l'evidenziazione delle righe"
+
+#: app/tracker.c:92
+#, fuzzy
+msgid "Selection"
+msgstr "Selezione:"
+
+#: app/tracker.c:93
+#, fuzzy
+msgid "Notes"
+msgstr "Nota:"
+
+#: app/tracker.c:94
+#, fuzzy
+msgid "Delimiters"
+msgstr "Elimina"
+
+#: app/tracker.c:95
+#, fuzzy
+msgid "Channel numbers"
+msgstr "Canali:"
+
+#: app/tracker.c:96
+msgid "Cursor idle"
+msgstr ""
+
+#: app/tracker.c:97
+msgid "Cursor editing"
+msgstr ""
+
+#: app/tracker-settings.c:273
 msgid "Font list"
 msgstr "Elenco tipi di carattere"
 
-#: app/tracker-settings.c:281
+#: app/tracker-settings.c:295
 msgid "Add font"
 msgstr "Aggiungi tipo di carattere"
 
-#: app/tracker-settings.c:287
+#: app/tracker-settings.c:301
 msgid "Delete font"
 msgstr "Elimina tipo di carattere"
 
-#: app/tracker-settings.c:293
+#: app/tracker-settings.c:307
 msgid "Apply font"
 msgstr "Applica tipo di carattere"
 
-#: app/tracker-settings.c:309
+#: app/tracker-settings.c:323
 msgid "Select font..."
 msgstr "Seleziona tipo di carattere..."
 
-#: app/transposition.c:198
+#: app/transposition.c:199
 msgid "Whole Song"
 msgstr "L'intero brano"
 
-#: app/transposition.c:199
+#: app/transposition.c:200
 msgid "All Patterns"
 msgstr "Tutti i pattern"
 
-#: app/transposition.c:200
+#: app/transposition.c:201
 msgid "Current Pattern"
 msgstr "L'attuale pattern"
 
-#: app/transposition.c:201
+#: app/transposition.c:202
 msgid "Current Track"
 msgstr "L'attuale traccia"
 
-#: app/transposition.c:205
+#: app/transposition.c:206
 msgid "Current Instrument"
 msgstr "Lo strumento attuale"
 
-#: app/transposition.c:206
+#: app/transposition.c:207
 msgid "All Instruments"
 msgstr "Tutti gli strumenti"
 
-#: app/transposition.c:210
+#: app/transposition.c:211
 msgid "Half note up"
 msgstr "Un semitono su"
 
-#: app/transposition.c:211
+#: app/transposition.c:212
 msgid "Half note down"
 msgstr "Un semitono giù"
 
-#: app/transposition.c:212
+#: app/transposition.c:213
 msgid "Octave up"
 msgstr "Un'ottava su"
 
-#: app/transposition.c:213
+#: app/transposition.c:214
 msgid "Octave down"
 msgstr "Un'ottava giù"
 
-#: app/transposition.c:216
+#: app/transposition.c:217
 msgid "Exchange 1 <-> 2"
 msgstr "Scambia 1 <-> 2"
 
-#: app/transposition.c:217
+#: app/transposition.c:218
 msgid "Change 1 -> 2"
 msgstr "Cambia 1 -> 2"
 
-#: app/transposition.c:226 app/transposition.c:229
+#: app/transposition.c:226
 msgid "Transposition Tools"
 msgstr "Strumenti per la trasposizione"
 
-#: app/transposition.c:250
+#: app/transposition.c:239
 msgid "Scope of the operation:"
 msgstr "Zona d'influenza dell'operazione:"
 
-#: app/transposition.c:257
+#: app/transposition.c:244
 msgid "Note Transposition"
 msgstr "Trasposizione della nota"
 
-#: app/transposition.c:288
+#: app/transposition.c:270
 msgid "Instrument Changing"
 msgstr "Cambiamento dello strumento"
 
-#: app/transposition.c:303
+#: app/transposition.c:282
 msgid "Instrument 1:"
 msgstr "Strumento 1:"
 
-#: app/transposition.c:305 app/transposition.c:315
+#: app/transposition.c:284 app/transposition.c:293
 msgid "Current instrument"
 msgstr "Strumento attuale"
 
-#: app/transposition.c:313
+#: app/transposition.c:291
 msgid "Instrument 2:"
 msgstr "Strumento 2:"
 
-#: app/xm.c:197
-#, c-format
-msgid "Pattern length out of range: %d.\n"
+#: app/xm.c:195
+msgid "Pattern header reading error."
+msgstr ""
+
+#: app/xm.c:202
+#, fuzzy, c-format
+msgid "Pattern length out of range: %d."
 msgstr "La lunghezza del pattern è fuori intervallo: %d.\n"
 
-#: app/xm.c:548
+#: app/xm.c:224
+#, fuzzy
+msgid "Error loading notes."
+msgstr "Errore durante il caricamento dei pattern."
+
+#: app/xm.c:329
+msgid "Sample header reading error"
+msgstr ""
+
+#: app/xm.c:372 app/xm.c:388
+msgid "Sample data reading error"
+msgstr ""
+
+#: app/xm.c:521 app/xm.c:547 app/xm.c:626 app/xm.c:636 app/xm.c:647
+#: app/xm.c:703
+#, fuzzy
+msgid "Instrument header reading error"
+msgstr "Cambiamento dello strumento"
+
+#: app/xm.c:538
+msgid "XM Load Error: Number of samples in instrument > 128.\n"
+msgstr ""
+
+#: app/xm.c:551
+msgid "XM Load Error: Sample header size != 40.\n"
+msgstr ""
+
+#: app/xm.c:555
+msgid "Sample map reading error"
+msgstr ""
+
+#: app/xm.c:559
+msgid "Volume envelope points reading error"
+msgstr ""
+
+#: app/xm.c:564
+#, fuzzy
+msgid "Panning envelope points reading error"
+msgstr "Inviluppo del pan"
+
+#: app/xm.c:570
+msgid "Envelope parameters reading error"
+msgstr ""
+
+#: app/xm.c:591
+#, fuzzy, c-format
+msgid "XM Load Warning: Invalid vibtype %d, using Sine.\n"
+msgstr "Tipo di vibrato %d non valido, uso il seno.\n"
+
+#: app/xm.c:631
 msgid "File is no XI instrument."
 msgstr "Il file non è uno strumento XI."
 
-#: app/xm.c:558
+#: app/xm.c:651
 #, c-format
 msgid "Unknown XI version 0x%x\n"
 msgstr "Versione XI 0x%x sconosciuta\n"
 
-#: app/xm.c:588
+#: app/xm.c:657
+msgid "Instrument sample map reading error"
+msgstr ""
+
+#: app/xm.c:661
+msgid "Instrument volume envelope points reading error"
+msgstr ""
+
+#: app/xm.c:666
+msgid "Instrument panning envelope points reading error"
+msgstr ""
+
+#: app/xm.c:672
+msgid "Instrument envelope parameters reading error"
+msgstr ""
+
+#: app/xm.c:693
 #, c-format
 msgid "Invalid vibtype %d, using Sine.\n"
 msgstr "Tipo di vibrato %d non valido, uso il seno.\n"
 
-#: app/xm.c:860 app/xm.c:985
+#: app/xm.c:769
+msgid ""
+"Some characters instrument or samples names cannot be stored in XM format. "
+"They will be skipped."
+msgstr ""
+
+#: app/xm.c:931 app/xm.c:953 app/xm.c:963
+msgid "Module header reading error."
+msgstr ""
+
+#: app/xm.c:940
+#, fuzzy
+msgid "Instrument header reading error."
+msgstr "Strumento caricato."
+
+#: app/xm.c:947
+msgid "Sample header reading error."
+msgstr ""
+
+#: app/xm.c:959
+msgid "Pattern order table reading error."
+msgstr ""
+
+#: app/xm.c:1009 app/xm.c:1141
 msgid "Error while loading patterns."
 msgstr "Errore durante il caricamento dei pattern."
 
-#: app/xm.c:928
+#: app/xm.c:1036
+#, c-format
+msgid ""
+"%d: Wrong loop start parameter. Don't know how to handle this. %04x %04x "
+"%04x\n"
+msgstr ""
+
+#: app/xm.c:1048
+msgid "Sample data reading error."
+msgstr ""
+
+#: app/xm.c:1080
 msgid "Can't open file"
 msgstr "Impossibile aprire il file"
 
-#: app/xm.c:991
+#: app/xm.c:1094
+msgid "XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n"
+msgstr ""
+
+#: app/xm.c:1098
+msgid "Version != 0x0104. The results may be unpredictable"
+msgstr ""
+
+#: app/xm.c:1122
+msgid "Invalid number of channels in XM (only 1..32 allowed)."
+msgstr ""
+
+#: app/xm.c:1136
+#, fuzzy
+msgid "Error while loading pattern order table."
+msgstr "Errore durante il caricamento dei pattern."
+
+#: app/xm.c:1147
 msgid "Error while loading instruments."
 msgstr "Errore durante il caricamento degli strumenti."
 
-#: app/xm.c:1002
+#: app/xm.c:1158
 #, c-format
 msgid ""
 "Module contains sample(s) that are too long for the current mixer.\n"
@@ -2104,69 +2260,418 @@ msgstr ""
 "Il modulo contiene campioni che sono troppo lunghi per l'attuale mixer.\n"
 "La lunghezza massima del campione è %d."
 
-#: app/xm.c:1400
+#: app/xm.c:1230
+msgid ""
+"Some characters in either module, instruments or samples names cannot be "
+"stored in XM format. They will be skipped."
+msgstr ""
+
+#: app/xm.c:1558
 msgid "Not FastTracker XM and not supported MOD format!"
 msgstr "Non è un XM di FastTracker nè un formato MOD supportato."
 
-#: app/xm.c:1415 app/xm.c:1436
+#: app/xm.c:1573 app/xm.c:1594
 msgid "Error when file reading or unexpected end of file"
 msgstr "Errore durante la lettura o fine del file inattesa"
 
-#: app/xm.c:1419
+#: app/xm.c:1577
 msgid "Incorrect or unsupported version of pattern file!"
 msgstr "Versione del file del pattern non corretta o non supportata."
 
-#: app/xm.c:1423
+#: app/xm.c:1581
 msgid "Incorrect pattern length!"
 msgstr "Lunghezza del pattern non corretta."
 
-#: app/xm.c:1469
+#: app/xm.c:1624 app/xm.c:1650
 msgid "Error during saving pattern!"
 msgstr "Errore durante il salvataggio del pattern."
 
-#: app/midi-settings-050.c:497 app/midi-settings-09x.c:500
+#: app/midi-settings-09x.c:409
 msgid "Auto connect"
 msgstr "Autoconnetti"
 
-#: app/midi-settings-050.c:512 app/midi-settings-09x.c:515
+#: app/midi-settings-09x.c:424
 msgid "Channel"
 msgstr "Canale"
 
-#: app/midi-settings-050.c:521 app/midi-settings-09x.c:524
+#: app/midi-settings-09x.c:433
 msgid "Client number"
 msgstr "Numero client"
 
-#: app/midi-settings-050.c:531 app/midi-settings-09x.c:534
+#: app/midi-settings-09x.c:443
 msgid "Port number"
 msgstr "Numero porta"
 
-#: app/midi-settings-050.c:549 app/midi-settings-09x.c:552
+#: app/midi-settings-09x.c:461
 msgid "Input"
 msgstr "Input"
 
-#: app/midi-settings-050.c:558 app/midi-settings-09x.c:561
+#: app/midi-settings-09x.c:470
 msgid "For future development"
 msgstr "Sarà sviluppato in futuro"
 
-#: app/midi-settings-050.c:564 app/midi-settings-09x.c:567
+#: app/midi-settings-09x.c:476
 msgid "Output"
 msgstr "Output"
 
-#: app/midi-settings-050.c:575 app/midi-settings-09x.c:578
+#: app/midi-settings-09x.c:487
 msgid "Debug level"
 msgstr "Livello di debug"
 
-#: app/midi-settings-050.c:587 app/midi-settings-09x.c:590
+#: app/midi-settings-09x.c:499
 msgid "Misc"
 msgstr "Misc"
 
-#: app/midi-settings-050.c:631 app/midi-settings-09x.c:634
+#: app/midi-settings-09x.c:540
 msgid "MIDI Configuration"
 msgstr "Configurazione MIDI"
 
-#: app/midi-settings-050.c:636 app/midi-settings-09x.c:639
-msgid "Apply"
-msgstr "Applica"
+#: app/midi-09x.c:235
+#, c-format
+msgid "error opening ALSA MIDI input stream (%s)\n"
+msgstr ""
+
+#: app/midi-09x.c:252
+#, c-format
+msgid "Get client info error: %s\n"
+msgstr ""
+
+#: app/midi-09x.c:263
+#, c-format
+msgid "Set client info error: %s\n"
+msgstr ""
+
+#: app/midi-09x.c:281
+#, c-format
+msgid "error creating sequencer port (%s)\n"
+msgstr ""
+
+#: app/midi-09x.c:326
+#, c-format
+msgid "error subscribing sequencer port (%s)\n"
+msgstr ""
+
+#: app/midi-09x.c:440
+#, c-format
+msgid "error closing handle (%s)\n"
+msgstr ""
+
+#~ msgid "(%d bytes)"
+#~ msgstr "(%d byte)"
+
+#~ msgid "Estimated audio delay: %f microseconds"
+#~ msgstr "Ritardo stimato dell'audio: %f microsecondi"
+
+#~ msgid "ALSA card number:"
+#~ msgstr "Numero della scheda ALSA:"
+
+#~ msgid ""
+#~ "Couldn't open ALSA device for sound input (card:%d, device:%d):\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Impossibile aprire il device ALSA per l'input del suono (scheda:%d, "
+#~ "device:%d):\n"
+#~ "%s"
+
+#~ msgid "Required sound output parameters not supported.\n"
+#~ msgstr "I parametri sonori di output richiesti non sono supportati.\n"
+
+#~ msgid ""
+#~ "Couldn't open ALSA device for sound output (card:%d, device:%d):\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Impossibile aprire il device ALSA per l'output del suono (scheda:%d, "
+#~ "device:%d):\n"
+#~ "%s"
+
+#~ msgid "Required output-channel parameters not supported.\n"
+#~ msgstr "I parametri di output richiesti non sono supportati.\n"
+
+#~ msgid "Alsa setup error.\n"
+#~ msgstr "Errore di impostazione di Alsa.\n"
+
+#~ msgid ""
+#~ "Couldn't open %s for sound output:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Impossibile aprire %s per l'output del suono:\n"
+#~ "%s"
+
+#~ msgid "transport master"
+#~ msgstr "transport master"
+
+#~ msgid "declick"
+#~ msgstr "declick"
+
+#~ msgid "soundtracker"
+#~ msgstr "soundtracker"
+
+#~ msgid "Save Song"
+#~ msgstr "Salva il brano"
+
+#~ msgid "Question"
+#~ msgstr "Domanda"
+
+#~ msgid "Yes"
+#~ msgstr "Si"
+
+#~ msgid "No"
+#~ msgstr "No"
+
+#~ msgid "Warning"
+#~ msgstr "Attenzione"
+
+#~ msgid "Error!"
+#~ msgstr "Errore"
+
+#~ msgid "Close"
+#~ msgstr "Chiudi"
+
+#~ msgid "No file selected."
+#~ msgstr "Nessun file selezionato."
+
+#~ msgid "Are you sure you want to overwrite the file?"
+#~ msgstr "Sovrascrivere veramente il file?"
+
+#~ msgid "Load XM..."
+#~ msgstr "Carica XM..."
+
+#~ msgid "Save XM..."
+#~ msgstr "Salva XM..."
+
+#~ msgid "Save song as XM..."
+#~ msgstr "Salva il brano come XM..."
+
+#~ msgid "Load Instrument..."
+#~ msgstr "Carica lo strumento..."
+
+#~ msgid "Save Instrument..."
+#~ msgstr "Salva lo strumento..."
+
+#~ msgid ""
+#~ "The keyboard configuration file is defective.\n"
+#~ "Please use the Keyboard Configuration dialog."
+#~ msgstr ""
+#~ "Il file di configurazione della tastiera è difettoso.\n"
+#~ "Usare la finestra di dialogo «Configurazione della tastiera»."
+
+#~ msgid "Ok"
+#~ msgstr "Ok"
+
+#~ msgid "_Open..."
+#~ msgstr "_Apri"
+
+#~ msgid "Save _as..."
+#~ msgstr "Sa_lva come..."
+
+#~ msgid "Save Module as _WAV..."
+#~ msgstr "Salva il modulo come _WAV"
+
+#~ msgid "_Quit"
+#~ msgstr "_Esci"
+
+#~ msgid "Clear _All"
+#~ msgstr "Cancella _tutto"
+
+#~ msgid "Clear _Patterns Only"
+#~ msgstr "Cancella solamente i _pattern"
+
+#~ msgid "_Optimize Module"
+#~ msgstr "_Ottimizza il modulo"
+
+#~ msgid "C_ut"
+#~ msgstr "_Taglia"
+
+#~ msgid "_Copy"
+#~ msgstr "_Copia"
+
+#~ msgid "_Paste"
+#~ msgstr "_Incolla"
+
+#~ msgid "_Kill notes"
+#~ msgstr "_Elimina le note"
+
+#~ msgid "_Insert track"
+#~ msgstr "I_nserisci una traccia"
+
+#~ msgid "_Delete track"
+#~ msgstr "Eli_mina la traccia"
+
+#~ msgid "Increment cmd value"
+#~ msgstr "Aumenta il valore «cmd»"
+
+#~ msgid "Decrement cmd value"
+#~ msgstr "Diminuisci il valore «cmd»"
+
+#~ msgid "_Mark mode"
+#~ msgstr "Modalità _selezione"
+
+#~ msgid "C_lear block marks"
+#~ msgstr "Annu_lla la selezione"
+
+#~ msgid "_Interpolate effects"
+#~ msgstr "Interpola gli _effetti"
+
+#~ msgid "Transpose half-note up"
+#~ msgstr "Alza di un semitono"
+
+#~ msgid "Transpose half-note down"
+#~ msgstr "Abbassa di un semitono"
+
+#~ msgid "Transpose octave up"
+#~ msgstr "Alza di un'ottava"
+
+#~ msgid "Transpose octave down"
+#~ msgstr "Abbassa di un'ottava"
+
+#, fuzzy
+#~ msgid "P_aste"
+#~ msgstr "Incolla"
+
+#~ msgid "_Jazz Edit Mode"
+#~ msgstr "Modalità _Jazz Edit"
+
+#~ msgid "Transp_osition..."
+#~ msgstr "Trasp_osizione"
+
+#~ msgid "_Pattern"
+#~ msgstr "_Pattern"
+
+#~ msgid "_Track"
+#~ msgstr "T_raccia"
+
+#~ msgid "_Selection"
+#~ msgstr "_Selezione"
+
+#~ msgid "_Find Unused Pattern"
+#~ msgstr "Tr_ova i pattern non usati"
+
+#~ msgid "_Copy Current to Unused Pattern"
+#~ msgstr "_Copia l'attuale in un pattern non usato"
+
+#~ msgid "C_lear Unused Patterns"
+#~ msgstr "Cance_lla i pattern non usati"
+
+#~ msgid "_Pack Patterns"
+#~ msgstr "Com_patta i pattern"
+
+#~ msgid "_Save Current Pattern"
+#~ msgstr "_Salva il pattern attuale"
+
+#~ msgid "L_oad Pattern"
+#~ msgstr "Ca_rica il pattern"
+
+#, fuzzy
+#~ msgid "Sh_rink Current Pattern"
+#~ msgstr "L'attuale pattern"
+
+#, fuzzy
+#~ msgid "_Expand Current Pattern"
+#~ msgstr "_Salva il pattern attuale"
+
+#~ msgid "_Load XI..."
+#~ msgstr "Ca_rica XI"
+
+#~ msgid "_Save XI..."
+#~ msgstr "_Salva XI"
+
+#~ msgid "_Clear Current"
+#~ msgstr "_Cancella l'attuale"
+
+#~ msgid "_Delete Unused Instruments"
+#~ msgstr "Eli_mina gli strumenti non usati"
+
+#~ msgid "_Flicker-free scrolling"
+#~ msgstr "Scorrimento _fluido"
+
+#~ msgid "_Previous font"
+#~ msgstr "Tipo di carattere _precedente"
+
+#~ msgid "_Next font"
+#~ msgstr "Tipo di carattere _successivo"
+
+#~ msgid "Change preferred _accidental type"
+#~ msgstr "Cambia il tipo di _alterazione preferita"
+
+#~ msgid "Change effect column editing _direction"
+#~ msgstr "Cambia la _direzione di modifica nella colonna degli effetti"
+
+#~ msgid "Display _Oscilloscopes"
+#~ msgstr "Mostra gli _oscilloscopi"
+
+#~ msgid "_Tracker"
+#~ msgstr "_Tracker"
+
+#~ msgid "_Keyboard Configuration..."
+#~ msgstr "_Configurazione della tastiera"
+
+#~ msgid "_Audio Configuration..."
+#~ msgstr "Configurazione dell'_audio"
+
+#~ msgid "_GUI Configuration..."
+#~ msgstr "Configurazione della _GUI"
+
+#~ msgid "_MIDI Configuration..."
+#~ msgstr "Configurazione _MIDI"
+
+#~ msgid "Disable splash screen"
+#~ msgstr "Disabilita la schermata di avvio"
+
+#~ msgid "_Save Settings now"
+#~ msgstr "_Salva le impostazioni adesso"
+
+#~ msgid "Save Settings on _Exit"
+#~ msgstr "Salva le impostazioni all'_uscita"
+
+#~ msgid "_About..."
+#~ msgstr "I_nformazioni"
+
+#~ msgid "Show _Tips..."
+#~ msgstr "Mostra i suggerimen_ti"
+
+#~ msgid "_XM Effects..."
+#~ msgstr "Effetti _XM"
+
+#~ msgid "_File"
+#~ msgstr "_File"
+
+#~ msgid "_Module"
+#~ msgstr "Mo_dulo"
+
+#~ msgid "_Edit"
+#~ msgstr "_Modifica"
+
+#~ msgid "_Instrument"
+#~ msgstr "_Strumento"
+
+#~ msgid "_Settings"
+#~ msgstr "_Impostazioni"
+
+#~ msgid "_Help"
+#~ msgstr "A_iuto"
+
+#, fuzzy
+#~ msgid ""
+#~ "A directory called '.soundtracker2' has been created in your\n"
+#~ "home directory to store configuration files.\n"
+#~ msgstr ""
+#~ "Una directory di nome «.soundtracker» è stata creata nella\n"
+#~ "propria home per salvare i file di configurazione.\n"
+
+#~ msgid "Load Sample..."
+#~ msgstr "Carica il campione..."
+
+#~ msgid "Save WAV..."
+#~ msgstr "Salva WAV..."
+
+#~ msgid "8363"
+#~ msgstr "8363"
+
+#~ msgid "Execute"
+#~ msgstr "Esegui"
+
+#~ msgid "Apply"
+#~ msgstr "Applica"
 
 #~ msgid "Drivers"
 #~ msgstr "Driver"
