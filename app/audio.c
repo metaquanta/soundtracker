@@ -160,6 +160,7 @@ audio_raise_priority (void)
 #endif
 }
 
+#if USE_SNDFILE || !defined (NO_AUDIOFILE)
 static void
 audio_restore_priority (void)
 {
@@ -167,6 +168,7 @@ audio_restore_priority (void)
 		perror("audio_thread:nice():");
     nice_value = 0;
 }
+#endif
 
 static void
 audio_ctlpipe_init_player (void)

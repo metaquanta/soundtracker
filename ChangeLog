@@ -1,5 +1,8 @@
 2013-10-13  Yury Aliaev  <mutab0r@rambler.ru>
-	po/*: Upgrade to gettext-0.18.2, clean-ups.
+	po/*: Upgrade to gettext-0.18.2, clean-ups;
+	app/audio.c, app/audioconfig.c, app/gui.c, app/sample-editor.c,
+	configure.in: clean-ups regarding to compilation with audiofile library
+	and without sample output libraries at all.
 
 2013-10-12  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/sample-display.h: Compilation at some systems is fixed.

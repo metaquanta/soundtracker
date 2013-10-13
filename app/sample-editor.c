@@ -92,7 +92,6 @@ static int sample_editor_volramp_last_values[2] = { 100, 100 };
 
 // = Load sample dialog
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
 enum {
     MODE_MONO = 0,
     MODE_STEREO_LEFT,
@@ -101,6 +100,7 @@ enum {
     MODE_STEREO_2
 };
 
+#if USE_SNDFILE || !defined (NO_AUDIOFILE)
 static gboolean wavload_through_library;
 
 static GtkWidget *wavload_dialog;
@@ -1297,6 +1297,51 @@ sample_editor_reverse_clicked (void)
     sample_display_set_selection(sampledisplay, ss, se);
 }
 
+#define NUM_BUTTONS 4
+static void
+sample_editor_open_stereo_dialog (GtkWidget **window, GtkWidget **mixbutton, const gchar *text)
+{
+    GtkWidget *label, *separator, *bbox, *box1;
+    GtkWidget *buttons[NUM_BUTTONS];
+    gint i;
+
+    if(!*window) {
+	*window = gtk_dialog_new_with_buttons (_("Load stereo sample"), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
+					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
+	buttons[0] = gtk_dialog_add_button(GTK_DIALOG(*window), _("Left"), MODE_STEREO_LEFT);
+	*mixbutton = buttons[1] = gtk_dialog_add_button(GTK_DIALOG(*window), _("Mix"), MODE_STEREO_MIX);
+	buttons[2] = gtk_dialog_add_button(GTK_DIALOG(*window), _("Right"), MODE_STEREO_RIGHT);
+	buttons[3] = gtk_dialog_add_button(GTK_DIALOG(*window), _("2 smpls"), MODE_STEREO_2);
+	gtk_widget_set_tooltip_text(buttons[3], _("Load left and right channels into the current sample and the next one"));
+
+	gui_dialog_adjust(*window, 2);
+	box1 = gtk_dialog_get_content_area(GTK_DIALOG(*window));
+	gtk_box_set_spacing(GTK_BOX(box1), 2);
+
+	separator = gtk_hseparator_new();
+	gtk_box_pack_end (GTK_BOX (box1), separator, FALSE, TRUE, 4);
+	gtk_widget_show(separator);
+
+	bbox = gtk_hbutton_box_new();
+	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);  
+	gtk_box_pack_end(GTK_BOX(box1), bbox, TRUE, TRUE, 0);
+	gtk_widget_show(bbox);
+
+    /* A bit trick to move buttons to vbox from action area, but leaving them active */
+	for(i = 0; i < NUM_BUTTONS; i++) {
+	    g_object_ref(buttons[i]);
+	    gtk_container_remove(GTK_CONTAINER(gtk_dialog_get_action_area(GTK_DIALOG(*window))), buttons[i]);
+	    gtk_box_pack_end(GTK_BOX(bbox), buttons[i], FALSE, TRUE, 0);
+	}
+
+	label = gtk_label_new(_(text));
+	gtk_label_set_justify(GTK_LABEL (label),GTK_JUSTIFY_CENTER);
+	gtk_box_pack_start(GTK_BOX (box1), label, FALSE, TRUE, 0);
+	gtk_widget_show(label);
+    } else
+	gtk_window_present(GTK_WINDOW(*window));
+}
+
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
 
 static gboolean
@@ -1518,51 +1563,6 @@ sample_editor_load_wav_main (const int mode)
 	wavload_file = NULL;
     }
     return FALSE;
-}
-
-#define NUM_BUTTONS 4
-static void
-sample_editor_open_stereo_dialog (GtkWidget **window, GtkWidget **mixbutton, const gchar *text)
-{
-    GtkWidget *label, *separator, *bbox, *box1;
-    GtkWidget *buttons[NUM_BUTTONS];
-    gint i;
-
-    if(!*window) {
-	*window = gtk_dialog_new_with_buttons (_("Load stereo sample"), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
-					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
-	buttons[0] = gtk_dialog_add_button(GTK_DIALOG(*window), _("Left"), MODE_STEREO_LEFT);
-	*mixbutton = buttons[1] = gtk_dialog_add_button(GTK_DIALOG(*window), _("Mix"), MODE_STEREO_MIX);
-	buttons[2] = gtk_dialog_add_button(GTK_DIALOG(*window), _("Right"), MODE_STEREO_RIGHT);
-	buttons[3] = gtk_dialog_add_button(GTK_DIALOG(*window), _("2 smpls"), MODE_STEREO_2);
-	gtk_widget_set_tooltip_text(buttons[3], _("Load left and right channels into the current sample and the next one"));
-
-	gui_dialog_adjust(*window, 2);
-	box1 = gtk_dialog_get_content_area(GTK_DIALOG(*window));
-	gtk_box_set_spacing(GTK_BOX(box1), 2);
-
-	separator = gtk_hseparator_new();
-	gtk_box_pack_end (GTK_BOX (box1), separator, FALSE, TRUE, 4);
-	gtk_widget_show(separator);
-
-	bbox = gtk_hbutton_box_new();
-	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);  
-	gtk_box_pack_end(GTK_BOX(box1), bbox, TRUE, TRUE, 0);
-	gtk_widget_show(bbox);
-
-    /* A bit trick to move buttons to vbox from action area, but leaving them active */
-	for(i = 0; i < NUM_BUTTONS; i++) {
-	    g_object_ref(buttons[i]);
-	    gtk_container_remove(GTK_CONTAINER(gtk_dialog_get_action_area(GTK_DIALOG(*window))), buttons[i]);
-	    gtk_box_pack_end(GTK_BOX(bbox), buttons[i], FALSE, TRUE, 0);
-	}
-
-	label = gtk_label_new(_(text));
-	gtk_label_set_justify(GTK_LABEL (label),GTK_JUSTIFY_CENTER);
-	gtk_box_pack_start(GTK_BOX (box1), label, FALSE, TRUE, 0);
-	gtk_widget_show(label);
-    } else
-	gtk_window_present(GTK_WINDOW(*window));
 }
 
 static void

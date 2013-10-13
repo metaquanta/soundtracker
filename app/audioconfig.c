@@ -231,7 +231,10 @@ audioconfig_notebook_add_page (GtkNotebook *nbook, guint n)
 void
 audioconfig_dialog (void)
 {
-    GtkWidget *mainbox, *thing, *nbook, *box2, *frame, *label, *alignment;
+    GtkWidget *mainbox, *thing, *nbook, *box2, *frame;
+#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+    GtkWidget *label, *alignment;
+#endif
     static gchar *listtitles2[2];
     int i;
 
@@ -260,12 +263,14 @@ audioconfig_dialog (void)
 	audioconfig_notebook_add_page(GTK_NOTEBOOK(nbook), i);
     }
 
+#if USE_SNDFILE || !defined (NO_AUDIOFILE)
 	/* File output driver at a separate page */
     thing = audio_file_output_getwidget();
     label = gtk_label_new(_("File output"));
 	alignment = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
 	gtk_container_add(GTK_CONTAINER(alignment), thing);
     gtk_notebook_append_page(GTK_NOTEBOOK(nbook), alignment, label);
+#endif
 
     // Mixer selection
     frame = gtk_frame_new(NULL);

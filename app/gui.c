@@ -400,6 +400,7 @@ gui_save_current (void)
 		fileops_open_dialog(NULL, (gpointer)1);
 }
 
+#if USE_SNDFILE || !defined (NO_AUDIOFILE)
 static void
 save_wav (gchar *fn)
 {
@@ -423,6 +424,7 @@ save_wav (gchar *fn)
 	wait_for_player();
 	g_free(path);
 }
+#endif
 
 static void
 gui_shrink_callback (XMPattern *data)
@@ -1889,8 +1891,10 @@ gui_final (int argc,
 	static const gchar **mod_formats[] = {xm_f, mod_f, NULL};
 	static const gchar *save_mod_f[] = {N_("FastTracker modules (*.xm)"), "*.[xX][mM]", NULL};
 	static const gchar **save_mod_formats[] = {save_mod_f, NULL};
+#if USE_SNDFILE || !defined (NO_AUDIOFILE)
 	static const gchar *wav_f[] = {N_("Microsoft RIFF (*.wav)"), "*.[wW][aA][vV]", NULL};
 	static const gchar **wav_formats[] = {wav_f, NULL};
+#endif
 	static const gchar *xp_f[] = {N_("Extended pattern (*.xp)"), "*.[xX][pP]", NULL};
 	static const gchar **xp_formats[] = {xp_f, NULL};
 
