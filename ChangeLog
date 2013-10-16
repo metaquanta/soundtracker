@@ -1,3 +1,6 @@
+2013-10-16  Yury Aliaev  <mutab0r@rambler.ru>
+	configure.in: Fixed compilation with --no-asm option.
+
 2013-10-13  Yury Aliaev  <mutab0r@rambler.ru>
 	po/*: Upgrade to gettext-0.18.2, clean-ups;
 	app/audio.c, app/audioconfig.c, app/gui.c, app/sample-editor.c,

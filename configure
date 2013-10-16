@@ -3869,9 +3869,7 @@ else
   NO_ASM_FALSE=
 fi
 
-
-if test x$asm_support != xno; then
-  # By default we simply use the C compiler to build assembly code.
+# By default we simply use the C compiler to build assembly code.
 
 test "${CCAS+set}" = set || CCAS=$CC
 test "${CCASFLAGS+set}" = set || CCASFLAGS=$CFLAGS
@@ -4004,7 +4002,8 @@ else
 fi
 
 
-else
+
+if test x$asm_support = xno; then
 
 $as_echo "#define NO_ASM 1" >>confdefs.h
 
