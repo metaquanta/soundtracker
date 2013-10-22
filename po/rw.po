@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: soundtracker 0.6.7\n"
 "Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
-"POT-Creation-Date: 2013-10-13 23:27+0400\n"
+"POT-Creation-Date: 2013-10-23 01:06+0400\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -43,27 +43,27 @@ msgstr ""
 msgid "Sampling"
 msgstr ""
 
-#: app/audioconfig.c:188
+#: app/audioconfig.c:192
 msgid "Driver Module"
 msgstr ""
 
-#: app/audioconfig.c:241
+#: app/audioconfig.c:245
 msgid "Mixer Module"
 msgstr ""
 
-#: app/audioconfig.c:242 app/drivers/alsa1x.c:734
+#: app/audioconfig.c:246 app/drivers/alsa1x.c:734
 msgid "Description"
 msgstr "Insobanuramiterere"
 
-#: app/audioconfig.c:249
+#: app/audioconfig.c:253
 msgid "Audio Configuration"
 msgstr ""
 
-#: app/audioconfig.c:269
+#: app/audioconfig.c:273
 msgid "File output"
 msgstr ""
 
-#: app/audioconfig.c:277
+#: app/audioconfig.c:281
 msgid "Mixers"
 msgstr ""
 
@@ -1439,8 +1439,9 @@ msgid "Load Sample"
 msgstr ""
 
 #: app/sample-editor.c:405
-msgid "Load sample into the current samle slot"
-msgstr ""
+#, fuzzy
+msgid "Load sample into the current sample slot"
+msgstr "Kubika Ingero- fatizo"
 
 #: app/sample-editor.c:406
 #, fuzzy
@@ -2087,7 +2088,7 @@ msgid "Minor lines highlighting"
 msgstr "Urubariro Igaragaza cyane"
 
 # filter/source\pdf\impdialog.src:RID_PDF_EXPORT_DLG.RB_SELECTION.text
-#: app/tracker.c:92
+#: app/tracker.c:92 soundtracker.glade:142
 #, fuzzy
 msgid "Selection"
 msgstr "Ihitamo"
@@ -2489,6 +2490,313 @@ msgstr ""
 msgid "error closing handle (%s)\n"
 msgstr ""
 
+# sc/source\ui\src\autofmt.src:RID_SCDLG_AUTOFORMAT.BTN_PATTERN.text
+#: soundtracker.glade:10
+#, fuzzy
+msgid "Pattern"
+msgstr "Ishusho"
+
+#: soundtracker.glade:49
+msgid "Track"
+msgstr ""
+
+#: soundtracker.glade:88 soundtracker.glade:501
+#, fuzzy
+msgid "_Kill notes"
+msgstr "Ibisobanuro"
+
+#: soundtracker.glade:104 soundtracker.glade:518
+#, fuzzy
+msgid "_Insert track"
+msgstr "Kongeramo"
+
+#: soundtracker.glade:112 soundtracker.glade:526
+#, fuzzy
+msgid "_Delete track"
+msgstr "Intego- nyuguti"
+
+#: soundtracker.glade:125 soundtracker.glade:539
+#, fuzzy
+msgid "Increment cmd value"
+msgstr "Cmd+ Agaciro"
+
+#: soundtracker.glade:131 soundtracker.glade:546
+#, fuzzy
+msgid "Decrement cmd value"
+msgstr "Cmd+ Agaciro"
+
+#: soundtracker.glade:150 soundtracker.glade:575
+#, fuzzy
+msgid "C_lear block marks"
+msgstr "Funga"
+
+#: soundtracker.glade:185 soundtracker.glade:589
+#, fuzzy
+msgid "_Interpolate effects"
+msgstr "Ingaruka"
+
+# sc/source\ui\src\globstr.src:RID_GLOBSTR.STR_HFCMD_FILE.text
+#: soundtracker.glade:219
+#, fuzzy
+msgid "_File"
+msgstr "IDOSIYE"
+
+#: soundtracker.glade:261
+#, fuzzy
+msgid "Save Module as _WAV…"
+msgstr "Kubika Nka"
+
+#: soundtracker.glade:270
+#, fuzzy
+msgid "Save _XM without samples…"
+msgstr "Kubika Ingero- fatizo"
+
+# basctl/source\basicide\basidesh.src:RID_STR_STDMODULENAME.text
+#: soundtracker.glade:299
+#, fuzzy
+msgid "_Module"
+msgstr "Modire"
+
+#: soundtracker.glade:306
+msgid "Clear _All"
+msgstr ""
+
+#: soundtracker.glade:315
+#, fuzzy
+msgid "Clear _Patterns Only"
+msgstr "Gutinda"
+
+# basctl/source\basicide\basidesh.src:RID_STR_STDMODULENAME.text
+#: soundtracker.glade:330
+#, fuzzy
+msgid "_Optimize Module"
+msgstr "Modire"
+
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\basidesh.src:RID_BASICMENU.MN_EDIT.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\basidesh.src:RID_BASICPLUGINMENU.MN_PLEDIT.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\macrodlg.src:RID_MACROCHOOSER.RID_PB_EDIT.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\moduldlg.src:RID_TP_MODULS.RID_PB_EDIT.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\moduldlg.src:RID_TP_LIBS.RID_PB_EDIT.text
+#: soundtracker.glade:342
+#, fuzzy
+msgid "_Edit"
+msgstr "Guhindura"
+
+#: soundtracker.glade:382
+msgid "_Jazz edit mode"
+msgstr ""
+
+#: soundtracker.glade:391
+msgid "_Record keyreleases"
+msgstr ""
+
+#: soundtracker.glade:404
+msgid "Transp_osition…"
+msgstr ""
+
+# sc/source\ui\src\autofmt.src:RID_SCDLG_AUTOFORMAT.BTN_PATTERN.text
+#: soundtracker.glade:417 soundtracker.glade:643
+#, fuzzy
+msgid "_Pattern"
+msgstr "Ishusho"
+
+#: soundtracker.glade:459 soundtracker.glade:738
+msgid "_Track"
+msgstr ""
+
+# filter/source\pdf\impdialog.src:RID_PDF_EXPORT_DLG.RB_SELECTION.text
+#: soundtracker.glade:558
+#, fuzzy
+msgid "_Selection"
+msgstr "Ihitamo"
+
+#: soundtracker.glade:566
+#, fuzzy
+msgid "_Mark mode"
+msgstr "Ubwoko"
+
+#: soundtracker.glade:603
+#, fuzzy
+msgid "Transpose half-note up"
+msgstr "Impugukirwa Hejuru"
+
+#: soundtracker.glade:611
+#, fuzzy
+msgid "Transpose half-note down"
+msgstr "Impugukirwa Hasi"
+
+#: soundtracker.glade:619
+#, fuzzy
+msgid "Transpose octave up"
+msgstr "Hejuru"
+
+#: soundtracker.glade:627
+#, fuzzy
+msgid "Transpose octave down"
+msgstr "Hasi"
+
+# sc/source\ui\src\autofmt.src:RID_SCDLG_AUTOFORMAT.BTN_PATTERN.text
+#: soundtracker.glade:650
+#, fuzzy
+msgid "_Load Pattern…"
+msgstr "Ishusho"
+
+#: soundtracker.glade:659
+#, fuzzy
+msgid "_Save Current Pattern…"
+msgstr "Kubika"
+
+#: soundtracker.glade:674
+#, fuzzy
+msgid "_Find Unused Pattern"
+msgstr "Kuri"
+
+#: soundtracker.glade:683
+#, fuzzy
+msgid "_Copy Current to Unused Pattern"
+msgstr "Kuri"
+
+#: soundtracker.glade:697
+#, fuzzy
+msgid "C_lear Unused Patterns"
+msgstr "Kuri"
+
+# sc/source\ui\src\autofmt.src:RID_SCDLG_AUTOFORMAT.BTN_PATTERN.text
+#: soundtracker.glade:705
+#, fuzzy
+msgid "_Pack Patterns"
+msgstr "Ishusho"
+
+#: soundtracker.glade:718
+#, fuzzy
+msgid "S_hrink Current Pattern"
+msgstr "Kubika"
+
+#: soundtracker.glade:726
+#, fuzzy
+msgid "_Expand Current Pattern"
+msgstr "Kubika"
+
+#: soundtracker.glade:746
+msgid "_Toggle Current Track Permanentness"
+msgstr ""
+
+#: soundtracker.glade:754
+msgid "Toggle _All Tracks Permanentness"
+msgstr ""
+
+#: soundtracker.glade:766
+#, fuzzy
+msgid "_Instrument"
+msgstr "1."
+
+#: soundtracker.glade:773
+msgid "_Load XI…"
+msgstr ""
+
+#: soundtracker.glade:782
+#, fuzzy
+msgid "_Save XI…"
+msgstr "Kubika"
+
+# sc/source\core\src\compiler.src:RID_SC_FUNCTION_NAMES.SC_OPCODE_CURRENT.text
+#: soundtracker.glade:796
+#, fuzzy
+msgid "_Clear Current"
+msgstr "KIGEZWEHO"
+
+#: soundtracker.glade:811
+#, fuzzy
+msgid "_Delete Unused Instruments"
+msgstr "Kubika"
+
+#: soundtracker.glade:826
+#, fuzzy
+msgid "_Settings"
+msgstr "Amagenamiterere"
+
+#: soundtracker.glade:834
+msgid "Display _Oscilloscopes"
+msgstr ""
+
+#: soundtracker.glade:842
+msgid "_Tracker"
+msgstr ""
+
+#: soundtracker.glade:850
+#, fuzzy
+msgid "_Flicker-free Scrolling"
+msgstr "Kigenga"
+
+#: soundtracker.glade:858
+#, fuzzy
+msgid "_Previous Font"
+msgstr "Intego- nyuguti"
+
+#: soundtracker.glade:867
+#, fuzzy
+msgid "_Next Font"
+msgstr "Intego- nyuguti"
+
+#: soundtracker.glade:881
+#, fuzzy
+msgid "Change Preferred _Accidental Type"
+msgstr "Bikunzwe Ubwoko"
+
+#: soundtracker.glade:890
+#, fuzzy
+msgid "Change Effect Column _Editing Direction"
+msgstr "INGARUKA Inkingi Icyerekezo"
+
+#: soundtracker.glade:907
+msgid "_Keyboard Configuration…"
+msgstr ""
+
+#: soundtracker.glade:917
+msgid "_Audio Configuration…"
+msgstr ""
+
+#: soundtracker.glade:927
+msgid "_GUI Configuration…"
+msgstr ""
+
+#: soundtracker.glade:937
+msgid "_MIDI Configuration…"
+msgstr ""
+
+#: soundtracker.glade:953
+#, fuzzy
+msgid "_Disable Splash Screen"
+msgstr "Mugaragaza"
+
+#: soundtracker.glade:960
+#, fuzzy
+msgid "_Save Settings Now"
+msgstr "Kubika NONEAHA"
+
+#: soundtracker.glade:971
+#, fuzzy
+msgid "Save Settings on _Exit"
+msgstr "Kubika ku"
+
+#: soundtracker.glade:983
+#, fuzzy
+msgid "_Help"
+msgstr "Ifashayobora"
+
+#: soundtracker.glade:1005
+msgid "Show _Tips…"
+msgstr ""
+
+#: soundtracker.glade:1014
+msgid "_XM Effects"
+msgstr ""
+
 #, fuzzy
 #~ msgid "(%d bytes)"
 #~ msgstr "(%dBayite"
@@ -2592,10 +2900,6 @@ msgstr ""
 #~ msgstr "Gushyingura muri..."
 
 #, fuzzy
-#~ msgid "Save Module as _WAV..."
-#~ msgstr "Kubika Nka"
-
-#, fuzzy
 #~ msgid "_Quit"
 #~ msgstr "Kuvamo"
 
@@ -2614,141 +2918,23 @@ msgstr ""
 #~ msgid "_Paste"
 #~ msgstr "Komeka"
 
-#, fuzzy
-#~ msgid "_Kill notes"
-#~ msgstr "Ibisobanuro"
-
-#, fuzzy
-#~ msgid "Increment cmd value"
-#~ msgstr "Cmd+ Agaciro"
-
-#, fuzzy
-#~ msgid "Decrement cmd value"
-#~ msgstr "Cmd+ Agaciro"
-
-#, fuzzy
-#~ msgid "_Mark mode"
-#~ msgstr "Ubwoko"
-
-#, fuzzy
-#~ msgid "C_lear block marks"
-#~ msgstr "Funga"
-
-#, fuzzy
-#~ msgid "_Interpolate effects"
-#~ msgstr "Ingaruka"
-
-#, fuzzy
-#~ msgid "Transpose half-note up"
-#~ msgstr "Impugukirwa Hejuru"
-
-#, fuzzy
-#~ msgid "Transpose half-note down"
-#~ msgstr "Impugukirwa Hasi"
-
-#, fuzzy
-#~ msgid "Transpose octave up"
-#~ msgstr "Hejuru"
-
-#, fuzzy
-#~ msgid "Transpose octave down"
-#~ msgstr "Hasi"
-
 # dbaccess/source/ui/inc/toolbox.hrc:MID_SBA_QRY_PASTE.text
 #, fuzzy
 #~ msgid "P_aste"
 #~ msgstr "Komeka"
-
-# sc/source\ui\src\autofmt.src:RID_SCDLG_AUTOFORMAT.BTN_PATTERN.text
-#, fuzzy
-#~ msgid "_Pattern"
-#~ msgstr "Ishusho"
-
-# filter/source\pdf\impdialog.src:RID_PDF_EXPORT_DLG.RB_SELECTION.text
-#, fuzzy
-#~ msgid "_Selection"
-#~ msgstr "Ihitamo"
-
-#, fuzzy
-#~ msgid "_Copy Current to Unused Pattern"
-#~ msgstr "Kuri"
-
-#, fuzzy
-#~ msgid "_Save Current Pattern"
-#~ msgstr "Kubika"
 
 #, fuzzy
 #~ msgid "_Save XI..."
 #~ msgstr "Kubika"
 
 #, fuzzy
-#~ msgid "_Flicker-free scrolling"
-#~ msgstr "Kigenga"
-
-#, fuzzy
-#~ msgid "_Previous font"
-#~ msgstr "Intego- nyuguti"
-
-#, fuzzy
-#~ msgid "_Next font"
-#~ msgstr "Intego- nyuguti"
-
-#, fuzzy
-#~ msgid "Change preferred _accidental type"
-#~ msgstr "Bikunzwe Ubwoko"
-
-#, fuzzy
 #~ msgid "Change effect column editing _direction"
 #~ msgstr "INGARUKA Inkingi Icyerekezo"
-
-#, fuzzy
-#~ msgid "Disable splash screen"
-#~ msgstr "Mugaragaza"
-
-#, fuzzy
-#~ msgid "_Save Settings now"
-#~ msgstr "Kubika NONEAHA"
-
-#, fuzzy
-#~ msgid "Save Settings on _Exit"
-#~ msgstr "Kubika ku"
 
 # offmgr/source\offapp\intro\intro.hrc:TEXT_DEFAULTABOUT.text
 #, fuzzy
 #~ msgid "_About..."
 #~ msgstr "Ibyerekeye"
-
-# sc/source\ui\src\globstr.src:RID_GLOBSTR.STR_HFCMD_FILE.text
-#, fuzzy
-#~ msgid "_File"
-#~ msgstr "IDOSIYE"
-
-# basctl/source\basicide\basidesh.src:RID_STR_STDMODULENAME.text
-#, fuzzy
-#~ msgid "_Module"
-#~ msgstr "Modire"
-
-# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
-# basctl/source\basicide\basidesh.src:RID_BASICMENU.MN_EDIT.text
-# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
-# basctl/source\basicide\basidesh.src:RID_BASICPLUGINMENU.MN_PLEDIT.text
-# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
-# basctl/source\basicide\macrodlg.src:RID_MACROCHOOSER.RID_PB_EDIT.text
-# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
-# basctl/source\basicide\moduldlg.src:RID_TP_MODULS.RID_PB_EDIT.text
-# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
-# basctl/source\basicide\moduldlg.src:RID_TP_LIBS.RID_PB_EDIT.text
-#, fuzzy
-#~ msgid "_Edit"
-#~ msgstr "Guhindura"
-
-#, fuzzy
-#~ msgid "_Settings"
-#~ msgstr "Amagenamiterere"
-
-#, fuzzy
-#~ msgid "_Help"
-#~ msgstr "Ifashayobora"
 
 #, fuzzy
 #~ msgid ""

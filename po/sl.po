@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SoundTracker 0.6.0\n"
 "Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
-"POT-Creation-Date: 2013-10-13 23:27+0400\n"
+"POT-Creation-Date: 2013-10-23 01:00+0400\n"
 "PO-Revision-Date: 2000-08-17 15:00+0200\n"
 "Last-Translator: Matej Erman <matej.erman@guest.arnes.si>\n"
 "Language-Team: slovenian <sl@li.org>\n"
-"Language: \n"
+"Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso8859-2\n"
 "Content-Transfer-Encoding: 8 bit\n"
@@ -35,27 +35,27 @@ msgstr "Izhod za urejanje"
 msgid "Sampling"
 msgstr "Vzorèenje"
 
-#: app/audioconfig.c:188
+#: app/audioconfig.c:192
 msgid "Driver Module"
 msgstr "Gonilni modul"
 
-#: app/audioconfig.c:241
+#: app/audioconfig.c:245
 msgid "Mixer Module"
 msgstr "Me¹alni modul"
 
-#: app/audioconfig.c:242 app/drivers/alsa1x.c:734
+#: app/audioconfig.c:246 app/drivers/alsa1x.c:734
 msgid "Description"
 msgstr "Opis"
 
-#: app/audioconfig.c:249
+#: app/audioconfig.c:253
 msgid "Audio Configuration"
 msgstr "Nastavitev audia"
 
-#: app/audioconfig.c:269
+#: app/audioconfig.c:273
 msgid "File output"
 msgstr ""
 
-#: app/audioconfig.c:277
+#: app/audioconfig.c:281
 msgid "Mixers"
 msgstr "Me¹alniki"
 
@@ -1387,8 +1387,9 @@ msgid "Load Sample"
 msgstr "Nalo¾i vzorec"
 
 #: app/sample-editor.c:405
-msgid "Load sample into the current samle slot"
-msgstr ""
+#, fuzzy
+msgid "Load sample into the current sample slot"
+msgstr "Shrani XM brez vzorcev..."
 
 #: app/sample-editor.c:406
 msgid "Save Sample"

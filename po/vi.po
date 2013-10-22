@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: soundtracker-0.6.7\n"
 "Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
-"POT-Creation-Date: 2013-10-13 23:27+0400\n"
+"POT-Creation-Date: 2013-10-23 01:06+0400\n"
 "PO-Revision-Date: 2006-02-19 15:50+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -36,27 +36,27 @@ msgstr "Kết xuất hiệu chỉnh"
 msgid "Sampling"
 msgstr "Lấy mẫu"
 
-#: app/audioconfig.c:188
+#: app/audioconfig.c:192
 msgid "Driver Module"
 msgstr "Mô-đun Điều khiển"
 
-#: app/audioconfig.c:241
+#: app/audioconfig.c:245
 msgid "Mixer Module"
 msgstr "Mô-đun Hoà tiếng"
 
-#: app/audioconfig.c:242 app/drivers/alsa1x.c:734
+#: app/audioconfig.c:246 app/drivers/alsa1x.c:734
 msgid "Description"
 msgstr "Mô tả"
 
-#: app/audioconfig.c:249
+#: app/audioconfig.c:253
 msgid "Audio Configuration"
 msgstr "Cấu hình Âm thanh"
 
-#: app/audioconfig.c:269
+#: app/audioconfig.c:273
 msgid "File output"
 msgstr ""
 
-#: app/audioconfig.c:277
+#: app/audioconfig.c:281
 msgid "Mixers"
 msgstr "Bộ hoà tiếng"
 
@@ -1389,8 +1389,9 @@ msgid "Load Sample"
 msgstr "Tải mẫu"
 
 #: app/sample-editor.c:405
-msgid "Load sample into the current samle slot"
-msgstr ""
+#, fuzzy
+msgid "Load sample into the current sample slot"
+msgstr "Lưu XM không có mẫu..."
 
 #: app/sample-editor.c:406
 msgid "Save Sample"
@@ -1978,7 +1979,7 @@ msgstr "Bật tô sáng hàng"
 msgid "Minor lines highlighting"
 msgstr "Bật tô sáng hàng"
 
-#: app/tracker.c:92
+#: app/tracker.c:92 soundtracker.glade:142
 #, fuzzy
 msgid "Selection"
 msgstr "Vùng chọn:"
@@ -2360,6 +2361,274 @@ msgstr ""
 msgid "error closing handle (%s)\n"
 msgstr ""
 
+#: soundtracker.glade:10
+#, fuzzy
+msgid "Pattern"
+msgstr "_Mẫu"
+
+#: soundtracker.glade:49
+#, fuzzy
+msgid "Track"
+msgstr "_Rãnh"
+
+#: soundtracker.glade:88 soundtracker.glade:501
+msgid "_Kill notes"
+msgstr "_Buộc kết thúc nốt"
+
+#: soundtracker.glade:104 soundtracker.glade:518
+msgid "_Insert track"
+msgstr "_Chèn rãnh"
+
+#: soundtracker.glade:112 soundtracker.glade:526
+msgid "_Delete track"
+msgstr "_Xoá bỏ rãnh"
+
+#: soundtracker.glade:125 soundtracker.glade:539
+msgid "Increment cmd value"
+msgstr "Tăng dần giá trị lệnh"
+
+#: soundtracker.glade:131 soundtracker.glade:546
+msgid "Decrement cmd value"
+msgstr "Giảm dần giá trị lệnh"
+
+#: soundtracker.glade:150 soundtracker.glade:575
+msgid "C_lear block marks"
+msgstr "X_oá các dấu khối"
+
+#: soundtracker.glade:185 soundtracker.glade:589
+msgid "_Interpolate effects"
+msgstr "Nội _suy hiệu ứng"
+
+#: soundtracker.glade:219
+msgid "_File"
+msgstr "_Tập tin"
+
+#: soundtracker.glade:261
+#, fuzzy
+msgid "Save Module as _WAV…"
+msgstr "Lưu mô-đun dạng _WAV..."
+
+#: soundtracker.glade:270
+#, fuzzy
+msgid "Save _XM without samples…"
+msgstr "Lưu XM không có mẫu..."
+
+#: soundtracker.glade:299
+msgid "_Module"
+msgstr "_Mô-đun"
+
+#: soundtracker.glade:306
+msgid "Clear _All"
+msgstr "Xoá _hết"
+
+#: soundtracker.glade:315
+msgid "Clear _Patterns Only"
+msgstr "Xoá chỉ các _mẫu"
+
+#: soundtracker.glade:330
+msgid "_Optimize Module"
+msgstr "_Ưu tiên hóa mô-đun"
+
+#: soundtracker.glade:342
+msgid "_Edit"
+msgstr "_Hiệu chỉnh"
+
+#: soundtracker.glade:382
+#, fuzzy
+msgid "_Jazz edit mode"
+msgstr "Chế độ hiệu chỉnh nhạc _ja"
+
+#: soundtracker.glade:391
+msgid "_Record keyreleases"
+msgstr ""
+
+#: soundtracker.glade:404
+#, fuzzy
+msgid "Transp_osition…"
+msgstr "Đổi ch_ỗ..."
+
+#: soundtracker.glade:417 soundtracker.glade:643
+msgid "_Pattern"
+msgstr "_Mẫu"
+
+#: soundtracker.glade:459 soundtracker.glade:738
+msgid "_Track"
+msgstr "_Rãnh"
+
+#: soundtracker.glade:558
+msgid "_Selection"
+msgstr "Vùng _chọn"
+
+#: soundtracker.glade:566
+msgid "_Mark mode"
+msgstr "Chế độ đánh _dấu"
+
+#: soundtracker.glade:603
+msgid "Transpose half-note up"
+msgstr "Đổi chỗ nửa nốt lên"
+
+#: soundtracker.glade:611
+msgid "Transpose half-note down"
+msgstr "Đổi chỗ nửa nốt xuống"
+
+#: soundtracker.glade:619
+msgid "Transpose octave up"
+msgstr "Đổi chố quãng tám lên"
+
+#: soundtracker.glade:627
+msgid "Transpose octave down"
+msgstr "Đổi chố quãng tám xuống"
+
+#: soundtracker.glade:650
+#, fuzzy
+msgid "_Load Pattern…"
+msgstr "Tải _mẫu"
+
+#: soundtracker.glade:659
+#, fuzzy
+msgid "_Save Current Pattern…"
+msgstr "_Lưu mẫu hiện có"
+
+#: soundtracker.glade:674
+msgid "_Find Unused Pattern"
+msgstr "Tìm mẫu kh_ông dùng"
+
+#: soundtracker.glade:683
+msgid "_Copy Current to Unused Pattern"
+msgstr "_Chép điều hiện thời vào mẫu không dùng"
+
+#: soundtracker.glade:697
+msgid "C_lear Unused Patterns"
+msgstr "X_oá các mẫu không dùng"
+
+#: soundtracker.glade:705
+msgid "_Pack Patterns"
+msgstr "_Nén mẫu"
+
+#: soundtracker.glade:718
+#, fuzzy
+msgid "S_hrink Current Pattern"
+msgstr "Thu hẹ_p mẫu hiện có"
+
+#: soundtracker.glade:726
+msgid "_Expand Current Pattern"
+msgstr "Mở _rộng mẫu hiện có"
+
+#: soundtracker.glade:746
+msgid "_Toggle Current Track Permanentness"
+msgstr ""
+
+#: soundtracker.glade:754
+msgid "Toggle _All Tracks Permanentness"
+msgstr ""
+
+#: soundtracker.glade:766
+msgid "_Instrument"
+msgstr "Nhạc _khí"
+
+#: soundtracker.glade:773
+#, fuzzy
+msgid "_Load XI…"
+msgstr "Tải XI"
+
+#: soundtracker.glade:782
+#, fuzzy
+msgid "_Save XI…"
+msgstr "Lưu XI"
+
+#: soundtracker.glade:796
+msgid "_Clear Current"
+msgstr "X_oá điều hiện có"
+
+#: soundtracker.glade:811
+msgid "_Delete Unused Instruments"
+msgstr "_Xoá bỏ các nhạc khí không dùng"
+
+#: soundtracker.glade:826
+msgid "_Settings"
+msgstr "Thiết _lập"
+
+#: soundtracker.glade:834
+msgid "Display _Oscilloscopes"
+msgstr "Hiện các cái nghiệm d_ao động"
+
+#: soundtracker.glade:842
+msgid "_Tracker"
+msgstr "Bộ th_eo dõi"
+
+#: soundtracker.glade:850
+#, fuzzy
+msgid "_Flicker-free Scrolling"
+msgstr "C_uộn miễn lung linh"
+
+#: soundtracker.glade:858
+#, fuzzy
+msgid "_Previous Font"
+msgstr "Phông chữ t_rước"
+
+#: soundtracker.glade:867
+#, fuzzy
+msgid "_Next Font"
+msgstr "Phông chữ _kế"
+
+#: soundtracker.glade:881
+#, fuzzy
+msgid "Change Preferred _Accidental Type"
+msgstr "Đổi kiểu dấu th_ăng giáng bất thường đã muốn"
+
+#: soundtracker.glade:890
+#, fuzzy
+msgid "Change Effect Column _Editing Direction"
+msgstr "Thay đổi hướng hiệu chỉnh cột hiệu ứng"
+
+#: soundtracker.glade:907
+#, fuzzy
+msgid "_Keyboard Configuration…"
+msgstr "Cấu hình Bàn phím"
+
+#: soundtracker.glade:917
+#, fuzzy
+msgid "_Audio Configuration…"
+msgstr "Cấu hình Âm thanh"
+
+#: soundtracker.glade:927
+#, fuzzy
+msgid "_GUI Configuration…"
+msgstr "Cấu hình giao diện"
+
+#: soundtracker.glade:937
+#, fuzzy
+msgid "_MIDI Configuration…"
+msgstr "Cấu hình MIDI"
+
+#: soundtracker.glade:953
+#, fuzzy
+msgid "_Disable Splash Screen"
+msgstr "Tắt màn hình giật gân"
+
+#: soundtracker.glade:960
+#, fuzzy
+msgid "_Save Settings Now"
+msgstr "_Lưu thiết lập ngay"
+
+#: soundtracker.glade:971
+msgid "Save Settings on _Exit"
+msgstr "Lưu thiết lập khi t_hoát"
+
+#: soundtracker.glade:983
+msgid "_Help"
+msgstr "Trợ _giúp"
+
+#: soundtracker.glade:1005
+#, fuzzy
+msgid "Show _Tips…"
+msgstr "Hiện _mẹo..."
+
+#: soundtracker.glade:1014
+#, fuzzy
+msgid "_XM Effects"
+msgstr "Hiệu ứng _XM..."
+
 #~ msgid "(%d bytes)"
 #~ msgstr "(%d byte)"
 
@@ -2466,20 +2735,8 @@ msgstr ""
 #~ msgid "Save _as..."
 #~ msgstr "Lưu _dạng..."
 
-#~ msgid "Save Module as _WAV..."
-#~ msgstr "Lưu mô-đun dạng _WAV..."
-
 #~ msgid "_Quit"
 #~ msgstr "T_hoát"
-
-#~ msgid "Clear _All"
-#~ msgstr "Xoá _hết"
-
-#~ msgid "Clear _Patterns Only"
-#~ msgstr "Xoá chỉ các _mẫu"
-
-#~ msgid "_Optimize Module"
-#~ msgstr "_Ưu tiên hóa mô-đun"
 
 #~ msgid "C_ut"
 #~ msgstr "Cắ_t"
@@ -2490,83 +2747,8 @@ msgstr ""
 #~ msgid "_Paste"
 #~ msgstr "_Dán"
 
-#~ msgid "_Kill notes"
-#~ msgstr "_Buộc kết thúc nốt"
-
-#~ msgid "_Insert track"
-#~ msgstr "_Chèn rãnh"
-
-#~ msgid "_Delete track"
-#~ msgstr "_Xoá bỏ rãnh"
-
-#~ msgid "Increment cmd value"
-#~ msgstr "Tăng dần giá trị lệnh"
-
-#~ msgid "Decrement cmd value"
-#~ msgstr "Giảm dần giá trị lệnh"
-
-#~ msgid "_Mark mode"
-#~ msgstr "Chế độ đánh _dấu"
-
-#~ msgid "C_lear block marks"
-#~ msgstr "X_oá các dấu khối"
-
-#~ msgid "_Interpolate effects"
-#~ msgstr "Nội _suy hiệu ứng"
-
-#~ msgid "Transpose half-note up"
-#~ msgstr "Đổi chỗ nửa nốt lên"
-
-#~ msgid "Transpose half-note down"
-#~ msgstr "Đổi chỗ nửa nốt xuống"
-
-#~ msgid "Transpose octave up"
-#~ msgstr "Đổi chố quãng tám lên"
-
-#~ msgid "Transpose octave down"
-#~ msgstr "Đổi chố quãng tám xuống"
-
 #~ msgid "P_aste"
 #~ msgstr "D_án"
-
-#~ msgid "_Jazz Edit Mode"
-#~ msgstr "Chế độ hiệu chỉnh nhạc _ja"
-
-#~ msgid "Transp_osition..."
-#~ msgstr "Đổi ch_ỗ..."
-
-#~ msgid "_Pattern"
-#~ msgstr "_Mẫu"
-
-#~ msgid "_Track"
-#~ msgstr "_Rãnh"
-
-#~ msgid "_Selection"
-#~ msgstr "Vùng _chọn"
-
-#~ msgid "_Find Unused Pattern"
-#~ msgstr "Tìm mẫu kh_ông dùng"
-
-#~ msgid "_Copy Current to Unused Pattern"
-#~ msgstr "_Chép điều hiện thời vào mẫu không dùng"
-
-#~ msgid "C_lear Unused Patterns"
-#~ msgstr "X_oá các mẫu không dùng"
-
-#~ msgid "_Pack Patterns"
-#~ msgstr "_Nén mẫu"
-
-#~ msgid "_Save Current Pattern"
-#~ msgstr "_Lưu mẫu hiện có"
-
-#~ msgid "L_oad Pattern"
-#~ msgstr "Tải _mẫu"
-
-#~ msgid "Sh_rink Current Pattern"
-#~ msgstr "Thu hẹ_p mẫu hiện có"
-
-#~ msgid "_Expand Current Pattern"
-#~ msgstr "Mở _rộng mẫu hiện có"
 
 #~ msgid "_Load XI..."
 #~ msgstr "_Tải XI..."
@@ -2574,32 +2756,8 @@ msgstr ""
 #~ msgid "_Save XI..."
 #~ msgstr "_Lưu XI..."
 
-#~ msgid "_Clear Current"
-#~ msgstr "X_oá điều hiện có"
-
-#~ msgid "_Delete Unused Instruments"
-#~ msgstr "_Xoá bỏ các nhạc khí không dùng"
-
-#~ msgid "_Flicker-free scrolling"
-#~ msgstr "C_uộn miễn lung linh"
-
-#~ msgid "_Previous font"
-#~ msgstr "Phông chữ t_rước"
-
-#~ msgid "_Next font"
-#~ msgstr "Phông chữ _kế"
-
-#~ msgid "Change preferred _accidental type"
-#~ msgstr "Đổi kiểu dấu th_ăng giáng bất thường đã muốn"
-
 #~ msgid "Change effect column editing _direction"
 #~ msgstr "Đổi h_ướng hiệu chỉnh cột hiệu ứng"
-
-#~ msgid "Display _Oscilloscopes"
-#~ msgstr "Hiện các cái nghiệm d_ao động"
-
-#~ msgid "_Tracker"
-#~ msgstr "Bộ th_eo dõi"
 
 #~ msgid "_Keyboard Configuration..."
 #~ msgstr "Cấu hình _Bàn phím..."
@@ -2613,41 +2771,8 @@ msgstr ""
 #~ msgid "_MIDI Configuration..."
 #~ msgstr "Cấu hình _MIDI..."
 
-#~ msgid "Disable splash screen"
-#~ msgstr "Tắt màn hình giật gân"
-
-#~ msgid "_Save Settings now"
-#~ msgstr "_Lưu thiết lập ngay"
-
-#~ msgid "Save Settings on _Exit"
-#~ msgstr "Lưu thiết lập khi t_hoát"
-
 #~ msgid "_About..."
 #~ msgstr "_Giới thiệu..."
-
-#~ msgid "Show _Tips..."
-#~ msgstr "Hiện _mẹo..."
-
-#~ msgid "_XM Effects..."
-#~ msgstr "Hiệu ứng _XM..."
-
-#~ msgid "_File"
-#~ msgstr "_Tập tin"
-
-#~ msgid "_Module"
-#~ msgstr "_Mô-đun"
-
-#~ msgid "_Edit"
-#~ msgstr "_Hiệu chỉnh"
-
-#~ msgid "_Instrument"
-#~ msgstr "Nhạc _khí"
-
-#~ msgid "_Settings"
-#~ msgstr "Thiết _lập"
-
-#~ msgid "_Help"
-#~ msgstr "Trợ _giúp"
 
 #, fuzzy
 #~ msgid ""

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: soundtracker 0.6.7\n"
 "Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
-"POT-Creation-Date: 2013-10-13 23:27+0400\n"
+"POT-Creation-Date: 2013-10-23 01:06+0400\n"
 "PO-Revision-Date: 2004-03-23 00:51+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -34,27 +34,27 @@ msgstr "Redigeringsutmatning"
 msgid "Sampling"
 msgstr "Sampling"
 
-#: app/audioconfig.c:188
+#: app/audioconfig.c:192
 msgid "Driver Module"
 msgstr "Drivrutinsmodul"
 
-#: app/audioconfig.c:241
+#: app/audioconfig.c:245
 msgid "Mixer Module"
 msgstr "Mixermodul"
 
-#: app/audioconfig.c:242 app/drivers/alsa1x.c:734
+#: app/audioconfig.c:246 app/drivers/alsa1x.c:734
 msgid "Description"
 msgstr "Beskrivning"
 
-#: app/audioconfig.c:249
+#: app/audioconfig.c:253
 msgid "Audio Configuration"
 msgstr "Ljudkonfiguration"
 
-#: app/audioconfig.c:269
+#: app/audioconfig.c:273
 msgid "File output"
 msgstr ""
 
-#: app/audioconfig.c:277
+#: app/audioconfig.c:281
 msgid "Mixers"
 msgstr "Mixrar"
 
@@ -1396,8 +1396,9 @@ msgid "Load Sample"
 msgstr "Läs in sampling"
 
 #: app/sample-editor.c:405
-msgid "Load sample into the current samle slot"
-msgstr ""
+#, fuzzy
+msgid "Load sample into the current sample slot"
+msgstr "Spara XM utan samplingar..."
 
 #: app/sample-editor.c:406
 msgid "Save Sample"
@@ -1986,7 +1987,7 @@ msgstr "Aktivera radfärgmarkering"
 msgid "Minor lines highlighting"
 msgstr "Aktivera radfärgmarkering"
 
-#: app/tracker.c:92
+#: app/tracker.c:92 soundtracker.glade:142
 #, fuzzy
 msgid "Selection"
 msgstr "Markering:"
@@ -2367,6 +2368,275 @@ msgstr ""
 msgid "error closing handle (%s)\n"
 msgstr ""
 
+#: soundtracker.glade:10
+msgid "Pattern"
+msgstr "Mönster"
+
+#: soundtracker.glade:49
+#, fuzzy
+msgid "Track"
+msgstr "S_pår"
+
+#: soundtracker.glade:88 soundtracker.glade:501
+msgid "_Kill notes"
+msgstr "_Döda noter"
+
+#: soundtracker.glade:104 soundtracker.glade:518
+msgid "_Insert track"
+msgstr "_Infoga spår"
+
+#: soundtracker.glade:112 soundtracker.glade:526
+msgid "_Delete track"
+msgstr "_Ta bort spår"
+
+#: soundtracker.glade:125 soundtracker.glade:539
+msgid "Increment cmd value"
+msgstr "Öka kommandovärde"
+
+#: soundtracker.glade:131 soundtracker.glade:546
+msgid "Decrement cmd value"
+msgstr "Minska kommandovärde"
+
+#: soundtracker.glade:150 soundtracker.glade:575
+msgid "C_lear block marks"
+msgstr "T_öm blockmärken"
+
+#: soundtracker.glade:185 soundtracker.glade:589
+msgid "_Interpolate effects"
+msgstr "_Interpolera effekter"
+
+# Arkiv Arkiv Arkiv Arkiv Arkiv Arkiv Arkiv och inget annat än Arkiv!
+#: soundtracker.glade:219
+msgid "_File"
+msgstr "_Arkiv"
+
+#: soundtracker.glade:261
+#, fuzzy
+msgid "Save Module as _WAV…"
+msgstr "Spara modul som _WAV..."
+
+#: soundtracker.glade:270
+#, fuzzy
+msgid "Save _XM without samples…"
+msgstr "Spara XM utan samplingar..."
+
+#: soundtracker.glade:299
+msgid "_Module"
+msgstr "_Modul"
+
+#: soundtracker.glade:306
+msgid "Clear _All"
+msgstr "Töm _alla"
+
+#: soundtracker.glade:315
+msgid "Clear _Patterns Only"
+msgstr "Töm endast _mönster"
+
+#: soundtracker.glade:330
+msgid "_Optimize Module"
+msgstr "_Optimera modul"
+
+#: soundtracker.glade:342
+msgid "_Edit"
+msgstr "_Redigera"
+
+#: soundtracker.glade:382
+#, fuzzy
+msgid "_Jazz edit mode"
+msgstr "_Jazzredigeringsläge"
+
+#: soundtracker.glade:391
+msgid "_Record keyreleases"
+msgstr ""
+
+#: soundtracker.glade:404
+#, fuzzy
+msgid "Transp_osition…"
+msgstr "Transp_onering..."
+
+#: soundtracker.glade:417 soundtracker.glade:643
+msgid "_Pattern"
+msgstr "M_önster"
+
+#: soundtracker.glade:459 soundtracker.glade:738
+msgid "_Track"
+msgstr "S_pår"
+
+#: soundtracker.glade:558
+msgid "_Selection"
+msgstr "_Markering"
+
+#: soundtracker.glade:566
+msgid "_Mark mode"
+msgstr "_Markeringsläge"
+
+#: soundtracker.glade:603
+msgid "Transpose half-note up"
+msgstr "Transponera halvt tonsteg uppåt"
+
+#: soundtracker.glade:611
+msgid "Transpose half-note down"
+msgstr "Transponera halvt tonsteg nedåt"
+
+#: soundtracker.glade:619
+msgid "Transpose octave up"
+msgstr "Transponera oktav uppåt"
+
+#: soundtracker.glade:627
+msgid "Transpose octave down"
+msgstr "Transponera oktav nedåt"
+
+#: soundtracker.glade:650
+#, fuzzy
+msgid "_Load Pattern…"
+msgstr "L_äs in mönster"
+
+#: soundtracker.glade:659
+#, fuzzy
+msgid "_Save Current Pattern…"
+msgstr "_Spara aktuellt mönster"
+
+#: soundtracker.glade:674
+msgid "_Find Unused Pattern"
+msgstr "_Sök oanvänt mönster"
+
+#: soundtracker.glade:683
+msgid "_Copy Current to Unused Pattern"
+msgstr "_Kopiera från aktuellt till oanvänt mönster"
+
+#: soundtracker.glade:697
+msgid "C_lear Unused Patterns"
+msgstr "T_öm oanvända mönster"
+
+#: soundtracker.glade:705
+msgid "_Pack Patterns"
+msgstr "_Packa mönster"
+
+#: soundtracker.glade:718
+#, fuzzy
+msgid "S_hrink Current Pattern"
+msgstr "K_rymp aktuellt mönster"
+
+#: soundtracker.glade:726
+msgid "_Expand Current Pattern"
+msgstr "_Fäll ut aktuellt mönster"
+
+#: soundtracker.glade:746
+msgid "_Toggle Current Track Permanentness"
+msgstr ""
+
+#: soundtracker.glade:754
+msgid "Toggle _All Tracks Permanentness"
+msgstr ""
+
+#: soundtracker.glade:766
+msgid "_Instrument"
+msgstr "_Instrument"
+
+#: soundtracker.glade:773
+#, fuzzy
+msgid "_Load XI…"
+msgstr "Läs in XI"
+
+# src/menus.c:280
+#: soundtracker.glade:782
+#, fuzzy
+msgid "_Save XI…"
+msgstr "Spara XI"
+
+#: soundtracker.glade:796
+msgid "_Clear Current"
+msgstr "_Töm aktuell"
+
+#: soundtracker.glade:811
+msgid "_Delete Unused Instruments"
+msgstr "_Ta bort oanvända instrument"
+
+#: soundtracker.glade:826
+msgid "_Settings"
+msgstr "_Inställningar"
+
+#: soundtracker.glade:834
+msgid "Display _Oscilloscopes"
+msgstr "Visa _oscilloskop"
+
+#: soundtracker.glade:842
+msgid "_Tracker"
+msgstr "_Tracker"
+
+#: soundtracker.glade:850
+#, fuzzy
+msgid "_Flicker-free Scrolling"
+msgstr "_Flimmerfri rullning"
+
+#: soundtracker.glade:858
+#, fuzzy
+msgid "_Previous Font"
+msgstr "_Föregående typsnitt"
+
+#: soundtracker.glade:867
+#, fuzzy
+msgid "_Next Font"
+msgstr "_Nästa typsnitt"
+
+#: soundtracker.glade:881
+#, fuzzy
+msgid "Change Preferred _Accidental Type"
+msgstr "Ändra föredragen _tillfällighetstyp"
+
+#: soundtracker.glade:890
+#, fuzzy
+msgid "Change Effect Column _Editing Direction"
+msgstr "Ändra riktning för effektkolumnredigering"
+
+#: soundtracker.glade:907
+#, fuzzy
+msgid "_Keyboard Configuration…"
+msgstr "Tangentbordskonfiguration"
+
+#: soundtracker.glade:917
+#, fuzzy
+msgid "_Audio Configuration…"
+msgstr "Ljudkonfiguration"
+
+#: soundtracker.glade:927
+#, fuzzy
+msgid "_GUI Configuration…"
+msgstr "Konfiguration av användargränssnitt"
+
+#: soundtracker.glade:937
+#, fuzzy
+msgid "_MIDI Configuration…"
+msgstr "MIDI-konfiguration"
+
+#: soundtracker.glade:953
+#, fuzzy
+msgid "_Disable Splash Screen"
+msgstr "Inaktivera startbild"
+
+#: soundtracker.glade:960
+#, fuzzy
+msgid "_Save Settings Now"
+msgstr "_Spara inställningar nu"
+
+#: soundtracker.glade:971
+msgid "Save Settings on _Exit"
+msgstr "Spara inställningar vid a_vslut"
+
+#: soundtracker.glade:983
+msgid "_Help"
+msgstr "_Hjälp"
+
+#: soundtracker.glade:1005
+#, fuzzy
+msgid "Show _Tips…"
+msgstr "Visa _tips..."
+
+#: soundtracker.glade:1014
+#, fuzzy
+msgid "_XM Effects"
+msgstr "_XM-effekter..."
+
 #~ msgid "(%d bytes)"
 #~ msgstr "(%d byte)"
 
@@ -2474,20 +2744,8 @@ msgstr ""
 #~ msgid "Save _as..."
 #~ msgstr "Spara so_m..."
 
-#~ msgid "Save Module as _WAV..."
-#~ msgstr "Spara modul som _WAV..."
-
 #~ msgid "_Quit"
 #~ msgstr "A_vsluta"
-
-#~ msgid "Clear _All"
-#~ msgstr "Töm _alla"
-
-#~ msgid "Clear _Patterns Only"
-#~ msgstr "Töm endast _mönster"
-
-#~ msgid "_Optimize Module"
-#~ msgstr "_Optimera modul"
 
 #~ msgid "C_ut"
 #~ msgstr "Klipp _ut"
@@ -2498,83 +2756,8 @@ msgstr ""
 #~ msgid "_Paste"
 #~ msgstr "Klistra _in"
 
-#~ msgid "_Kill notes"
-#~ msgstr "_Döda noter"
-
-#~ msgid "_Insert track"
-#~ msgstr "_Infoga spår"
-
-#~ msgid "_Delete track"
-#~ msgstr "_Ta bort spår"
-
-#~ msgid "Increment cmd value"
-#~ msgstr "Öka kommandovärde"
-
-#~ msgid "Decrement cmd value"
-#~ msgstr "Minska kommandovärde"
-
-#~ msgid "_Mark mode"
-#~ msgstr "_Markeringsläge"
-
-#~ msgid "C_lear block marks"
-#~ msgstr "T_öm blockmärken"
-
-#~ msgid "_Interpolate effects"
-#~ msgstr "_Interpolera effekter"
-
-#~ msgid "Transpose half-note up"
-#~ msgstr "Transponera halvt tonsteg uppåt"
-
-#~ msgid "Transpose half-note down"
-#~ msgstr "Transponera halvt tonsteg nedåt"
-
-#~ msgid "Transpose octave up"
-#~ msgstr "Transponera oktav uppåt"
-
-#~ msgid "Transpose octave down"
-#~ msgstr "Transponera oktav nedåt"
-
 #~ msgid "P_aste"
 #~ msgstr "Klistra _in"
-
-#~ msgid "_Jazz Edit Mode"
-#~ msgstr "_Jazzredigeringsläge"
-
-#~ msgid "Transp_osition..."
-#~ msgstr "Transp_onering..."
-
-#~ msgid "_Pattern"
-#~ msgstr "M_önster"
-
-#~ msgid "_Track"
-#~ msgstr "S_pår"
-
-#~ msgid "_Selection"
-#~ msgstr "_Markering"
-
-#~ msgid "_Find Unused Pattern"
-#~ msgstr "_Sök oanvänt mönster"
-
-#~ msgid "_Copy Current to Unused Pattern"
-#~ msgstr "_Kopiera från aktuellt till oanvänt mönster"
-
-#~ msgid "C_lear Unused Patterns"
-#~ msgstr "T_öm oanvända mönster"
-
-#~ msgid "_Pack Patterns"
-#~ msgstr "_Packa mönster"
-
-#~ msgid "_Save Current Pattern"
-#~ msgstr "_Spara aktuellt mönster"
-
-#~ msgid "L_oad Pattern"
-#~ msgstr "L_äs in mönster"
-
-#~ msgid "Sh_rink Current Pattern"
-#~ msgstr "K_rymp aktuellt mönster"
-
-#~ msgid "_Expand Current Pattern"
-#~ msgstr "_Fäll ut aktuellt mönster"
 
 #~ msgid "_Load XI..."
 #~ msgstr "_Läs in XI..."
@@ -2582,32 +2765,8 @@ msgstr ""
 #~ msgid "_Save XI..."
 #~ msgstr "_Spara XI..."
 
-#~ msgid "_Clear Current"
-#~ msgstr "_Töm aktuell"
-
-#~ msgid "_Delete Unused Instruments"
-#~ msgstr "_Ta bort oanvända instrument"
-
-#~ msgid "_Flicker-free scrolling"
-#~ msgstr "_Flimmerfri rullning"
-
-#~ msgid "_Previous font"
-#~ msgstr "_Föregående typsnitt"
-
-#~ msgid "_Next font"
-#~ msgstr "_Nästa typsnitt"
-
-#~ msgid "Change preferred _accidental type"
-#~ msgstr "Ändra föredragen _tillfällighetstyp"
-
 #~ msgid "Change effect column editing _direction"
 #~ msgstr "Ändra _riktning för effektkolumnredigering"
-
-#~ msgid "Display _Oscilloscopes"
-#~ msgstr "Visa _oscilloskop"
-
-#~ msgid "_Tracker"
-#~ msgstr "_Tracker"
 
 #~ msgid "_Keyboard Configuration..."
 #~ msgstr "_Tangentbordskonfiguration..."
@@ -2621,42 +2780,8 @@ msgstr ""
 #~ msgid "_MIDI Configuration..."
 #~ msgstr "_MIDI-konfiguration..."
 
-#~ msgid "Disable splash screen"
-#~ msgstr "Inaktivera startbild"
-
-#~ msgid "_Save Settings now"
-#~ msgstr "_Spara inställningar nu"
-
-#~ msgid "Save Settings on _Exit"
-#~ msgstr "Spara inställningar vid a_vslut"
-
 #~ msgid "_About..."
 #~ msgstr "_Om..."
-
-#~ msgid "Show _Tips..."
-#~ msgstr "Visa _tips..."
-
-#~ msgid "_XM Effects..."
-#~ msgstr "_XM-effekter..."
-
-# Arkiv Arkiv Arkiv Arkiv Arkiv Arkiv Arkiv och inget annat än Arkiv!
-#~ msgid "_File"
-#~ msgstr "_Arkiv"
-
-#~ msgid "_Module"
-#~ msgstr "_Modul"
-
-#~ msgid "_Edit"
-#~ msgstr "_Redigera"
-
-#~ msgid "_Instrument"
-#~ msgstr "_Instrument"
-
-#~ msgid "_Settings"
-#~ msgstr "_Inställningar"
-
-#~ msgid "_Help"
-#~ msgstr "_Hjälp"
 
 #, fuzzy
 #~ msgid ""
@@ -2699,9 +2824,6 @@ msgstr ""
 #~ "Mönstret är för långt för expandering.\n"
 #~ "En del data på slutet av mönstret kommer att gå förlorade. Vill du "
 #~ "fortsätta ändå?"
-
-#~ msgid "Pattern"
-#~ msgstr "Mönster"
 
 # Osäker
 #~ msgid "_Accidentals"

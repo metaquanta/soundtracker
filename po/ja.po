@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SoundTracker 0.3.10\n"
 "Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
-"POT-Creation-Date: 2013-10-13 23:27+0400\n"
+"POT-Creation-Date: 2013-10-23 01:06+0400\n"
 "PO-Revision-Date: 2003-08-05 06:54+0900\n"
 "Last-Translator: Junichi Uekawa <dancer@debian.org>\n"
 "Language-Team: Debian Japanese project <debian-japanese@lists.debian.org>\n"
-"Language: \n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=EUC-JP\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: app/audio.c:678 app/gui.c:340 app/gui.c:349 app/gui.c:359 app/gui.c:369
@@ -26,49 +26,49 @@ msgstr ""
 
 #: app/audioconfig.c:62
 msgid "Playback Output"
-msgstr "±éÁÕ½ĞÎÏ"
+msgstr "æ¼”å¥å‡ºåŠ›"
 
 #: app/audioconfig.c:69
 msgid "Editing Output"
-msgstr "ÊÔ½¸½ĞÎÏ"
+msgstr "ç·¨é›†å‡ºåŠ›"
 
 #: app/audioconfig.c:76
 msgid "Sampling"
-msgstr "¥µ¥ó¥×¥ê¥ó¥°"
+msgstr "ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°"
 
-#: app/audioconfig.c:188
+#: app/audioconfig.c:192
 msgid "Driver Module"
-msgstr "¥É¥é¥¤¥Ğ¡¦¥â¥¸¥å¡¼¥ë"
+msgstr "ãƒ‰ãƒ©ã‚¤ãƒãƒ»ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«"
 
-#: app/audioconfig.c:241
+#: app/audioconfig.c:245
 msgid "Mixer Module"
-msgstr "¥ß¥­¥µ¡¦¥â¥¸¥å¡¼¥ë"
+msgstr "ãƒŸã‚­ã‚µãƒ»ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«"
 
-#: app/audioconfig.c:242 app/drivers/alsa1x.c:734
+#: app/audioconfig.c:246 app/drivers/alsa1x.c:734
 msgid "Description"
-msgstr "ÀâÌÀ"
+msgstr "èª¬æ˜"
 
-#: app/audioconfig.c:249
+#: app/audioconfig.c:253
 msgid "Audio Configuration"
-msgstr "¥ª¡¼¥Ç¥£¥ªÀßÄê"
+msgstr "ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªè¨­å®š"
 
-#: app/audioconfig.c:269
+#: app/audioconfig.c:273
 msgid "File output"
 msgstr ""
 
-#: app/audioconfig.c:277
+#: app/audioconfig.c:281
 msgid "Mixers"
-msgstr "¥ß¥­¥µ"
+msgstr "ãƒŸã‚­ã‚µ"
 
 #: app/drivers/alsa1x.c:258 app/drivers/oss.c:165 app/drivers/sun-output.c:138
 #, c-format
 msgid "Estimated audio delay: %f milliseconds"
-msgstr "¿äÄê¥ª¡¼¥Ç¥£¥ª¡¦¥Ç¥£¥ì¥¤: %f¥ß¥êÉÃ"
+msgstr "æ¨å®šã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒ‡ã‚£ãƒ¬ã‚¤: %fãƒŸãƒªç§’"
 
 #: app/drivers/alsa1x.c:316
 #, fuzzy
 msgid "ALSA device opening error"
-msgstr "ALSA¥Ç¥Ğ¥¤¥¹ÈÖ¹æ:"
+msgstr "ALSAãƒ‡ãƒã‚¤ã‚¹ç•ªå·:"
 
 #: app/drivers/alsa1x.c:320
 msgid "hw params obtaining error"
@@ -82,7 +82,7 @@ msgstr ""
 #: app/drivers/alsa1x.c:354 app/drivers/alsa1x.c:1231
 #, fuzzy
 msgid "Unable to set channels number"
-msgstr "ALSA¥Á¥ã¥ó¥Í¥ë¤ò½àÈ÷¤Ç¤­¤Ş¤»¤ó¡¥\n"
+msgstr "ALSAãƒãƒ£ãƒ³ãƒãƒ«ã‚’æº–å‚™ã§ãã¾ã›ã‚“ï¼\n"
 
 #: app/drivers/alsa1x.c:366 app/drivers/alsa1x.c:1253
 msgid "Unable to set appropriate buffer size"
@@ -127,7 +127,7 @@ msgstr ""
 #: app/drivers/alsa1x.c:666
 #, fuzzy, c-format
 msgid " = %u samples"
-msgstr "(%d¥µ¥ó¥×¥ë)"
+msgstr "(%dã‚µãƒ³ãƒ—ãƒ«)"
 
 #: app/drivers/alsa1x.c:681
 #, c-format
@@ -149,31 +149,31 @@ msgstr ""
 #: app/drivers/alsa1x.c:804
 #, fuzzy
 msgid "8 bit"
-msgstr "8¥Ó¥Ã¥È"
+msgstr "8ãƒ“ãƒƒãƒˆ"
 
 #: app/drivers/alsa1x.c:804
 #, fuzzy
 msgid "16 bit"
-msgstr "16¥Ó¥Ã¥È"
+msgstr "16ãƒ“ãƒƒãƒˆ"
 
 #: app/drivers/alsa1x.c:805 app/drivers/file-output.c:138
 #: app/sample-editor.c:1617
 msgid "Mono"
-msgstr "¥â¥Î¥é¥ë"
+msgstr "ãƒ¢ãƒãƒ©ãƒ«"
 
 #: app/drivers/alsa1x.c:805 app/drivers/file-output.c:138
 #: app/sample-editor.c:1617
 msgid "Stereo"
-msgstr "¥¹¥Æ¥ì¥ª"
+msgstr "ã‚¹ãƒ†ãƒ¬ã‚ª"
 
 #: app/drivers/alsa1x.c:809 app/drivers/oss.c:225 app/drivers/sun-output.c:202
 msgid "These changes won't take effect until you restart playing."
-msgstr "±éÁÕ¤òºÆ³«¤¹¤ë¤Ş¤Ç¤³¤ì¤é¤ÎÊÑ¹¹¤Ï¤Ê¤µ¤ì¤Ş¤»¤ó¡£"
+msgstr "æ¼”å¥ã‚’å†é–‹ã™ã‚‹ã¾ã§ã“ã‚Œã‚‰ã®å¤‰æ›´ã¯ãªã•ã‚Œã¾ã›ã‚“ã€‚"
 
 #: app/drivers/alsa1x.c:810
 #, fuzzy
 msgid "These changes won't take effect until you restart capturing."
-msgstr "¥µ¥ó¥×¥ê¥ó¥°¤òºÆ³«¤¹¤ë¤Ş¤Ç¤³¤ì¤é¤ÎÊÑ¹¹¤Ï¤Ê¤µ¤ì¤Ş¤»¤ó¡£"
+msgstr "ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã‚’å†é–‹ã™ã‚‹ã¾ã§ã“ã‚Œã‚‰ã®å¤‰æ›´ã¯ãªã•ã‚Œã¾ã›ã‚“ã€‚"
 
 #: app/drivers/alsa1x.c:822
 msgid "Device:"
@@ -186,26 +186,26 @@ msgstr ""
 #: app/drivers/alsa1x.c:845 app/drivers/oss.c:253 app/drivers/sun-output.c:230
 #: app/sample-editor.c:1648
 msgid "Resolution:"
-msgstr "²òÁüÅÙ:"
+msgstr "è§£åƒåº¦:"
 
 #: app/drivers/alsa1x.c:855 app/drivers/file-output.c:145
 #: app/drivers/oss.c:263 app/drivers/sun-output.c:241 app/sample-editor.c:1678
 msgid "Channels:"
-msgstr "¥Á¥ã¥ó¥Í¥ë:"
+msgstr "ãƒãƒ£ãƒ³ãƒãƒ«:"
 
 #: app/drivers/alsa1x.c:865 app/drivers/file-output.c:153
 #: app/drivers/oss.c:273 app/drivers/sun-output.c:252
 msgid "Frequency [Hz]:"
-msgstr "¼şÇÈ¿ô [Hz]:"
+msgstr "å‘¨æ³¢æ•° [Hz]:"
 
 #: app/drivers/alsa1x.c:884 app/drivers/oss.c:283 app/drivers/sun-output.c:263
 msgid "Buffer Size:"
-msgstr "¥Ğ¥Ã¥Õ¥¡¡¦¥µ¥¤¥º:"
+msgstr "ãƒãƒƒãƒ•ã‚¡ãƒ»ã‚µã‚¤ã‚º:"
 
 #: app/drivers/alsa1x.c:907
 #, fuzzy
 msgid "Number of Periods:"
-msgstr "¥Á¥ã¥ó¥Í¥ë¿ô:"
+msgstr "ãƒãƒ£ãƒ³ãƒãƒ«æ•°:"
 
 #: app/drivers/alsa1x.c:932
 msgid ""
@@ -252,7 +252,7 @@ msgstr ""
 #: app/drivers/alsa1x.c:1268
 #, fuzzy
 msgid "Error setting hw parameters"
-msgstr "¥Ñ¥¿¡¼¥ó¤Î¥í¡¼¥ÉÃæ¤Ë¥¨¥é¡¼¡£"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³ã®ãƒ­ãƒ¼ãƒ‰ä¸­ã«ã‚¨ãƒ©ãƒ¼ã€‚"
 
 #: app/drivers/alsa1x.c:1276
 msgid "Unable to determine current swparams for playback"
@@ -289,12 +289,12 @@ msgstr ""
 #: app/drivers/alsa1x.c:1304
 #, fuzzy
 msgid "Unable to prepare playback"
-msgstr "ALSA¥Á¥ã¥ó¥Í¥ë¤ò½àÈ÷¤Ç¤­¤Ş¤»¤ó¡¥\n"
+msgstr "ALSAãƒãƒ£ãƒ³ãƒãƒ«ã‚’æº–å‚™ã§ãã¾ã›ã‚“ï¼\n"
 
 #: app/drivers/alsa1x.c:1305
 #, fuzzy
 msgid "Unable to prepare capture"
-msgstr "ALSA¥Á¥ã¥ó¥Í¥ë¤ò½àÈ÷¤Ç¤­¤Ş¤»¤ó¡¥\n"
+msgstr "ALSAãƒãƒ£ãƒ³ãƒãƒ«ã‚’æº–å‚™ã§ãã¾ã›ã‚“ï¼\n"
 
 #: app/drivers/alsa1x.c:1318
 msgid "Unable to obtain poll descriptors for playback"
@@ -319,10 +319,10 @@ msgid ""
 "by ESD. Use the OSS or ALSA output plug-ins\n"
 "for serious work."
 msgstr ""
-"ESD¤òÄÉ²Ã¤·¤¿ÂÔ¤Á»ş´Ö¤Ç¡¢ESD½ĞÎÏ¤¬\n"
-"ÂĞÏÃ¥â¡¼¥É¤Ç»È¤¨¤Ê¤¤¤Î¤ÇÃí°Õ¤·¤Æ¤¯\n"
-"¤À¤µ¤¤¡£½ÅÂç¤Êºî¶È¤Ë¤ÏOSS¤äALSA½Ğ\n"
-"ÎÏ¥×¥é¥°¥¤¥ó¤ò»È¤Ã¤Æ¤¯¤À¤µ¤¤¡£"
+"ESDã‚’è¿½åŠ ã—ãŸå¾…ã¡æ™‚é–“ã§ã€ESDå‡ºåŠ›ãŒ\n"
+"å¯¾è©±ãƒ¢ãƒ¼ãƒ‰ã§ä½¿ãˆãªã„ã®ã§æ³¨æ„ã—ã¦ã\n"
+"ã ã•ã„ã€‚é‡å¤§ãªä½œæ¥­ã«ã¯OSSã‚„ALSAå‡º\n"
+"åŠ›ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã‚’ä½¿ã£ã¦ãã ã•ã„ã€‚"
 
 #: app/drivers/esd-output.c:162
 #, c-format
@@ -330,33 +330,33 @@ msgid ""
 "Couldn't connect to ESD for sound output:\n"
 "%s"
 msgstr ""
-"¥µ¥¦¥ó¥É½ĞÎÏ¤òESD¤ËÀÜÂ³¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿:\n"
+"ã‚µã‚¦ãƒ³ãƒ‰å‡ºåŠ›ã‚’ESDã«æ¥ç¶šã§ãã¾ã›ã‚“ã§ã—ãŸ:\n"
 "%s"
 
 #: app/drivers/file-output.c:259 app/sample-editor.c:1894
 msgid "Can't open file for writing."
-msgstr "½ñ¤­¹ş¤ß¤Î¤¿¤á¤Ë¥Õ¥¡¥¤¥ë¤¬³«¤±¤Ş¤»¤ó¡£"
+msgstr "æ›¸ãè¾¼ã¿ã®ãŸã‚ã«ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ã¾ã›ã‚“ã€‚"
 
 #: app/drivers/irix-output.c:98
 msgid "no settings (yet), sorry!"
-msgstr "¤¹¤ß¤Ş¤»¤ó¡¢(¤Ş¤À)ÀßÄê¤µ¤ì¤Æ¤¤¤Ş¤»¤ó!"
+msgstr "ã™ã¿ã¾ã›ã‚“ã€(ã¾ã )è¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“!"
 
 #: app/drivers/oss.c:201 app/drivers/sun-output.c:173
 #, c-format
 msgid "(%d samples)"
-msgstr "(%d¥µ¥ó¥×¥ë)"
+msgstr "(%dã‚µãƒ³ãƒ—ãƒ«)"
 
 #: app/drivers/oss.c:224 app/drivers/sun-input.c:105
 msgid "These changes won't take effect until you restart sampling."
-msgstr "¥µ¥ó¥×¥ê¥ó¥°¤òºÆ³«¤¹¤ë¤Ş¤Ç¤³¤ì¤é¤ÎÊÑ¹¹¤Ï¤Ê¤µ¤ì¤Ş¤»¤ó¡£"
+msgstr "ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã‚’å†é–‹ã™ã‚‹ã¾ã§ã“ã‚Œã‚‰ã®å¤‰æ›´ã¯ãªã•ã‚Œã¾ã›ã‚“ã€‚"
 
 #: app/drivers/oss.c:237
 msgid "Input device (e.g. '/dev/dsp'):"
-msgstr "ÆşÎÏ¥Ç¥Ğ¥¤¥¹ (Îã¡§ ¡Ö/dev/dsp¡×):"
+msgstr "å…¥åŠ›ãƒ‡ãƒã‚¤ã‚¹ (ä¾‹ï¼š ã€Œ/dev/dspã€):"
 
 #: app/drivers/oss.c:238
 msgid "Output device (e.g. '/dev/dsp'):"
-msgstr "½ĞÎÏ¥Ç¥Ğ¥¤¥¹ (Îã¡§¡Ö/dev/dsp¡×)"
+msgstr "å‡ºåŠ›ãƒ‡ãƒã‚¤ã‚¹ (ä¾‹ï¼šã€Œ/dev/dspã€)"
 
 #: app/drivers/oss.c:431
 #, fuzzy, c-format
@@ -364,22 +364,22 @@ msgid ""
 "Couldn't open %s for %s:\n"
 "%s"
 msgstr ""
-"¥µ¥ó¥×¥ê¥ó¥°¤¹¤ë¤Î¤Ë %s ¤¬³«¤±¤Ş¤»¤ó¤Ç¤·¤¿:\n"
+"ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã™ã‚‹ã®ã« %s ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—ãŸ:\n"
 "%s"
 
 #: app/drivers/oss.c:466
 #, fuzzy, c-format
 msgid "Required %s format not supported.\n"
-msgstr "Í×µá¤µ¤ì¤¿¥µ¥¦¥ó¥É½ĞÎÏ¥Õ¥©¡¼¥Ş¥Ã¥È¤¬¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£\n"
+msgstr "è¦æ±‚ã•ã‚ŒãŸã‚µã‚¦ãƒ³ãƒ‰å‡ºåŠ›ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆãŒã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚\n"
 
 #: app/drivers/jack-output.c:280
 #, c-format
 msgid "Running at %d Hz with %d frames"
-msgstr "%d Hz ¤Ç %d ¥Õ¥ì¡¼¥à¤Ç¼Â¹ÔÃæ"
+msgstr "%d Hz ã§ %d ãƒ•ãƒ¬ãƒ¼ãƒ ã§å®Ÿè¡Œä¸­"
 
 #: app/drivers/jack-output.c:284
 msgid "Jack server not running?"
-msgstr "Jack ¥µ¡¼¥Ğ¤¬¼Â¹ÔÃæ¤Ç¤Ï¤Ê¤¤¡©"
+msgstr "Jack ã‚µãƒ¼ãƒãŒå®Ÿè¡Œä¸­ã§ã¯ãªã„ï¼Ÿ"
 
 #: app/drivers/jack-output.c:354
 msgid "out_1"
@@ -392,11 +392,11 @@ msgstr "out_2"
 #: app/drivers/sdl-output.c:76
 #, fuzzy
 msgid "Experimental SDL support."
-msgstr "¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ê¤¤Áàºî¤Ç¤¹¡£"
+msgstr "ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„æ“ä½œã§ã™ã€‚"
 
 #: app/drivers/sun-output.c:214
 msgid "Output device (e.g. '/dev/audio'):"
-msgstr "½ĞÎÏ¥Ç¥Ğ¥¤¥¹ (Îã¡§¡Ö/dev/audio¡×)"
+msgstr "å‡ºåŠ›ãƒ‡ãƒã‚¤ã‚¹ (ä¾‹ï¼šã€Œ/dev/audioã€)"
 
 #: app/drivers/sun-output.c:394 app/drivers/sun-output.c:465
 #: app/drivers/sun-input.c:229 app/drivers/sun-input.c:311
@@ -407,55 +407,55 @@ msgstr "%s: %s"
 #: app/drivers/sun-output.c:400
 #, c-format
 msgid "%s: Cannot play (%s)"
-msgstr "%s: ºÆÀ¸¤Ç¤­¤Ş¤»¤ó (%s)"
+msgstr "%s: å†ç”Ÿã§ãã¾ã›ã‚“ (%s)"
 
 #: app/drivers/sun-output.c:407 app/drivers/sun-input.c:250
 #, c-format
 msgid "%s: Cannot handle %dHz (%s)"
-msgstr "%s: %dHz ¤ËÂĞ±ş¤·¤Æ¤¤¤Ş¤»¤ó (%s)"
+msgstr "%s: %dHz ã«å¯¾å¿œã—ã¦ã„ã¾ã›ã‚“ (%s)"
 
 #: app/drivers/sun-output.c:436 app/drivers/sun-input.c:280
 #, c-format
 msgid "%s: Required sound encoding not supported.\n"
-msgstr "%s: Í×µá¤µ¤ì¤¿¥µ¥¦¥ó¥É¥¨¥ó¥³¡¼¥Ç¥£¥ó¥°¤¬¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£\n"
+msgstr "%s: è¦æ±‚ã•ã‚ŒãŸã‚µã‚¦ãƒ³ãƒ‰ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ãŒã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚\n"
 
 #: app/drivers/sun-output.c:459 app/drivers/sun-input.c:305
 #, c-format
 msgid "%s: Cannot set block size (%s)"
-msgstr "%s: ¥Ö¥í¥Ã¥¯¥µ¥¤¥º¤òÀßÄê¤Ç¤­¤Ş¤»¤ó (%s)"
+msgstr "%s: ãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºã‚’è¨­å®šã§ãã¾ã›ã‚“ (%s)"
 
 #: app/drivers/sun-input.c:117
 msgid "Input device (e.g. '/dev/audio'):"
-msgstr "ÆşÎÏ¥Ç¥Ğ¥¤¥¹ (Îã¡§ ¡Ö/dev/audio¡×):"
+msgstr "å…¥åŠ›ãƒ‡ãƒã‚¤ã‚¹ (ä¾‹ï¼š ã€Œ/dev/audioã€):"
 
 #: app/drivers/sun-input.c:242
 #, c-format
 msgid "%s: Cannot record (%s)"
-msgstr "%s: Ï¿²»¤Ç¤­¤Ş¤»¤ó (%s)"
+msgstr "%s: éŒ²éŸ³ã§ãã¾ã›ã‚“ (%s)"
 
 #: app/envelope-box.c:1261
 msgid "Length"
-msgstr "Ä¹¤µ"
+msgstr "é•·ã•"
 
 #: app/envelope-box.c:1262
 msgid "Current"
-msgstr "¥«¥ì¥ó¥È"
+msgstr "ã‚«ãƒ¬ãƒ³ãƒˆ"
 
 #: app/envelope-box.c:1263
 msgid "Offset"
-msgstr "¥ª¥Õ¥»¥Ã¥È"
+msgstr "ã‚ªãƒ•ã‚»ãƒƒãƒˆ"
 
 #: app/envelope-box.c:1264
 msgid "Value"
-msgstr "ÃÍ"
+msgstr "å€¤"
 
 #: app/envelope-box.c:1270 app/playlist.c:550
 msgid "Insert"
-msgstr "ÁŞÆş"
+msgstr "æŒ¿å…¥"
 
 #: app/envelope-box.c:1276 app/playlist.c:559
 msgid "Delete"
-msgstr "ºï½ü"
+msgstr "å‰Šé™¤"
 
 #: app/envelope-box.c:1350
 #, fuzzy
@@ -466,31 +466,31 @@ msgid ""
 "only with\n"
 "GooCanvas"
 msgstr ""
-"GNOMEÈÇ\n"
-"¤Î¤ß¤Î\n"
-"¥°¥é¥Õ¥£¥«¥ë\n"
-"¥¨¥ó¥Ù¥í¡¼¥×\n"
-"ÊÔ½¸¤Ç¤¹"
+"GNOMEç‰ˆ\n"
+"ã®ã¿ã®\n"
+"ã‚°ãƒ©ãƒ•ã‚£ã‚«ãƒ«\n"
+"ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—\n"
+"ç·¨é›†ã§ã™"
 
 #: app/envelope-box.c:1365
 msgid "Sustain"
-msgstr "¥µ¥¹¥Æ¥£¡¼¥ó"
+msgstr "ã‚µã‚¹ãƒ†ã‚£ãƒ¼ãƒ³"
 
 #: app/envelope-box.c:1373
 msgid "Point"
-msgstr "¥İ¥¤¥ó¥È"
+msgstr "ãƒã‚¤ãƒ³ãƒˆ"
 
 #: app/envelope-box.c:1375
 msgid "Loop"
-msgstr "¥ë¡¼¥×"
+msgstr "ãƒ«ãƒ¼ãƒ—"
 
 #: app/envelope-box.c:1383 app/sample-editor.c:305
 msgid "Start"
-msgstr "³«»Ï"
+msgstr "é–‹å§‹"
 
 #: app/envelope-box.c:1384 app/sample-editor.c:306
 msgid "End"
-msgstr "½ªÎ»"
+msgstr "çµ‚äº†"
 
 #: app/file-operations.c:104
 msgid "All supported types"
@@ -502,7 +502,7 @@ msgstr ""
 
 #: app/file-operations.c:196
 msgid "File"
-msgstr "¥Õ¥¡¥¤¥ë"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«"
 
 #: app/file-operations.c:237
 #, c-format
@@ -513,25 +513,25 @@ msgstr ""
 
 #: app/file-operations.c:474
 msgid "Operation not supported."
-msgstr "¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ê¤¤Áàºî¤Ç¤¹¡£"
+msgstr "ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„æ“ä½œã§ã™ã€‚"
 
 #: app/gui-settings.c:53
 msgid "Scopes Frequency"
-msgstr "¥¹¥³¡¼¥×¼şÇÈ¿ô"
+msgstr "ã‚¹ã‚³ãƒ¼ãƒ—å‘¨æ³¢æ•°"
 
 #: app/gui-settings.c:56
 msgid "Tracker Frequency"
-msgstr "¥È¥é¥Ã¥«¡¼¼şÇÈ¿ô"
+msgstr "ãƒˆãƒ©ãƒƒã‚«ãƒ¼å‘¨æ³¢æ•°"
 
 #: app/gui-settings.c:318 app/gui-settings.c:530
 #, fuzzy
 msgid "Tracker colors configuration"
-msgstr "¥­¡¼¥Ü¡¼¥ÉÀßÄê"
+msgstr "ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰è¨­å®š"
 
 #: app/gui-settings.c:320
 #, fuzzy
 msgid "Reset"
-msgstr "¥ê¥Ğ¡¼¥¹"
+msgstr "ãƒªãƒãƒ¼ã‚¹"
 
 #: app/gui-settings.c:324
 msgid "Reset tracker colors to standard ST"
@@ -539,35 +539,35 @@ msgstr ""
 
 #: app/gui-settings.c:395
 msgid "GUI Configuration"
-msgstr "GUIÀßÄê"
+msgstr "GUIè¨­å®š"
 
 #: app/gui-settings.c:416
 msgid "Hexadecimal row numbers"
-msgstr "16¿Ê¹Ô¿ô"
+msgstr "16é€²è¡Œæ•°"
 
 #: app/gui-settings.c:422
 msgid "Use upper case letters for hex numbers"
-msgstr "16¿Ê¿ô¤Ë¤ÏÂçÊ¸»ú¤ò»È¤Ã¤Æ¤¯¤À¤µ¤¤"
+msgstr "16é€²æ•°ã«ã¯å¤§æ–‡å­—ã‚’ä½¿ã£ã¦ãã ã•ã„"
 
 #: app/gui-settings.c:428
 msgid "Asynchronous (IT-style) pattern editing"
-msgstr "ÈóÆ±´ü(IT¥¹¥¿¥¤¥ë)¥Ñ¥¿¡¼¥óÊÔ½¸"
+msgstr "éåŒæœŸ(ITã‚¹ã‚¿ã‚¤ãƒ«)ãƒ‘ã‚¿ãƒ¼ãƒ³ç·¨é›†"
 
 #: app/gui-settings.c:434
 msgid "Fxx command updates Tempo/BPM sliders"
-msgstr "Fxx Ì¿Îá¤ÏTempo/BPM¥¹¥é¥¤¥À¤ò¹¹¿·¤·¤Ş¤¹"
+msgstr "Fxx å‘½ä»¤ã¯Tempo/BPMã‚¹ãƒ©ã‚¤ãƒ€ã‚’æ›´æ–°ã—ã¾ã™"
 
 #: app/gui-settings.c:440
 msgid "Switch to tracker after loading/saving"
-msgstr "¥í¡¼¥É/¥»¡¼¥Ö¤·¤¿¸å¤Ë¥È¥é¥Ã¥«¡¼¤Ë°ÜÆ°¤¹¤ë"
+msgstr "ãƒ­ãƒ¼ãƒ‰/ã‚»ãƒ¼ãƒ–ã—ãŸå¾Œã«ãƒˆãƒ©ãƒƒã‚«ãƒ¼ã«ç§»å‹•ã™ã‚‹"
 
 #: app/gui-settings.c:446
 msgid "Save window geometry on exit"
-msgstr "½ªÎ»»ş¤Ë¥¦¥£¥ó¥É¥¦ÀßÄê¤òÊİÂ¸"
+msgstr "çµ‚äº†æ™‚ã«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦è¨­å®šã‚’ä¿å­˜"
 
 #: app/gui-settings.c:452
 msgid "Use note name B instead of H"
-msgstr "H¤Î¤«¤ï¤ê¤Ë²»Ì¾B¤ò»È¤¦"
+msgstr "Hã®ã‹ã‚ã‚Šã«éŸ³åBã‚’ä½¿ã†"
 
 #: app/gui-settings.c:458
 msgid "Save and restore permanent channels"
@@ -575,11 +575,11 @@ msgstr ""
 
 #: app/gui-settings.c:470
 msgid "Scopes buffer size [MB]"
-msgstr "¥¹¥³¡¼¥×¡¦¥Ğ¥Ã¥Õ¥¡¡¦¥µ¥¤¥º [MB]"
+msgstr "ã‚¹ã‚³ãƒ¼ãƒ—ãƒ»ãƒãƒƒãƒ•ã‚¡ãƒ»ã‚µã‚¤ã‚º [MB]"
 
 #: app/gui-settings.c:485
 msgid "Track line format:"
-msgstr "¥È¥é¥Ã¥¯¹Ô½ñ¼°"
+msgstr "ãƒˆãƒ©ãƒƒã‚¯è¡Œæ›¸å¼"
 
 #: app/gui-settings.c:529
 msgid "Color scheme"
@@ -587,71 +587,71 @@ msgstr ""
 
 #: app/gui-subs.c:34 app/gui.c:2390
 msgid "Ready."
-msgstr "½àÈ÷´°Î»¡¥"
+msgstr "æº–å‚™å®Œäº†ï¼"
 
 #: app/gui-subs.c:35
 msgid "Playing song..."
-msgstr "¶Ê±éÁÕ..."
+msgstr "æ›²æ¼”å¥..."
 
 #: app/gui-subs.c:36
 msgid "Playing pattern..."
-msgstr "¥Ñ¥¿¡¼¥ó±éÁÕ"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³æ¼”å¥"
 
 #: app/gui-subs.c:37
 msgid "Loading module..."
-msgstr "¥â¥¸¥å¡¼¥ë¡¦¥í¡¼¥É..."
+msgstr "ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãƒ»ãƒ­ãƒ¼ãƒ‰..."
 
 #: app/gui-subs.c:38
 msgid "Module loaded."
-msgstr "¥â¥¸¥å¡¼¥ë¤¬¥í¡¼¥É¤µ¤ì¤Ş¤·¤¿¡£"
+msgstr "ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãŒãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¾ã—ãŸã€‚"
 
 #: app/gui-subs.c:39
 msgid "Saving module..."
-msgstr "¥â¥¸¥å¡¼¥ëÊİÂ¸..."
+msgstr "ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ä¿å­˜..."
 
 #: app/gui-subs.c:40
 msgid "Module saved."
-msgstr "¥â¥¸¥å¡¼¥ë¤¬ÊİÂ¸¤µ¤ì¤Ş¤·¤¿¡£"
+msgstr "ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãŒä¿å­˜ã•ã‚Œã¾ã—ãŸã€‚"
 
 #: app/gui-subs.c:41
 msgid "Loading sample..."
-msgstr "¥µ¥ó¥×¥ë¡¦¥í¡¼¥É..."
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ãƒ»ãƒ­ãƒ¼ãƒ‰..."
 
 #: app/gui-subs.c:42
 msgid "Sample loaded."
-msgstr "¥µ¥ó¥×¥ë¤¬¥í¡¼¥É¤µ¤ì¤Ş¤·¤¿¡£"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ãŒãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¾ã—ãŸã€‚"
 
 #: app/gui-subs.c:43
 msgid "Saving sample..."
-msgstr "¥µ¥ó¥×¥ëÊİÂ¸..."
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ä¿å­˜..."
 
 #: app/gui-subs.c:44
 msgid "Sample saved."
-msgstr "¥µ¥ó¥×¥ë¤¬ÊİÂ¸¤µ¤ì¤Ş¤·¤¿¡£"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ãŒä¿å­˜ã•ã‚Œã¾ã—ãŸã€‚"
 
 #: app/gui-subs.c:45
 msgid "Loading instrument..."
-msgstr "³Ú´ï¥í¡¼¥É..."
+msgstr "æ¥½å™¨ãƒ­ãƒ¼ãƒ‰..."
 
 #: app/gui-subs.c:46
 msgid "Instrument loaded."
-msgstr "³Ú´ï¤¬¥í¡¼¥É¤µ¤ì¤Ş¤·¤¿¡£"
+msgstr "æ¥½å™¨ãŒãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¾ã—ãŸã€‚"
 
 #: app/gui-subs.c:47
 msgid "Saving instrument..."
-msgstr "³Ú´ïÊİÂ¸..."
+msgstr "æ¥½å™¨ä¿å­˜..."
 
 #: app/gui-subs.c:48
 msgid "Instrument saved."
-msgstr "³Ú´ï¤¬ÊİÂ¸¤µ¤ì¤Ş¤·¤¿¡£"
+msgstr "æ¥½å™¨ãŒä¿å­˜ã•ã‚Œã¾ã—ãŸã€‚"
 
 #: app/gui-subs.c:49
 msgid "Saving song..."
-msgstr "¶ÊÊİÂ¸..."
+msgstr "æ›²ä¿å­˜..."
 
 #: app/gui-subs.c:50
 msgid "Song saved."
-msgstr "¶Ê¤¬ÊİÂ¸¤µ¤ì¤Ş¤·¤¿¡£"
+msgstr "æ›²ãŒä¿å­˜ã•ã‚Œã¾ã—ãŸã€‚"
 
 #: app/gui-subs.c:498 app/gui-subs.c:518
 #, c-format
@@ -670,20 +670,20 @@ msgstr ""
 
 #: app/gui.c:133
 msgid "Tempo"
-msgstr "¥Æ¥ó¥İ"
+msgstr "ãƒ†ãƒ³ãƒ"
 
 #: app/gui.c:239 app/gui.c:2131
 msgid "Row highlighting configuration"
-msgstr "¹Ô¥Ï¥¤¥é¥¤¥ÈÀßÄê"
+msgstr "è¡Œãƒã‚¤ãƒ©ã‚¤ãƒˆè¨­å®š"
 
 #: app/gui.c:252
 msgid "Highlight rows (major / minor):"
-msgstr "¹Ô¤ò¥Ï¥¤¥é¥¤¥È (¥á¥¸¥ã¡¼ / ¥Ş¥¤¥Ê¡¼): "
+msgstr "è¡Œã‚’ãƒã‚¤ãƒ©ã‚¤ãƒˆ (ãƒ¡ã‚¸ãƒ£ãƒ¼ / ãƒã‚¤ãƒŠãƒ¼): "
 
 #: app/gui.c:382
 #, fuzzy
 msgid "Saving module failed"
-msgstr "¥â¥¸¥å¡¼¥ëÊİÂ¸..."
+msgstr "ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ä¿å­˜..."
 
 #: app/gui.c:446
 msgid ""
@@ -703,13 +703,13 @@ msgid ""
 "Are you sure you want to free the current project?\n"
 "All changes will be lost!"
 msgstr ""
-"¥«¥ì¥ó¥È¡¦¥×¥í¥¸¥§¥¯¥È¤ò²òÊü¤·¤¿¤¤¤Î¤Ï³Î¤«¤Ç¤¹¤«?\n"
-"Á´¤Æ¤ÎÊÑ¹¹¤¬¼º¤ï¤ì¤Ş¤¹!"
+"ã‚«ãƒ¬ãƒ³ãƒˆãƒ»ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’è§£æ”¾ã—ãŸã„ã®ã¯ç¢ºã‹ã§ã™ã‹?\n"
+"å…¨ã¦ã®å¤‰æ›´ãŒå¤±ã‚ã‚Œã¾ã™!"
 
 #: app/gui.c:576
 #, fuzzy, c-format
 msgid "Error when opening pattern file %s!"
-msgstr "¥Ñ¥¿¡¼¥ó¥Õ¥¡¥¤¥ë¤ÎÆÉ¤ß¹ş¤ßÃæ¤Ë¥¨¥é¡¼¡£"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ã€‚"
 
 #: app/gui.c:595
 msgid ""
@@ -717,29 +717,29 @@ msgid ""
 "pattern in module.\n"
 "Do you want to change the current pattern length?"
 msgstr ""
-"¸½ºß¥í¡¼¥É¤µ¤ì¤è¤¦¤È¤·¤Æ¤¤¤ë¥Ñ¥¿¡¼¥ó¤ÎÄ¹¤µ¤Ï¥â¥¸¥å¡¼¥ë¤Ë¤¢¤ë¥Ñ¥¿¡¼¥ó¤Î¤â¤Î¤È"
-"¹çÃ×¤·¤Ş¤»¤ó¡£\n"
-"¸½ºß¤Î¥Ñ¥¿¡¼¥óÄ¹¤òÊÑ¹¹¤·¤Ş¤¹¤«¡©"
+"ç¾åœ¨ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã‚ˆã†ã¨ã—ã¦ã„ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³ã®é•·ã•ã¯ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã«ã‚ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³ã®ã‚‚ã®ã¨"
+"åˆè‡´ã—ã¾ã›ã‚“ã€‚\n"
+"ç¾åœ¨ã®ãƒ‘ã‚¿ãƒ¼ãƒ³é•·ã‚’å¤‰æ›´ã—ã¾ã™ã‹ï¼Ÿ"
 
 #: app/gui.c:1716
 msgid "SoundTracker Startup"
-msgstr "SoundTrackerµ¯Æ°"
+msgstr "SoundTrackerèµ·å‹•"
 
 #: app/gui.c:1775 app/gui.c:1807
 msgid "Loading..."
-msgstr "¥í¡¼¥É..."
+msgstr "ãƒ­ãƒ¼ãƒ‰..."
 
 #: app/gui.c:1796
 msgid "Use SoundTracker!"
-msgstr "SoundTracker ¤ò¤Ä¤«¤¦¤¾¡ª"
+msgstr "SoundTracker ã‚’ã¤ã‹ã†ãï¼"
 
 #: app/gui.c:1830
 msgid ""
 "Are you sure you want to quit?\n"
 "All changes will be lost!"
 msgstr ""
-"½ªÎ»¤·¤¿¤¤¤Î¤Ï³Î¤«¤Ç¤¹¤«?\n"
-"Á´¤Æ¤ÎÊÑ¹¹¤¬¼º¤ï¤ì¤Ş¤¹!"
+"çµ‚äº†ã—ãŸã„ã®ã¯ç¢ºã‹ã§ã™ã‹?\n"
+"å…¨ã¦ã®å¤‰æ›´ãŒå¤±ã‚ã‚Œã¾ã™!"
 
 #: app/gui.c:1889 app/gui.c:1892
 msgid "FastTracker modules (*.xm)"
@@ -756,7 +756,7 @@ msgstr ""
 #: app/gui.c:1898
 #, fuzzy
 msgid "Extended pattern (*.xp)"
-msgstr "ÊÔ½¸¤·¤¿¥Ñ¥¿¡¼¥ó"
+msgstr "ç·¨é›†ã—ãŸãƒ‘ã‚¿ãƒ¼ãƒ³"
 
 #: app/gui.c:1905
 #, c-format
@@ -765,7 +765,7 @@ msgstr ""
 
 #: app/gui.c:1931
 msgid "Load Module"
-msgstr "¥â¥¸¥å¡¼¥ë¡¦¥í¡¼¥É"
+msgstr "ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãƒ»ãƒ­ãƒ¼ãƒ‰"
 
 #: app/gui.c:1931
 msgid "Load the selected module into the tracker"
@@ -773,122 +773,122 @@ msgstr ""
 
 #: app/gui.c:1932
 msgid "Save Module"
-msgstr "¥â¥¸¥å¡¼¥ëÊİÂ¸"
+msgstr "ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ä¿å­˜"
 
 #: app/gui.c:1932
 #, fuzzy
 msgid "Save the current module"
-msgstr "¸½ºß¤Î¥Ñ¥¿¡¼¥ó¤ò¥»¡¼¥Ö"
+msgstr "ç¾åœ¨ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’ã‚»ãƒ¼ãƒ–"
 
 #: app/gui.c:1934
 msgid "Render WAV"
-msgstr "WAV¥ì¥ó¥À"
+msgstr "WAVãƒ¬ãƒ³ãƒ€"
 
 #: app/gui.c:1934
 #, fuzzy
 msgid "Render the current module as WAV file"
-msgstr "WAV¤È¤·¤Æ¥â¥¸¥å¡¼¥ë¤ò¥ì¥ó¥À¥ê¥ó¥°¤¹¤ë..."
+msgstr "WAVã¨ã—ã¦ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã™ã‚‹..."
 
 #: app/gui.c:1936
 msgid "Save XM without samples..."
-msgstr "¥µ¥ó¥×¥ëÌµ¤·¤ËXMÊİÂ¸..."
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ç„¡ã—ã«XMä¿å­˜..."
 
 #: app/gui.c:1937
 msgid "Load current pattern..."
-msgstr "¸½ºß¤Î¥Ñ¥¿¡¼¥ó¤ò¥í¡¼¥É"
+msgstr "ç¾åœ¨ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’ãƒ­ãƒ¼ãƒ‰"
 
 #: app/gui.c:1938
 msgid "Save current pattern..."
-msgstr "¸½ºß¤Î¥Ñ¥¿¡¼¥ó¤ò¥»¡¼¥Ö"
+msgstr "ç¾åœ¨ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’ã‚»ãƒ¼ãƒ–"
 
 #: app/gui.c:1996
 msgid "Play Song"
-msgstr "¶Ê±éÁÕ"
+msgstr "æ›²æ¼”å¥"
 
 #: app/gui.c:2005
 msgid "Play Pattern"
-msgstr "¥Ñ¥¿¡¼¥ó±éÁÕ"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³æ¼”å¥"
 
 #: app/gui.c:2014
 msgid "Stop"
-msgstr "Ää»ß"
+msgstr "åœæ­¢"
 
 #: app/gui.c:2019
 msgid "Pat"
-msgstr "¥Ñ¥¿¡¼¥ó"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³"
 
 #: app/gui.c:2025
 msgid "Edited pattern"
-msgstr "ÊÔ½¸¤·¤¿¥Ñ¥¿¡¼¥ó"
+msgstr "ç·¨é›†ã—ãŸãƒ‘ã‚¿ãƒ¼ãƒ³"
 
 #: app/gui.c:2035
 msgid "When enabled, browsing the playlist does not change the edited pattern."
 msgstr ""
-"Í­¸ú¤Ë¤·¤¿¤é¡¤¥×¥ì¥¤¥ê¥¹¥È¤ò±ÜÍ÷¤¹¤ë¤³¤È¤Ç¤ÏÊÔ½¸Ãæ¤Î¥Ñ¥¿¡¼¥ó¤ÏÊÑ¹¹¤µ¤ì¤Ş¤»¤ó"
+"æœ‰åŠ¹ã«ã—ãŸã‚‰ï¼Œãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã‚’é–²è¦§ã™ã‚‹ã“ã¨ã§ã¯ç·¨é›†ä¸­ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã¯å¤‰æ›´ã•ã‚Œã¾ã›ã‚“"
 
 #: app/gui.c:2051
 msgid "Number of Channels:"
-msgstr "¥Á¥ã¥ó¥Í¥ë¿ô:"
+msgstr "ãƒãƒ£ãƒ³ãƒãƒ«æ•°:"
 
 #: app/gui.c:2068
 msgid "Pattern Length"
-msgstr "¥Ñ¥¿¡¼¥óÄ¹"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³é•·"
 
 #: app/gui.c:2097
 msgid "Set preferred accidental type"
-msgstr "¹¥¤ß¤ÎÎ×»şµ­¹æ¤Î¥¿¥¤¥×¤ò»ØÄê"
+msgstr "å¥½ã¿ã®è‡¨æ™‚è¨˜å·ã®ã‚¿ã‚¤ãƒ—ã‚’æŒ‡å®š"
 
 #: app/gui.c:2103
 msgid "Measure"
-msgstr "´Ö³Ö"
+msgstr "é–“éš”"
 
 #: app/gui.c:2104
 msgid "Enable row highlighting"
-msgstr "¹Ô¥Ï¥¤¥é¥¤¥È¤òÍ­¸ú¤Ë"
+msgstr "è¡Œãƒã‚¤ãƒ©ã‚¤ãƒˆã‚’æœ‰åŠ¹ã«"
 
 #: app/gui.c:2125
 msgid "Other..."
-msgstr "¤½¤ÎÂ¾..."
+msgstr "ãã®ä»–..."
 
 #: app/gui.c:2154
 msgid "Change effect column editing direction"
-msgstr "¥¨¥Õ¥§¥¯¥È¥³¥é¥àÊÔ½¸¤ÎÊı¸ş¤òÊÑ¤¨¤ë"
+msgstr "ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚³ãƒ©ãƒ ç·¨é›†ã®æ–¹å‘ã‚’å¤‰ãˆã‚‹"
 
 #: app/gui.c:2185
 msgid "Global amplification"
-msgstr "Á´ÂÎÅª¤Ê²»ÎÌÁıÉı"
+msgstr "å…¨ä½“çš„ãªéŸ³é‡å¢—å¹…"
 
 #: app/gui.c:2221
 msgid "Pitchbend"
-msgstr "¥Ô¥Ã¥Á¥Ù¥ó¥É"
+msgstr "ãƒ”ãƒƒãƒãƒ™ãƒ³ãƒ‰"
 
 #: app/gui.c:2229
 msgid "Reset pitchbend to its normal value"
-msgstr "¥Ô¥Ã¥Á¥Ù¥ó¥É¤òÄÌ¾ï¤ÎÃÍ¤ËÌá¤¹"
+msgstr "ãƒ”ãƒƒãƒãƒ™ãƒ³ãƒ‰ã‚’é€šå¸¸ã®å€¤ã«æˆ»ã™"
 
 #: app/gui.c:2241
 msgid "Editing"
-msgstr "ÊÔ½¸"
+msgstr "ç·¨é›†"
 
 #: app/gui.c:2248
 msgid "Octave"
-msgstr "¥ª¥¯¥¿¡¼¥Ö"
+msgstr "ã‚ªã‚¯ã‚¿ãƒ¼ãƒ–"
 
 #: app/gui.c:2257
 msgid "Jump"
-msgstr "¥¸¥ã¥ó¥×"
+msgstr "ã‚¸ãƒ£ãƒ³ãƒ—"
 
 #: app/gui.c:2266
 msgid "Instr"
-msgstr "³Ú´ï"
+msgstr "æ¥½å™¨"
 
 #: app/gui.c:2282
 msgid "Sample"
-msgstr "¥µ¥ó¥×¥ë"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«"
 
 #: app/gui.c:2321
 msgid "Welcome to SoundTracker!"
-msgstr "SoundTracker¤Ë¤è¤¦¤³¤½."
+msgstr "SoundTrackerã«ã‚ˆã†ã“ã."
 
 #: app/gui.c:2348
 msgid "%M:%S"
@@ -901,44 +901,44 @@ msgstr ""
 
 #: app/instrument-editor.c:80
 msgid "VolFade"
-msgstr "²»ÎÌ¥Õ¥§¡¼¥É"
+msgstr "éŸ³é‡ãƒ•ã‚§ãƒ¼ãƒ‰"
 
 #: app/instrument-editor.c:81
 msgid "VibSpeed"
-msgstr "¥Ğ¥¤¥Ö¥ì¡¼¥·¥ç¥óÂ®ÅÙ"
+msgstr "ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³é€Ÿåº¦"
 
 #: app/instrument-editor.c:82
 msgid "VibDepth"
-msgstr "¥Ğ¥¤¥Ö¥ì¡¼¥·¥ç¥ó¿¼ÅÙ"
+msgstr "ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³æ·±åº¦"
 
 #: app/instrument-editor.c:83
 msgid "VibSweep"
-msgstr "¥Ğ¥¤¥Ö¥ì¡¼¥·¥ç¥ó¡¦¥¹¥¤¡¼¥×"
+msgstr "ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ»ã‚¹ã‚¤ãƒ¼ãƒ—"
 
 #: app/instrument-editor.c:166 app/instrument-editor.c:196
 msgid "Can't open file."
-msgstr "¥Õ¥¡¥¤¥ë¤¬³«¤±¤Ş¤»¤ó¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ã¾ã›ã‚“ã€‚"
 
 #: app/instrument-editor.c:190
 #, fuzzy
 msgid "Saving instrument failed."
-msgstr "³Ú´ïÊİÂ¸..."
+msgstr "æ¥½å™¨ä¿å­˜..."
 
 #: app/instrument-editor.c:216
 msgid "Sine"
-msgstr "Àµ¸¹ÇÈ"
+msgstr "æ­£å¼¦æ³¢"
 
 #: app/instrument-editor.c:216
 msgid "Square"
-msgstr "¶ë·ÁÇÈ"
+msgstr "çŸ©å½¢æ³¢"
 
 #: app/instrument-editor.c:216
 msgid "Saw Down"
-msgstr "²¼¸şµøÇÈ"
+msgstr "ä¸‹å‘é‹¸æ³¢"
 
 #: app/instrument-editor.c:216
 msgid "Saw Up"
-msgstr "¾å¸şµøÇÈ"
+msgstr "ä¸Šå‘é‹¸æ³¢"
 
 #: app/instrument-editor.c:218
 msgid "FastTracker instrumets (*.xi)"
@@ -946,19 +946,19 @@ msgstr ""
 
 #: app/instrument-editor.c:223
 msgid "Instrument Editor"
-msgstr "³Ú´ïÊÔ½¸"
+msgstr "æ¥½å™¨ç·¨é›†"
 
 #: app/instrument-editor.c:232
 msgid "Volume envelope"
-msgstr "²»ÎÌ¥¨¥ó¥Ù¥í¡¼¥×"
+msgstr "éŸ³é‡ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—"
 
 #: app/instrument-editor.c:240
 msgid "Panning envelope"
-msgstr "¥¨¥ó¥Ù¥í¡¼¥×¤ò¥Ñ¥ó¥Ë¥ó¥°¤¹¤ë"
+msgstr "ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã‚’ãƒ‘ãƒ³ãƒ‹ãƒ³ã‚°ã™ã‚‹"
 
 #: app/instrument-editor.c:257
 msgid "Load Instrument"
-msgstr "³Ú´ï¥í¡¼¥É"
+msgstr "æ¥½å™¨ãƒ­ãƒ¼ãƒ‰"
 
 #: app/instrument-editor.c:259
 msgid "Load instrument in the current instrument slot"
@@ -966,52 +966,52 @@ msgstr ""
 
 #: app/instrument-editor.c:260
 msgid "Save Instrument"
-msgstr "³Ú´ïÊİÂ¸"
+msgstr "æ¥½å™¨ä¿å­˜"
 
 #: app/instrument-editor.c:262
 #, fuzzy
 msgid "Save the current instrument"
-msgstr "¸½ºß¤Î³Ú´ï"
+msgstr "ç¾åœ¨ã®æ¥½å™¨"
 
 #: app/instrument-editor.c:264
 msgid "Load XI"
-msgstr "XI¥í¡¼¥É"
+msgstr "XIãƒ­ãƒ¼ãƒ‰"
 
 #: app/instrument-editor.c:270
 msgid "Save XI"
-msgstr "XIÊİÂ¸"
+msgstr "XIä¿å­˜"
 
 #: app/instrument-editor.c:289
 msgid "Vibrato Type:"
-msgstr "¥Ó¥Ö¥é¡¼¥È·¿:"
+msgstr "ãƒ“ãƒ–ãƒ©ãƒ¼ãƒˆå‹:"
 
 #: app/instrument-editor.c:361
 msgid "Note:"
-msgstr "²»Éä"
+msgstr "éŸ³ç¬¦"
 
 #: app/instrument-editor.c:379
 msgid "Initialize"
-msgstr "½é´ü²½"
+msgstr "åˆæœŸåŒ–"
 
 #: app/keys.c:54
 msgid "<none>"
-msgstr "<Ìµ>"
+msgstr "<ç„¡>"
 
 #: app/keys.c:126
 msgid "The key that inserts the special keyoff note for FastTracker modules."
-msgstr "ÁŞÆş¤µ¤ì¤¿¥­¡¼¤ÏFastTracker¥â¥¸¥å¡¼¥ë¤Ë´Ø¤¹¤ëÆÃÊÌ¤Ê¥­¡¼¥ª¥Õ²»Éä¤Ç¤¹¡£"
+msgstr "æŒ¿å…¥ã•ã‚ŒãŸã‚­ãƒ¼ã¯FastTrackerãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã«é–¢ã™ã‚‹ç‰¹åˆ¥ãªã‚­ãƒ¼ã‚ªãƒ•éŸ³ç¬¦ã§ã™ã€‚"
 
 #: app/keys.c:128
 msgid "The key that increases \"jump\" value."
-msgstr "\"jump\"¤ÎÃÍ¤òÁı¤ä¤¹¥­¡¼"
+msgstr "\"jump\"ã®å€¤ã‚’å¢—ã‚„ã™ã‚­ãƒ¼"
 
 #: app/keys.c:130
 msgid "The key that decreases \"jump\" value."
-msgstr "\"jump\"¤ÎÃÍ¤ò¸º¤é¤¹¥­¡¼"
+msgstr "\"jump\"ã®å€¤ã‚’æ¸›ã‚‰ã™ã‚­ãƒ¼"
 
 #: app/keys.c:142
 msgid "Upper Octave Keys..."
-msgstr "¥ª¥¯¥¿¡¼¥Ö¾å¤Î¥­¡¼..."
+msgstr "ã‚ªã‚¯ã‚¿ãƒ¼ãƒ–ä¸Šã®ã‚­ãƒ¼..."
 
 #: app/keys.c:143
 msgid ""
@@ -1019,12 +1019,12 @@ msgid ""
 "the key to the right of the TAB key. The rest of the keys should be ordered "
 "in a piano keyboard fashion, including the number keys row above."
 msgstr ""
-"¸°È×¤Î¾åÈ¾Ê¬¤Ë¥­¡¼¤¬¤¢¤ê¤Ş¤¹¡£¥­¡¼c¤ÏÉáÄÌTAB¥­¡¼¤Î±¦¤Î¥­¡¼¤Ç¤¹¡£»Ä¤ê¤Î\n"
-"¥­¡¼¤Ï¡¢¾åÉô¤Î¿ô»ú¥­¡¼¤Î¹Ô¤ò´Ş¤ó¤Ç¡¢¥Ô¥¢¥Î¤Î¸°È×¤Î¤è¤¦¤ËÊÂ¤ó¤Ç¤¤¤Ş¤¹¡£"
+"éµç›¤ã®ä¸ŠåŠåˆ†ã«ã‚­ãƒ¼ãŒã‚ã‚Šã¾ã™ã€‚ã‚­ãƒ¼cã¯æ™®é€šTABã‚­ãƒ¼ã®å³ã®ã‚­ãƒ¼ã§ã™ã€‚æ®‹ã‚Šã®\n"
+"ã‚­ãƒ¼ã¯ã€ä¸Šéƒ¨ã®æ•°å­—ã‚­ãƒ¼ã®è¡Œã‚’å«ã‚“ã§ã€ãƒ”ã‚¢ãƒã®éµç›¤ã®ã‚ˆã†ã«ä¸¦ã‚“ã§ã„ã¾ã™ã€‚"
 
 #: app/keys.c:149
 msgid "Lower Octave Keys..."
-msgstr "¥ª¥¯¥¿¡¼¥Ö²¼¤Î¥­¡¼..."
+msgstr "ã‚ªã‚¯ã‚¿ãƒ¼ãƒ–ä¸‹ã®ã‚­ãƒ¼..."
 
 #: app/keys.c:150
 msgid ""
@@ -1032,56 +1032,56 @@ msgid ""
 "the first character key to the right of the left Shift key. The rest of the "
 "keys should be ordered in a piano keyboard fashion, including the row above."
 msgstr ""
-"¸°È×¤Î²¼È¾Ê¬¤Ë¥­¡¼¤¬¤¢¤ê¤Ş¤¹¡£¥­¡¼c¤ÏÉáÄÌº¸Shift¥­¡¼¤Î±¦¤ÎºÇ½é¤ÎÊ¸»ú¥­¡¼\n"
-"¤Ç¤¹¡£»Ä¤ê¤Î¥­¡¼¤Ï¡¢¾åÉô¤Î¹Ô¤ò´Ş¤ó¤Ç¡¢¥Ô¥¢¥Î¤Î¸°È×¤Î¤è¤¦¤ËÊÂ¤ó¤Ç¤¤¤Ş¤¹¡£"
+"éµç›¤ã®ä¸‹åŠåˆ†ã«ã‚­ãƒ¼ãŒã‚ã‚Šã¾ã™ã€‚ã‚­ãƒ¼cã¯æ™®é€šå·¦Shiftã‚­ãƒ¼ã®å³ã®æœ€åˆã®æ–‡å­—ã‚­ãƒ¼\n"
+"ã§ã™ã€‚æ®‹ã‚Šã®ã‚­ãƒ¼ã¯ã€ä¸Šéƒ¨ã®è¡Œã‚’å«ã‚“ã§ã€ãƒ”ã‚¢ãƒã®éµç›¤ã®ã‚ˆã†ã«ä¸¦ã‚“ã§ã„ã¾ã™ã€‚"
 
 #: app/keys.c:156
 msgid "Other Keys..."
-msgstr "Â¾¤Î¥­¡¼..."
+msgstr "ä»–ã®ã‚­ãƒ¼..."
 
 #: app/keys.c:157
 msgid "Various other keys"
-msgstr "Â¾¤Î³Æ¼ï¥­¡¼"
+msgstr "ä»–ã®å„ç¨®ã‚­ãƒ¼"
 
 #: app/keys.c:535
 msgid "Function"
-msgstr "µ¡Ç½"
+msgstr "æ©Ÿèƒ½"
 
 #: app/keys.c:536
 msgid "Assignment"
-msgstr "³äÅö"
+msgstr "å‰²å½“"
 
 #: app/keys.c:545
 msgid "Keyboard Configuration"
-msgstr "¥­¡¼¥Ü¡¼¥ÉÀßÄê"
+msgstr "ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰è¨­å®š"
 
 #: app/keys.c:591
 msgid "Key Group Explanation"
-msgstr "¥­¡¼¡¦¥°¥ë¡¼¥×ÀâÌÀ"
+msgstr "ã‚­ãƒ¼ãƒ»ã‚°ãƒ«ãƒ¼ãƒ—èª¬æ˜"
 
 #: app/keys.c:605
 msgid "Key Explanation"
-msgstr "¥­¡¼ÀâÌÀ"
+msgstr "ã‚­ãƒ¼èª¬æ˜"
 
 #: app/keys.c:631
 msgid "Modifiers:"
-msgstr "¥â¥Ç¥£¥Õ¥¡¥¤¥¢"
+msgstr "ãƒ¢ãƒ‡ã‚£ãƒ•ã‚¡ã‚¤ã‚¢"
 
 #: app/keys.c:653
 msgid "Learn selected key"
-msgstr "ÁªÂò¤µ¤ì¤¿¥­¡¼¤ò³Ğ¤¨¤ë"
+msgstr "é¸æŠã•ã‚ŒãŸã‚­ãƒ¼ã‚’è¦šãˆã‚‹"
 
 #: app/keys.c:658
 msgid "Learn all keys"
-msgstr "Á´¤Æ¤Î¥­¡¼¤ò³Ğ¤¨¤ë"
+msgstr "å…¨ã¦ã®ã‚­ãƒ¼ã‚’è¦šãˆã‚‹"
 
 #: app/keys.c:664
 msgid ""
 "Please press the desired key combination!\n"
 "Click into left list to cancel"
 msgstr ""
-"¤ªË¾¤ß¤ÎÁÈ¹ç¤»¤Î¥­¡¼¤ò²¡¤·¤Æ¤¯¤À¤µ¤¤!\n"
-"¼è¾Ã¤¹¤Ë¤Ïº¸¤Î°ìÍ÷¤Ç¥¯¥ê¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤"
+"ãŠæœ›ã¿ã®çµ„åˆã›ã®ã‚­ãƒ¼ã‚’æŠ¼ã—ã¦ãã ã•ã„!\n"
+"å–æ¶ˆã™ã«ã¯å·¦ã®ä¸€è¦§ã§ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„"
 
 #: app/keys.c:919
 #, c-format
@@ -1091,7 +1091,7 @@ msgstr "CH%02d"
 #: app/keys.c:920
 #, c-format
 msgid "Fast jump to channel %d"
-msgstr "¥Á¥ã¥ó¥Í¥ë %d ¤Ø¤Î¹âÂ®¥¸¥ã¥ó¥×"
+msgstr "ãƒãƒ£ãƒ³ãƒãƒ« %d ã¸ã®é«˜é€Ÿã‚¸ãƒ£ãƒ³ãƒ—"
 
 #: app/keys.c:995
 msgid ""
@@ -1099,37 +1099,37 @@ msgid ""
 "Please use the Keyboard Configuration dialog\n"
 "in the Settings menu."
 msgstr ""
-"¼«Æ°¥­¡¼ÀßÄê¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£\n"
-"ÀßÄê¥á¥Ë¥å¡¼¤Î¥­¡¼¥Ü¡¼¥ÉÀßÄê¥À¥¤¥¢¥í¥°¤ò»ÈÍÑ\n"
-"¤·¤Æ¤¯¤À¤µ¤¤¡£"
+"è‡ªå‹•ã‚­ãƒ¼è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚\n"
+"è¨­å®šãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰è¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’ä½¿ç”¨\n"
+"ã—ã¦ãã ã•ã„ã€‚"
 
 #: app/menubar.c:92
 msgid ""
 "Are you sure you want to do this?\n"
 "All changes will be lost!"
 msgstr ""
-"¤³¤¦¤·¤¿¤¤¤Î¤Ï³Î¤«¤Ç¤¹¤«?\n"
-"Á´¤Æ¤ÎÊÑ¹¹¤¬¼º¤ï¤ì¤Ş¤¹!"
+"ã“ã†ã—ãŸã„ã®ã¯ç¢ºã‹ã§ã™ã‹?\n"
+"å…¨ã¦ã®å¤‰æ›´ãŒå¤±ã‚ã‚Œã¾ã™!"
 
 #: app/mixers/integer32.c:493
 msgid "Integers mixer, no interpolation, no filters, maximum sample length 1M"
-msgstr "À°¿ô¥ß¥­¥µ¡¼¡¤aÊä´ÖÌµ¤·¡¤¥Õ¥£¥ë¥¿Ìµ¤·¡¤ºÇÂç¥µ¥ó¥×¥ë¥µ¥¤¥º1M"
+msgstr "æ•´æ•°ãƒŸã‚­ã‚µãƒ¼ï¼Œaè£œé–“ç„¡ã—ï¼Œãƒ•ã‚£ãƒ«ã‚¿ç„¡ã—ï¼Œæœ€å¤§ã‚µãƒ³ãƒ—ãƒ«ã‚µã‚¤ã‚º1M"
 
 #: app/module-info.c:123
 msgid "Instrument Name"
-msgstr "³Ú´ïÌ¾"
+msgstr "æ¥½å™¨å"
 
 #: app/module-info.c:123
 msgid "#smpl"
-msgstr "¥µ¥ó¥×¥ë¿ô"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«æ•°"
 
 #: app/module-info.c:124
 msgid "Sample Name"
-msgstr "¥µ¥ó¥×¥ëÌ¾"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«å"
 
 #: app/module-info.c:131
 msgid "Linear"
-msgstr "Àş·¿"
+msgstr "ç·šå‹"
 
 #: app/module-info.c:131 app/sample-editor.c:226
 msgid "Amiga"
@@ -1137,19 +1137,19 @@ msgstr "Amiga"
 
 #: app/module-info.c:136
 msgid "Module Info"
-msgstr "¥â¥¸¥å¡¼¥ë¾ğÊó"
+msgstr "ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«æƒ…å ±"
 
 #: app/module-info.c:170
 msgid "Songname:"
-msgstr "¶ÊÌ¾:"
+msgstr "æ›²å:"
 
 #: app/module-info.c:183
 msgid "Frequencies:"
-msgstr "¼şÇÈ¿ô:"
+msgstr "å‘¨æ³¢æ•°:"
 
 #: app/module-info.c:188
 msgid "ProTracker Mode"
-msgstr "ProTracker¥â¡¼¥É"
+msgstr "ProTrackerãƒ¢ãƒ¼ãƒ‰"
 
 #: app/module-info.c:426
 #, c-format
@@ -1159,53 +1159,53 @@ msgid ""
 "\n"
 "Clear unused and reorder playlist?\n"
 msgstr ""
-"Ì¤ÍøÍÑ¥Ñ¥¿¡¼¥ó¡§ %d (ÍøÍÑ: %d)\n"
-"Ì¤ÍøÍÑ instrument: %d (ÍøÍÑ: %d)\n"
+"æœªåˆ©ç”¨ãƒ‘ã‚¿ãƒ¼ãƒ³ï¼š %d (åˆ©ç”¨: %d)\n"
+"æœªåˆ©ç”¨ instrument: %d (åˆ©ç”¨: %d)\n"
 "\n"
-"Ì¤ÍøÍÑÎÎ°è¤ò¥¯¥ê¥¢¤·¤Æ¥×¥ì¥¤¥ê¥¹¥È¤Î½çÈÖ¤ò¹¹¿·¤·¤Ş¤¹¤«¡©\n"
+"æœªåˆ©ç”¨é ˜åŸŸã‚’ã‚¯ãƒªã‚¢ã—ã¦ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®é †ç•ªã‚’æ›´æ–°ã—ã¾ã™ã‹ï¼Ÿ\n"
 
 #: app/playlist.c:552
 msgid "Insert pattern that is being edited"
-msgstr "ÊÔ½¸Ãæ¤Î¥Ñ¥¿¡¼¥ó¤òÁŞÆş"
+msgstr "ç·¨é›†ä¸­ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’æŒ¿å…¥"
 
 #: app/playlist.c:561
 msgid "Remove current playlist entry"
-msgstr "¸½ºß¤Î¥×¥ì¥¤¥ê¥¹¥È¥¨¥ó¥È¥ê¡¼¤òºï½ü"
+msgstr "ç¾åœ¨ã®ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã‚¨ãƒ³ãƒˆãƒªãƒ¼ã‚’å‰Šé™¤"
 
 #: app/playlist.c:569
 msgid "Add + Cpy"
-msgstr "ÄÉ²Ã¡Ü¥³¥Ô¡¼"
+msgstr "è¿½åŠ ï¼‹ã‚³ãƒ”ãƒ¼"
 
 #: app/playlist.c:571
 msgid ""
 "Add a free pattern behind current position, and copy current pattern to it"
-msgstr "¸½ºß¤Î°ÌÃÖ¤Î¸å¤Ë¶õ¤­¥Ñ¥¿¡¼¥ó¤òÄÉ²Ã¤·¡¤¸½ºß¤Î¥Ñ¥¿¡¼¥ó¤ò¥³¥Ô¡¼¤¹¤ë"
+msgstr "ç¾åœ¨ã®ä½ç½®ã®å¾Œã«ç©ºããƒ‘ã‚¿ãƒ¼ãƒ³ã‚’è¿½åŠ ã—ï¼Œç¾åœ¨ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹"
 
 #: app/playlist.c:574
 msgid "Add Free"
-msgstr "¶õ¤­¥Ñ¥¿¡¼¥ó¤òÄÉ²Ã"
+msgstr "ç©ºããƒ‘ã‚¿ãƒ¼ãƒ³ã‚’è¿½åŠ "
 
 #: app/playlist.c:576
 msgid "Add a free pattern behind current position"
-msgstr "¸½ºß¤Î°ÌÃÖ¤Î¸å¤Ë¶õ¤­¥Ñ¥¿¡¼¥ó¤òÄÉ²Ã"
+msgstr "ç¾åœ¨ã®ä½ç½®ã®å¾Œã«ç©ºããƒ‘ã‚¿ãƒ¼ãƒ³ã‚’è¿½åŠ "
 
 #: app/playlist.c:586
 #, fuzzy
 msgid "Len"
-msgstr "Ä¹¤µ"
+msgstr "é•·ã•"
 
 #: app/playlist.c:600
 msgid "Song length"
-msgstr "¶ÊÄ¹"
+msgstr "æ›²é•·"
 
 #: app/playlist.c:606
 #, fuzzy
 msgid "Rstrt"
-msgstr "³Ú´ï"
+msgstr "æ¥½å™¨"
 
 #: app/playlist.c:619
 msgid "Song restart position"
-msgstr "ºÆ³«»Ï°ÌÃÖ"
+msgstr "å†é–‹å§‹ä½ç½®"
 
 #: app/preferences.c:91
 msgid "Would you like to import settings from old version of Soundtracker?"
@@ -1234,19 +1234,19 @@ msgstr ""
 
 #: app/sample-editor.c:225
 msgid "No loop"
-msgstr "¥ë¡¼¥×Ìµ¤·"
+msgstr "ãƒ«ãƒ¼ãƒ—ç„¡ã—"
 
 #: app/sample-editor.c:227
 msgid "PingPong"
-msgstr "¥Ô¥ó¥İ¥ó"
+msgstr "ãƒ”ãƒ³ãƒãƒ³"
 
 #: app/sample-editor.c:231 app/sample-editor.c:1614
 msgid "8 bits"
-msgstr "8¥Ó¥Ã¥È"
+msgstr "8ãƒ“ãƒƒãƒˆ"
 
 #: app/sample-editor.c:232 app/sample-editor.c:1614
 msgid "16 bits"
-msgstr "16¥Ó¥Ã¥È"
+msgstr "16ãƒ“ãƒƒãƒˆ"
 
 #: app/sample-editor.c:237
 msgid "Apple/SGI audio (*aif, *.aiff, *.aifc)"
@@ -1334,39 +1334,39 @@ msgstr ""
 
 #: app/sample-editor.c:277
 msgid "Sample Editor"
-msgstr "¥µ¥ó¥×¥ëÊÔ½¸"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ç·¨é›†"
 
 #: app/sample-editor.c:317 app/midi-settings-09x.c:416
 msgid "Volume"
-msgstr "²»ÎÌ"
+msgstr "éŸ³é‡"
 
 #: app/sample-editor.c:318
 msgid "Panning"
-msgstr "¥Ñ¥ó¥Ë¥ó¥°"
+msgstr "ãƒ‘ãƒ³ãƒ‹ãƒ³ã‚°"
 
 #: app/sample-editor.c:319
 msgid "Finetune"
-msgstr "ÈùÄ´À°"
+msgstr "å¾®èª¿æ•´"
 
 #: app/sample-editor.c:339
 msgid "Selection:"
-msgstr "ÁªÂò:"
+msgstr "é¸æŠ:"
 
 #: app/sample-editor.c:343 app/track-editor.c:195 app/track-editor.c:205
 msgid "None"
-msgstr "Ìµ"
+msgstr "ç„¡"
 
 #: app/sample-editor.c:349
 msgid "All"
-msgstr "Á´¤Æ"
+msgstr "å…¨ã¦"
 
 #: app/sample-editor.c:370
 msgid "Length:"
-msgstr "Ä¹¤µ:"
+msgstr "é•·ã•:"
 
 #: app/sample-editor.c:386
 msgid "Set as loop"
-msgstr "¥ë¡¼¥×¤È¤·¤ÆÀßÄê"
+msgstr "ãƒ«ãƒ¼ãƒ—ã¨ã—ã¦è¨­å®š"
 
 #: app/sample-editor.c:394
 msgid "RelNote"
@@ -1374,123 +1374,124 @@ msgstr "RelNote"
 
 #: app/sample-editor.c:405 app/sample-editor.c:410
 msgid "Load Sample"
-msgstr "¥µ¥ó¥×¥ë¡¦¥í¡¼¥É"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ãƒ»ãƒ­ãƒ¼ãƒ‰"
 
 #: app/sample-editor.c:405
-msgid "Load sample into the current samle slot"
-msgstr ""
+#, fuzzy
+msgid "Load sample into the current sample slot"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ç„¡ã—ã«XMä¿å­˜..."
 
 #: app/sample-editor.c:406
 msgid "Save Sample"
-msgstr "¥µ¥ó¥×¥ëÊİÂ¸"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ä¿å­˜"
 
 #: app/sample-editor.c:406
 #, fuzzy
 msgid "Save the current sample"
-msgstr "¥µ¥ó¥×¥ëÌµ¤·¤ËXMÊİÂ¸..."
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ç„¡ã—ã«XMä¿å­˜..."
 
 #: app/sample-editor.c:407
 msgid "Save region as WAV..."
-msgstr "WAV¤È¤·¤ÆÈÏ°ÏÊİÂ¸..."
+msgstr "WAVã¨ã—ã¦ç¯„å›²ä¿å­˜..."
 
 #: app/sample-editor.c:419
 msgid "Save WAV"
-msgstr "WAVÊİÂ¸"
+msgstr "WAVä¿å­˜"
 
 #: app/sample-editor.c:429
 msgid "Save Region"
-msgstr "ÈÏ°ÏÊİÂ¸"
+msgstr "ç¯„å›²ä¿å­˜"
 
 #: app/sample-editor.c:440
 msgid "Monitor"
-msgstr "¥â¥Ë¥¿"
+msgstr "ãƒ¢ãƒ‹ã‚¿"
 
 #: app/sample-editor.c:446
 msgid "Volume Ramp"
-msgstr "¥Ü¥ê¥å¡¼¥à¥é¥ó¥×"
+msgstr "ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ©ãƒ³ãƒ—"
 
 #: app/sample-editor.c:452
 #, fuzzy
 msgid "Trim"
-msgstr "¥È¥ì¥â¥í"
+msgstr "ãƒˆãƒ¬ãƒ¢ãƒ­"
 
 #: app/sample-editor.c:463
 msgid "Zoom to selection"
-msgstr "ÁªÂòÉôÊ¬³ÈÂç"
+msgstr "é¸æŠéƒ¨åˆ†æ‹¡å¤§"
 
 #: app/sample-editor.c:469
 msgid "Show all"
-msgstr "Á´¤ÆÉ½¼¨"
+msgstr "å…¨ã¦è¡¨ç¤º"
 
 #: app/sample-editor.c:475
 msgid "Zoom in (+50%)"
-msgstr "³ÈÂç(+50%)"
+msgstr "æ‹¡å¤§(+50%)"
 
 #: app/sample-editor.c:481
 msgid "Zoom out (-50%)"
-msgstr "½Ì¾®(-50%)"
+msgstr "ç¸®å°(-50%)"
 
 #: app/sample-editor.c:487
 msgid "Reverse"
-msgstr "¥ê¥Ğ¡¼¥¹"
+msgstr "ãƒªãƒãƒ¼ã‚¹"
 
 #: app/sample-editor.c:497
 msgid "Cut"
-msgstr "ÀÚ¼è"
+msgstr "åˆ‡å–"
 
 #: app/sample-editor.c:503
 msgid "Remove"
-msgstr "°ÜÆ°"
+msgstr "ç§»å‹•"
 
 #: app/sample-editor.c:509
 msgid "Copy"
-msgstr "¥³¥Ô¡¼"
+msgstr "ã‚³ãƒ”ãƒ¼"
 
 #: app/sample-editor.c:515
 msgid "Paste"
-msgstr "Å½ÉÕ"
+msgstr "è²¼ä»˜"
 
 #: app/sample-editor.c:521
 msgid "Clear Sample"
-msgstr "¥µ¥ó¥×¥ë¾Ãµî"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«æ¶ˆå»"
 
 #: app/sample-editor.c:527
 #, fuzzy
 msgid "Crop"
-msgstr "¥³¥Ô¡¼"
+msgstr "ã‚³ãƒ”ãƒ¼"
 
 #: app/sample-editor.c:596
 msgid "(no selection)"
-msgstr "(ÌµÁªÂò)"
+msgstr "(ç„¡é¸æŠ)"
 
 #: app/sample-editor.c:1099
 msgid "Out of memory for copybuffer.\n"
-msgstr "¥³¥Ô¡¼¥Ğ¥Ã¥Õ¥¡¤Î¤¿¤á¤Î¥á¥â¥ê¤¬Ìµ¤¯¤Ê¤ê¤Ş¤·¤¿\n"
+msgstr "ã‚³ãƒ”ãƒ¼ãƒãƒƒãƒ•ã‚¡ã®ãŸã‚ã®ãƒ¡ãƒ¢ãƒªãŒç„¡ããªã‚Šã¾ã—ãŸ\n"
 
 #: app/sample-editor.c:1224
 msgid "<just pasted>"
-msgstr "<º£Å½ÉÕ¤±¤µ¤ì¤Ş¤·¤¿>"
+msgstr "<ä»Šè²¼ä»˜ã‘ã•ã‚Œã¾ã—ãŸ>"
 
 #: app/sample-editor.c:1309
 msgid "Load stereo sample"
-msgstr "¥¹¥Æ¥ì¥ª¡¦¥µ¥ó¥×¥ë¡¦¥í¡¼¥É"
+msgstr "ã‚¹ãƒ†ãƒ¬ã‚ªãƒ»ã‚µãƒ³ãƒ—ãƒ«ãƒ»ãƒ­ãƒ¼ãƒ‰"
 
 #: app/sample-editor.c:1311
 msgid "Left"
-msgstr "º¸"
+msgstr "å·¦"
 
 #: app/sample-editor.c:1312
 msgid "Mix"
-msgstr "¥ß¥Ã¥¯¥¹"
+msgstr "ãƒŸãƒƒã‚¯ã‚¹"
 
 #: app/sample-editor.c:1313
 msgid "Right"
-msgstr "±¦"
+msgstr "å³"
 
 #: app/sample-editor.c:1314
 #, fuzzy
 msgid "2 smpls"
-msgstr "¥µ¥ó¥×¥ë¿ô"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«æ•°"
 
 #: app/sample-editor.c:1315
 msgid "Load left and right channels into the current sample and the next one"
@@ -1512,11 +1513,11 @@ msgstr ""
 #: app/sample-editor.c:1396 app/sample-editor.c:1402 app/sample-editor.c:1488
 #: app/sample-editor.c:2143 app/sample-editor.c:2194
 msgid "Out of memory for sample data."
-msgstr "¥µ¥ó¥×¥ë¥Ç¡¼¥¿¤Î¤¿¤á¤Î¥á¥â¥ê¤¬Ìµ¤¯¤Ê¤ê¤Ş¤·¤¿¡£"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ãƒ‡ãƒ¼ã‚¿ã®ãŸã‚ã®ãƒ¡ãƒ¢ãƒªãŒç„¡ããªã‚Šã¾ã—ãŸã€‚"
 
 #: app/sample-editor.c:1419 app/sample-editor.c:1431
 msgid "Read error."
-msgstr "ÆÉ¤ß¹ş¤ß¥¨¥é¡¼¡£"
+msgstr "èª­ã¿è¾¼ã¿ã‚¨ãƒ©ãƒ¼ã€‚"
 
 #: app/sample-editor.c:1575
 msgid ""
@@ -1525,30 +1526,30 @@ msgid ""
 "\n"
 "Please choose which channel to load:"
 msgstr ""
-"¥¹¥Æ¥ì¥ª¡¦¥µ¥ó¥×¥ë¤¬ÁªÂò¤µ¤ì¤Ş¤·¤¿!\n"
-"(SoundTracker ¤Ç¤Ï¥â¥Î¡¦¥µ¥ó¥×¥ë¤À¤±½èÍı¤Ç¤­¤Ş¤¹!)\n"
+"ã‚¹ãƒ†ãƒ¬ã‚ªãƒ»ã‚µãƒ³ãƒ—ãƒ«ãŒé¸æŠã•ã‚Œã¾ã—ãŸ!\n"
+"(SoundTracker ã§ã¯ãƒ¢ãƒãƒ»ã‚µãƒ³ãƒ—ãƒ«ã ã‘å‡¦ç†ã§ãã¾ã™!)\n"
 "\n"
-"¥í¡¼¥É¤¹¤ë¤¿¤á¤Î¥Á¥ã¥ó¥Í¥ë¤òÁª¤ó¤Ç¤¯¤À¤µ¤¤:"
+"ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ãŸã‚ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’é¸ã‚“ã§ãã ã•ã„:"
 
 #: app/sample-editor.c:1615
 msgid "Signed"
-msgstr "ÀµÉé"
+msgstr "æ­£è² "
 
 #: app/sample-editor.c:1615
 msgid "Unsigned"
-msgstr "Àµ¿ô"
+msgstr "æ­£æ•°"
 
 #: app/sample-editor.c:1616
 msgid "Little-Endian"
-msgstr "¥ê¥È¥ë¥¨¥ó¥Ç¥£¥¢¥ó"
+msgstr "ãƒªãƒˆãƒ«ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³"
 
 #: app/sample-editor.c:1616
 msgid "Big-Endian"
-msgstr "¥Ó¥Ã¥°¥¨¥ó¥Ç¥£¥¢¥ó"
+msgstr "ãƒ“ãƒƒã‚°ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³"
 
 #: app/sample-editor.c:1625
 msgid "Load raw sample"
-msgstr "À¸¥µ¥ó¥×¥ë¡¦¥í¡¼¥É"
+msgstr "ç”Ÿã‚µãƒ³ãƒ—ãƒ«ãƒ»ãƒ­ãƒ¼ãƒ‰"
 
 #: app/sample-editor.c:1633
 msgid ""
@@ -1557,69 +1558,69 @@ msgid ""
 "\n"
 "Please choose a format:"
 msgstr ""
-"´ûÃÎ¤Ç¤Ê¤¤¥µ¥ó¥×¥ë¤òÁªÂò¤·¤Ş¤·¤¿¡£\n"
-"À¸¥Ç¡¼¥¿¤òº£¥í¡¼¥É¤Ç¤­¤Ş¤¹¡£\n"
+"æ—¢çŸ¥ã§ãªã„ã‚µãƒ³ãƒ—ãƒ«ã‚’é¸æŠã—ã¾ã—ãŸã€‚\n"
+"ç”Ÿãƒ‡ãƒ¼ã‚¿ã‚’ä»Šãƒ­ãƒ¼ãƒ‰ã§ãã¾ã™ã€‚\n"
 "\n"
-"½ñ¼°¤òÁªÂò¤·¤Æ¤¯¤À¤µ¤¤:"
+"æ›¸å¼ã‚’é¸æŠã—ã¦ãã ã•ã„:"
 
 #: app/sample-editor.c:1659
 msgid "Word format:"
-msgstr "¥ï¡¼¥É½ñ¼°"
+msgstr "ãƒ¯ãƒ¼ãƒ‰æ›¸å¼"
 
 #: app/sample-editor.c:1690
 msgid "Sampling Rate:"
-msgstr "¥µ¥ó¥×¥ê¥ó¥°¥ì¡¼¥È¡§"
+msgstr "ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ãƒ¬ãƒ¼ãƒˆï¼š"
 
 #: app/sample-editor.c:1780
 msgid "Can't read sample"
-msgstr "¥µ¥ó¥×¥ë¤¬ÆÉ¤ß¹ş¤á¤Ş¤»¤ó"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ãŒèª­ã¿è¾¼ã‚ã¾ã›ã‚“"
 
 #: app/sample-editor.c:1793
 msgid "Sample is too long for current mixer module. Loading anyway."
 msgstr ""
-"¥µ¥ó¥×¥ë¤¬¸½ºß¤Î¥ß¥­¥µ¡¦¥â¥¸¥å¡¼¥ë¤Ë¤ÏÄ¹²á¤®¤Ş¤¹¡£\n"
-"¤È¤Ë¤«¤¯¥í¡¼¥É¤·¤Ş¤¹¡£"
+"ã‚µãƒ³ãƒ—ãƒ«ãŒç¾åœ¨ã®ãƒŸã‚­ã‚µãƒ»ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã«ã¯é•·éãã¾ã™ã€‚\n"
+"ã¨ã«ã‹ããƒ­ãƒ¼ãƒ‰ã—ã¾ã™ã€‚"
 
 #: app/sample-editor.c:1817
 msgid "Can only handle 8 and 16 bit samples with up to 2 channels"
-msgstr "2¥Á¥ã¥ó¥Í¥ë¤Ş¤Ç¤Ç 8¡¢16¥Ó¥Ã¥È¡¦¥µ¥ó¥×¥ë¤Î¤ß½èÍı¤Ç¤­¤Ş¤¹"
+msgstr "2ãƒãƒ£ãƒ³ãƒãƒ«ã¾ã§ã§ 8ã€16ãƒ“ãƒƒãƒˆãƒ»ã‚µãƒ³ãƒ—ãƒ«ã®ã¿å‡¦ç†ã§ãã¾ã™"
 
 #: app/sample-editor.c:1951
 msgid "Please select region first."
-msgstr "ÎÎ°è¤òÁªÂò¤·¤Æ¤¯¤À¤µ¤¤¡¥"
+msgstr "é ˜åŸŸã‚’é¸æŠã—ã¦ãã ã•ã„ï¼"
 
 #: app/sample-editor.c:1977
 msgid "OK"
-msgstr "Î»²ò"
+msgstr "äº†è§£"
 
 #: app/sample-editor.c:1985
 msgid "Start sampling"
-msgstr "¥µ¥ó¥×¥ê¥ó¥°³«»Ï"
+msgstr "ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°é–‹å§‹"
 
 #: app/sample-editor.c:1992
 msgid "Cancel"
-msgstr "¼è¾Ã"
+msgstr "å–æ¶ˆ"
 
 #: app/sample-editor.c:2013
 msgid "No sampling driver available"
-msgstr "¥µ¥ó¥×¥ê¥ó¥°¡¦¥É¥é¥¤¥Ğ¤¬»ÈÍÑ¤Ç¤­¤Ş¤»¤ó"
+msgstr "ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ãƒ»ãƒ‰ãƒ©ã‚¤ãƒãŒä½¿ç”¨ã§ãã¾ã›ã‚“"
 
 #: app/sample-editor.c:2021
 msgid "Sampling Window"
-msgstr "¥µ¥ó¥×¥ê¥ó¥°¡¦¥¦¥£¥ó¥É¥¦"
+msgstr "ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ãƒ»ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦"
 
 #: app/sample-editor.c:2051
 #, fuzzy
 msgid "Sampling failed!"
-msgstr "¥µ¥ó¥×¥ê¥ó¥°¥ì¡¼¥È¡§"
+msgstr "ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ãƒ¬ãƒ¼ãƒˆï¼š"
 
 #: app/sample-editor.c:2071
 msgid "Out of memory while sampling!"
-msgstr "¥µ¥ó¥×¥ê¥ó¥°Ãæ¤Ë¥á¥â¥ê¤¬Ìµ¤¯¤Ê¤ê¤Ş¤·¤¿¡£"
+msgstr "ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ä¸­ã«ãƒ¡ãƒ¢ãƒªãŒç„¡ããªã‚Šã¾ã—ãŸã€‚"
 
 #: app/sample-editor.c:2126
 msgid "<just sampled>"
-msgstr "<º£¥µ¥ó¥×¥ê¥ó¥°¤·¤Ş¤·¤¿>"
+msgstr "<ä»Šã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã—ã¾ã—ãŸ>"
 
 #: app/sample-editor.c:2152
 #, fuzzy
@@ -1629,32 +1630,32 @@ msgid ""
 "\n"
 "Please choose which channel to use:"
 msgstr ""
-"¥¹¥Æ¥ì¥ª¡¦¥µ¥ó¥×¥ë¤¬ÁªÂò¤µ¤ì¤Ş¤·¤¿!\n"
-"(SoundTracker ¤Ç¤Ï¥â¥Î¡¦¥µ¥ó¥×¥ë¤À¤±½èÍı¤Ç¤­¤Ş¤¹!)\n"
+"ã‚¹ãƒ†ãƒ¬ã‚ªãƒ»ã‚µãƒ³ãƒ—ãƒ«ãŒé¸æŠã•ã‚Œã¾ã—ãŸ!\n"
+"(SoundTracker ã§ã¯ãƒ¢ãƒãƒ»ã‚µãƒ³ãƒ—ãƒ«ã ã‘å‡¦ç†ã§ãã¾ã™!)\n"
 "\n"
-"¥í¡¼¥É¤¹¤ë¤¿¤á¤Î¥Á¥ã¥ó¥Í¥ë¤òÁª¤ó¤Ç¤¯¤À¤µ¤¤:"
+"ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ãŸã‚ã®ãƒãƒ£ãƒ³ãƒãƒ«ã‚’é¸ã‚“ã§ãã ã•ã„:"
 
 #: app/sample-editor.c:2378
 msgid "Recorded sample is too long for current mixer module. Using it anyway."
 msgstr ""
-"Ï¿²»¤·¤¿¥µ¥ó¥×¥ë¤¬¸½ºß¤Î¥ß¥­¥µ¡¦¥â¥¸¥å¡¼¥ë¤Ë¤ÏÄ¹²á¤®¤Ş¤¹¡£\n"
-"¤È¤Ë¤«¤¯¤½¤ì¤ò»È¤¤¤Ş¤¹¡£"
+"éŒ²éŸ³ã—ãŸã‚µãƒ³ãƒ—ãƒ«ãŒç¾åœ¨ã®ãƒŸã‚­ã‚µãƒ»ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã«ã¯é•·éãã¾ã™ã€‚\n"
+"ã¨ã«ã‹ããã‚Œã‚’ä½¿ã„ã¾ã™ã€‚"
 
 #: app/sample-editor.c:2443
 msgid "Volume Ramping"
-msgstr "¥Ü¥ê¥å¡¼¥à¥é¥ó¥×²½"
+msgstr "ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ©ãƒ³ãƒ—åŒ–"
 
 #: app/sample-editor.c:2444
 msgid "Normalize"
-msgstr "µ¬³Ê²½"
+msgstr "è¦æ ¼åŒ–"
 
 #: app/sample-editor.c:2456
 msgid "Perform linear volume fade on Selection"
-msgstr "ÁªÂò»ş¤Ë²»ÎÌ¤òÀş·¿¤Ë¥Õ¥§¡¼¥É¤¹¤ë"
+msgstr "é¸æŠæ™‚ã«éŸ³é‡ã‚’ç·šå‹ã«ãƒ•ã‚§ãƒ¼ãƒ‰ã™ã‚‹"
 
 #: app/sample-editor.c:2465
 msgid "Left [%]:"
-msgstr "º¸ [%]:"
+msgstr "å·¦ [%]:"
 
 #: app/sample-editor.c:2468 app/sample-editor.c:2485
 msgid "H"
@@ -1674,7 +1675,7 @@ msgstr ""
 
 #: app/sample-editor.c:2482
 msgid "Right [%]:"
-msgstr "±¦ [%]:"
+msgstr "å³ [%]:"
 
 #: app/sample-editor.c:2575
 msgid "Trim parameters"
@@ -1699,10 +1700,10 @@ msgid ""
 "If you are new to this type of program, you will want to get hold of\n"
 "some XM or MOD files first and play with them."
 msgstr ""
-"SoundTracker¤Ø¤è¤¦¤³¤½!\n"
+"SoundTrackerã¸ã‚ˆã†ã“ã!\n"
 "\n"
-"¤³¤¦¤¤¤Ã¤¿¥×¥í¥°¥é¥à¤Ë·Ğ¸³¤¬¤Ê¤±¤ì¤Ğ¡¢¤¤¤¯¤Ä¤«XM¤äMOD¥Õ¥¡¥¤¥ë¤ò»ı¤Ã¤Æ\n"
-"¤­¤Æ±éÁÕ¤·¤¿Êı¤¬¤¤¤¤¤Í¡£"
+"ã“ã†ã„ã£ãŸãƒ—ãƒ­ã‚°ãƒ©ãƒ ã«çµŒé¨“ãŒãªã‘ã‚Œã°ã€ã„ãã¤ã‹XMã‚„MODãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒã£ã¦\n"
+"ãã¦æ¼”å¥ã—ãŸæ–¹ãŒã„ã„ã­ã€‚"
 
 #: app/tips-dialog.c:49
 msgid ""
@@ -1710,25 +1711,25 @@ msgid ""
 "input by decreasing the mixing buffer size of the \"Editing\" object in\n"
 "the Audio Configuration."
 msgstr ""
-"¥ª¡¼¥Ç¥£¥ªÀßÄê¤Î\"ÊÔ½¸¤·¤Æ¤¤¤ë\"¥ª¥Ö¥¸¥§¥¯¥È¤Î¥ß¥­¥·¥ó¥°¡¦¥Ğ¥Ã¥Õ¥¡¡¦¥µ¥¤¥º\n"
-"¤ò¸º¤é¤»¤Ğ¡¢SoundTracker¤ÎÊÔ½¸¥â¡¼¥É¤Ç¥­¡¼¥Ü¡¼¥ÉÆşÎÏ¤ËÂĞ¤·¤Æ¤â¤Ã¤ÈÈ¿±ş¤¹\n"
-"¤ë¤è¤¦¤Ë¤Ç¤­¤ë¤è¡£"
+"ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªè¨­å®šã®\"ç·¨é›†ã—ã¦ã„ã‚‹\"ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒŸã‚­ã‚·ãƒ³ã‚°ãƒ»ãƒãƒƒãƒ•ã‚¡ãƒ»ã‚µã‚¤ã‚º\n"
+"ã‚’æ¸›ã‚‰ã›ã°ã€SoundTrackerã®ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã§ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›ã«å¯¾ã—ã¦ã‚‚ã£ã¨åå¿œã™\n"
+"ã‚‹ã‚ˆã†ã«ã§ãã‚‹ã‚ˆã€‚"
 
 #: app/tips-dialog.c:53
 msgid ""
 "You can adjust the loop points in the sample editor by holding Shift\n"
 "and using the left and right mousebuttons.\n"
 msgstr ""
-"¥µ¥ó¥×¥ë¡¦¥¨¥Ç¥£¥¿¤Ç¡¢¥·¥Õ¥È¡¦¥­¡¼¤ò²¡¤·¤Ê¤¬¤é¥Ş¥¦¥¹¤Î±¦¤Èº¸¤Î¥Ü¥¿¥ó¤ò»È\n"
-"¤Ã¤Æ¡¢¥ë¡¼¥×¡¦¥İ¥¤¥ó¥È¤ò¹ç¤»¤é¤ì¤ë¤è¡£\n"
+"ã‚µãƒ³ãƒ—ãƒ«ãƒ»ã‚¨ãƒ‡ã‚£ã‚¿ã§ã€ã‚·ãƒ•ãƒˆãƒ»ã‚­ãƒ¼ã‚’æŠ¼ã—ãªãŒã‚‰ãƒã‚¦ã‚¹ã®å³ã¨å·¦ã®ãƒœã‚¿ãƒ³ã‚’ä½¿\n"
+"ã£ã¦ã€ãƒ«ãƒ¼ãƒ—ãƒ»ãƒã‚¤ãƒ³ãƒˆã‚’åˆã›ã‚‰ã‚Œã‚‹ã‚ˆã€‚\n"
 
 #: app/tips-dialog.c:56
 msgid ""
 "If you want to know more about tracking, and how the various commands\n"
 "work, have a look at http://www.united-trackers.org/"
 msgstr ""
-"¥È¥é¥Ã¥­¥ó¥°¤ä¤¤¤í¤¤¤í¤Ê¥³¥Ş¥ó¥É¤¬¤É¤¦¤¤¤¦¤Õ¤¦¤ËÆ°ºî¤¹¤ë¤Î¤«¤â¤Ã¤ÈÃÎ¤ê¤¿\n"
-"¤±¤ì¤Ğ¡¢http://www.united-trackers.org/¤ÇÃµ¤·¤Æ¤Í¡£"
+"ãƒˆãƒ©ãƒƒã‚­ãƒ³ã‚°ã‚„ã„ã‚ã„ã‚ãªã‚³ãƒãƒ³ãƒ‰ãŒã©ã†ã„ã†ãµã†ã«å‹•ä½œã™ã‚‹ã®ã‹ã‚‚ã£ã¨çŸ¥ã‚ŠãŸ\n"
+"ã‘ã‚Œã°ã€http://www.united-trackers.org/ã§æ¢ã—ã¦ã­ã€‚"
 
 #: app/tips-dialog.c:59
 msgid ""
@@ -1736,222 +1737,222 @@ msgid ""
 "activating its sample and then clicking on the keyboard in the\n"
 "instrument editor page."
 msgstr ""
-"³Ú´ïÊÔ½¸¥Ú¡¼¥¸¤Ç¡¢¥µ¥ó¥×¥ë¤ò¥¢¥¯¥Æ¥£¥Ö¤Ë¤·¤Æ¤«¤é¥­¡¼¥Ü¡¼¥É¤ò¥¯¥ê¥Ã¥¯\n"
-"¤¹¤ë¤È¸Ä¡¹¤Î¥­¡¼¤Ë³Ú´ï¤Î¥µ¥ó¥×¥ë¤ò³äÅö¤Æ¤é¤ì¤ë¤è¡£"
+"æ¥½å™¨ç·¨é›†ãƒšãƒ¼ã‚¸ã§ã€ã‚µãƒ³ãƒ—ãƒ«ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã—ã¦ã‹ã‚‰ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‚’ã‚¯ãƒªãƒƒã‚¯\n"
+"ã™ã‚‹ã¨å€‹ã€…ã®ã‚­ãƒ¼ã«æ¥½å™¨ã®ã‚µãƒ³ãƒ—ãƒ«ã‚’å‰²å½“ã¦ã‚‰ã‚Œã‚‹ã‚ˆã€‚"
 
 #: app/tips-dialog.c:63
 msgid ""
 "Is your cursor trapped in a number entry field?\n"
 "Just press Return or Tab to free yourself!"
 msgstr ""
-"¥«¡¼¥½¥ë¤¬¿ôÃÍÆşÎÏ¥Õ¥£¡¼¥ë¥É¤Ë°ú¤Ã¤«¤«¤Ã¤Æ¤¤¤¿¤ê¤·¤Ş¤¹¤«¡©\n"
-"¥ê¥¿¡¼¥ó¤«¥¿¥Ö¤ò²¡¤»¤ĞÈ´¤±½Ğ¤»¤Ş¤¹¤è¡ª"
+"ã‚«ãƒ¼ã‚½ãƒ«ãŒæ•°å€¤å…¥åŠ›ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«å¼•ã£ã‹ã‹ã£ã¦ã„ãŸã‚Šã—ã¾ã™ã‹ï¼Ÿ\n"
+"ãƒªã‚¿ãƒ¼ãƒ³ã‹ã‚¿ãƒ–ã‚’æŠ¼ã›ã°æŠœã‘å‡ºã›ã¾ã™ã‚ˆï¼"
 
 #: app/tips-dialog.c:111
 msgid "Previous Tip"
-msgstr "Á°¤Îµ»"
+msgstr "å‰ã®æŠ€"
 
 #: app/tips-dialog.c:118
 msgid "Next Tip"
-msgstr "¼¡¤Îµ»"
+msgstr "æ¬¡ã®æŠ€"
 
 #: app/tips-dialog.c:129
 msgid "Show tip next time"
-msgstr "¼¡²ó¤âµ»¤ò¸«¤»¤ë"
+msgstr "æ¬¡å›ã‚‚æŠ€ã‚’è¦‹ã›ã‚‹"
 
 #: app/tips-dialog.c:145
 msgid "SoundTracker Tip of the day"
-msgstr "º£Æü¤ÎSoundTracker¤Îµ»"
+msgstr "ä»Šæ—¥ã®SoundTrackerã®æŠ€"
 
 #: app/track-editor.c:110
 msgid "Arpeggio"
-msgstr "¥¢¥ë¥Ú¥¸¥ª"
+msgstr "ã‚¢ãƒ«ãƒšã‚¸ã‚ª"
 
 #: app/track-editor.c:111
 msgid "Porta up"
-msgstr "¥İ¥ë¥¿¥á¥ó¥È¥¢¥Ã¥×"
+msgstr "ãƒãƒ«ã‚¿ãƒ¡ãƒ³ãƒˆã‚¢ãƒƒãƒ—"
 
 #: app/track-editor.c:112
 msgid "Porta down"
-msgstr "¥İ¥ë¥¿¥á¥ó¥È¥À¥¦¥ó"
+msgstr "ãƒãƒ«ã‚¿ãƒ¡ãƒ³ãƒˆãƒ€ã‚¦ãƒ³"
 
 #: app/track-editor.c:113 app/track-editor.c:177
 msgid "Tone porta"
-msgstr "¥È¡¼¥ó¥İ¥ë¥¿¥á¥ó¥È"
+msgstr "ãƒˆãƒ¼ãƒ³ãƒãƒ«ã‚¿ãƒ¡ãƒ³ãƒˆ"
 
 #: app/track-editor.c:114 app/track-editor.c:173
 msgid "Vibrato"
-msgstr "¥Ó¥Ö¥é¡¼¥È"
+msgstr "ãƒ“ãƒ–ãƒ©ãƒ¼ãƒˆ"
 
 #: app/track-editor.c:115
 msgid "Tone porta + Volume slide"
-msgstr "¥È¡¼¥ó¥İ¥ë¥¿¥á¥ó¥È¡Ü¥Ü¥ê¥å¡¼¥à¥¹¥é¥¤¥É"
+msgstr "ãƒˆãƒ¼ãƒ³ãƒãƒ«ã‚¿ãƒ¡ãƒ³ãƒˆï¼‹ãƒœãƒªãƒ¥ãƒ¼ãƒ ã‚¹ãƒ©ã‚¤ãƒ‰"
 
 #: app/track-editor.c:116
 msgid "Vibrato + Volume slide"
-msgstr "¥Ó¥Ö¥é¡¼¥È+¥Ü¥ê¥å¡¼¥à¡¦¥¹¥é¥¤¥É"
+msgstr "ãƒ“ãƒ–ãƒ©ãƒ¼ãƒˆ+ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ»ã‚¹ãƒ©ã‚¤ãƒ‰"
 
 #: app/track-editor.c:117
 msgid "Tremolo"
-msgstr "¥È¥ì¥â¥í"
+msgstr "ãƒˆãƒ¬ãƒ¢ãƒ­"
 
 #: app/track-editor.c:118 app/track-editor.c:174
 msgid "Set panning"
-msgstr "¥Ñ¥ó¥Ë¥ó¥°¤ÎÀßÄê"
+msgstr "ãƒ‘ãƒ³ãƒ‹ãƒ³ã‚°ã®è¨­å®š"
 
 #: app/track-editor.c:119 app/track-editor.c:121
 msgid "Position jump"
-msgstr "°ÌÃÖ¥¸¥ã¥ó¥×"
+msgstr "ä½ç½®ã‚¸ãƒ£ãƒ³ãƒ—"
 
 #: app/track-editor.c:120 app/track-editor.c:122 app/track-editor.c:198
 msgid "Set volume"
-msgstr "²»ÎÌÀßÄê"
+msgstr "éŸ³é‡è¨­å®š"
 
 #: app/track-editor.c:123
 msgid "Pattern break"
-msgstr "¥Ñ¥¿¡¼¥ó¥Ö¥ì¡¼¥¯"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³ãƒ–ãƒ¬ãƒ¼ã‚¯"
 
 #: app/track-editor.c:125
 msgid "Set tempo/bpm"
-msgstr "¥Æ¥ó¥İ/bpmÀßÄê"
+msgstr "ãƒ†ãƒ³ãƒ/bpmè¨­å®š"
 
 #: app/track-editor.c:126
 msgid "Set global volume"
-msgstr "Á´ÂÎ¥Ü¥ê¥å¡¼¥àÀßÄê"
+msgstr "å…¨ä½“ãƒœãƒªãƒ¥ãƒ¼ãƒ è¨­å®š"
 
 #: app/track-editor.c:127
 msgid "Global volume slide"
-msgstr "Á´ÂÎ¥Ü¥ê¥å¡¼¥à¡¦¥¹¥é¥¤¥É"
+msgstr "å…¨ä½“ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ»ã‚¹ãƒ©ã‚¤ãƒ‰"
 
 #: app/track-editor.c:130
 msgid "Key off"
-msgstr "¥­¡¼¥ª¥Õ"
+msgstr "ã‚­ãƒ¼ã‚ªãƒ•"
 
 #: app/track-editor.c:131
 msgid "Set envelop position"
-msgstr "¥¨¥ó¥Ù¥í¡¼¥×°ÌÃÖÀßÄê"
+msgstr "ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ä½ç½®è¨­å®š"
 
 #: app/track-editor.c:135
 msgid "Panning slide"
-msgstr "¥Ñ¥ó¥Ë¥ó¥°¥¹¥é¥¤¥É"
+msgstr "ãƒ‘ãƒ³ãƒ‹ãƒ³ã‚°ã‚¹ãƒ©ã‚¤ãƒ‰"
 
 #: app/track-editor.c:136
 msgid "LP filter resonance"
-msgstr "LP¥Õ¥£¥ë¥¿¡¦¥ì¥¾¥Ê¥ó¥¹"
+msgstr "LPãƒ•ã‚£ãƒ«ã‚¿ãƒ»ãƒ¬ã‚¾ãƒŠãƒ³ã‚¹"
 
 #: app/track-editor.c:137
 msgid "Multi retrig note"
-msgstr "¥Ş¥ë¥Á¥ê¥È¥ê¥¬¥Î¡¼¥È"
+msgstr "ãƒãƒ«ãƒãƒªãƒˆãƒªã‚¬ãƒãƒ¼ãƒˆ"
 
 #: app/track-editor.c:139
 msgid "Tremor"
-msgstr "¥È¥ì¥â¥í"
+msgstr "ãƒˆãƒ¬ãƒ¢ãƒ­"
 
 #: app/track-editor.c:145
 msgid "LP filter cutoff"
-msgstr "LP¥Õ¥£¥ë¥¿¡¦¥«¥Ã¥È¥ª¥Õ"
+msgstr "LPãƒ•ã‚£ãƒ«ã‚¿ãƒ»ã‚«ãƒƒãƒˆã‚ªãƒ•"
 
 #: app/track-editor.c:150
 msgid "Fine porta up"
-msgstr "ºÙ¤«¤¤¥İ¥ë¥¿¥á¥ó¥È¥¢¥Ã¥×"
+msgstr "ç´°ã‹ã„ãƒãƒ«ã‚¿ãƒ¡ãƒ³ãƒˆã‚¢ãƒƒãƒ—"
 
 #: app/track-editor.c:151
 msgid "Fine porta down"
-msgstr "ºÙ¤«¤¤¥İ¥ë¥¿¥á¥ó¥È¥À¥¦¥ó"
+msgstr "ç´°ã‹ã„ãƒãƒ«ã‚¿ãƒ¡ãƒ³ãƒˆãƒ€ã‚¦ãƒ³"
 
 #: app/track-editor.c:152
 msgid "Set gliss control"
-msgstr "¥°¥ê¥Ã¥µ¥ó¥ÉÁàºîÀßÄê"
+msgstr "ã‚°ãƒªãƒƒã‚µãƒ³ãƒ‰æ“ä½œè¨­å®š"
 
 #: app/track-editor.c:153
 msgid "Set vibrato control"
-msgstr "¥Ó¥Ö¥é¡¼¥ÈÁàºîÀßÄê"
+msgstr "ãƒ“ãƒ–ãƒ©ãƒ¼ãƒˆæ“ä½œè¨­å®š"
 
 #: app/track-editor.c:154
 msgid "Set finetune"
-msgstr "ÈùÄ´À°ÀßÄê"
+msgstr "å¾®èª¿æ•´è¨­å®š"
 
 #: app/track-editor.c:155
 msgid "Set loop begin/loop"
-msgstr "¥ë¡¼¥×³«»ÏÀßÄê/¥ë¡¼¥×"
+msgstr "ãƒ«ãƒ¼ãƒ—é–‹å§‹è¨­å®š/ãƒ«ãƒ¼ãƒ—"
 
 #: app/track-editor.c:156
 msgid "Set tremolo control"
-msgstr "¥È¥ì¥â¥íÁàºîÀßÄê"
+msgstr "ãƒˆãƒ¬ãƒ¢ãƒ­æ“ä½œè¨­å®š"
 
 #: app/track-editor.c:158
 msgid "Retrig note"
-msgstr "¥Î¡¼¥È¥ê¥È¥ê¥¬"
+msgstr "ãƒãƒ¼ãƒˆãƒªãƒˆãƒªã‚¬"
 
 #: app/track-editor.c:159 app/track-editor.c:171
 msgid "Fine volume slide up"
-msgstr "ºÙ¤«¤¤¥Ü¥ê¥å¡¼¥à¤Î¥¹¥é¥¤¥É¥¢¥Ã¥×"
+msgstr "ç´°ã‹ã„ãƒœãƒªãƒ¥ãƒ¼ãƒ ã®ã‚¹ãƒ©ã‚¤ãƒ‰ã‚¢ãƒƒãƒ—"
 
 #: app/track-editor.c:160 app/track-editor.c:170
 msgid "Fine volume slide down"
-msgstr "ºÙ¤«¤¤¥Ü¥ê¥å¡¼¥à¤Î¥¹¥é¥¤¥É¥À¥¦¥ó"
+msgstr "ç´°ã‹ã„ãƒœãƒªãƒ¥ãƒ¼ãƒ ã®ã‚¹ãƒ©ã‚¤ãƒ‰ãƒ€ã‚¦ãƒ³"
 
 #: app/track-editor.c:161
 msgid "Note cut"
-msgstr "²»ÉäÀÚ¼è"
+msgstr "éŸ³ç¬¦åˆ‡å–"
 
 #: app/track-editor.c:162
 msgid "Note delay"
-msgstr "²»Éä¤ÎÃÙ±ä"
+msgstr "éŸ³ç¬¦ã®é…å»¶"
 
 #: app/track-editor.c:163
 msgid "Pattern delay"
-msgstr "¥Ñ¥¿¡¼¥ó¤ÎÃÙ±ä"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³ã®é…å»¶"
 
 #: app/track-editor.c:168
 msgid "Volume slide down"
-msgstr "¥Ü¥ê¥å¡¼¥à¡¦¥¹¥é¥¤¥É¡¦¥À¥¦¥ó"
+msgstr "ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ»ã‚¹ãƒ©ã‚¤ãƒ‰ãƒ»ãƒ€ã‚¦ãƒ³"
 
 #: app/track-editor.c:169
 msgid "Volume slide up"
-msgstr "¥Ü¥ê¥å¡¼¥à¡¦¥¹¥é¥¤¥É¡¦¥¢¥Ã¥×"
+msgstr "ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ»ã‚¹ãƒ©ã‚¤ãƒ‰ãƒ»ã‚¢ãƒƒãƒ—"
 
 #: app/track-editor.c:172
 msgid "Set vibrato speed"
-msgstr "¥Ó¥Ö¥é¡¼¥ÈÂ®ÅÙÀßÄê"
+msgstr "ãƒ“ãƒ–ãƒ©ãƒ¼ãƒˆé€Ÿåº¦è¨­å®š"
 
 #: app/track-editor.c:175
 msgid "Panning slide left"
-msgstr "¥Ñ¥ó¥Ë¥ó¥°¤òº¸¤Ë¥¹¥é¥¤¥É"
+msgstr "ãƒ‘ãƒ³ãƒ‹ãƒ³ã‚°ã‚’å·¦ã«ã‚¹ãƒ©ã‚¤ãƒ‰"
 
 #: app/track-editor.c:176
 msgid "Panning slide right"
-msgstr "¥Ñ¥ó¥Ë¥ó¥°¤ò±¦¤Ë¥¹¥é¥¤¥É"
+msgstr "ãƒ‘ãƒ³ãƒ‹ãƒ³ã‚°ã‚’å³ã«ã‚¹ãƒ©ã‚¤ãƒ‰"
 
 #: app/track-editor.c:181
 msgid "sine"
-msgstr "Àµ¸¹ÇÈ"
+msgstr "æ­£å¼¦æ³¢"
 
 #: app/track-editor.c:182
 msgid "ramp down"
-msgstr "¥é¥ó¥×²¼¤²"
+msgstr "ãƒ©ãƒ³ãƒ—ä¸‹ã’"
 
 #: app/track-editor.c:183
 msgid "square"
-msgstr "¶ë·ÁÇÈ"
+msgstr "çŸ©å½¢æ³¢"
 
 #: app/track-editor.c:228 app/track-editor.c:234 app/track-editor.c:251
 #: app/track-editor.c:257
 msgid "None ]"
-msgstr "Ìµ ]"
+msgstr "ç„¡ ]"
 
 #: app/track-editor.c:357
 msgid "Jazz Edit:"
-msgstr "JazzÊÔ½¸:"
+msgstr "Jazzç·¨é›†:"
 
 #: app/track-editor.c:402
 msgid "Tracker"
-msgstr "¥È¥é¥Ã¥«¡¼"
+msgstr "ãƒˆãƒ©ãƒƒã‚«ãƒ¼"
 
 #: app/tracker.c:88
 #, fuzzy
 msgid "Tracker background"
-msgstr "¥È¥é¥Ã¥«¡¼¼şÇÈ¿ô"
+msgstr "ãƒˆãƒ©ãƒƒã‚«ãƒ¼å‘¨æ³¢æ•°"
 
 #: app/tracker.c:89
 msgid "Cursor background"
@@ -1960,32 +1961,32 @@ msgstr ""
 #: app/tracker.c:90
 #, fuzzy
 msgid "Major lines highlighting"
-msgstr "¹Ô¥Ï¥¤¥é¥¤¥È¤òÍ­¸ú¤Ë"
+msgstr "è¡Œãƒã‚¤ãƒ©ã‚¤ãƒˆã‚’æœ‰åŠ¹ã«"
 
 #: app/tracker.c:91
 #, fuzzy
 msgid "Minor lines highlighting"
-msgstr "¹Ô¥Ï¥¤¥é¥¤¥È¤òÍ­¸ú¤Ë"
+msgstr "è¡Œãƒã‚¤ãƒ©ã‚¤ãƒˆã‚’æœ‰åŠ¹ã«"
 
-#: app/tracker.c:92
+#: app/tracker.c:92 soundtracker.glade:142
 #, fuzzy
 msgid "Selection"
-msgstr "ÁªÂò:"
+msgstr "é¸æŠ:"
 
 #: app/tracker.c:93
 #, fuzzy
 msgid "Notes"
-msgstr "²»Éä"
+msgstr "éŸ³ç¬¦"
 
 #: app/tracker.c:94
 #, fuzzy
 msgid "Delimiters"
-msgstr "ºï½ü"
+msgstr "å‰Šé™¤"
 
 #: app/tracker.c:95
 #, fuzzy
 msgid "Channel numbers"
-msgstr "¥Á¥ã¥ó¥Í¥ë:"
+msgstr "ãƒãƒ£ãƒ³ãƒãƒ«:"
 
 #: app/tracker.c:96
 msgid "Cursor idle"
@@ -1997,99 +1998,99 @@ msgstr ""
 
 #: app/tracker-settings.c:273
 msgid "Font list"
-msgstr "¥Õ¥©¥ó¥È°ìÍ÷"
+msgstr "ãƒ•ã‚©ãƒ³ãƒˆä¸€è¦§"
 
 #: app/tracker-settings.c:295
 msgid "Add font"
-msgstr "¥Õ¥©¥ó¥ÈÄÉ²Ã"
+msgstr "ãƒ•ã‚©ãƒ³ãƒˆè¿½åŠ "
 
 #: app/tracker-settings.c:301
 msgid "Delete font"
-msgstr "¥Õ¥©¥ó¥Èºï½ü"
+msgstr "ãƒ•ã‚©ãƒ³ãƒˆå‰Šé™¤"
 
 #: app/tracker-settings.c:307
 msgid "Apply font"
-msgstr "¥Õ¥©¥ó¥ÈÅ¬ÍÑ"
+msgstr "ãƒ•ã‚©ãƒ³ãƒˆé©ç”¨"
 
 #: app/tracker-settings.c:323
 msgid "Select font..."
-msgstr "¥Õ¥©¥ó¥ÈÁªÂò..."
+msgstr "ãƒ•ã‚©ãƒ³ãƒˆé¸æŠ..."
 
 #: app/transposition.c:199
 msgid "Whole Song"
-msgstr "¶ÊÁ´ÂÎ"
+msgstr "æ›²å…¨ä½“"
 
 #: app/transposition.c:200
 msgid "All Patterns"
-msgstr "Á´¥Ñ¥¿¡¼¥ó"
+msgstr "å…¨ãƒ‘ã‚¿ãƒ¼ãƒ³"
 
 #: app/transposition.c:201
 msgid "Current Pattern"
-msgstr "¸½ºß¤Î¥Ñ¥¿¡¼¥ó"
+msgstr "ç¾åœ¨ã®ãƒ‘ã‚¿ãƒ¼ãƒ³"
 
 #: app/transposition.c:202
 msgid "Current Track"
-msgstr "¸½ºß¤Î¥È¥é¥Ã¥¯"
+msgstr "ç¾åœ¨ã®ãƒˆãƒ©ãƒƒã‚¯"
 
 #: app/transposition.c:206
 msgid "Current Instrument"
-msgstr "¸½ºß¤Î³Ú´ï"
+msgstr "ç¾åœ¨ã®æ¥½å™¨"
 
 #: app/transposition.c:207
 msgid "All Instruments"
-msgstr "Á´³Ú´ï"
+msgstr "å…¨æ¥½å™¨"
 
 #: app/transposition.c:211
 msgid "Half note up"
-msgstr "È¾²»¾å¤²¤ë"
+msgstr "åŠéŸ³ä¸Šã’ã‚‹"
 
 #: app/transposition.c:212
 msgid "Half note down"
-msgstr "È¾²»²¼¤²¤ë"
+msgstr "åŠéŸ³ä¸‹ã’ã‚‹"
 
 #: app/transposition.c:213
 msgid "Octave up"
-msgstr "¥ª¥¯¥¿¡¼¥Ö¾å¤²¤ë"
+msgstr "ã‚ªã‚¯ã‚¿ãƒ¼ãƒ–ä¸Šã’ã‚‹"
 
 #: app/transposition.c:214
 msgid "Octave down"
-msgstr "¥ª¥¯¥¿¡¼¥Ö²¼¤²¤ë"
+msgstr "ã‚ªã‚¯ã‚¿ãƒ¼ãƒ–ä¸‹ã’ã‚‹"
 
 #: app/transposition.c:217
 msgid "Exchange 1 <-> 2"
-msgstr "¸ò´¹ 1 <-> 2"
+msgstr "äº¤æ› 1 <-> 2"
 
 #: app/transposition.c:218
 msgid "Change 1 -> 2"
-msgstr "¸ò´¹ 1 -> 2"
+msgstr "äº¤æ› 1 -> 2"
 
 #: app/transposition.c:226
 msgid "Transposition Tools"
-msgstr "°ÜÄ´¥Ä¡¼¥ë"
+msgstr "ç§»èª¿ãƒ„ãƒ¼ãƒ«"
 
 #: app/transposition.c:239
 msgid "Scope of the operation:"
-msgstr "Áàºî¥¹¥³¡¼¥×:"
+msgstr "æ“ä½œã‚¹ã‚³ãƒ¼ãƒ—:"
 
 #: app/transposition.c:244
 msgid "Note Transposition"
-msgstr "°ÜÄ´¤ÎÄ´"
+msgstr "ç§»èª¿ã®èª¿"
 
 #: app/transposition.c:270
 msgid "Instrument Changing"
-msgstr "³Ú´ï¸ò´¹"
+msgstr "æ¥½å™¨äº¤æ›"
 
 #: app/transposition.c:282
 msgid "Instrument 1:"
-msgstr "³Ú´ï 1:"
+msgstr "æ¥½å™¨ 1:"
 
 #: app/transposition.c:284 app/transposition.c:293
 msgid "Current instrument"
-msgstr "¸½ºß¤Î³Ú´ï"
+msgstr "ç¾åœ¨ã®æ¥½å™¨"
 
 #: app/transposition.c:291
 msgid "Instrument 2:"
-msgstr "³Ú´ï 2:"
+msgstr "æ¥½å™¨ 2:"
 
 #: app/xm.c:195
 msgid "Pattern header reading error."
@@ -2098,12 +2099,12 @@ msgstr ""
 #: app/xm.c:202
 #, fuzzy, c-format
 msgid "Pattern length out of range: %d."
-msgstr "¥Ñ¥¿¡¼¥óÄ¹¤¬ÈÏ°Ï¤ò±Û¤¨¤Ş¤·¤¿: %d.\n"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³é•·ãŒç¯„å›²ã‚’è¶Šãˆã¾ã—ãŸ: %d.\n"
 
 #: app/xm.c:224
 #, fuzzy
 msgid "Error loading notes."
-msgstr "¥Ñ¥¿¡¼¥ó¤Î¥í¡¼¥ÉÃæ¤Ë¥¨¥é¡¼¡£"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³ã®ãƒ­ãƒ¼ãƒ‰ä¸­ã«ã‚¨ãƒ©ãƒ¼ã€‚"
 
 #: app/xm.c:329
 msgid "Sample header reading error"
@@ -2117,7 +2118,7 @@ msgstr ""
 #: app/xm.c:703
 #, fuzzy
 msgid "Instrument header reading error"
-msgstr "³Ú´ï¸ò´¹"
+msgstr "æ¥½å™¨äº¤æ›"
 
 #: app/xm.c:538
 msgid "XM Load Error: Number of samples in instrument > 128.\n"
@@ -2138,7 +2139,7 @@ msgstr ""
 #: app/xm.c:564
 #, fuzzy
 msgid "Panning envelope points reading error"
-msgstr "¥¨¥ó¥Ù¥í¡¼¥×¤ò¥Ñ¥ó¥Ë¥ó¥°¤¹¤ë"
+msgstr "ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã‚’ãƒ‘ãƒ³ãƒ‹ãƒ³ã‚°ã™ã‚‹"
 
 #: app/xm.c:570
 msgid "Envelope parameters reading error"
@@ -2147,16 +2148,16 @@ msgstr ""
 #: app/xm.c:591
 #, fuzzy, c-format
 msgid "XM Load Warning: Invalid vibtype %d, using Sine.\n"
-msgstr "ÉÔÀµ¤Ê¥Ğ¥¤¥Ö¥ì¡¼¥·¥ç¥ó·¿%d¡¢Àµ¸¹ÇÈ¤ò»ÈÍÑ¤·¤Ş¤¹¡£\n"
+msgstr "ä¸æ­£ãªãƒã‚¤ãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³å‹%dã€æ­£å¼¦æ³¢ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚\n"
 
 #: app/xm.c:631
 msgid "File is no XI instrument."
-msgstr "¥Õ¥¡¥¤¥ë¤¬XI³Ú´ï¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ãŒXIæ¥½å™¨ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚"
 
 #: app/xm.c:651
 #, c-format
 msgid "Unknown XI version 0x%x\n"
-msgstr "Ì¤ÃÎ¤ÎXI¥Ğ¡¼¥¸¥ç¥ó0x%x¤Ç¤¹\n"
+msgstr "æœªçŸ¥ã®XIãƒãƒ¼ã‚¸ãƒ§ãƒ³0x%xã§ã™\n"
 
 #: app/xm.c:657
 msgid "Instrument sample map reading error"
@@ -2177,7 +2178,7 @@ msgstr ""
 #: app/xm.c:693
 #, c-format
 msgid "Invalid vibtype %d, using Sine.\n"
-msgstr "ÉÔÀµ¤Ê¥Ğ¥¤¥Ö¥ì¡¼¥·¥ç¥ó·¿%d¡¢Àµ¸¹ÇÈ¤ò»ÈÍÑ¤·¤Ş¤¹¡£\n"
+msgstr "ä¸æ­£ãªãƒã‚¤ãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³å‹%dã€æ­£å¼¦æ³¢ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚\n"
 
 #: app/xm.c:769
 msgid ""
@@ -2192,7 +2193,7 @@ msgstr ""
 #: app/xm.c:940
 #, fuzzy
 msgid "Instrument header reading error."
-msgstr "³Ú´ï¤¬¥í¡¼¥É¤µ¤ì¤Ş¤·¤¿¡£"
+msgstr "æ¥½å™¨ãŒãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¾ã—ãŸã€‚"
 
 #: app/xm.c:947
 msgid "Sample header reading error."
@@ -2204,7 +2205,7 @@ msgstr ""
 
 #: app/xm.c:1009 app/xm.c:1141
 msgid "Error while loading patterns."
-msgstr "¥Ñ¥¿¡¼¥ó¤Î¥í¡¼¥ÉÃæ¤Ë¥¨¥é¡¼¡£"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³ã®ãƒ­ãƒ¼ãƒ‰ä¸­ã«ã‚¨ãƒ©ãƒ¼ã€‚"
 
 #: app/xm.c:1036
 #, c-format
@@ -2219,13 +2220,13 @@ msgstr ""
 
 #: app/xm.c:1080
 msgid "Can't open file"
-msgstr "¥Õ¥¡¥¤¥ë¤¬³«¤±¤Ş¤»¤ó"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ã¾ã›ã‚“"
 
 #: app/xm.c:1094
 msgid "XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n"
 msgstr ""
-"XM¥Ø¥Ã¥ÀÄ¹¤¬276¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£\n"
-"¶²¤é¤¯pre-0.0.12 SoundTracker¥â¥¸¥å¡¼¥ë¤Ç¤Ï? :-)\n"
+"XMãƒ˜ãƒƒãƒ€é•·ãŒ276ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚\n"
+"æã‚‰ãpre-0.0.12 SoundTrackerãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã§ã¯? :-)\n"
 
 #: app/xm.c:1098
 msgid "Version != 0x0104. The results may be unpredictable"
@@ -2238,11 +2239,11 @@ msgstr ""
 #: app/xm.c:1136
 #, fuzzy
 msgid "Error while loading pattern order table."
-msgstr "¥Ñ¥¿¡¼¥ó¤Î¥í¡¼¥ÉÃæ¤Ë¥¨¥é¡¼¡£"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³ã®ãƒ­ãƒ¼ãƒ‰ä¸­ã«ã‚¨ãƒ©ãƒ¼ã€‚"
 
 #: app/xm.c:1147
 msgid "Error while loading instruments."
-msgstr "³Ú´ï¤Î¥í¡¼¥ÉÃæ¤Ë¥¨¥é¡¼¡£"
+msgstr "æ¥½å™¨ã®ãƒ­ãƒ¼ãƒ‰ä¸­ã«ã‚¨ãƒ©ãƒ¼ã€‚"
 
 #: app/xm.c:1158
 #, c-format
@@ -2250,8 +2251,8 @@ msgid ""
 "Module contains sample(s) that are too long for the current mixer.\n"
 "Maximum sample length is %d."
 msgstr ""
-"¥â¥¸¥å¡¼¥ë¤¬¸½ºß¤Î¥ß¥­¥µ¡¦¥â¥¸¥å¡¼¥ë¤Ë¤ÏÄ¹²á¤®¤ë¥µ¥ó¥×¥ë¤ò´Ş¤ó¤Ç¤¤¤Ş¤¹¡£\n"
-"¥µ¥ó¥×¥ë¤ÎºÇÂçÄ¹¤Ï%d¤Ç¤¹¡£"
+"ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãŒç¾åœ¨ã®ãƒŸã‚­ã‚µãƒ»ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã«ã¯é•·éãã‚‹ã‚µãƒ³ãƒ—ãƒ«ã‚’å«ã‚“ã§ã„ã¾ã™ã€‚\n"
+"ã‚µãƒ³ãƒ—ãƒ«ã®æœ€å¤§é•·ã¯%dã§ã™ã€‚"
 
 #: app/xm.c:1230
 msgid ""
@@ -2262,64 +2263,64 @@ msgstr ""
 #: app/xm.c:1558
 msgid "Not FastTracker XM and not supported MOD format!"
 msgstr ""
-"FastTracker XM¥Õ¥©¡¼¥Ş¥Ã¥È¤Ç¤â¥µ¥İ¡¼¥È¤µ¤ì¤¿MOD¥Õ¥©¡¼¥Ş¥Ã¥È¤Ç¤â¤¢¤ê¤Ş¤»¤ó!"
+"FastTracker XMãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã§ã‚‚ã‚µãƒãƒ¼ãƒˆã•ã‚ŒãŸMODãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã§ã‚‚ã‚ã‚Šã¾ã›ã‚“!"
 
 #: app/xm.c:1573 app/xm.c:1594
 msgid "Error when file reading or unexpected end of file"
 msgstr ""
-"¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¹ş¤ßÃæ¤Ë¥¨¥é¡¼¤¬µ¯¤­¤Ş¤·¤¿¡¢¤â¤·¤¯¤ÏÍ½´ü¤»¤Ì¥Õ¥¡¥¤¥ë¤Î½ªÎ»¤Ç¤¹"
+"ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒèµ·ãã¾ã—ãŸã€ã‚‚ã—ãã¯äºˆæœŸã›ã¬ãƒ•ã‚¡ã‚¤ãƒ«ã®çµ‚äº†ã§ã™"
 
 #: app/xm.c:1577
 msgid "Incorrect or unsupported version of pattern file!"
-msgstr "ÉÔÀµ¡¢¤â¤·¤¯¤Ï¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ê¤¤¥Ñ¥¿¡¼¥ó¥Õ¥¡¥¤¥ë¤Î¥Ğ¡¼¥¸¥ç¥ó¤Ç¤¹¡ª"
+msgstr "ä¸æ­£ã€ã‚‚ã—ãã¯ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„ãƒ‘ã‚¿ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§ã™ï¼"
 
 #: app/xm.c:1581
 msgid "Incorrect pattern length!"
-msgstr "¥Ñ¥¿¡¼¥óÄ¹¤¬ÉÔÀµ¤Ç¤¹¡ª"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³é•·ãŒä¸æ­£ã§ã™ï¼"
 
 #: app/xm.c:1624 app/xm.c:1650
 msgid "Error during saving pattern!"
-msgstr "¥Ñ¥¿¡¼¥ó¤Î¥»¡¼¥ÖÃæ¤Ë¥¨¥é¡¼¡£"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³ã®ã‚»ãƒ¼ãƒ–ä¸­ã«ã‚¨ãƒ©ãƒ¼ã€‚"
 
 #: app/midi-settings-09x.c:409
 msgid "Auto connect"
-msgstr "¼«Æ°ÀÜÂ³"
+msgstr "è‡ªå‹•æ¥ç¶š"
 
 #: app/midi-settings-09x.c:424
 msgid "Channel"
-msgstr "¥Á¥ã¥ó¥Í¥ë"
+msgstr "ãƒãƒ£ãƒ³ãƒãƒ«"
 
 #: app/midi-settings-09x.c:433
 msgid "Client number"
-msgstr "¥¯¥é¥¤¥¢¥ó¥ÈÈÖ¹æ"
+msgstr "ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆç•ªå·"
 
 #: app/midi-settings-09x.c:443
 msgid "Port number"
-msgstr "¥İ¡¼¥ÈÈÖ¹æ"
+msgstr "ãƒãƒ¼ãƒˆç•ªå·"
 
 #: app/midi-settings-09x.c:461
 msgid "Input"
-msgstr "ÆşÎÏ"
+msgstr "å…¥åŠ›"
 
 #: app/midi-settings-09x.c:470
 msgid "For future development"
-msgstr "¾­Íè¤Î¤¿¤á¤ËÍ½Ìó"
+msgstr "å°†æ¥ã®ãŸã‚ã«äºˆç´„"
 
 #: app/midi-settings-09x.c:476
 msgid "Output"
-msgstr "½ĞÎÏ"
+msgstr "å‡ºåŠ›"
 
 #: app/midi-settings-09x.c:487
 msgid "Debug level"
-msgstr "¥Ç¥Ğ¥Ã¥°¥ì¥Ù¥ë"
+msgstr "ãƒ‡ãƒãƒƒã‚°ãƒ¬ãƒ™ãƒ«"
 
 #: app/midi-settings-09x.c:499
 msgid "Misc"
-msgstr "¤½¤ÎÂ¾"
+msgstr "ãã®ä»–"
 
 #: app/midi-settings-09x.c:540
 msgid "MIDI Configuration"
-msgstr "MIDIÀßÄê"
+msgstr "MIDIè¨­å®š"
 
 #: app/midi-09x.c:235
 #, c-format
@@ -2351,557 +2352,676 @@ msgstr ""
 msgid "error closing handle (%s)\n"
 msgstr ""
 
+#: soundtracker.glade:10
+msgid "Pattern"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³"
+
+#: soundtracker.glade:49
+#, fuzzy
+msgid "Track"
+msgstr "ãƒˆãƒ©ãƒƒã‚¯(_T)"
+
+#: soundtracker.glade:88 soundtracker.glade:501
+msgid "_Kill notes"
+msgstr "éŸ³ç¬¦ã‚’æ¶ˆã™(_K)"
+
+#: soundtracker.glade:104 soundtracker.glade:518
+msgid "_Insert track"
+msgstr "ãƒˆãƒ©ãƒƒã‚¯æŒ¿å…¥(_I)"
+
+#: soundtracker.glade:112 soundtracker.glade:526
+msgid "_Delete track"
+msgstr "ãƒˆãƒ©ãƒƒã‚¯å‰Šé™¤(_D)"
+
+#: soundtracker.glade:125 soundtracker.glade:539
+msgid "Increment cmd value"
+msgstr "cmdå€¤å¢—åŠ "
+
+#: soundtracker.glade:131 soundtracker.glade:546
+msgid "Decrement cmd value"
+msgstr "cmdå€¤æ¸›å°‘"
+
+#: soundtracker.glade:150 soundtracker.glade:575
+msgid "C_lear block marks"
+msgstr "ãƒ–ãƒ­ãƒƒã‚¯ãƒ»ãƒãƒ¼ã‚¯æ¶ˆå»(_l)"
+
+#: soundtracker.glade:185 soundtracker.glade:589
+msgid "_Interpolate effects"
+msgstr "å†…æŒ¿ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ(_I)"
+
+#: soundtracker.glade:219
+msgid "_File"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«(_F)"
+
+#: soundtracker.glade:261
+#, fuzzy
+msgid "Save Module as _WAVâ€¦"
+msgstr "_WAVã¨ã—ã¦ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ä¿å­˜..."
+
+#: soundtracker.glade:270
+#, fuzzy
+msgid "Save _XM without samplesâ€¦"
+msgstr "ã‚µãƒ³ãƒ—ãƒ«ç„¡ã—ã«XMä¿å­˜..."
+
+#: soundtracker.glade:299
+msgid "_Module"
+msgstr "ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«(_M)"
+
+#: soundtracker.glade:306
+msgid "Clear _All"
+msgstr "å…¨ã¦æ¶ˆå»(_A)"
+
+#: soundtracker.glade:315
+msgid "Clear _Patterns Only"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³ã®ã¿æ¶ˆå»(_P)"
+
+#: soundtracker.glade:330
+msgid "_Optimize Module"
+msgstr "ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«æœ€é©åŒ–(_O)"
+
+#: soundtracker.glade:342
+msgid "_Edit"
+msgstr "ç·¨é›†(_E)"
+
+#: soundtracker.glade:382
+#, fuzzy
+msgid "_Jazz edit mode"
+msgstr "_Jazzç·¨é›†ãƒ¢ãƒ¼ãƒ‰"
+
+#: soundtracker.glade:391
+msgid "_Record keyreleases"
+msgstr ""
+
+#: soundtracker.glade:404
+#, fuzzy
+msgid "Transp_ositionâ€¦"
+msgstr "ç§»èª¿(_o)..."
+
+#: soundtracker.glade:417 soundtracker.glade:643
+msgid "_Pattern"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³(_P)"
+
+#: soundtracker.glade:459 soundtracker.glade:738
+msgid "_Track"
+msgstr "ãƒˆãƒ©ãƒƒã‚¯(_T)"
+
+#: soundtracker.glade:558
+msgid "_Selection"
+msgstr "é¸æŠ(_S)"
+
+#: soundtracker.glade:566
+msgid "_Mark mode"
+msgstr "ãƒãƒ¼ã‚¯ãƒ»ãƒ¢ãƒ¼ãƒ‰(_M)"
+
+#: soundtracker.glade:603
+msgid "Transpose half-note up"
+msgstr "åŠéŸ³ä¸Šã’ã‚‹"
+
+#: soundtracker.glade:611
+msgid "Transpose half-note down"
+msgstr "åŠéŸ³ä¸‹ã’ã‚‹"
+
+#: soundtracker.glade:619
+msgid "Transpose octave up"
+msgstr "ã‚ªã‚¯ã‚¿ãƒ¼ãƒ–ä¸Šã’ã‚‹"
+
+#: soundtracker.glade:627
+msgid "Transpose octave down"
+msgstr "ã‚ªã‚¯ã‚¿ãƒ¼ãƒ–ä¸‹ã’ã‚‹"
+
+#: soundtracker.glade:650
+#, fuzzy
+msgid "_Load Patternâ€¦"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’èª­ã¿è¾¼ã¿(_o)"
+
+#: soundtracker.glade:659
+#, fuzzy
+msgid "_Save Current Patternâ€¦"
+msgstr "ç¾åœ¨ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’ä¿å­˜(_S)"
+
+#: soundtracker.glade:674
+msgid "_Find Unused Pattern"
+msgstr "æœªä½¿ç”¨ãƒ‘ã‚¿ãƒ¼ãƒ³æ¤œç´¢(_F)"
+
+#: soundtracker.glade:683
+msgid "_Copy Current to Unused Pattern"
+msgstr "æœªä½¿ç”¨ãƒ‘ã‚¿ãƒ¼ãƒ³ã«ã‚«ãƒ¬ãƒ³ãƒˆã‚’ã‚³ãƒ”ãƒ¼(_C)"
+
+#: soundtracker.glade:697
+msgid "C_lear Unused Patterns"
+msgstr "æœªä½¿ç”¨ãƒ‘ã‚¿ãƒ¼ãƒ³æ¶ˆå»(_l)"
+
+#: soundtracker.glade:705
+msgid "_Pack Patterns"
+msgstr "ãƒ‘ã‚¿ãƒ¼ãƒ³ãƒ»ãƒ‘ãƒƒã‚¯(_P)"
+
+#: soundtracker.glade:718
+#, fuzzy
+msgid "S_hrink Current Pattern"
+msgstr "ç¾åœ¨ã®ãƒ‘ã‚¿ãƒ¼ãƒ³"
+
+#: soundtracker.glade:726
+#, fuzzy
+msgid "_Expand Current Pattern"
+msgstr "ç¾åœ¨ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’ä¿å­˜(_S)"
+
+#: soundtracker.glade:746
+msgid "_Toggle Current Track Permanentness"
+msgstr ""
+
+#: soundtracker.glade:754
+msgid "Toggle _All Tracks Permanentness"
+msgstr ""
+
+#: soundtracker.glade:766
+msgid "_Instrument"
+msgstr "æ¥½å™¨(_I)"
+
+#: soundtracker.glade:773
+#, fuzzy
+msgid "_Load XIâ€¦"
+msgstr "XIãƒ­ãƒ¼ãƒ‰"
+
+#: soundtracker.glade:782
+#, fuzzy
+msgid "_Save XIâ€¦"
+msgstr "XIä¿å­˜"
+
+#: soundtracker.glade:796
+msgid "_Clear Current"
+msgstr "ã‚«ãƒ¬ãƒ³ãƒˆæ¶ˆå»(_C)"
+
+#: soundtracker.glade:811
+msgid "_Delete Unused Instruments"
+msgstr "æœªä½¿ç”¨æ¥½å™¨å‰Šé™¤(_D)"
+
+#: soundtracker.glade:826
+msgid "_Settings"
+msgstr "è¨­å®š(_S)"
+
+#: soundtracker.glade:834
+msgid "Display _Oscilloscopes"
+msgstr "ã‚ªã‚·ãƒ­ã‚¹ã‚³ãƒ¼ãƒ—è¡¨ç¤º(_O)"
+
+#: soundtracker.glade:842
+msgid "_Tracker"
+msgstr "ãƒˆãƒ©ãƒƒã‚«ãƒ¼(_T)"
+
+#: soundtracker.glade:850
+#, fuzzy
+msgid "_Flicker-free Scrolling"
+msgstr "ãƒ•ãƒªãƒƒã‚«ç„¡ã—ã®ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«(_F)"
+
+#: soundtracker.glade:858
+#, fuzzy
+msgid "_Previous Font"
+msgstr "å‰ã®ãƒ•ã‚©ãƒ³ãƒˆ(_P)"
+
+#: soundtracker.glade:867
+#, fuzzy
+msgid "_Next Font"
+msgstr "æ¬¡ã®ãƒ•ã‚©ãƒ³ãƒˆ(_N)"
+
+#: soundtracker.glade:881
+#, fuzzy
+msgid "Change Preferred _Accidental Type"
+msgstr "å¥½ã¿ã®è‡¨æ™‚è¨˜å·ã‚¿ã‚¤ãƒ—ã«å¤‰æ›´ã™ã‚‹ (_A)"
+
+#: soundtracker.glade:890
+#, fuzzy
+msgid "Change Effect Column _Editing Direction"
+msgstr "ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚³ãƒ©ãƒ ç·¨é›†ã®æ–¹å‘ã‚’å¤‰ãˆã‚‹"
+
+#: soundtracker.glade:907
+#, fuzzy
+msgid "_Keyboard Configurationâ€¦"
+msgstr "ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰è¨­å®š"
+
+#: soundtracker.glade:917
+#, fuzzy
+msgid "_Audio Configurationâ€¦"
+msgstr "ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªè¨­å®š"
+
+#: soundtracker.glade:927
+#, fuzzy
+msgid "_GUI Configurationâ€¦"
+msgstr "GUIè¨­å®š"
+
+#: soundtracker.glade:937
+#, fuzzy
+msgid "_MIDI Configurationâ€¦"
+msgstr "MIDIè¨­å®š"
+
+#: soundtracker.glade:953
+#, fuzzy
+msgid "_Disable Splash Screen"
+msgstr "ã‚¹ãƒ—ãƒ©ãƒƒã‚·ãƒ¥ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚’ç„¡åŠ¹ã«ã™ã‚‹"
+
+#: soundtracker.glade:960
+#, fuzzy
+msgid "_Save Settings Now"
+msgstr "è¨­å®šã‚’ä»Šä¿å­˜(_S)"
+
+#: soundtracker.glade:971
+msgid "Save Settings on _Exit"
+msgstr "çµ‚äº†æ™‚ã«è¨­å®šã‚’ä¿å­˜(_E)"
+
+#: soundtracker.glade:983
+msgid "_Help"
+msgstr "ãƒ˜ãƒ«ãƒ—(_H)"
+
+#: soundtracker.glade:1005
+#, fuzzy
+msgid "Show _Tipsâ€¦"
+msgstr "æŠ€ã®è¡¨ç¤º(_T)..."
+
+#: soundtracker.glade:1014
+#, fuzzy
+msgid "_XM Effects"
+msgstr "_XMåŠ¹æœ..."
+
 #~ msgid "(%d bytes)"
-#~ msgstr "(%d¥Ğ¥¤¥È)"
+#~ msgstr "(%dãƒã‚¤ãƒˆ)"
 
 #~ msgid "Estimated audio delay: %f microseconds"
-#~ msgstr "¿äÄê¥ª¡¼¥Ç¥£¥ª¡¦¥Ç¥£¥ì¥¤: %f¥Ş¥¤¥¯¥íÉÃ"
+#~ msgstr "æ¨å®šã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ»ãƒ‡ã‚£ãƒ¬ã‚¤: %fãƒã‚¤ã‚¯ãƒ­ç§’"
 
 #~ msgid "ALSA card number:"
-#~ msgstr "ALSA¥«¡¼¥ÉÈÖ¹æ:"
+#~ msgstr "ALSAã‚«ãƒ¼ãƒ‰ç•ªå·:"
 
 #~ msgid ""
 #~ "Couldn't open ALSA device for sound input (card:%d, device:%d):\n"
 #~ "%s"
 #~ msgstr ""
-#~ "¥µ¥¦¥ó¥É½ĞÎÏ¤ËÂĞ¤·¤ÆALSA¥Ç¥Ğ¥¤¥¹(¥«¡¼¥É:%d¡¢¥Ç¥Ğ¥¤¥¹:%d)¤¬³«¤±¤Ş¤»¤ó¤Ç¤·"
-#~ "¤¿:\n"
+#~ "ã‚µã‚¦ãƒ³ãƒ‰å‡ºåŠ›ã«å¯¾ã—ã¦ALSAãƒ‡ãƒã‚¤ã‚¹(ã‚«ãƒ¼ãƒ‰:%dã€ãƒ‡ãƒã‚¤ã‚¹:%d)ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—"
+#~ "ãŸ:\n"
 #~ "%s"
 
 #~ msgid "Required sound output parameters not supported.\n"
-#~ msgstr "Í×µá¤µ¤ì¤¿¥µ¥¦¥ó¥É½ĞÎÏ¥Õ¥©¡¼¥Ş¥Ã¥È¤¬¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£\n"
+#~ msgstr "è¦æ±‚ã•ã‚ŒãŸã‚µã‚¦ãƒ³ãƒ‰å‡ºåŠ›ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆãŒã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚\n"
 
 #~ msgid ""
 #~ "Couldn't open ALSA device for sound output (card:%d, device:%d):\n"
 #~ "%s"
 #~ msgstr ""
-#~ "¥µ¥¦¥ó¥É½ĞÎÏ¤ËÂĞ¤·¤ÆALSA¥Ç¥Ğ¥¤¥¹(¥«¡¼¥É:%d¡¢¥Ç¥Ğ¥¤¥¹:%d)¤¬³«¤±¤Ş¤»¤ó¤Ç¤·"
-#~ "¤¿:\n"
+#~ "ã‚µã‚¦ãƒ³ãƒ‰å‡ºåŠ›ã«å¯¾ã—ã¦ALSAãƒ‡ãƒã‚¤ã‚¹(ã‚«ãƒ¼ãƒ‰:%dã€ãƒ‡ãƒã‚¤ã‚¹:%d)ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—"
+#~ "ãŸ:\n"
 #~ "%s"
 
 #~ msgid "Required output-channel parameters not supported.\n"
-#~ msgstr "Í×µá¤µ¤ì¤¿¥Á¥ã¥ó¥Í¥ë½ĞÎÏ¥Ñ¥é¥á¡¼¥¿¤¬¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£\n"
+#~ msgstr "è¦æ±‚ã•ã‚ŒãŸãƒãƒ£ãƒ³ãƒãƒ«å‡ºåŠ›ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚\n"
 
 #~ msgid "Alsa setup error.\n"
-#~ msgstr "ALSA¥»¥Ã¥È¥¢¥Ã¥×¥¨¥é¡¼¡¥\n"
+#~ msgstr "ALSAã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã‚¨ãƒ©ãƒ¼ï¼\n"
 
 #~ msgid ""
 #~ "Couldn't open %s for sound output:\n"
 #~ "%s"
 #~ msgstr ""
-#~ "¥µ¥¦¥ó¥É½ĞÎÏ¤ËÂĞ¤·¤Æ %s ¤¬³«¤±¤Ş¤»¤ó¤Ç¤·¤¿:\n"
+#~ "ã‚µã‚¦ãƒ³ãƒ‰å‡ºåŠ›ã«å¯¾ã—ã¦ %s ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—ãŸ:\n"
 #~ "%s"
 
 #~ msgid "transport master"
-#~ msgstr "¥È¥é¥ó¥¹¥İ¡¼¥È¥Ş¥¹¥¿¡¼"
+#~ msgstr "ãƒˆãƒ©ãƒ³ã‚¹ãƒãƒ¼ãƒˆãƒã‚¹ã‚¿ãƒ¼"
 
 #~ msgid "declick"
-#~ msgstr "¥Ç¥¯¥ê¥Ã¥¯"
+#~ msgstr "ãƒ‡ã‚¯ãƒªãƒƒã‚¯"
 
 #~ msgid "soundtracker"
 #~ msgstr "soundtracker"
 
 #~ msgid "Save Song"
-#~ msgstr "¶ÊÊİÂ¸"
+#~ msgstr "æ›²ä¿å­˜"
 
 #~ msgid "Question"
-#~ msgstr "¼ÁÌä"
+#~ msgstr "è³ªå•"
 
 #~ msgid "Yes"
-#~ msgstr "¤Ï¤¤"
+#~ msgstr "ã¯ã„"
 
 #~ msgid "No"
-#~ msgstr "¤¤¤¤¤¨"
+#~ msgstr "ã„ã„ãˆ"
 
 #~ msgid "Warning"
-#~ msgstr "·Ù¹ğ"
+#~ msgstr "è­¦å‘Š"
 
 #~ msgid "Error!"
-#~ msgstr "¥¨¥é¡¼!"
+#~ msgstr "ã‚¨ãƒ©ãƒ¼!"
 
 #~ msgid "Close"
-#~ msgstr "ÊÄ¤¸¤ë"
+#~ msgstr "é–‰ã˜ã‚‹"
 
 #~ msgid "No file selected."
-#~ msgstr "¥Õ¥¡¥¤¥ë¤¬ÁªÂò¤µ¤ì¤Æ¤¤¤Ş¤»¤ó"
+#~ msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ãŒé¸æŠã•ã‚Œã¦ã„ã¾ã›ã‚“"
 
 #~ msgid "Are you sure you want to overwrite the file?"
-#~ msgstr "¥Õ¥¡¥¤¥ë¤ò¾å½ñ¤­¤·¤¿¤¤¤Î¤Ï³Î¤«¤Ç¤¹¤«?"
+#~ msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¸Šæ›¸ãã—ãŸã„ã®ã¯ç¢ºã‹ã§ã™ã‹?"
 
 #~ msgid "Load XM..."
-#~ msgstr "XM¥í¡¼¥É..."
+#~ msgstr "XMãƒ­ãƒ¼ãƒ‰..."
 
 #~ msgid "Save XM..."
-#~ msgstr "XMÊİÂ¸..."
+#~ msgstr "XMä¿å­˜..."
 
 #~ msgid "Save song as XM..."
-#~ msgstr "XM¤È¤·¤Æ¶ÊÊİÂ¸..."
+#~ msgstr "XMã¨ã—ã¦æ›²ä¿å­˜..."
 
 #~ msgid "Load Instrument..."
-#~ msgstr "³Ú´ï¥í¡¼¥É..."
+#~ msgstr "æ¥½å™¨ãƒ­ãƒ¼ãƒ‰..."
 
 #~ msgid "Save Instrument..."
-#~ msgstr "³Ú´ïÊİÂ¸..."
+#~ msgstr "æ¥½å™¨ä¿å­˜..."
 
 #~ msgid ""
 #~ "The keyboard configuration file is defective.\n"
 #~ "Please use the Keyboard Configuration dialog."
 #~ msgstr ""
-#~ "¥­¡¼¥Ü¡¼¥ÉÀßÄê¥Õ¥¡¥¤¥ë¤¬ÉÔ´°Á´¤Ç¤¹¡£\n"
-#~ "¥­¡¼¥Ü¡¼¥ÉÀßÄê¥À¥¤¥¢¥í¥°¤ò»ÈÍÑ¤·¤Æ¤¯¤À¤µ¤¤¡£"
+#~ "ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ãŒä¸å®Œå…¨ã§ã™ã€‚\n"
+#~ "ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰è¨­å®šãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’ä½¿ç”¨ã—ã¦ãã ã•ã„ã€‚"
 
 #~ msgid "Ok"
-#~ msgstr "Î»²ò"
+#~ msgstr "äº†è§£"
 
 #~ msgid "_Open..."
-#~ msgstr "³«¤¯(_O)..."
+#~ msgstr "é–‹ã(_O)..."
 
 #~ msgid "Save _as..."
-#~ msgstr "ÊİÂ¸(_a)..."
-
-#~ msgid "Save Module as _WAV..."
-#~ msgstr "_WAV¤È¤·¤Æ¥â¥¸¥å¡¼¥ë¤òÊİÂ¸..."
+#~ msgstr "ä¿å­˜(_a)..."
 
 #~ msgid "_Quit"
-#~ msgstr "½ªÎ»(_Q)"
-
-#~ msgid "Clear _All"
-#~ msgstr "Á´¤Æ¾Ãµî(_A)"
-
-#~ msgid "Clear _Patterns Only"
-#~ msgstr "¥Ñ¥¿¡¼¥ó¤Î¤ß¾Ãµî(_P)"
-
-#~ msgid "_Optimize Module"
-#~ msgstr "¥â¥¸¥å¡¼¥ëºÇÅ¬²½(_O)"
+#~ msgstr "çµ‚äº†(_Q)"
 
 #~ msgid "C_ut"
-#~ msgstr "ÀÚ¼è(_u)"
+#~ msgstr "åˆ‡å–(_u)"
 
 #~ msgid "_Copy"
-#~ msgstr "¥³¥Ô¡¼(_C)"
+#~ msgstr "ã‚³ãƒ”ãƒ¼(_C)"
 
 #~ msgid "_Paste"
-#~ msgstr "Å½ÉÕ(_P)"
-
-#~ msgid "_Kill notes"
-#~ msgstr "²»Éä¤ò¾Ã¤¹(_K)"
-
-#~ msgid "_Insert track"
-#~ msgstr "¥È¥é¥Ã¥¯ÁŞÆş(_I)"
-
-#~ msgid "_Delete track"
-#~ msgstr "¥È¥é¥Ã¥¯ºï½ü(_D)"
-
-#~ msgid "Increment cmd value"
-#~ msgstr "cmdÃÍÁı²Ã"
-
-#~ msgid "Decrement cmd value"
-#~ msgstr "cmdÃÍ¸º¾¯"
-
-#~ msgid "_Mark mode"
-#~ msgstr "¥Ş¡¼¥¯¡¦¥â¡¼¥É(_M)"
-
-#~ msgid "C_lear block marks"
-#~ msgstr "¥Ö¥í¥Ã¥¯¡¦¥Ş¡¼¥¯¾Ãµî(_l)"
-
-#~ msgid "_Interpolate effects"
-#~ msgstr "ÆâÁŞ¥¨¥Õ¥§¥¯¥È(_I)"
-
-#~ msgid "Transpose half-note up"
-#~ msgstr "È¾²»¾å¤²¤ë"
-
-#~ msgid "Transpose half-note down"
-#~ msgstr "È¾²»²¼¤²¤ë"
-
-#~ msgid "Transpose octave up"
-#~ msgstr "¥ª¥¯¥¿¡¼¥Ö¾å¤²¤ë"
-
-#~ msgid "Transpose octave down"
-#~ msgstr "¥ª¥¯¥¿¡¼¥Ö²¼¤²¤ë"
+#~ msgstr "è²¼ä»˜(_P)"
 
 #, fuzzy
 #~ msgid "P_aste"
-#~ msgstr "Å½ÉÕ"
-
-#~ msgid "_Jazz Edit Mode"
-#~ msgstr "_JazzÊÔ½¸¥â¡¼¥É"
-
-#~ msgid "Transp_osition..."
-#~ msgstr "°ÜÄ´(_o)..."
-
-#~ msgid "_Pattern"
-#~ msgstr "¥Ñ¥¿¡¼¥ó(_P)"
-
-#~ msgid "_Track"
-#~ msgstr "¥È¥é¥Ã¥¯(_T)"
-
-#~ msgid "_Selection"
-#~ msgstr "ÁªÂò(_S)"
-
-#~ msgid "_Find Unused Pattern"
-#~ msgstr "Ì¤»ÈÍÑ¥Ñ¥¿¡¼¥ó¸¡º÷(_F)"
-
-#~ msgid "_Copy Current to Unused Pattern"
-#~ msgstr "Ì¤»ÈÍÑ¥Ñ¥¿¡¼¥ó¤Ë¥«¥ì¥ó¥È¤ò¥³¥Ô¡¼(_C)"
-
-#~ msgid "C_lear Unused Patterns"
-#~ msgstr "Ì¤»ÈÍÑ¥Ñ¥¿¡¼¥ó¾Ãµî(_l)"
-
-#~ msgid "_Pack Patterns"
-#~ msgstr "¥Ñ¥¿¡¼¥ó¡¦¥Ñ¥Ã¥¯(_P)"
-
-#~ msgid "_Save Current Pattern"
-#~ msgstr "¸½ºß¤Î¥Ñ¥¿¡¼¥ó¤òÊİÂ¸(_S)"
-
-#~ msgid "L_oad Pattern"
-#~ msgstr "¥Ñ¥¿¡¼¥ó¤òÆÉ¤ß¹ş¤ß(_o)"
-
-#, fuzzy
-#~ msgid "Sh_rink Current Pattern"
-#~ msgstr "¸½ºß¤Î¥Ñ¥¿¡¼¥ó"
-
-#, fuzzy
-#~ msgid "_Expand Current Pattern"
-#~ msgstr "¸½ºß¤Î¥Ñ¥¿¡¼¥ó¤òÊİÂ¸(_S)"
+#~ msgstr "è²¼ä»˜"
 
 #~ msgid "_Load XI..."
-#~ msgstr "XI¥í¡¼¥É(_L)..."
+#~ msgstr "XIãƒ­ãƒ¼ãƒ‰(_L)..."
 
 #~ msgid "_Save XI..."
-#~ msgstr "XIÊİÂ¸(_S)..."
-
-#~ msgid "_Clear Current"
-#~ msgstr "¥«¥ì¥ó¥È¾Ãµî(_C)"
-
-#~ msgid "_Delete Unused Instruments"
-#~ msgstr "Ì¤»ÈÍÑ³Ú´ïºï½ü(_D)"
-
-#~ msgid "_Flicker-free scrolling"
-#~ msgstr "¥Õ¥ê¥Ã¥«Ìµ¤·¤Î¥¹¥¯¥í¡¼¥ë(_F)"
-
-#~ msgid "_Previous font"
-#~ msgstr "Á°¤Î¥Õ¥©¥ó¥È(_P)"
-
-#~ msgid "_Next font"
-#~ msgstr "¼¡¤Î¥Õ¥©¥ó¥È(_N)"
-
-#~ msgid "Change preferred _accidental type"
-#~ msgstr "¹¥¤ß¤ÎÎ×»şµ­¹æ¥¿¥¤¥×¤ËÊÑ¹¹¤¹¤ë (_A)"
+#~ msgstr "XIä¿å­˜(_S)..."
 
 #~ msgid "Change effect column editing _direction"
-#~ msgstr "¥¨¥Õ¥§¥¯¥È¥³¥é¥àÊÔ½¸¤ÎÊı¸ş¤òÊÑ¤¨¤ë (_D)"
-
-#~ msgid "Display _Oscilloscopes"
-#~ msgstr "¥ª¥·¥í¥¹¥³¡¼¥×É½¼¨(_O)"
-
-#~ msgid "_Tracker"
-#~ msgstr "¥È¥é¥Ã¥«¡¼(_T)"
+#~ msgstr "ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚³ãƒ©ãƒ ç·¨é›†ã®æ–¹å‘ã‚’å¤‰ãˆã‚‹ (_D)"
 
 #~ msgid "_Keyboard Configuration..."
-#~ msgstr "¥­¡¼¥Ü¡¼¥ÉÀßÄê(_K)..."
+#~ msgstr "ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰è¨­å®š(_K)..."
 
 #~ msgid "_Audio Configuration..."
-#~ msgstr "¥ª¡¼¥Ç¥£¥ªÀßÄê(_A)..."
+#~ msgstr "ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªè¨­å®š(_A)..."
 
 #~ msgid "_GUI Configuration..."
-#~ msgstr "GUIÀßÄê(_G)..."
+#~ msgstr "GUIè¨­å®š(_G)..."
 
 #~ msgid "_MIDI Configuration..."
-#~ msgstr "MIDIÀßÄê..."
-
-#~ msgid "Disable splash screen"
-#~ msgstr "¥¹¥×¥é¥Ã¥·¥å¥¹¥¯¥ê¡¼¥ó¤òÌµ¸ú¤Ë¤¹¤ë"
-
-#~ msgid "_Save Settings now"
-#~ msgstr "ÀßÄê¤òº£ÊİÂ¸(_S)"
-
-#~ msgid "Save Settings on _Exit"
-#~ msgstr "½ªÎ»»ş¤ËÀßÄê¤òÊİÂ¸(_E)"
+#~ msgstr "MIDIè¨­å®š..."
 
 #~ msgid "_About..."
-#~ msgstr "¾ğÊó(_A)..."
-
-#~ msgid "Show _Tips..."
-#~ msgstr "µ»¤ÎÉ½¼¨(_T)..."
-
-#~ msgid "_XM Effects..."
-#~ msgstr "_XM¸ú²Ì..."
-
-#~ msgid "_File"
-#~ msgstr "¥Õ¥¡¥¤¥ë(_F)"
-
-#~ msgid "_Module"
-#~ msgstr "¥â¥¸¥å¡¼¥ë(_M)"
-
-#~ msgid "_Edit"
-#~ msgstr "ÊÔ½¸(_E)"
-
-#~ msgid "_Instrument"
-#~ msgstr "³Ú´ï(_I)"
-
-#~ msgid "_Settings"
-#~ msgstr "ÀßÄê(_S)"
-
-#~ msgid "_Help"
-#~ msgstr "¥Ø¥ë¥×(_H)"
+#~ msgstr "æƒ…å ±(_A)..."
 
 #, fuzzy
 #~ msgid ""
 #~ "A directory called '.soundtracker2' has been created in your\n"
 #~ "home directory to store configuration files.\n"
 #~ msgstr ""
-#~ "ÀßÄê¥Õ¥¡¥¤¥ë¤òµ­²±¤¹¤ë¤¿¤á¡¢¤¢¤Ê¤¿¤Î¥Û¡¼¥à¡¦¥Ç¥£¥ì¥¯¥È¥ê¤Ë\n"
-#~ "¥Ç¥£¥ì¥¯¥È¥ê'.soundtracker'¤¬À¸À®¤µ¤ì¤Ş¤¹¡£\n"
+#~ "è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’è¨˜æ†¶ã™ã‚‹ãŸã‚ã€ã‚ãªãŸã®ãƒ›ãƒ¼ãƒ ãƒ»ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«\n"
+#~ "ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª'.soundtracker'ãŒç”Ÿæˆã•ã‚Œã¾ã™ã€‚\n"
 
 #~ msgid "Load Sample..."
-#~ msgstr "¥µ¥ó¥×¥ë¡¦¥í¡¼¥É..."
+#~ msgstr "ã‚µãƒ³ãƒ—ãƒ«ãƒ»ãƒ­ãƒ¼ãƒ‰..."
 
 #~ msgid "Save WAV..."
-#~ msgstr "WAVÊİÂ¸..."
+#~ msgstr "WAVä¿å­˜..."
 
 #~ msgid "8363"
 #~ msgstr "8363"
 
 #~ msgid "Execute"
-#~ msgstr "¼Â¹Ô"
+#~ msgstr "å®Ÿè¡Œ"
 
 #~ msgid "Apply"
-#~ msgstr "Å¬ÍÑ"
+#~ msgstr "é©ç”¨"
 
 #~ msgid "Drivers"
-#~ msgstr "¥É¥é¥¤¥Ğ"
+#~ msgstr "ãƒ‰ãƒ©ã‚¤ãƒ"
 
 #~ msgid "Up"
-#~ msgstr "¾å"
+#~ msgstr "ä¸Š"
 
 #~ msgid "Down"
-#~ msgstr "²¼"
-
-#~ msgid "Pattern"
-#~ msgstr "¥Ñ¥¿¡¼¥ó"
+#~ msgstr "ä¸‹"
 
 #~ msgid "_Accidentals"
-#~ msgstr "¥¢¥¯¥·¥Ç¥ó¥¿¥ë(_A)"
+#~ msgstr "ã‚¢ã‚¯ã‚·ãƒ‡ãƒ³ã‚¿ãƒ«(_A)"
 
 #~ msgid "# _Accidentals"
-#~ msgstr "# ¥¢¥¯¥·¥Ç¥ó¥¿¥ë(_A)"
+#~ msgstr "# ã‚¢ã‚¯ã‚·ãƒ‡ãƒ³ã‚¿ãƒ«(_A)"
 
 #~ msgid "Current pos"
-#~ msgstr "¸½ºß°ÌÃÖ"
+#~ msgstr "ç¾åœ¨ä½ç½®"
 
 #~ msgid "`Save XM' saves all non-empty patterns"
-#~ msgstr "`ÊİÂ¸XM'¤ÇÁ´¤Æ¤Î¶õ¤Ç¤Ê¤¤¥Ñ¥¿¡¼¥ó¤òÊİÂ¸"
+#~ msgstr "`ä¿å­˜XM'ã§å…¨ã¦ã®ç©ºã§ãªã„ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’ä¿å­˜"
 
 #~ msgid "Advance cursor horizontally in effect columns"
-#~ msgstr "¥¨¥Õ¥§¥¯¥ÈÎó¤Ç¥«¡¼¥½¥ë¤ò¿åÊ¿¤Ë¿Ê¤á¤ë"
+#~ msgstr "ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåˆ—ã§ã‚«ãƒ¼ã‚½ãƒ«ã‚’æ°´å¹³ã«é€²ã‚ã‚‹"
 
 #~ msgid "Tempo and BPM update"
-#~ msgstr "¥Æ¥ó¥İ¤ÈBPM¤Î¹¹¿·"
+#~ msgstr "ãƒ†ãƒ³ãƒã¨BPMã®æ›´æ–°"
 
 #~ msgid "Auto switch"
-#~ msgstr "¼«Æ°ÀÚ¤ê´¹¤¨"
+#~ msgstr "è‡ªå‹•åˆ‡ã‚Šæ›ãˆ"
 
 #~ msgid "Use anti-aliased envelope editor"
-#~ msgstr "¥¢¥ó¥Á¡¦¥¨¥¤¥ê¥¢¥¹¡¦¥¨¥ó¥Ù¥í¡¼¥×¡¦¥¨¥Ç¥£¥¿»ÈÍÑ"
+#~ msgstr "ã‚¢ãƒ³ãƒãƒ»ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ»ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ãƒ»ã‚¨ãƒ‡ã‚£ã‚¿ä½¿ç”¨"
 
 #~ msgid ""
 #~ "You need to restart SoundTracker for this change to come into effect."
-#~ msgstr "¤³¤ÎÊÑ¹¹¤òÈ¿±Ç¤¹¤ë¤Ë¤ÏSoundTracker¤òºÆµ¯Æ°¤¹¤ëÉ¬Í×¤¬¤¢¤ê¤Ş¤¹¡£"
+#~ msgstr "ã“ã®å¤‰æ›´ã‚’åæ˜ ã™ã‚‹ã«ã¯SoundTrackerã‚’å†èµ·å‹•ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚"
 
 #~ msgid "Idle."
-#~ msgstr "¥¢¥¤¥É¥ë¡£"
+#~ msgstr "ã‚¢ã‚¤ãƒ‰ãƒ«ã€‚"
 
 #~ msgid "Use _Backing Store"
-#~ msgstr "_Backing Store»ÈÍÑ"
+#~ msgstr "_Backing Storeä½¿ç”¨"
 
 #~ msgid "/_File"
-#~ msgstr "/¥Õ¥¡¥¤¥ë"
+#~ msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«"
 
 #~ msgid "/File/_Open..."
-#~ msgstr "/¥Õ¥¡¥¤¥ë/³«¤¯(_O)..."
+#~ msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«/é–‹ã(_O)..."
 
 #~ msgid "/File/Save _as..."
-#~ msgstr "/¥Õ¥¡¥¤¥ë/ÊİÂ¸(_a)..."
+#~ msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«/ä¿å­˜(_a)..."
 
 #~ msgid "/File/-"
-#~ msgstr "/¥Õ¥¡¥¤¥ë/-"
+#~ msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«/-"
 
 #~ msgid "/File/Save Module as _WAV..."
-#~ msgstr "/¥Õ¥¡¥¤¥ë/_WAV¤È¤·¤Æ¥â¥¸¥å¡¼¥ë¤òÊİÂ¸..."
+#~ msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«/_WAVã¨ã—ã¦ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ä¿å­˜..."
 
 #~ msgid "/File/Save XM without samples..."
-#~ msgstr "/¥Õ¥¡¥¤¥ë/¥µ¥ó¥×¥ëÌµ¤·¤ËXMÊİÂ¸..."
+#~ msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«/ã‚µãƒ³ãƒ—ãƒ«ç„¡ã—ã«XMä¿å­˜..."
 
 #~ msgid "/File/_Quit"
-#~ msgstr "/¥Õ¥¡¥¤¥ë/½ªÎ»(_Q)"
+#~ msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«/çµ‚äº†(_Q)"
 
 #~ msgid "/_Module"
-#~ msgstr "/¥â¥¸¥å¡¼¥ë"
+#~ msgstr "/ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«"
 
 #~ msgid "/Module/Clear _All"
-#~ msgstr "/¥â¥¸¥å¡¼¥ë/Á´¤Æ¾Ãµî(_A)"
+#~ msgstr "/ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«/å…¨ã¦æ¶ˆå»(_A)"
 
 #~ msgid "/Module/Clear _Patterns Only"
-#~ msgstr "/¥â¥¸¥å¡¼¥ë/¥Ñ¥¿¡¼¥ó¤Î¤ß¾Ãµî(_P)"
+#~ msgstr "/ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«/ãƒ‘ã‚¿ãƒ¼ãƒ³ã®ã¿æ¶ˆå»(_P)"
 
 #~ msgid "/Module/_Optimize Module"
-#~ msgstr "/¥â¥¸¥å¡¼¥ë/¥â¥¸¥å¡¼¥ëºÇÅ¬²½(_O)"
+#~ msgstr "/ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«/ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«æœ€é©åŒ–(_O)"
 
 #~ msgid "/_Edit"
-#~ msgstr "/ÊÔ½¸"
+#~ msgstr "/ç·¨é›†"
 
 #~ msgid "/Edit/_Jazz Edit Mode"
-#~ msgstr "/ÊÔ½¸/_JazzÊÔ½¸¥â¡¼¥É"
+#~ msgstr "/ç·¨é›†/_Jazzç·¨é›†ãƒ¢ãƒ¼ãƒ‰"
 
 #~ msgid "/Edit/-"
-#~ msgstr "/ÊÔ½¸/-"
+#~ msgstr "/ç·¨é›†/-"
 
 #~ msgid "/Edit/_Transposition..."
-#~ msgstr "/ÊÔ½¸/°ÜÄ´(_T)..."
+#~ msgstr "/ç·¨é›†/ç§»èª¿(_T)..."
 
 #~ msgid "/Edit/Pattern/C_ut"
-#~ msgstr "/ÊÔ½¸/¥Ñ¥¿¡¼¥ó/ÀÚ¼è(_u)"
+#~ msgstr "/ç·¨é›†/ãƒ‘ã‚¿ãƒ¼ãƒ³/åˆ‡å–(_u)"
 
 #~ msgid "/Edit/Pattern/_Copy"
-#~ msgstr "/ÊÔ½¸/¥Ñ¥¿¡¼¥ó/¥³¥Ô¡¼(_C)"
+#~ msgstr "/ç·¨é›†/ãƒ‘ã‚¿ãƒ¼ãƒ³/ã‚³ãƒ”ãƒ¼(_C)"
 
 #~ msgid "/Edit/Pattern/_Paste"
-#~ msgstr "/ÊÔ½¸/¥Ñ¥¿¡¼¥ó/Å½ÉÕ(_P)"
+#~ msgstr "/ç·¨é›†/ãƒ‘ã‚¿ãƒ¼ãƒ³/è²¼ä»˜(_P)"
 
 #~ msgid "/Edit/_Track"
-#~ msgstr "/ÊÔ½¸/¥È¥é¥Ã¥¯"
+#~ msgstr "/ç·¨é›†/ãƒˆãƒ©ãƒƒã‚¯"
 
 #~ msgid "/Edit/Track/C_ut"
-#~ msgstr "/ÊÔ½¸/¥È¥é¥Ã¥¯/ÀÚ¼è(_u)"
+#~ msgstr "/ç·¨é›†/ãƒˆãƒ©ãƒƒã‚¯/åˆ‡å–(_u)"
 
 #~ msgid "/Edit/Track/_Copy"
-#~ msgstr "/ÊÔ½¸/¥È¥é¥Ã¥¯/¥³¥Ô¡¼(_C)"
+#~ msgstr "/ç·¨é›†/ãƒˆãƒ©ãƒƒã‚¯/ã‚³ãƒ”ãƒ¼(_C)"
 
 #~ msgid "/Edit/Track/_Paste"
-#~ msgstr "/ÊÔ½¸/¥È¥é¥Ã¥¯/Å½ÉÕ(_P)"
+#~ msgstr "/ç·¨é›†/ãƒˆãƒ©ãƒƒã‚¯/è²¼ä»˜(_P)"
 
 #~ msgid "/Edit/Track/_Kill notes"
-#~ msgstr "/ÊÔ½¸/¥È¥é¥Ã¥¯/²»Éä¤ò¾Ã¤¹(_K)"
+#~ msgstr "/ç·¨é›†/ãƒˆãƒ©ãƒƒã‚¯/éŸ³ç¬¦ã‚’æ¶ˆã™(_K)"
 
 #~ msgid "/Edit/Track/_Insert"
-#~ msgstr "/ÊÔ½¸/¥È¥é¥Ã¥¯/ÁŞÆş(_I)"
+#~ msgstr "/ç·¨é›†/ãƒˆãƒ©ãƒƒã‚¯/æŒ¿å…¥(_I)"
 
 #~ msgid "/Edit/Track/_Delete"
-#~ msgstr "/ÊÔ½¸/¥È¥é¥Ã¥¯/ºï½ü(_D)"
+#~ msgstr "/ç·¨é›†/ãƒˆãƒ©ãƒƒã‚¯/å‰Šé™¤(_D)"
 
 #~ msgid "/Edit/_Selection"
-#~ msgstr "/ÊÔ½¸/ÁªÂò"
+#~ msgstr "/ç·¨é›†/é¸æŠ"
 
 #~ msgid "/Edit/Selection/_Mark mode"
-#~ msgstr "/ÊÔ½¸/ÁªÂò/¥Ş¡¼¥¯¡¦¥â¡¼¥É(_M)"
+#~ msgstr "/ç·¨é›†/é¸æŠ/ãƒãƒ¼ã‚¯ãƒ»ãƒ¢ãƒ¼ãƒ‰(_M)"
 
 #~ msgid "/Edit/Selection/C_lear block marks"
-#~ msgstr "/ÊÔ½¸/ÁªÂò/¥Ö¥í¥Ã¥¯¡¦¥Ş¡¼¥¯¾Ãµî(_l)"
+#~ msgstr "/ç·¨é›†/é¸æŠ/ãƒ–ãƒ­ãƒƒã‚¯ãƒ»ãƒãƒ¼ã‚¯æ¶ˆå»(_l)"
 
 #~ msgid "/Edit/Selection/C_ut"
-#~ msgstr "/ÊÔ½¸/ÁªÂò/ÀÚ¼è(_u)"
+#~ msgstr "/ç·¨é›†/é¸æŠ/åˆ‡å–(_u)"
 
 #~ msgid "/Edit/Selection/_Copy"
-#~ msgstr "/ÊÔ½¸/ÁªÂò/¥³¥Ô¡¼(_C)"
+#~ msgstr "/ç·¨é›†/é¸æŠ/ã‚³ãƒ”ãƒ¼(_C)"
 
 #~ msgid "/Edit/Selection/_Paste"
-#~ msgstr "/ÊÔ½¸/ÁªÂò/Å½ÉÕ(_P)"
+#~ msgstr "/ç·¨é›†/é¸æŠ/è²¼ä»˜(_P)"
 
 #~ msgid "/Edit/Selection/_Interpolate effects"
-#~ msgstr "/ÊÔ½¸/ÁªÂò/ÆâÁŞ¥¨¥Õ¥§¥¯¥È(_I)"
+#~ msgstr "/ç·¨é›†/é¸æŠ/å†…æŒ¿ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ(_I)"
 
 #~ msgid "/Edit/Track/Increment cmd value"
-#~ msgstr "/ÊÔ½¸/¥È¥é¥Ã¥¯/cmdÃÍÁı²Ã"
+#~ msgstr "/ç·¨é›†/ãƒˆãƒ©ãƒƒã‚¯/cmdå€¤å¢—åŠ "
 
 #~ msgid "/Edit/Track/Decrement cmd value"
-#~ msgstr "/ÊÔ½¸/¥È¥é¥Ã¥¯/cmdÃÍ¸º¾¯"
+#~ msgstr "/ç·¨é›†/ãƒˆãƒ©ãƒƒã‚¯/cmdå€¤æ¸›å°‘"
 
 #~ msgid "/_Pattern"
-#~ msgstr "/¥Ñ¥¿¡¼¥ó"
+#~ msgstr "/ãƒ‘ã‚¿ãƒ¼ãƒ³"
 
 #~ msgid "/Pattern/_Find Unused Pattern"
-#~ msgstr "/¥Ñ¥¿¡¼¥ó/Ì¤»ÈÍÑ¥Ñ¥¿¡¼¥ó¸¡º÷(_F)"
+#~ msgstr "/ãƒ‘ã‚¿ãƒ¼ãƒ³/æœªä½¿ç”¨ãƒ‘ã‚¿ãƒ¼ãƒ³æ¤œç´¢(_F)"
 
 #~ msgid "/Pattern/_Copy Current to Unused Pattern"
-#~ msgstr "/¥Ñ¥¿¡¼¥ó/Ì¤»ÈÍÑ¥Ñ¥¿¡¼¥ó¤Ë¥«¥ì¥ó¥È¤ò¥³¥Ô¡¼(_C)"
+#~ msgstr "/ãƒ‘ã‚¿ãƒ¼ãƒ³/æœªä½¿ç”¨ãƒ‘ã‚¿ãƒ¼ãƒ³ã«ã‚«ãƒ¬ãƒ³ãƒˆã‚’ã‚³ãƒ”ãƒ¼(_C)"
 
 #~ msgid "/Pattern/C_lear Unused Patterns"
-#~ msgstr "/¥Ñ¥¿¡¼¥ó/Ì¤»ÈÍÑ¥Ñ¥¿¡¼¥ó¾Ãµî(_l)"
+#~ msgstr "/ãƒ‘ã‚¿ãƒ¼ãƒ³/æœªä½¿ç”¨ãƒ‘ã‚¿ãƒ¼ãƒ³æ¶ˆå»(_l)"
 
 #~ msgid "/Pattern/_Pack Patterns"
-#~ msgstr "/¥Ñ¥¿¡¼¥ó/¥Ñ¥¿¡¼¥ó¡¦¥Ñ¥Ã¥¯(_P)"
+#~ msgstr "/ãƒ‘ã‚¿ãƒ¼ãƒ³/ãƒ‘ã‚¿ãƒ¼ãƒ³ãƒ»ãƒ‘ãƒƒã‚¯(_P)"
 
 #~ msgid "/_Instrument"
-#~ msgstr "/³Ú´ï"
+#~ msgstr "/æ¥½å™¨"
 
 #~ msgid "/Instrument/_Load XI..."
-#~ msgstr "/³Ú´ï/XI¥í¡¼¥É(_L)..."
+#~ msgstr "/æ¥½å™¨/XIãƒ­ãƒ¼ãƒ‰(_L)..."
 
 #~ msgid "/Instrument/_Save XI..."
-#~ msgstr "/³Ú´ï/XIÊİÂ¸(_S)..."
+#~ msgstr "/æ¥½å™¨/XIä¿å­˜(_S)..."
 
 #~ msgid "/Instrument/-"
-#~ msgstr "/³Ú´ï/-"
+#~ msgstr "/æ¥½å™¨/-"
 
 #~ msgid "/Instrument/_Clear Current"
-#~ msgstr "/³Ú´ï/¥«¥ì¥ó¥È¾Ãµî(_C)"
+#~ msgstr "/æ¥½å™¨/ã‚«ãƒ¬ãƒ³ãƒˆæ¶ˆå»(_C)"
 
 #~ msgid "/Instrument/_Delete Unused Instruments"
-#~ msgstr "/³Ú´ï/Ì¤»ÈÍÑ³Ú´ïºï½ü(_D)"
+#~ msgstr "/æ¥½å™¨/æœªä½¿ç”¨æ¥½å™¨å‰Šé™¤(_D)"
 
 #~ msgid "/_Settings"
-#~ msgstr "/ÀßÄê"
+#~ msgstr "/è¨­å®š"
 
 #~ msgid "/Settings/Display _Oscilloscopes"
-#~ msgstr "/ÀßÄê/¥ª¥·¥í¥¹¥³¡¼¥×É½¼¨(_O)"
+#~ msgstr "/è¨­å®š/ã‚ªã‚·ãƒ­ã‚¹ã‚³ãƒ¼ãƒ—è¡¨ç¤º(_O)"
 
 #~ msgid "/Settings/_Tracker"
-#~ msgstr "/ÀßÄê/¥È¥é¥Ã¥«¡¼(_T)"
+#~ msgstr "/è¨­å®š/ãƒˆãƒ©ãƒƒã‚«ãƒ¼(_T)"
 
 #~ msgid "/Settings/Tracker/Use _Backing Store"
-#~ msgstr "/ÀßÄê/¥È¥é¥Ã¥«¡¼/_Backing Store»ÈÍÑ"
+#~ msgstr "/è¨­å®š/ãƒˆãƒ©ãƒƒã‚«ãƒ¼/_Backing Storeä½¿ç”¨"
 
 #~ msgid "/Settings/Tracker/_Previous font"
-#~ msgstr "/ÀßÄê/¥È¥é¥Ã¥«¡¼/Á°¤Î¥Õ¥©¥ó¥È(_P)"
+#~ msgstr "/è¨­å®š/ãƒˆãƒ©ãƒƒã‚«ãƒ¼/å‰ã®ãƒ•ã‚©ãƒ³ãƒˆ(_P)"
 
 #~ msgid "/Settings/Tracker/_Next font"
-#~ msgstr "/ÀßÄê/¥È¥é¥Ã¥«¡¼/¼¡¤Î¥Õ¥©¥ó¥È(_N)"
+#~ msgstr "/è¨­å®š/ãƒˆãƒ©ãƒƒã‚«ãƒ¼/æ¬¡ã®ãƒ•ã‚©ãƒ³ãƒˆ(_N)"
 
 #~ msgid "/Settings/-"
-#~ msgstr "/ÀßÄê/-"
+#~ msgstr "/è¨­å®š/-"
 
 #~ msgid "/Settings/_Keyboard Configuration..."
-#~ msgstr "/ÀßÄê/¥­¡¼¥Ü¡¼¥ÉÀßÄê(_K)..."
+#~ msgstr "/è¨­å®š/ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰è¨­å®š(_K)..."
 
 #~ msgid "/Settings/_Audio Configuration..."
-#~ msgstr "/ÀßÄê/¥ª¡¼¥Ç¥£¥ªÀßÄê(_A)..."
+#~ msgstr "/è¨­å®š/ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªè¨­å®š(_A)..."
 
 #~ msgid "/Settings/_GUI Configuration..."
-#~ msgstr "/ÀßÄê/GUIÀßÄê(_G)..."
+#~ msgstr "/è¨­å®š/GUIè¨­å®š(_G)..."
 
 #~ msgid "/Settings/_MIDI Configuration..."
-#~ msgstr "/ÀßÄê/MIDIÀßÄê..."
+#~ msgstr "/è¨­å®š/MIDIè¨­å®š..."
 
 #~ msgid "/Settings/_Save Settings now"
-#~ msgstr "/ÀßÄê/ÀßÄê¤òº£ÊİÂ¸(_S)"
+#~ msgstr "/è¨­å®š/è¨­å®šã‚’ä»Šä¿å­˜(_S)"
 
 #~ msgid "/Settings/Save Settings on _Exit"
-#~ msgstr "/ÀßÄê/½ªÎ»»ş¤ËÀßÄê¤òÊİÂ¸(_E)"
+#~ msgstr "/è¨­å®š/çµ‚äº†æ™‚ã«è¨­å®šã‚’ä¿å­˜(_E)"
 
 #~ msgid "/_Help"
-#~ msgstr "/¥Ø¥ë¥×"
+#~ msgstr "/ãƒ˜ãƒ«ãƒ—"
 
 #~ msgid "/Help/_About..."
-#~ msgstr "/¥Ø¥ë¥×/¾ğÊó(_A)..."
+#~ msgstr "/ãƒ˜ãƒ«ãƒ—/æƒ…å ±(_A)..."
 
 #~ msgid "/Help/-"
-#~ msgstr "/¥Ø¥ë¥×/-"
+#~ msgstr "/ãƒ˜ãƒ«ãƒ—/-"
 
 #~ msgid "/Help/Show _Tips..."
-#~ msgstr "/¥Ø¥ë¥×/µ»¤ÎÉ½¼¨(_T)..."
+#~ msgstr "/ãƒ˜ãƒ«ãƒ—/æŠ€ã®è¡¨ç¤º(_T)..."
 
 #~ msgid "/Help/_XM Effects..."
-#~ msgstr "/¥Ø¥ë¥×/_XM¸ú²Ì..."
+#~ msgstr "/ãƒ˜ãƒ«ãƒ—/_XMåŠ¹æœ..."
 
 #~ msgid "Nothing to save."
-#~ msgstr "²¿¤âÊİÂ¸¤·¤Ê¤¤¡£"
+#~ msgstr "ä½•ã‚‚ä¿å­˜ã—ãªã„ã€‚"

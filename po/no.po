@@ -7,13 +7,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: soundtracker 0.6.7\n"
 "Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
-"POT-Creation-Date: 2013-10-13 23:27+0400\n"
+"POT-Creation-Date: 2013-10-23 01:06+0400\n"
 "PO-Revision-Date: 2003-05-21 12:30+0100\n"
 "Last-Translator: Petter Johan Olsen <petter.olsen@cc.uit.no>\n"
 "Language-Team: Petter Johan Olsen <petter.olsen@cc.uit.no>\n"
-"Language: \n"
+"Language: no\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: app/audio.c:678 app/gui.c:340 app/gui.c:349 app/gui.c:359 app/gui.c:369
@@ -35,27 +35,27 @@ msgstr "Innstillinger for redigering"
 msgid "Sampling"
 msgstr "Innstillinger for lydopptak"
 
-#: app/audioconfig.c:188
+#: app/audioconfig.c:192
 msgid "Driver Module"
 msgstr "Lyddriver"
 
-#: app/audioconfig.c:241
+#: app/audioconfig.c:245
 msgid "Mixer Module"
 msgstr "Mikserdriver"
 
-#: app/audioconfig.c:242 app/drivers/alsa1x.c:734
+#: app/audioconfig.c:246 app/drivers/alsa1x.c:734
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: app/audioconfig.c:249
+#: app/audioconfig.c:253
 msgid "Audio Configuration"
 msgstr "Lydoppsett"
 
-#: app/audioconfig.c:269
+#: app/audioconfig.c:273
 msgid "File output"
 msgstr ""
 
-#: app/audioconfig.c:277
+#: app/audioconfig.c:281
 msgid "Mixers"
 msgstr "Miksere"
 
@@ -81,7 +81,7 @@ msgstr ""
 #: app/drivers/alsa1x.c:354 app/drivers/alsa1x.c:1231
 #, fuzzy
 msgid "Unable to set channels number"
-msgstr "Kunne ikke klargjøre ALSA-kanal.\n"
+msgstr "Kunne ikke klargjÃ¸re ALSA-kanal.\n"
 
 #: app/drivers/alsa1x.c:366 app/drivers/alsa1x.c:1253
 msgid "Unable to set appropriate buffer size"
@@ -167,7 +167,7 @@ msgstr "Stereo"
 
 #: app/drivers/alsa1x.c:809 app/drivers/oss.c:225 app/drivers/sun-output.c:202
 msgid "These changes won't take effect until you restart playing."
-msgstr "Du må starte avspilling på nytt før endringene trer i kraft"
+msgstr "Du mÃ¥ starte avspilling pÃ¥ nytt fÃ¸r endringene trer i kraft"
 
 #: app/drivers/alsa1x.c:810
 #, fuzzy
@@ -185,7 +185,7 @@ msgstr ""
 #: app/drivers/alsa1x.c:845 app/drivers/oss.c:253 app/drivers/sun-output.c:230
 #: app/sample-editor.c:1648
 msgid "Resolution:"
-msgstr "Oppløsning:"
+msgstr "OpplÃ¸sning:"
 
 #: app/drivers/alsa1x.c:855 app/drivers/file-output.c:145
 #: app/drivers/oss.c:263 app/drivers/sun-output.c:241 app/sample-editor.c:1678
@@ -199,7 +199,7 @@ msgstr "Frekvens (Hz):"
 
 #: app/drivers/alsa1x.c:884 app/drivers/oss.c:283 app/drivers/sun-output.c:263
 msgid "Buffer Size:"
-msgstr "Bufferstørrelse:"
+msgstr "BufferstÃ¸rrelse:"
 
 #: app/drivers/alsa1x.c:907
 #, fuzzy
@@ -288,12 +288,12 @@ msgstr ""
 #: app/drivers/alsa1x.c:1304
 #, fuzzy
 msgid "Unable to prepare playback"
-msgstr "Kunne ikke klargjøre ALSA-kanal.\n"
+msgstr "Kunne ikke klargjÃ¸re ALSA-kanal.\n"
 
 #: app/drivers/alsa1x.c:1305
 #, fuzzy
 msgid "Unable to prepare capture"
-msgstr "Kunne ikke klargjøre ALSA-kanal.\n"
+msgstr "Kunne ikke klargjÃ¸re ALSA-kanal.\n"
 
 #: app/drivers/alsa1x.c:1318
 msgid "Unable to obtain poll descriptors for playback"
@@ -319,9 +319,9 @@ msgid ""
 "for serious work."
 msgstr ""
 "Merk at ESD-avspilling er ubrukelig i\n"
-"interaktiv modus på grunn av den ekstra\n"
+"interaktiv modus pÃ¥ grunn av den ekstra\n"
 "latenstiden som ESD lager. Bruk OSS eller ALSA\n"
-"hvis du vil tracke seriøst."
+"hvis du vil tracke seriÃ¸st."
 
 #: app/drivers/esd-output.c:162
 #, c-format
@@ -363,22 +363,22 @@ msgid ""
 "Couldn't open %s for %s:\n"
 "%s"
 msgstr ""
-"Kunne ikke åpne %s for innspilling:\n"
+"Kunne ikke Ã¥pne %s for innspilling:\n"
 "%s"
 
 #: app/drivers/oss.c:466
 #, fuzzy, c-format
 msgid "Required %s format not supported.\n"
-msgstr "Nødvendig avspillingsformat støttes ikke.\n"
+msgstr "NÃ¸dvendig avspillingsformat stÃ¸ttes ikke.\n"
 
 #: app/drivers/jack-output.c:280
 #, c-format
 msgid "Running at %d Hz with %d frames"
-msgstr "Kjører i %d Hz med %d frames"
+msgstr "KjÃ¸rer i %d Hz med %d frames"
 
 #: app/drivers/jack-output.c:284
 msgid "Jack server not running?"
-msgstr "Kjører Jack-tjeneren?"
+msgstr "KjÃ¸rer Jack-tjeneren?"
 
 #: app/drivers/jack-output.c:354
 msgid "out_1"
@@ -391,7 +391,7 @@ msgstr "ut_2"
 #: app/drivers/sdl-output.c:76
 #, fuzzy
 msgid "Experimental SDL support."
-msgstr "Operasjonen støttes ikke."
+msgstr "Operasjonen stÃ¸ttes ikke."
 
 #: app/drivers/sun-output.c:214
 msgid "Output device (e.g. '/dev/audio'):"
@@ -411,17 +411,17 @@ msgstr "%s: Kan ikke spille av (%s)"
 #: app/drivers/sun-output.c:407 app/drivers/sun-input.c:250
 #, c-format
 msgid "%s: Cannot handle %dHz (%s)"
-msgstr "%s: Kan ikke håndtere %dHz (%s)"
+msgstr "%s: Kan ikke hÃ¥ndtere %dHz (%s)"
 
 #: app/drivers/sun-output.c:436 app/drivers/sun-input.c:280
 #, c-format
 msgid "%s: Required sound encoding not supported.\n"
-msgstr "%s: Nødvendig lydkodeformat støttes ikke.\n"
+msgstr "%s: NÃ¸dvendig lydkodeformat stÃ¸ttes ikke.\n"
 
 #: app/drivers/sun-output.c:459 app/drivers/sun-input.c:305
 #, c-format
 msgid "%s: Cannot set block size (%s)"
-msgstr "%s: Kan ikke sette blokkstørrelse (%s)"
+msgstr "%s: Kan ikke sette blokkstÃ¸rrelse (%s)"
 
 #: app/drivers/sun-input.c:117
 msgid "Input device (e.g. '/dev/audio'):"
@@ -512,7 +512,7 @@ msgstr ""
 
 #: app/file-operations.c:474
 msgid "Operation not supported."
-msgstr "Operasjonen støttes ikke."
+msgstr "Operasjonen stÃ¸ttes ikke."
 
 #: app/gui-settings.c:53
 msgid "Scopes Frequency"
@@ -562,7 +562,7 @@ msgstr "Bytt tilbake til trackervindu etter last/lagre"
 
 #: app/gui-settings.c:446
 msgid "Save window geometry on exit"
-msgstr "Lagre vindusstørrelse/posisjon ved avslutning"
+msgstr "Lagre vindusstÃ¸rrelse/posisjon ved avslutning"
 
 #: app/gui-settings.c:452
 msgid "Use note name B instead of H"
@@ -574,7 +574,7 @@ msgstr ""
 
 #: app/gui-settings.c:470
 msgid "Scopes buffer size [MB]"
-msgstr "Bufferstørrelse for oscilloskop (MB)"
+msgstr "BufferstÃ¸rrelse for oscilloskop (MB)"
 
 #: app/gui-settings.c:485
 msgid "Track line format:"
@@ -703,8 +703,8 @@ msgid ""
 "Are you sure you want to free the current project?\n"
 "All changes will be lost!"
 msgstr ""
-"Er du sikker på at du vil forkaste sangen?\n"
-"Alle endringer vil gå tapt!"
+"Er du sikker pÃ¥ at du vil forkaste sangen?\n"
+"Alle endringer vil gÃ¥ tapt!"
 
 #: app/gui.c:576
 #, fuzzy, c-format
@@ -717,8 +717,8 @@ msgid ""
 "pattern in module.\n"
 "Do you want to change the current pattern length?"
 msgstr ""
-"Lengden på det innleste arket er forskjellig fra det som er i sangen.\n"
-"Ønsker du å endre lengden på arket i sangen?"
+"Lengden pÃ¥ det innleste arket er forskjellig fra det som er i sangen.\n"
+"Ã˜nsker du Ã¥ endre lengden pÃ¥ arket i sangen?"
 
 #: app/gui.c:1716
 msgid "SoundTracker Startup"
@@ -737,8 +737,8 @@ msgid ""
 "Are you sure you want to quit?\n"
 "All changes will be lost!"
 msgstr ""
-"Er du sikker på at du vil avslutte?\n"
-"Alle endringer vil gå tapt!"
+"Er du sikker pÃ¥ at du vil avslutte?\n"
+"Alle endringer vil gÃ¥ tapt!"
 
 #: app/gui.c:1889 app/gui.c:1892
 msgid "FastTracker modules (*.xm)"
@@ -793,7 +793,7 @@ msgstr "Lagre _XM uten lyder..."
 
 #: app/gui.c:1937
 msgid "Load current pattern..."
-msgstr "Last inn nåværende ark..."
+msgstr "Last inn nÃ¥vÃ¦rende ark..."
 
 #: app/gui.c:1938
 msgid "Save current pattern..."
@@ -854,7 +854,7 @@ msgstr "Andre taster..."
 #: app/gui.c:2154
 #, fuzzy
 msgid "Change effect column editing direction"
-msgstr "Flytt markør bortover når effektkolonner redigeres"
+msgstr "Flytt markÃ¸r bortover nÃ¥r effektkolonner redigeres"
 
 #: app/gui.c:2185
 msgid "Global amplification"
@@ -919,7 +919,7 @@ msgstr "VibSveip"
 
 #: app/instrument-editor.c:166 app/instrument-editor.c:196
 msgid "Can't open file."
-msgstr "Kan ikke åpne fil."
+msgstr "Kan ikke Ã¥pne fil."
 
 #: app/instrument-editor.c:190
 #, fuzzy
@@ -1013,7 +1013,7 @@ msgstr ""
 
 #: app/keys.c:142
 msgid "Upper Octave Keys..."
-msgstr "Taster for øvre oktav..."
+msgstr "Taster for Ã¸vre oktav..."
 
 #: app/keys.c:143
 msgid ""
@@ -1021,8 +1021,8 @@ msgid ""
 "the key to the right of the TAB key. The rest of the keys should be ordered "
 "in a piano keyboard fashion, including the number keys row above."
 msgstr ""
-"Dette er tastene på øvre halvdel av tastaturet. C-noten er vanligvis tasten "
-"til høyre for TAB-tasten. Resten av tastene bør ligge bortover som på et "
+"Dette er tastene pÃ¥ Ã¸vre halvdel av tastaturet. C-noten er vanligvis tasten "
+"til hÃ¸yre for TAB-tasten. Resten av tastene bÃ¸r ligge bortover som pÃ¥ et "
 "piano, inkludert talltastene ovenfor."
 
 #: app/keys.c:149
@@ -1035,9 +1035,9 @@ msgid ""
 "the first character key to the right of the left Shift key. The rest of the "
 "keys should be ordered in a piano keyboard fashion, including the row above."
 msgstr ""
-"Dette er tastene på nedre halvdel av tastaturet. C-noten er vanligvis den "
-"første tasten til høyre for den venstre Shift-tasten. Resten av tastene bør "
-"ligge bortover som på et piano, inkludert raden ovenfor."
+"Dette er tastene pÃ¥ nedre halvdel av tastaturet. C-noten er vanligvis den "
+"fÃ¸rste tasten til hÃ¸yre for den venstre Shift-tasten. Resten av tastene bÃ¸r "
+"ligge bortover som pÃ¥ et piano, inkludert raden ovenfor."
 
 #: app/keys.c:156
 msgid "Other Keys..."
@@ -1084,8 +1084,8 @@ msgid ""
 "Please press the desired key combination!\n"
 "Click into left list to cancel"
 msgstr ""
-"Vennligst trykk ønsket tastekombinasjon!\n"
-"Klikk i den venstre listen for å avbryte"
+"Vennligst trykk Ã¸nsket tastekombinasjon!\n"
+"Klikk i den venstre listen for Ã¥ avbryte"
 
 #: app/keys.c:919
 #, c-format
@@ -1104,20 +1104,20 @@ msgid ""
 "in the Settings menu."
 msgstr ""
 "Automatisk tasteoppsett mislyktes.\n"
-"Vennligst konfigurer i Verktøy->Tasteoppsett."
+"Vennligst konfigurer i VerktÃ¸y->Tasteoppsett."
 
 #: app/menubar.c:92
 msgid ""
 "Are you sure you want to do this?\n"
 "All changes will be lost!"
 msgstr ""
-"Er du sikker på at du vil gjøre dette?\n"
-"Alle endringer vil gå tapt!"
+"Er du sikker pÃ¥ at du vil gjÃ¸re dette?\n"
+"Alle endringer vil gÃ¥ tapt!"
 
 #: app/mixers/integer32.c:493
 msgid "Integers mixer, no interpolation, no filters, maximum sample length 1M"
 msgstr ""
-"Heltallsmikser, ingen interpolasjon, ingen filtre, maksium lydstørrelse 1M"
+"Heltallsmikser, ingen interpolasjon, ingen filtre, maksium lydstÃ¸rrelse 1M"
 
 #: app/module-info.c:123
 msgid "Instrument Name"
@@ -1133,7 +1133,7 @@ msgstr "Lydnavn"
 
 #: app/module-info.c:131
 msgid "Linear"
-msgstr "Lineær"
+msgstr "LineÃ¦r"
 
 #: app/module-info.c:131 app/sample-editor.c:226
 msgid "Amiga"
@@ -1174,7 +1174,7 @@ msgstr "Sett inn ark som blir redigert"
 
 #: app/playlist.c:561
 msgid "Remove current playlist entry"
-msgstr "Fjern oppføring fra arklisten"
+msgstr "Fjern oppfÃ¸ring fra arklisten"
 
 #: app/playlist.c:569
 msgid "Add + Cpy"
@@ -1184,7 +1184,7 @@ msgstr "Ny + Kopi"
 msgid ""
 "Add a free pattern behind current position, and copy current pattern to it"
 msgstr ""
-"Legg til et tomt ark etter nåværende posisjon, og kopier det nåværende arket "
+"Legg til et tomt ark etter nÃ¥vÃ¦rende posisjon, og kopier det nÃ¥vÃ¦rende arket "
 "dit"
 
 #: app/playlist.c:574
@@ -1383,8 +1383,9 @@ msgid "Load Sample"
 msgstr "Last lyd"
 
 #: app/sample-editor.c:405
-msgid "Load sample into the current samle slot"
-msgstr ""
+#, fuzzy
+msgid "Load sample into the current sample slot"
+msgstr "Lagre _XM uten lyder..."
 
 #: app/sample-editor.c:406
 msgid "Save Sample"
@@ -1397,7 +1398,7 @@ msgstr "Lagre _XM uten lyder..."
 
 #: app/sample-editor.c:407
 msgid "Save region as WAV..."
-msgstr "Lagre område som WAV..."
+msgstr "Lagre omrÃ¥de som WAV..."
 
 #: app/sample-editor.c:419
 msgid "Save WAV"
@@ -1405,7 +1406,7 @@ msgstr "Lagre WAV"
 
 #: app/sample-editor.c:429
 msgid "Save Region"
-msgstr "Lagre område"
+msgstr "Lagre omrÃ¥de"
 
 #: app/sample-editor.c:440
 msgid "Monitor"
@@ -1430,7 +1431,7 @@ msgstr "Vis hele"
 
 #: app/sample-editor.c:475
 msgid "Zoom in (+50%)"
-msgstr "Forstørr (+50%)"
+msgstr "ForstÃ¸rr (+50%)"
 
 #: app/sample-editor.c:481
 msgid "Zoom out (-50%)"
@@ -1491,7 +1492,7 @@ msgstr "Miks"
 
 #: app/sample-editor.c:1313
 msgid "Right"
-msgstr "Høyre"
+msgstr "HÃ¸yre"
 
 #: app/sample-editor.c:1314
 #, fuzzy
@@ -1554,7 +1555,7 @@ msgstr "Big-Endian"
 
 #: app/sample-editor.c:1625
 msgid "Load raw sample"
-msgstr "Last rå lyd"
+msgstr "Last rÃ¥ lyd"
 
 #: app/sample-editor.c:1633
 msgid ""
@@ -1565,7 +1566,7 @@ msgid ""
 msgstr ""
 "Denne lyden er ikke i et kjent format\n"
 "\n"
-"Du må velge et lydformat:"
+"Du mÃ¥ velge et lydformat:"
 
 #: app/sample-editor.c:1659
 msgid "Word format:"
@@ -1590,7 +1591,7 @@ msgstr "Takler bare 8 eller 16 bit lydfiler med inntil 2 kanaler"
 
 #: app/sample-editor.c:1951
 msgid "Please select region first."
-msgstr "Velg et område først."
+msgstr "Velg et omrÃ¥de fÃ¸rst."
 
 #: app/sample-editor.c:1977
 msgid "OK"
@@ -1653,7 +1654,7 @@ msgstr "Normaliser"
 
 #: app/sample-editor.c:2456
 msgid "Perform linear volume fade on Selection"
-msgstr "Utfør lineær volumendring på merket område"
+msgstr "UtfÃ¸r lineÃ¦r volumendring pÃ¥ merket omrÃ¥de"
 
 #: app/sample-editor.c:2465
 msgid "Left [%]:"
@@ -1677,7 +1678,7 @@ msgstr ""
 
 #: app/sample-editor.c:2482
 msgid "Right [%]:"
-msgstr "Høyre (%):"
+msgstr "HÃ¸yre (%):"
 
 #: app/sample-editor.c:2575
 msgid "Trim parameters"
@@ -1704,8 +1705,8 @@ msgid ""
 msgstr ""
 "Velkommen til SoundTracker!\n"
 "\n"
-"Hvis det er første gangen du bruker denne typen program, bør du få tak\n"
-"i noen .XM eller .MOD-filer først og leke deg med dem."
+"Hvis det er fÃ¸rste gangen du bruker denne typen program, bÃ¸r du fÃ¥ tak\n"
+"i noen .XM eller .MOD-filer fÃ¸rst og leke deg med dem."
 
 #: app/tips-dialog.c:49
 msgid ""
@@ -1713,8 +1714,8 @@ msgid ""
 "input by decreasing the mixing buffer size of the \"Editing\" object in\n"
 "the Audio Configuration."
 msgstr ""
-"Du kan konfigurere SoundTracker til å bli mer responsivt for\n"
-"tastespilling og opptak ved å minske miksebufferet i\n"
+"Du kan konfigurere SoundTracker til Ã¥ bli mer responsivt for\n"
+"tastespilling og opptak ved Ã¥ minske miksebufferet i\n"
 "Redigeringsinnstillingene i Lydoppsettet."
 
 #: app/tips-dialog.c:53
@@ -1722,8 +1723,8 @@ msgid ""
 "You can adjust the loop points in the sample editor by holding Shift\n"
 "and using the left and right mousebuttons.\n"
 msgstr ""
-"Du kan lett endre loop-punktene i lydredigereren ved å holde Shift\n"
-"og bruke venstre og høyre musknapp.\n"
+"Du kan lett endre loop-punktene i lydredigereren ved Ã¥ holde Shift\n"
+"og bruke venstre og hÃ¸yre musknapp.\n"
 
 #: app/tips-dialog.c:56
 msgid ""
@@ -1731,7 +1732,7 @@ msgid ""
 "work, have a look at http://www.united-trackers.org/"
 msgstr ""
 "Hvis du vil vite mer om hvordan du bruker trackere og hvordan de\n"
-"ulike kommandoene virker, ta en titt på http://www.united-trackers.org/"
+"ulike kommandoene virker, ta en titt pÃ¥ http://www.united-trackers.org/"
 
 #: app/tips-dialog.c:59
 msgid ""
@@ -1740,7 +1741,7 @@ msgid ""
 "instrument editor page."
 msgstr ""
 "Du kan tilordne de ulike lydene i et instrument til spesifikke taster\n"
-"ved først å velge lyden, og deretter klikke på tangentene nederst på\n"
+"ved fÃ¸rst Ã¥ velge lyden, og deretter klikke pÃ¥ tangentene nederst pÃ¥\n"
 "instrumentredigeringssiden."
 
 #: app/tips-dialog.c:63
@@ -1748,8 +1749,8 @@ msgid ""
 "Is your cursor trapped in a number entry field?\n"
 "Just press Return or Tab to free yourself!"
 msgstr ""
-"Er markøren fanget i et tallfelt?\n"
-"Trykk Enter eller Tab for å komme deg ut!"
+"Er markÃ¸ren fanget i et tallfelt?\n"
+"Trykk Enter eller Tab for Ã¥ komme deg ut!"
 
 #: app/tips-dialog.c:111
 msgid "Previous Tip"
@@ -1889,7 +1890,7 @@ msgstr "Retrig note"
 
 #: app/track-editor.c:159 app/track-editor.c:171
 msgid "Fine volume slide up"
-msgstr "Fin volumøkning"
+msgstr "Fin volumÃ¸kning"
 
 #: app/track-editor.c:160 app/track-editor.c:170
 msgid "Fine volume slide down"
@@ -1913,7 +1914,7 @@ msgstr "Volumsenkning"
 
 #: app/track-editor.c:169
 msgid "Volume slide up"
-msgstr "Volumøkning"
+msgstr "VolumÃ¸kning"
 
 #: app/track-editor.c:172
 msgid "Set vibrato speed"
@@ -1925,7 +1926,7 @@ msgstr "Panorer mot venstre"
 
 #: app/track-editor.c:176
 msgid "Panning slide right"
-msgstr "Panorer mot høyre"
+msgstr "Panorer mot hÃ¸yre"
 
 #: app/track-editor.c:181
 msgid "sine"
@@ -1969,7 +1970,7 @@ msgstr ""
 msgid "Minor lines highlighting"
 msgstr ""
 
-#: app/tracker.c:92
+#: app/tracker.c:92 soundtracker.glade:142
 #, fuzzy
 msgid "Selection"
 msgstr "Utvalg:"
@@ -2067,7 +2068,7 @@ msgstr "Bytt 1 -> 2"
 
 #: app/transposition.c:226
 msgid "Transposition Tools"
-msgstr "Transponeringsverktøy"
+msgstr "TransponeringsverktÃ¸y"
 
 #: app/transposition.c:239
 msgid "Scope of the operation:"
@@ -2221,7 +2222,7 @@ msgstr ""
 
 #: app/xm.c:1080
 msgid "Can't open file"
-msgstr "Kan ikke åpne fil"
+msgstr "Kan ikke Ã¥pne fil"
 
 #: app/xm.c:1094
 msgid "XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n"
@@ -2265,11 +2266,11 @@ msgstr "Filen er ikke FastTracker XM eller i et kjent MOD-format!"
 
 #: app/xm.c:1573 app/xm.c:1594
 msgid "Error when file reading or unexpected end of file"
-msgstr "Feil under innlesing eller uventet slutt på fil"
+msgstr "Feil under innlesing eller uventet slutt pÃ¥ fil"
 
 #: app/xm.c:1577
 msgid "Incorrect or unsupported version of pattern file!"
-msgstr "Feil eller ikke støttet versjon av arkfil!"
+msgstr "Feil eller ikke stÃ¸ttet versjon av arkfil!"
 
 #: app/xm.c:1581
 msgid "Incorrect pattern length!"
@@ -2309,7 +2310,7 @@ msgstr "Avspilling"
 
 #: app/midi-settings-09x.c:487
 msgid "Debug level"
-msgstr "Avlusningsnivå"
+msgstr "AvlusningsnivÃ¥"
 
 #: app/midi-settings-09x.c:499
 msgid "Misc"
@@ -2349,6 +2350,273 @@ msgstr ""
 msgid "error closing handle (%s)\n"
 msgstr ""
 
+#: soundtracker.glade:10
+msgid "Pattern"
+msgstr "Arknummer"
+
+#: soundtracker.glade:49
+#, fuzzy
+msgid "Track"
+msgstr "_Spor"
+
+#: soundtracker.glade:88 soundtracker.glade:501
+msgid "_Kill notes"
+msgstr "_Stopp alle noter"
+
+#: soundtracker.glade:104 soundtracker.glade:518
+msgid "_Insert track"
+msgstr "Sett _inn spor"
+
+#: soundtracker.glade:112 soundtracker.glade:526
+msgid "_Delete track"
+msgstr "Sle_tt spor"
+
+#: soundtracker.glade:125 soundtracker.glade:539
+msgid "Increment cmd value"
+msgstr "Ã˜k effektverdi under markÃ¸r"
+
+#: soundtracker.glade:131 soundtracker.glade:546
+msgid "Decrement cmd value"
+msgstr "Minsk effektverdi under markÃ¸r"
+
+#: soundtracker.glade:150 soundtracker.glade:575
+msgid "C_lear block marks"
+msgstr "_Fjern blokkmarkering"
+
+#: soundtracker.glade:185 soundtracker.glade:589
+msgid "_Interpolate effects"
+msgstr "_Interpoler effekter"
+
+#: soundtracker.glade:219
+msgid "_File"
+msgstr "_Fil"
+
+#: soundtracker.glade:261
+#, fuzzy
+msgid "Save Module as _WAVâ€¦"
+msgstr "Lagre modul som _WAV..."
+
+#: soundtracker.glade:270
+#, fuzzy
+msgid "Save _XM without samplesâ€¦"
+msgstr "Lagre _XM uten lyder..."
+
+#: soundtracker.glade:299
+msgid "_Module"
+msgstr "_Modul"
+
+#: soundtracker.glade:306
+msgid "Clear _All"
+msgstr "_Slett alt"
+
+#: soundtracker.glade:315
+msgid "Clear _Patterns Only"
+msgstr "Slett _alle ark"
+
+#: soundtracker.glade:330
+msgid "_Optimize Module"
+msgstr "_Optimaliser modul"
+
+#: soundtracker.glade:342
+msgid "_Edit"
+msgstr "_Rediger"
+
+#: soundtracker.glade:382
+#, fuzzy
+msgid "_Jazz edit mode"
+msgstr "_Jazzredigeringsmodus"
+
+#: soundtracker.glade:391
+msgid "_Record keyreleases"
+msgstr ""
+
+#: soundtracker.glade:404
+#, fuzzy
+msgid "Transp_ositionâ€¦"
+msgstr "Transp_oner..."
+
+#: soundtracker.glade:417 soundtracker.glade:643
+msgid "_Pattern"
+msgstr "_Ark"
+
+#: soundtracker.glade:459 soundtracker.glade:738
+msgid "_Track"
+msgstr "_Spor"
+
+#: soundtracker.glade:558
+msgid "_Selection"
+msgstr "_Utvalg"
+
+#: soundtracker.glade:566
+msgid "_Mark mode"
+msgstr "_Markeringsmodus"
+
+#: soundtracker.glade:603
+msgid "Transpose half-note up"
+msgstr "Transponer opp en halvnote"
+
+#: soundtracker.glade:611
+msgid "Transpose half-note down"
+msgstr "Transponer ned en halvnote"
+
+#: soundtracker.glade:619
+msgid "Transpose octave up"
+msgstr "Transponer opp en oktav"
+
+#: soundtracker.glade:627
+msgid "Transpose octave down"
+msgstr "Transponer ned en oktav"
+
+#: soundtracker.glade:650
+#, fuzzy
+msgid "_Load Patternâ€¦"
+msgstr "Last _ark"
+
+#: soundtracker.glade:659
+#, fuzzy
+msgid "_Save Current Patternâ€¦"
+msgstr "_Lagre gjeldende ark"
+
+#: soundtracker.glade:674
+msgid "_Find Unused Pattern"
+msgstr "_Finn ubrukt ark"
+
+#: soundtracker.glade:683
+msgid "_Copy Current to Unused Pattern"
+msgstr "_Kopier gjeldende til nytt ark"
+
+#: soundtracker.glade:697
+msgid "C_lear Unused Patterns"
+msgstr "_Slett ubrukte ark"
+
+#: soundtracker.glade:705
+msgid "_Pack Patterns"
+msgstr "_Komprimer ark"
+
+#: soundtracker.glade:718
+#, fuzzy
+msgid "S_hrink Current Pattern"
+msgstr "Gjeldende ark"
+
+#: soundtracker.glade:726
+#, fuzzy
+msgid "_Expand Current Pattern"
+msgstr "_Lagre gjeldende ark"
+
+#: soundtracker.glade:746
+msgid "_Toggle Current Track Permanentness"
+msgstr ""
+
+#: soundtracker.glade:754
+msgid "Toggle _All Tracks Permanentness"
+msgstr ""
+
+#: soundtracker.glade:766
+msgid "_Instrument"
+msgstr "_Instrument"
+
+#: soundtracker.glade:773
+#, fuzzy
+msgid "_Load XIâ€¦"
+msgstr "Last XI"
+
+#: soundtracker.glade:782
+#, fuzzy
+msgid "_Save XIâ€¦"
+msgstr "Lagre XI"
+
+#: soundtracker.glade:796
+msgid "_Clear Current"
+msgstr "_Slett gjeldende"
+
+#: soundtracker.glade:811
+msgid "_Delete Unused Instruments"
+msgstr "Slett _ubrukte instrumenter"
+
+#: soundtracker.glade:826
+msgid "_Settings"
+msgstr "_Innstillinger"
+
+#: soundtracker.glade:834
+msgid "Display _Oscilloscopes"
+msgstr "Vis _oscilloskop"
+
+#: soundtracker.glade:842
+msgid "_Tracker"
+msgstr "_Tracker"
+
+#: soundtracker.glade:850
+#, fuzzy
+msgid "_Flicker-free Scrolling"
+msgstr "Flimmerfri _rulling"
+
+#: soundtracker.glade:858
+#, fuzzy
+msgid "_Previous Font"
+msgstr "_Forrige skrifttype"
+
+#: soundtracker.glade:867
+#, fuzzy
+msgid "_Next Font"
+msgstr "_Neste skrifttype"
+
+#: soundtracker.glade:881
+msgid "Change Preferred _Accidental Type"
+msgstr ""
+
+#: soundtracker.glade:890
+#, fuzzy
+msgid "Change Effect Column _Editing Direction"
+msgstr "Flytt markÃ¸r bortover nÃ¥r effektkolonner redigeres"
+
+#: soundtracker.glade:907
+#, fuzzy
+msgid "_Keyboard Configurationâ€¦"
+msgstr "Tastaturoppsett"
+
+#: soundtracker.glade:917
+#, fuzzy
+msgid "_Audio Configurationâ€¦"
+msgstr "Lydoppsett"
+
+#: soundtracker.glade:927
+#, fuzzy
+msgid "_GUI Configurationâ€¦"
+msgstr "GUI-innstillinger"
+
+#: soundtracker.glade:937
+#, fuzzy
+msgid "_MIDI Configurationâ€¦"
+msgstr "MIDI-oppsett"
+
+#: soundtracker.glade:953
+#, fuzzy
+msgid "_Disable Splash Screen"
+msgstr "Ikke bruk velkomstskjerm"
+
+#: soundtracker.glade:960
+#, fuzzy
+msgid "_Save Settings Now"
+msgstr "_Lagre innstillinger nÃ¥"
+
+#: soundtracker.glade:971
+msgid "Save Settings on _Exit"
+msgstr "Lagre innstillinger ved _avslutning"
+
+#: soundtracker.glade:983
+msgid "_Help"
+msgstr "_Hjelp"
+
+#: soundtracker.glade:1005
+#, fuzzy
+msgid "Show _Tipsâ€¦"
+msgstr "Vis _tips..."
+
+#: soundtracker.glade:1014
+#, fuzzy
+msgid "_XM Effects"
+msgstr "_XM-effektoversikt..."
+
 #~ msgid "(%d bytes)"
 #~ msgstr "(%d byte)"
 
@@ -2362,21 +2630,21 @@ msgstr ""
 #~ "Couldn't open ALSA device for sound input (card:%d, device:%d):\n"
 #~ "%s"
 #~ msgstr ""
-#~ "Kunne ikke åpne ALSA-enhet for lydopptak (kort:%d, enhet:%d):\n"
+#~ "Kunne ikke Ã¥pne ALSA-enhet for lydopptak (kort:%d, enhet:%d):\n"
 #~ "%s"
 
 #~ msgid "Required sound output parameters not supported.\n"
-#~ msgstr "Nødvendige avspillingsparametre støttes ikke.\n"
+#~ msgstr "NÃ¸dvendige avspillingsparametre stÃ¸ttes ikke.\n"
 
 #~ msgid ""
 #~ "Couldn't open ALSA device for sound output (card:%d, device:%d):\n"
 #~ "%s"
 #~ msgstr ""
-#~ "Kunne ikke åpne ALSA-enhet for lydavspilling (kort:%d, enhet:%d):\n"
+#~ "Kunne ikke Ã¥pne ALSA-enhet for lydavspilling (kort:%d, enhet:%d):\n"
 #~ "%s"
 
 #~ msgid "Required output-channel parameters not supported.\n"
-#~ msgstr "Nødvendige avspillingsparametre støttes ikke.\n"
+#~ msgstr "NÃ¸dvendige avspillingsparametre stÃ¸ttes ikke.\n"
 
 #~ msgid "Alsa setup error.\n"
 #~ msgstr "ALSA-oppsett mislyktes.\n"
@@ -2385,7 +2653,7 @@ msgstr ""
 #~ "Couldn't open %s for sound output:\n"
 #~ "%s"
 #~ msgstr ""
-#~ "Kunne ikke åpne %s for lydavspilling:\n"
+#~ "Kunne ikke Ã¥pne %s for lydavspilling:\n"
 #~ "%s"
 
 #~ msgid "transport master"
@@ -2401,7 +2669,7 @@ msgstr ""
 #~ msgstr "Lagre sang"
 
 #~ msgid "Question"
-#~ msgstr "Spørsmål"
+#~ msgstr "SpÃ¸rsmÃ¥l"
 
 #~ msgid "Yes"
 #~ msgstr "Ja"
@@ -2419,7 +2687,7 @@ msgstr ""
 #~ msgstr "Lukk"
 
 #~ msgid "Are you sure you want to overwrite the file?"
-#~ msgstr "Er du sikker på at du vil overskrive filen?"
+#~ msgstr "Er du sikker pÃ¥ at du vil overskrive filen?"
 
 #~ msgid "Load XM..."
 #~ msgstr "Last XM..."
@@ -2441,31 +2709,19 @@ msgstr ""
 #~ "Please use the Keyboard Configuration dialog."
 #~ msgstr ""
 #~ "Tastaturkonfigurasjonsfilen er ugyldig.\n"
-#~ "Vennligst konfigurer i Verktøy->Tasteoppsett."
+#~ "Vennligst konfigurer i VerktÃ¸y->Tasteoppsett."
 
 #~ msgid "Ok"
 #~ msgstr "Ok"
 
 #~ msgid "_Open..."
-#~ msgstr "_Åpne..."
+#~ msgstr "_Ã…pne..."
 
 #~ msgid "Save _as..."
 #~ msgstr "Lagre _som..."
 
-#~ msgid "Save Module as _WAV..."
-#~ msgstr "Lagre modul som _WAV..."
-
 #~ msgid "_Quit"
 #~ msgstr "_Avslutt"
-
-#~ msgid "Clear _All"
-#~ msgstr "_Slett alt"
-
-#~ msgid "Clear _Patterns Only"
-#~ msgstr "Slett _alle ark"
-
-#~ msgid "_Optimize Module"
-#~ msgstr "_Optimaliser modul"
 
 #~ msgid "C_ut"
 #~ msgstr "Klipp _ut"
@@ -2476,86 +2732,9 @@ msgstr ""
 #~ msgid "_Paste"
 #~ msgstr "_Lim inn"
 
-#~ msgid "_Kill notes"
-#~ msgstr "_Stopp alle noter"
-
-#~ msgid "_Insert track"
-#~ msgstr "Sett _inn spor"
-
-#~ msgid "_Delete track"
-#~ msgstr "Sle_tt spor"
-
-#~ msgid "Increment cmd value"
-#~ msgstr "Øk effektverdi under markør"
-
-#~ msgid "Decrement cmd value"
-#~ msgstr "Minsk effektverdi under markør"
-
-#~ msgid "_Mark mode"
-#~ msgstr "_Markeringsmodus"
-
-#~ msgid "C_lear block marks"
-#~ msgstr "_Fjern blokkmarkering"
-
-#~ msgid "_Interpolate effects"
-#~ msgstr "_Interpoler effekter"
-
-#~ msgid "Transpose half-note up"
-#~ msgstr "Transponer opp en halvnote"
-
-#~ msgid "Transpose half-note down"
-#~ msgstr "Transponer ned en halvnote"
-
-#~ msgid "Transpose octave up"
-#~ msgstr "Transponer opp en oktav"
-
-#~ msgid "Transpose octave down"
-#~ msgstr "Transponer ned en oktav"
-
 #, fuzzy
 #~ msgid "P_aste"
 #~ msgstr "Lim inn"
-
-#~ msgid "_Jazz Edit Mode"
-#~ msgstr "_Jazzredigeringsmodus"
-
-#~ msgid "Transp_osition..."
-#~ msgstr "Transp_oner..."
-
-#~ msgid "_Pattern"
-#~ msgstr "_Ark"
-
-#~ msgid "_Track"
-#~ msgstr "_Spor"
-
-#~ msgid "_Selection"
-#~ msgstr "_Utvalg"
-
-#~ msgid "_Find Unused Pattern"
-#~ msgstr "_Finn ubrukt ark"
-
-#~ msgid "_Copy Current to Unused Pattern"
-#~ msgstr "_Kopier gjeldende til nytt ark"
-
-#~ msgid "C_lear Unused Patterns"
-#~ msgstr "_Slett ubrukte ark"
-
-#~ msgid "_Pack Patterns"
-#~ msgstr "_Komprimer ark"
-
-#~ msgid "_Save Current Pattern"
-#~ msgstr "_Lagre gjeldende ark"
-
-#~ msgid "L_oad Pattern"
-#~ msgstr "Last _ark"
-
-#, fuzzy
-#~ msgid "Sh_rink Current Pattern"
-#~ msgstr "Gjeldende ark"
-
-#, fuzzy
-#~ msgid "_Expand Current Pattern"
-#~ msgstr "_Lagre gjeldende ark"
 
 #~ msgid "_Load XI..."
 #~ msgstr "_Last XI..."
@@ -2563,30 +2742,9 @@ msgstr ""
 #~ msgid "_Save XI..."
 #~ msgstr "L_agre XI..."
 
-#~ msgid "_Clear Current"
-#~ msgstr "_Slett gjeldende"
-
-#~ msgid "_Delete Unused Instruments"
-#~ msgstr "Slett _ubrukte instrumenter"
-
-#~ msgid "_Flicker-free scrolling"
-#~ msgstr "Flimmerfri _rulling"
-
-#~ msgid "_Previous font"
-#~ msgstr "_Forrige skrifttype"
-
-#~ msgid "_Next font"
-#~ msgstr "_Neste skrifttype"
-
 #, fuzzy
 #~ msgid "Change effect column editing _direction"
-#~ msgstr "Flytt markør bortover når effektkolonner redigeres"
-
-#~ msgid "Display _Oscilloscopes"
-#~ msgstr "Vis _oscilloskop"
-
-#~ msgid "_Tracker"
-#~ msgstr "_Tracker"
+#~ msgstr "Flytt markÃ¸r bortover nÃ¥r effektkolonner redigeres"
 
 #~ msgid "_Keyboard Configuration..."
 #~ msgstr "_Tasteoppsett..."
@@ -2600,41 +2758,8 @@ msgstr ""
 #~ msgid "_MIDI Configuration..."
 #~ msgstr "_MIDI-oppsett..."
 
-#~ msgid "Disable splash screen"
-#~ msgstr "Ikke bruk velkomstskjerm"
-
-#~ msgid "_Save Settings now"
-#~ msgstr "_Lagre innstillinger nå"
-
-#~ msgid "Save Settings on _Exit"
-#~ msgstr "Lagre innstillinger ved _avslutning"
-
 #~ msgid "_About..."
 #~ msgstr "_Om..."
-
-#~ msgid "Show _Tips..."
-#~ msgstr "Vis _tips..."
-
-#~ msgid "_XM Effects..."
-#~ msgstr "_XM-effektoversikt..."
-
-#~ msgid "_File"
-#~ msgstr "_Fil"
-
-#~ msgid "_Module"
-#~ msgstr "_Modul"
-
-#~ msgid "_Edit"
-#~ msgstr "_Rediger"
-
-#~ msgid "_Instrument"
-#~ msgstr "_Instrument"
-
-#~ msgid "_Settings"
-#~ msgstr "_Innstillinger"
-
-#~ msgid "_Help"
-#~ msgstr "_Hjelp"
 
 #, fuzzy
 #~ msgid ""
@@ -2654,7 +2779,7 @@ msgstr ""
 #~ msgstr "8363"
 
 #~ msgid "Execute"
-#~ msgstr "Utfør"
+#~ msgstr "UtfÃ¸r"
 
 #~ msgid "Apply"
 #~ msgstr "Bruk"
@@ -2667,9 +2792,6 @@ msgstr ""
 
 #~ msgid "Down"
 #~ msgstr "Ned"
-
-#~ msgid "Pattern"
-#~ msgstr "Arknummer"
 
 #~ msgid "_Accidentals"
 #~ msgstr "For_tegn"

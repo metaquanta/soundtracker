@@ -6,13 +6,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: soundtracker 0.6.7\n"
 "Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
-"POT-Creation-Date: 2013-10-13 23:27+0400\n"
+"POT-Creation-Date: 2013-10-23 01:06+0400\n"
 "PO-Revision-Date: 2004-06-14 11:48+0200\n"
 "Last-Translator: Aysun Kıran <aysunkir@yahoo.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: app/audio.c:678 app/gui.c:340 app/gui.c:349 app/gui.c:359 app/gui.c:369
@@ -34,27 +34,27 @@ msgstr "Düzenleme Çıkışı"
 msgid "Sampling"
 msgstr "Örnekleme"
 
-#: app/audioconfig.c:188
+#: app/audioconfig.c:192
 msgid "Driver Module"
 msgstr "Sürücü Birimi"
 
-#: app/audioconfig.c:241
+#: app/audioconfig.c:245
 msgid "Mixer Module"
 msgstr "Karıştırıcı Birimi"
 
-#: app/audioconfig.c:242 app/drivers/alsa1x.c:734
+#: app/audioconfig.c:246 app/drivers/alsa1x.c:734
 msgid "Description"
 msgstr "Tanım"
 
-#: app/audioconfig.c:249
+#: app/audioconfig.c:253
 msgid "Audio Configuration"
 msgstr "Ses Yapılandırması"
 
-#: app/audioconfig.c:269
+#: app/audioconfig.c:273
 msgid "File output"
 msgstr ""
 
-#: app/audioconfig.c:277
+#: app/audioconfig.c:281
 msgid "Mixers"
 msgstr "Karıştırıcılar"
 
@@ -1398,8 +1398,9 @@ msgid "Load Sample"
 msgstr "Örneği Yükle"
 
 #: app/sample-editor.c:405
-msgid "Load sample into the current samle slot"
-msgstr ""
+#, fuzzy
+msgid "Load sample into the current sample slot"
+msgstr "XM'yi örnekler olmadan kaydet..."
 
 #: app/sample-editor.c:406
 msgid "Save Sample"
@@ -2041,7 +2042,7 @@ msgstr "Satır vurgulamasını etkinleştir "
 msgid "Minor lines highlighting"
 msgstr "Satır vurgulamasını etkinleştir "
 
-#: app/tracker.c:92
+#: app/tracker.c:92 soundtracker.glade:142
 #, fuzzy
 msgid "Selection"
 msgstr "Seçim:"
@@ -2424,6 +2425,274 @@ msgstr ""
 msgid "error closing handle (%s)\n"
 msgstr ""
 
+#: soundtracker.glade:10
+#, fuzzy
+msgid "Pattern"
+msgstr "_Desen"
+
+#: soundtracker.glade:49
+#, fuzzy
+msgid "Track"
+msgstr "_İzle"
+
+#: soundtracker.glade:88 soundtracker.glade:501
+msgid "_Kill notes"
+msgstr "_Notaları sonlandır"
+
+#: soundtracker.glade:104 soundtracker.glade:518
+msgid "_Insert track"
+msgstr "_İzi yerleştir"
+
+#: soundtracker.glade:112 soundtracker.glade:526
+msgid "_Delete track"
+msgstr "_İzi sil"
+
+#: soundtracker.glade:125 soundtracker.glade:539
+msgid "Increment cmd value"
+msgstr "Cmd değerini artırma"
+
+#: soundtracker.glade:131 soundtracker.glade:546
+msgid "Decrement cmd value"
+msgstr "Cmd değerini azaltma"
+
+#: soundtracker.glade:150 soundtracker.glade:575
+msgid "C_lear block marks"
+msgstr "B_lok imlerini Temizle"
+
+#: soundtracker.glade:185 soundtracker.glade:589
+msgid "_Interpolate effects"
+msgstr "_Etkileri ara değerle"
+
+#: soundtracker.glade:219
+msgid "_File"
+msgstr "_Dosya"
+
+#: soundtracker.glade:261
+#, fuzzy
+msgid "Save Module as _WAV…"
+msgstr "Birimi WAV olarak_kaydet..."
+
+#: soundtracker.glade:270
+#, fuzzy
+msgid "Save _XM without samples…"
+msgstr "XM'yi örnekler olmadan kaydet..."
+
+#: soundtracker.glade:299
+msgid "_Module"
+msgstr "_Birim"
+
+#: soundtracker.glade:306
+msgid "Clear _All"
+msgstr "Tümünü_Temizle"
+
+#: soundtracker.glade:315
+msgid "Clear _Patterns Only"
+msgstr "Sadece_Desenleri Temizle"
+
+#: soundtracker.glade:330
+msgid "_Optimize Module"
+msgstr "_Birimi en iyi şekilde kullan"
+
+#: soundtracker.glade:342
+msgid "_Edit"
+msgstr "_Düzenle"
+
+#: soundtracker.glade:382
+#, fuzzy
+msgid "_Jazz edit mode"
+msgstr "_Jazz Düzenleme Kipi"
+
+#: soundtracker.glade:391
+msgid "_Record keyreleases"
+msgstr ""
+
+#: soundtracker.glade:404
+#, fuzzy
+msgid "Transp_osition…"
+msgstr "Değişt_irme..."
+
+#: soundtracker.glade:417 soundtracker.glade:643
+msgid "_Pattern"
+msgstr "_Desen"
+
+#: soundtracker.glade:459 soundtracker.glade:738
+msgid "_Track"
+msgstr "_İzle"
+
+#: soundtracker.glade:558
+msgid "_Selection"
+msgstr "_Seçim"
+
+#: soundtracker.glade:566
+msgid "_Mark mode"
+msgstr "_İm kipi"
+
+#: soundtracker.glade:603
+msgid "Transpose half-note up"
+msgstr "Yarım-nota yukarı değiştir"
+
+#: soundtracker.glade:611
+msgid "Transpose half-note down"
+msgstr "Yarım-nota aşağı değiştir"
+
+#: soundtracker.glade:619
+msgid "Transpose octave up"
+msgstr "Oktavı yukarıya "
+
+#: soundtracker.glade:627
+msgid "Transpose octave down"
+msgstr "Oktavı aşağı değiştir"
+
+#: soundtracker.glade:650
+#, fuzzy
+msgid "_Load Pattern…"
+msgstr "D_eseni Yükle"
+
+#: soundtracker.glade:659
+#, fuzzy
+msgid "_Save Current Pattern…"
+msgstr "_Geçerli Deseni Kaydet"
+
+#: soundtracker.glade:674
+msgid "_Find Unused Pattern"
+msgstr "_"
+
+#: soundtracker.glade:683
+msgid "_Copy Current to Unused Pattern"
+msgstr "_Geçerli olanı Kullanılmayan Desene Kopyala"
+
+#: soundtracker.glade:697
+msgid "C_lear Unused Patterns"
+msgstr "K_ullanılmayan Desenleri Temizle"
+
+#: soundtracker.glade:705
+msgid "_Pack Patterns"
+msgstr "_Desenleri Paketle"
+
+#: soundtracker.glade:718
+#, fuzzy
+msgid "S_hrink Current Pattern"
+msgstr "Ge_çerli Deseni Küçült"
+
+#: soundtracker.glade:726
+msgid "_Expand Current Pattern"
+msgstr "_Geçerli Deseni Genişlet"
+
+#: soundtracker.glade:746
+msgid "_Toggle Current Track Permanentness"
+msgstr ""
+
+#: soundtracker.glade:754
+msgid "Toggle _All Tracks Permanentness"
+msgstr ""
+
+#: soundtracker.glade:766
+msgid "_Instrument"
+msgstr "_Aygıt"
+
+#: soundtracker.glade:773
+#, fuzzy
+msgid "_Load XI…"
+msgstr "XI'yı Yükle"
+
+#: soundtracker.glade:782
+#, fuzzy
+msgid "_Save XI…"
+msgstr "XI'yi Kaydet"
+
+#: soundtracker.glade:796
+msgid "_Clear Current"
+msgstr "_Geçerli olanı Temizle "
+
+#: soundtracker.glade:811
+msgid "_Delete Unused Instruments"
+msgstr "_Kullanılmayan Aygıtları Sil"
+
+#: soundtracker.glade:826
+msgid "_Settings"
+msgstr "_Ayarlar"
+
+#: soundtracker.glade:834
+msgid "Display _Oscilloscopes"
+msgstr "Göster_Oscilloscopes"
+
+#: soundtracker.glade:842
+msgid "_Tracker"
+msgstr "_İzci"
+
+#: soundtracker.glade:850
+#, fuzzy
+msgid "_Flicker-free Scrolling"
+msgstr "_Titreşimsiz kaydırma"
+
+#: soundtracker.glade:858
+#, fuzzy
+msgid "_Previous Font"
+msgstr "_Önceki yazıtipi"
+
+#: soundtracker.glade:867
+#, fuzzy
+msgid "_Next Font"
+msgstr "_Sonraki yazıtipi"
+
+#: soundtracker.glade:881
+#, fuzzy
+msgid "Change Preferred _Accidental Type"
+msgstr "Tercih edilen_yanlış türü değiştir"
+
+#: soundtracker.glade:890
+#, fuzzy
+msgid "Change Effect Column _Editing Direction"
+msgstr "Yönü düzenleyen etki sütununu değiştir"
+
+#: soundtracker.glade:907
+#, fuzzy
+msgid "_Keyboard Configuration…"
+msgstr "Klavye Yapılandırması"
+
+#: soundtracker.glade:917
+#, fuzzy
+msgid "_Audio Configuration…"
+msgstr "Ses Yapılandırması"
+
+#: soundtracker.glade:927
+#, fuzzy
+msgid "_GUI Configuration…"
+msgstr "GUI Yapılandırması"
+
+#: soundtracker.glade:937
+#, fuzzy
+msgid "_MIDI Configuration…"
+msgstr "MIDI Yapılandırması"
+
+#: soundtracker.glade:953
+#, fuzzy
+msgid "_Disable Splash Screen"
+msgstr "Sıçrama ekranı devre dışı"
+
+#: soundtracker.glade:960
+#, fuzzy
+msgid "_Save Settings Now"
+msgstr "_Ayarları şimdi kaydet"
+
+#: soundtracker.glade:971
+msgid "Save Settings on _Exit"
+msgstr "Çıkışta Ayarları_Kaydet"
+
+#: soundtracker.glade:983
+msgid "_Help"
+msgstr "_Yardım"
+
+#: soundtracker.glade:1005
+#, fuzzy
+msgid "Show _Tips…"
+msgstr "İpuçlarını_Göster..."
+
+#: soundtracker.glade:1014
+#, fuzzy
+msgid "_XM Effects"
+msgstr "_XM Etkileri..."
+
 #~ msgid "(%d bytes)"
 #~ msgstr "(%d bayt)"
 
@@ -2534,20 +2803,8 @@ msgstr ""
 #~ msgid "Save _as..."
 #~ msgstr "Farklı_kaydet..."
 
-#~ msgid "Save Module as _WAV..."
-#~ msgstr "Birimi WAV olarak_kaydet..."
-
 #~ msgid "_Quit"
 #~ msgstr "_Bırak"
-
-#~ msgid "Clear _All"
-#~ msgstr "Tümünü_Temizle"
-
-#~ msgid "Clear _Patterns Only"
-#~ msgstr "Sadece_Desenleri Temizle"
-
-#~ msgid "_Optimize Module"
-#~ msgstr "_Birimi en iyi şekilde kullan"
 
 #~ msgid "C_ut"
 #~ msgstr "K_es"
@@ -2558,83 +2815,8 @@ msgstr ""
 #~ msgid "_Paste"
 #~ msgstr "_Yapıştır"
 
-#~ msgid "_Kill notes"
-#~ msgstr "_Notaları sonlandır"
-
-#~ msgid "_Insert track"
-#~ msgstr "_İzi yerleştir"
-
-#~ msgid "_Delete track"
-#~ msgstr "_İzi sil"
-
-#~ msgid "Increment cmd value"
-#~ msgstr "Cmd değerini artırma"
-
-#~ msgid "Decrement cmd value"
-#~ msgstr "Cmd değerini azaltma"
-
-#~ msgid "_Mark mode"
-#~ msgstr "_İm kipi"
-
-#~ msgid "C_lear block marks"
-#~ msgstr "B_lok imlerini Temizle"
-
-#~ msgid "_Interpolate effects"
-#~ msgstr "_Etkileri ara değerle"
-
-#~ msgid "Transpose half-note up"
-#~ msgstr "Yarım-nota yukarı değiştir"
-
-#~ msgid "Transpose half-note down"
-#~ msgstr "Yarım-nota aşağı değiştir"
-
-#~ msgid "Transpose octave up"
-#~ msgstr "Oktavı yukarıya "
-
-#~ msgid "Transpose octave down"
-#~ msgstr "Oktavı aşağı değiştir"
-
 #~ msgid "P_aste"
 #~ msgstr "Y_apıştır"
-
-#~ msgid "_Jazz Edit Mode"
-#~ msgstr "_Jazz Düzenleme Kipi"
-
-#~ msgid "Transp_osition..."
-#~ msgstr "Değişt_irme..."
-
-#~ msgid "_Pattern"
-#~ msgstr "_Desen"
-
-#~ msgid "_Track"
-#~ msgstr "_İzle"
-
-#~ msgid "_Selection"
-#~ msgstr "_Seçim"
-
-#~ msgid "_Find Unused Pattern"
-#~ msgstr "_"
-
-#~ msgid "_Copy Current to Unused Pattern"
-#~ msgstr "_Geçerli olanı Kullanılmayan Desene Kopyala"
-
-#~ msgid "C_lear Unused Patterns"
-#~ msgstr "K_ullanılmayan Desenleri Temizle"
-
-#~ msgid "_Pack Patterns"
-#~ msgstr "_Desenleri Paketle"
-
-#~ msgid "_Save Current Pattern"
-#~ msgstr "_Geçerli Deseni Kaydet"
-
-#~ msgid "L_oad Pattern"
-#~ msgstr "D_eseni Yükle"
-
-#~ msgid "Sh_rink Current Pattern"
-#~ msgstr "Ge_çerli Deseni Küçült"
-
-#~ msgid "_Expand Current Pattern"
-#~ msgstr "_Geçerli Deseni Genişlet"
 
 #~ msgid "_Load XI..."
 #~ msgstr "_XI'yi yükle..."
@@ -2642,32 +2824,8 @@ msgstr ""
 #~ msgid "_Save XI..."
 #~ msgstr "_XI'yi Kaydet..."
 
-#~ msgid "_Clear Current"
-#~ msgstr "_Geçerli olanı Temizle "
-
-#~ msgid "_Delete Unused Instruments"
-#~ msgstr "_Kullanılmayan Aygıtları Sil"
-
-#~ msgid "_Flicker-free scrolling"
-#~ msgstr "_Titreşimsiz kaydırma"
-
-#~ msgid "_Previous font"
-#~ msgstr "_Önceki yazıtipi"
-
-#~ msgid "_Next font"
-#~ msgstr "_Sonraki yazıtipi"
-
-#~ msgid "Change preferred _accidental type"
-#~ msgstr "Tercih edilen_yanlış türü değiştir"
-
 #~ msgid "Change effect column editing _direction"
 #~ msgstr "Yönü_düzenleyen etki sütununu değiştir"
-
-#~ msgid "Display _Oscilloscopes"
-#~ msgstr "Göster_Oscilloscopes"
-
-#~ msgid "_Tracker"
-#~ msgstr "_İzci"
 
 #~ msgid "_Keyboard Configuration..."
 #~ msgstr "_Klavye Yapılandırması..."
@@ -2681,41 +2839,8 @@ msgstr ""
 #~ msgid "_MIDI Configuration..."
 #~ msgstr "_MIDI Yapılandırması..."
 
-#~ msgid "Disable splash screen"
-#~ msgstr "Sıçrama ekranı devre dışı"
-
-#~ msgid "_Save Settings now"
-#~ msgstr "_Ayarları şimdi kaydet"
-
-#~ msgid "Save Settings on _Exit"
-#~ msgstr "Çıkışta Ayarları_Kaydet"
-
 #~ msgid "_About..."
 #~ msgstr "_Hakkında..."
-
-#~ msgid "Show _Tips..."
-#~ msgstr "İpuçlarını_Göster..."
-
-#~ msgid "_XM Effects..."
-#~ msgstr "_XM Etkileri..."
-
-#~ msgid "_File"
-#~ msgstr "_Dosya"
-
-#~ msgid "_Module"
-#~ msgstr "_Birim"
-
-#~ msgid "_Edit"
-#~ msgstr "_Düzenle"
-
-#~ msgid "_Instrument"
-#~ msgstr "_Aygıt"
-
-#~ msgid "_Settings"
-#~ msgstr "_Ayarlar"
-
-#~ msgid "_Help"
-#~ msgstr "_Yardım"
 
 #, fuzzy
 #~ msgid ""

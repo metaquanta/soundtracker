@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: soundtracker-0.6.7-pre6\n"
 "Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
-"POT-Creation-Date: 2013-10-13 23:27+0400\n"
+"POT-Creation-Date: 2013-10-23 01:06+0400\n"
 "PO-Revision-Date: 2003-08-15 12:18+0200\n"
 "Last-Translator: Yuri Bongiorno <yuri.bongiorno AT libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -35,27 +35,27 @@ msgstr "Output per l'editing"
 msgid "Sampling"
 msgstr "Campionamento"
 
-#: app/audioconfig.c:188
+#: app/audioconfig.c:192
 msgid "Driver Module"
 msgstr "Modulo del driver"
 
-#: app/audioconfig.c:241
+#: app/audioconfig.c:245
 msgid "Mixer Module"
 msgstr "Modulo del mixer"
 
-#: app/audioconfig.c:242 app/drivers/alsa1x.c:734
+#: app/audioconfig.c:246 app/drivers/alsa1x.c:734
 msgid "Description"
 msgstr "Descrizione"
 
-#: app/audioconfig.c:249
+#: app/audioconfig.c:253
 msgid "Audio Configuration"
 msgstr "Configurazione dell'audio"
 
-#: app/audioconfig.c:269
+#: app/audioconfig.c:273
 msgid "File output"
 msgstr ""
 
-#: app/audioconfig.c:277
+#: app/audioconfig.c:281
 msgid "Mixers"
 msgstr "Mixer"
 
@@ -1386,8 +1386,9 @@ msgid "Load Sample"
 msgstr "Carica il campione"
 
 #: app/sample-editor.c:405
-msgid "Load sample into the current samle slot"
-msgstr ""
+#, fuzzy
+msgid "Load sample into the current sample slot"
+msgstr "Salva XM senza i campioni"
 
 #: app/sample-editor.c:406
 msgid "Save Sample"
@@ -1976,7 +1977,7 @@ msgstr "Abilita l'evidenziazione delle righe"
 msgid "Minor lines highlighting"
 msgstr "Abilita l'evidenziazione delle righe"
 
-#: app/tracker.c:92
+#: app/tracker.c:92 soundtracker.glade:142
 #, fuzzy
 msgid "Selection"
 msgstr "Selezione:"
@@ -2356,6 +2357,275 @@ msgstr ""
 msgid "error closing handle (%s)\n"
 msgstr ""
 
+#: soundtracker.glade:10
+#, fuzzy
+msgid "Pattern"
+msgstr "_Pattern"
+
+#: soundtracker.glade:49
+#, fuzzy
+msgid "Track"
+msgstr "T_raccia"
+
+#: soundtracker.glade:88 soundtracker.glade:501
+msgid "_Kill notes"
+msgstr "_Elimina le note"
+
+#: soundtracker.glade:104 soundtracker.glade:518
+msgid "_Insert track"
+msgstr "I_nserisci una traccia"
+
+#: soundtracker.glade:112 soundtracker.glade:526
+msgid "_Delete track"
+msgstr "Eli_mina la traccia"
+
+#: soundtracker.glade:125 soundtracker.glade:539
+msgid "Increment cmd value"
+msgstr "Aumenta il valore «cmd»"
+
+#: soundtracker.glade:131 soundtracker.glade:546
+msgid "Decrement cmd value"
+msgstr "Diminuisci il valore «cmd»"
+
+#: soundtracker.glade:150 soundtracker.glade:575
+msgid "C_lear block marks"
+msgstr "Annu_lla la selezione"
+
+#: soundtracker.glade:185 soundtracker.glade:589
+msgid "_Interpolate effects"
+msgstr "Interpola gli _effetti"
+
+#: soundtracker.glade:219
+msgid "_File"
+msgstr "_File"
+
+#: soundtracker.glade:261
+#, fuzzy
+msgid "Save Module as _WAV…"
+msgstr "Salva il modulo come _WAV"
+
+#: soundtracker.glade:270
+#, fuzzy
+msgid "Save _XM without samples…"
+msgstr "Salva XM senza i campioni"
+
+#: soundtracker.glade:299
+msgid "_Module"
+msgstr "Mo_dulo"
+
+#: soundtracker.glade:306
+msgid "Clear _All"
+msgstr "Cancella _tutto"
+
+#: soundtracker.glade:315
+msgid "Clear _Patterns Only"
+msgstr "Cancella solamente i _pattern"
+
+#: soundtracker.glade:330
+msgid "_Optimize Module"
+msgstr "_Ottimizza il modulo"
+
+#: soundtracker.glade:342
+msgid "_Edit"
+msgstr "_Modifica"
+
+#: soundtracker.glade:382
+#, fuzzy
+msgid "_Jazz edit mode"
+msgstr "Modalità _Jazz Edit"
+
+#: soundtracker.glade:391
+msgid "_Record keyreleases"
+msgstr ""
+
+#: soundtracker.glade:404
+#, fuzzy
+msgid "Transp_osition…"
+msgstr "Trasp_osizione"
+
+#: soundtracker.glade:417 soundtracker.glade:643
+msgid "_Pattern"
+msgstr "_Pattern"
+
+#: soundtracker.glade:459 soundtracker.glade:738
+msgid "_Track"
+msgstr "T_raccia"
+
+#: soundtracker.glade:558
+msgid "_Selection"
+msgstr "_Selezione"
+
+#: soundtracker.glade:566
+msgid "_Mark mode"
+msgstr "Modalità _selezione"
+
+#: soundtracker.glade:603
+msgid "Transpose half-note up"
+msgstr "Alza di un semitono"
+
+#: soundtracker.glade:611
+msgid "Transpose half-note down"
+msgstr "Abbassa di un semitono"
+
+#: soundtracker.glade:619
+msgid "Transpose octave up"
+msgstr "Alza di un'ottava"
+
+#: soundtracker.glade:627
+msgid "Transpose octave down"
+msgstr "Abbassa di un'ottava"
+
+#: soundtracker.glade:650
+#, fuzzy
+msgid "_Load Pattern…"
+msgstr "Ca_rica il pattern"
+
+#: soundtracker.glade:659
+#, fuzzy
+msgid "_Save Current Pattern…"
+msgstr "_Salva il pattern attuale"
+
+#: soundtracker.glade:674
+msgid "_Find Unused Pattern"
+msgstr "Tr_ova i pattern non usati"
+
+#: soundtracker.glade:683
+msgid "_Copy Current to Unused Pattern"
+msgstr "_Copia l'attuale in un pattern non usato"
+
+#: soundtracker.glade:697
+msgid "C_lear Unused Patterns"
+msgstr "Cance_lla i pattern non usati"
+
+#: soundtracker.glade:705
+msgid "_Pack Patterns"
+msgstr "Com_patta i pattern"
+
+#: soundtracker.glade:718
+#, fuzzy
+msgid "S_hrink Current Pattern"
+msgstr "L'attuale pattern"
+
+#: soundtracker.glade:726
+#, fuzzy
+msgid "_Expand Current Pattern"
+msgstr "_Salva il pattern attuale"
+
+#: soundtracker.glade:746
+msgid "_Toggle Current Track Permanentness"
+msgstr ""
+
+#: soundtracker.glade:754
+msgid "Toggle _All Tracks Permanentness"
+msgstr ""
+
+#: soundtracker.glade:766
+msgid "_Instrument"
+msgstr "_Strumento"
+
+#: soundtracker.glade:773
+#, fuzzy
+msgid "_Load XI…"
+msgstr "Carica XI"
+
+#: soundtracker.glade:782
+#, fuzzy
+msgid "_Save XI…"
+msgstr "Salva XI"
+
+#: soundtracker.glade:796
+msgid "_Clear Current"
+msgstr "_Cancella l'attuale"
+
+#: soundtracker.glade:811
+msgid "_Delete Unused Instruments"
+msgstr "Eli_mina gli strumenti non usati"
+
+#: soundtracker.glade:826
+msgid "_Settings"
+msgstr "_Impostazioni"
+
+#: soundtracker.glade:834
+msgid "Display _Oscilloscopes"
+msgstr "Mostra gli _oscilloscopi"
+
+#: soundtracker.glade:842
+msgid "_Tracker"
+msgstr "_Tracker"
+
+#: soundtracker.glade:850
+#, fuzzy
+msgid "_Flicker-free Scrolling"
+msgstr "Scorrimento _fluido"
+
+#: soundtracker.glade:858
+#, fuzzy
+msgid "_Previous Font"
+msgstr "Tipo di carattere _precedente"
+
+#: soundtracker.glade:867
+#, fuzzy
+msgid "_Next Font"
+msgstr "Tipo di carattere _successivo"
+
+#: soundtracker.glade:881
+#, fuzzy
+msgid "Change Preferred _Accidental Type"
+msgstr "Cambia il tipo di _alterazione preferita"
+
+#: soundtracker.glade:890
+#, fuzzy
+msgid "Change Effect Column _Editing Direction"
+msgstr "Cambia la direzione di modifica nella colonna degli effetti"
+
+#: soundtracker.glade:907
+#, fuzzy
+msgid "_Keyboard Configuration…"
+msgstr "Configurazione della tastiera"
+
+#: soundtracker.glade:917
+#, fuzzy
+msgid "_Audio Configuration…"
+msgstr "Configurazione dell'audio"
+
+#: soundtracker.glade:927
+#, fuzzy
+msgid "_GUI Configuration…"
+msgstr "Configurazione della GUI"
+
+#: soundtracker.glade:937
+#, fuzzy
+msgid "_MIDI Configuration…"
+msgstr "Configurazione MIDI"
+
+#: soundtracker.glade:953
+#, fuzzy
+msgid "_Disable Splash Screen"
+msgstr "Disabilita la schermata di avvio"
+
+#: soundtracker.glade:960
+#, fuzzy
+msgid "_Save Settings Now"
+msgstr "_Salva le impostazioni adesso"
+
+#: soundtracker.glade:971
+msgid "Save Settings on _Exit"
+msgstr "Salva le impostazioni all'_uscita"
+
+#: soundtracker.glade:983
+msgid "_Help"
+msgstr "A_iuto"
+
+#: soundtracker.glade:1005
+#, fuzzy
+msgid "Show _Tips…"
+msgstr "Mostra i suggerimen_ti"
+
+#: soundtracker.glade:1014
+#, fuzzy
+msgid "_XM Effects"
+msgstr "Effetti _XM"
+
 #~ msgid "(%d bytes)"
 #~ msgstr "(%d byte)"
 
@@ -2464,20 +2734,8 @@ msgstr ""
 #~ msgid "Save _as..."
 #~ msgstr "Sa_lva come..."
 
-#~ msgid "Save Module as _WAV..."
-#~ msgstr "Salva il modulo come _WAV"
-
 #~ msgid "_Quit"
 #~ msgstr "_Esci"
-
-#~ msgid "Clear _All"
-#~ msgstr "Cancella _tutto"
-
-#~ msgid "Clear _Patterns Only"
-#~ msgstr "Cancella solamente i _pattern"
-
-#~ msgid "_Optimize Module"
-#~ msgstr "_Ottimizza il modulo"
 
 #~ msgid "C_ut"
 #~ msgstr "_Taglia"
@@ -2488,86 +2746,9 @@ msgstr ""
 #~ msgid "_Paste"
 #~ msgstr "_Incolla"
 
-#~ msgid "_Kill notes"
-#~ msgstr "_Elimina le note"
-
-#~ msgid "_Insert track"
-#~ msgstr "I_nserisci una traccia"
-
-#~ msgid "_Delete track"
-#~ msgstr "Eli_mina la traccia"
-
-#~ msgid "Increment cmd value"
-#~ msgstr "Aumenta il valore «cmd»"
-
-#~ msgid "Decrement cmd value"
-#~ msgstr "Diminuisci il valore «cmd»"
-
-#~ msgid "_Mark mode"
-#~ msgstr "Modalità _selezione"
-
-#~ msgid "C_lear block marks"
-#~ msgstr "Annu_lla la selezione"
-
-#~ msgid "_Interpolate effects"
-#~ msgstr "Interpola gli _effetti"
-
-#~ msgid "Transpose half-note up"
-#~ msgstr "Alza di un semitono"
-
-#~ msgid "Transpose half-note down"
-#~ msgstr "Abbassa di un semitono"
-
-#~ msgid "Transpose octave up"
-#~ msgstr "Alza di un'ottava"
-
-#~ msgid "Transpose octave down"
-#~ msgstr "Abbassa di un'ottava"
-
 #, fuzzy
 #~ msgid "P_aste"
 #~ msgstr "Incolla"
-
-#~ msgid "_Jazz Edit Mode"
-#~ msgstr "Modalità _Jazz Edit"
-
-#~ msgid "Transp_osition..."
-#~ msgstr "Trasp_osizione"
-
-#~ msgid "_Pattern"
-#~ msgstr "_Pattern"
-
-#~ msgid "_Track"
-#~ msgstr "T_raccia"
-
-#~ msgid "_Selection"
-#~ msgstr "_Selezione"
-
-#~ msgid "_Find Unused Pattern"
-#~ msgstr "Tr_ova i pattern non usati"
-
-#~ msgid "_Copy Current to Unused Pattern"
-#~ msgstr "_Copia l'attuale in un pattern non usato"
-
-#~ msgid "C_lear Unused Patterns"
-#~ msgstr "Cance_lla i pattern non usati"
-
-#~ msgid "_Pack Patterns"
-#~ msgstr "Com_patta i pattern"
-
-#~ msgid "_Save Current Pattern"
-#~ msgstr "_Salva il pattern attuale"
-
-#~ msgid "L_oad Pattern"
-#~ msgstr "Ca_rica il pattern"
-
-#, fuzzy
-#~ msgid "Sh_rink Current Pattern"
-#~ msgstr "L'attuale pattern"
-
-#, fuzzy
-#~ msgid "_Expand Current Pattern"
-#~ msgstr "_Salva il pattern attuale"
 
 #~ msgid "_Load XI..."
 #~ msgstr "Ca_rica XI"
@@ -2575,32 +2756,8 @@ msgstr ""
 #~ msgid "_Save XI..."
 #~ msgstr "_Salva XI"
 
-#~ msgid "_Clear Current"
-#~ msgstr "_Cancella l'attuale"
-
-#~ msgid "_Delete Unused Instruments"
-#~ msgstr "Eli_mina gli strumenti non usati"
-
-#~ msgid "_Flicker-free scrolling"
-#~ msgstr "Scorrimento _fluido"
-
-#~ msgid "_Previous font"
-#~ msgstr "Tipo di carattere _precedente"
-
-#~ msgid "_Next font"
-#~ msgstr "Tipo di carattere _successivo"
-
-#~ msgid "Change preferred _accidental type"
-#~ msgstr "Cambia il tipo di _alterazione preferita"
-
 #~ msgid "Change effect column editing _direction"
 #~ msgstr "Cambia la _direzione di modifica nella colonna degli effetti"
-
-#~ msgid "Display _Oscilloscopes"
-#~ msgstr "Mostra gli _oscilloscopi"
-
-#~ msgid "_Tracker"
-#~ msgstr "_Tracker"
 
 #~ msgid "_Keyboard Configuration..."
 #~ msgstr "_Configurazione della tastiera"
@@ -2614,41 +2771,8 @@ msgstr ""
 #~ msgid "_MIDI Configuration..."
 #~ msgstr "Configurazione _MIDI"
 
-#~ msgid "Disable splash screen"
-#~ msgstr "Disabilita la schermata di avvio"
-
-#~ msgid "_Save Settings now"
-#~ msgstr "_Salva le impostazioni adesso"
-
-#~ msgid "Save Settings on _Exit"
-#~ msgstr "Salva le impostazioni all'_uscita"
-
 #~ msgid "_About..."
 #~ msgstr "I_nformazioni"
-
-#~ msgid "Show _Tips..."
-#~ msgstr "Mostra i suggerimen_ti"
-
-#~ msgid "_XM Effects..."
-#~ msgstr "Effetti _XM"
-
-#~ msgid "_File"
-#~ msgstr "_File"
-
-#~ msgid "_Module"
-#~ msgstr "Mo_dulo"
-
-#~ msgid "_Edit"
-#~ msgstr "_Modifica"
-
-#~ msgid "_Instrument"
-#~ msgstr "_Strumento"
-
-#~ msgid "_Settings"
-#~ msgstr "_Impostazioni"
-
-#~ msgid "_Help"
-#~ msgstr "A_iuto"
 
 #, fuzzy
 #~ msgid ""

@@ -1,4 +1,4 @@
-# Русская локализация для Sound Tracker
+# п═я┐я│я│п╨п╟я▐ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦я▐ п╢п╩я▐ Sound Tracker
 # Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 # Michael Shigorin <mike@odsn.org.ua>, 1999, 2000.
 # Yury Aliaev <mutab0r@rambler.ru>, 2002, 2003, 2005, 2007.
@@ -7,13 +7,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: soundtracker-0.6.4\n"
 "Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
-"POT-Creation-Date: 2013-10-13 23:27+0400\n"
+"POT-Creation-Date: 2013-10-23 01:06+0400\n"
 "PO-Revision-Date: 2000-09-12 20:35+0200\n"
 "Last-Translator: Yury Aliaev <mutab0r@rambler.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: app/audio.c:678 app/gui.c:340 app/gui.c:349 app/gui.c:359 app/gui.c:369
@@ -25,49 +25,48 @@ msgstr ""
 
 #: app/audioconfig.c:62
 msgid "Playback Output"
-msgstr "Выход воспроизведения"
+msgstr "п▓я▀я┘п╬п╢ п╡п╬я│п©я─п╬п╦п╥п╡п╣п╢п╣п╫п╦я▐"
 
 #: app/audioconfig.c:69
 msgid "Editing Output"
-msgstr "Выход редактирования"
+msgstr "п▓я▀я┘п╬п╢ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐"
 
 #: app/audioconfig.c:76
 msgid "Sampling"
-msgstr "Оцифровка"
+msgstr "п·я├п╦я└я─п╬п╡п╨п╟"
 
-#: app/audioconfig.c:188
+#: app/audioconfig.c:192
 msgid "Driver Module"
-msgstr "Модуль драйвера"
+msgstr "п°п╬п╢я┐п╩я▄ п╢я─п╟п╧п╡п╣я─п╟"
 
-#: app/audioconfig.c:241
+#: app/audioconfig.c:245
 msgid "Mixer Module"
-msgstr "Модуль микшера"
+msgstr "п°п╬п╢я┐п╩я▄ п╪п╦п╨я┬п╣я─п╟"
 
-#: app/audioconfig.c:242 app/drivers/alsa1x.c:734
+#: app/audioconfig.c:246 app/drivers/alsa1x.c:734
 msgid "Description"
-msgstr "Описание"
+msgstr "п·п©п╦я│п╟п╫п╦п╣"
 
-#: app/audioconfig.c:249
+#: app/audioconfig.c:253
 msgid "Audio Configuration"
-msgstr "Конфигурация аудио"
+msgstr "п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ п╟я┐п╢п╦п╬"
 
-#: app/audioconfig.c:269
+#: app/audioconfig.c:273
 msgid "File output"
 msgstr ""
 
-#: app/audioconfig.c:277
+#: app/audioconfig.c:281
 msgid "Mixers"
-msgstr "Микшеры"
+msgstr "п°п╦п╨я┬п╣я─я▀"
 
 #: app/drivers/alsa1x.c:258 app/drivers/oss.c:165 app/drivers/sun-output.c:138
 #, c-format
 msgid "Estimated audio delay: %f milliseconds"
-msgstr "Ожидаемая задержка звука: %f миллисекунд"
+msgstr "п·п╤п╦п╢п╟п╣п╪п╟я▐ п╥п╟п╢п╣я─п╤п╨п╟ п╥п╡я┐п╨п╟: %f п╪п╦п╩п╩п╦я│п╣п╨я┐п╫п╢"
 
 #: app/drivers/alsa1x.c:316
-#, fuzzy
 msgid "ALSA device opening error"
-msgstr "Номер устройства ALSA:"
+msgstr "п·я┬п╦п╠п╨п╟ п©я─п╦ п╬я┌п╨я─я▀я┌п╦п╦ я┐я│я┌я─п╬п╧я│я┌п╡п╟ ALSA:"
 
 #: app/drivers/alsa1x.c:320
 msgid "hw params obtaining error"
@@ -79,9 +78,8 @@ msgid "Unable to set audio format"
 msgstr ""
 
 #: app/drivers/alsa1x.c:354 app/drivers/alsa1x.c:1231
-#, fuzzy
 msgid "Unable to set channels number"
-msgstr "Невозможно подготовить канал ALSA.\n"
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╥п╟п╢п╟я┌я▄ я┤п╦я│п╩п╬ п╨п╟п╫п╟п╩п╬п╡"
 
 #: app/drivers/alsa1x.c:366 app/drivers/alsa1x.c:1253
 msgid "Unable to set appropriate buffer size"
@@ -124,9 +122,9 @@ msgid "Unable to get maximal channels number"
 msgstr ""
 
 #: app/drivers/alsa1x.c:666
-#, fuzzy, c-format
+#, c-format
 msgid " = %u samples"
-msgstr "(%d сэмплов)"
+msgstr "(%u я│я█п╪п©п╩п╬п╡)"
 
 #: app/drivers/alsa1x.c:681
 #, c-format
@@ -146,34 +144,31 @@ msgid "Devices list"
 msgstr ""
 
 #: app/drivers/alsa1x.c:804
-#, fuzzy
 msgid "8 bit"
-msgstr "8 бит"
+msgstr "8 п╠п╦я┌"
 
 #: app/drivers/alsa1x.c:804
-#, fuzzy
 msgid "16 bit"
-msgstr "16 бит"
+msgstr "16 п╠п╦я┌"
 
 #: app/drivers/alsa1x.c:805 app/drivers/file-output.c:138
 #: app/sample-editor.c:1617
 msgid "Mono"
-msgstr "Моно"
+msgstr "п°п╬п╫п╬"
 
 #: app/drivers/alsa1x.c:805 app/drivers/file-output.c:138
 #: app/sample-editor.c:1617
 msgid "Stereo"
-msgstr "Стерео"
+msgstr "п║я┌п╣я─п╣п╬"
 
 #: app/drivers/alsa1x.c:809 app/drivers/oss.c:225 app/drivers/sun-output.c:202
 msgid "These changes won't take effect until you restart playing."
-msgstr "Эти изменения вступят в силу при следующем воспроизведении."
+msgstr "п╜я┌п╦ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╡я│я┌я┐п©я▐я┌ п╡ я│п╦п╩я┐ п©я─п╦ я│п╩п╣п╢я┐я▌я┴п╣п╪ п╡п╬я│п©я─п╬п╦п╥п╡п╣п╢п╣п╫п╦п╦."
 
 #: app/drivers/alsa1x.c:810
-#, fuzzy
 msgid "These changes won't take effect until you restart capturing."
 msgstr ""
-"Эти изменения вступят в силу только после перезапуска процесса оцифровки."
+"п╜я┌п╦ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╡я│я┌я┐п©я▐я┌ п╡ я│п╦п╩я┐ я┌п╬п╩я▄п╨п╬ п©п╬я│п╩п╣ п©п╣я─п╣п╥п╟п©я┐я│п╨п╟ п©я─п╬я├п╣я│я│п╟ п╬я├п╦я└я─п╬п╡п╨п╦."
 
 #: app/drivers/alsa1x.c:822
 msgid "Device:"
@@ -186,26 +181,25 @@ msgstr ""
 #: app/drivers/alsa1x.c:845 app/drivers/oss.c:253 app/drivers/sun-output.c:230
 #: app/sample-editor.c:1648
 msgid "Resolution:"
-msgstr "Разрядность:"
+msgstr "п═п╟п╥я─я▐п╢п╫п╬я│я┌я▄:"
 
 #: app/drivers/alsa1x.c:855 app/drivers/file-output.c:145
 #: app/drivers/oss.c:263 app/drivers/sun-output.c:241 app/sample-editor.c:1678
 msgid "Channels:"
-msgstr "Каналы:"
+msgstr "п п╟п╫п╟п╩я▀:"
 
 #: app/drivers/alsa1x.c:865 app/drivers/file-output.c:153
 #: app/drivers/oss.c:273 app/drivers/sun-output.c:252
 msgid "Frequency [Hz]:"
-msgstr "Частота [Гц]:"
+msgstr "п╖п╟я│я┌п╬я┌п╟ [п⌠я├]:"
 
 #: app/drivers/alsa1x.c:884 app/drivers/oss.c:283 app/drivers/sun-output.c:263
 msgid "Buffer Size:"
-msgstr "Размер буфера:"
+msgstr "п═п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟:"
 
 #: app/drivers/alsa1x.c:907
-#, fuzzy
 msgid "Number of Periods:"
-msgstr "Количество каналов:"
+msgstr "п п╬п╩п╦я┤п╣я│я┌п╡п╬ п©п╣я─п╦п╬п╢п╬п╡:"
 
 #: app/drivers/alsa1x.c:932
 msgid ""
@@ -250,9 +244,8 @@ msgid "Unable to get period size"
 msgstr ""
 
 #: app/drivers/alsa1x.c:1268
-#, fuzzy
 msgid "Error setting hw parameters"
-msgstr "Параметры подравнивания"
+msgstr "п·я┬п╦п╠п╨п╟ п©я─п╦ я┐я│я┌п╟п╫п╬п╡п╨п╣ п╟п©п©п╟я─п╟я┌п╫я▀я┘ п©п╟я─п╟п╪п╣я┌я─п╬п╡"
 
 #: app/drivers/alsa1x.c:1276
 msgid "Unable to determine current swparams for playback"
@@ -287,14 +280,12 @@ msgid "Unable to set sw params for capture"
 msgstr ""
 
 #: app/drivers/alsa1x.c:1304
-#, fuzzy
 msgid "Unable to prepare playback"
-msgstr "Невозможно подготовить канал ALSA.\n"
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п©п╬п╢пЁп╬я┌п╬п╡п╦я┌я▄ п╨п╟п╫п╟п╩ п╡п╬я│п©я─п╬п╦п╥п╡п╣п╢п╣п╫п╦я▐"
 
 #: app/drivers/alsa1x.c:1305
-#, fuzzy
 msgid "Unable to prepare capture"
-msgstr "Невозможно подготовить канал ALSA.\n"
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п©п╬п╢пЁп╬я┌п╬п╡п╦я┌я▄ п╨п╟п╫п╟п╩ п╥п╟п©п╦я│п╦"
 
 #: app/drivers/alsa1x.c:1318
 msgid "Unable to obtain poll descriptors for playback"
@@ -319,10 +310,10 @@ msgid ""
 "by ESD. Use the OSS or ALSA output plug-ins\n"
 "for serious work."
 msgstr ""
-"Заметьте, что вывод через ESD непригоден для\n"
-"интерактивного режима из-за задержек, вводимых\n"
-"ESD. Для серьезной работы используйте плагины\n"
-"воспроизведения OSS или ALSA."
+"п≈п╟п╪п╣я┌я▄я┌п╣, я┤я┌п╬ п╡я▀п╡п╬п╢ я┤п╣я─п╣п╥ ESD п╫п╣п©я─п╦пЁп╬п╢п╣п╫ п╢п╩я▐\n"
+"п╦п╫я┌п╣я─п╟п╨я┌п╦п╡п╫п╬пЁп╬ я─п╣п╤п╦п╪п╟ п╦п╥-п╥п╟ п╥п╟п╢п╣я─п╤п╣п╨, п╡п╡п╬п╢п╦п╪я▀я┘\n"
+"ESD. п■п╩я▐ я│п╣я─я▄п╣п╥п╫п╬п╧ я─п╟п╠п╬я┌я▀ п╦я│п©п╬п╩я▄п╥я┐п╧я┌п╣ п©п╩п╟пЁп╦п╫я▀\n"
+"п╡п╬я│п©я─п╬п╦п╥п╡п╣п╢п╣п╫п╦я▐ OSS п╦п╩п╦ ALSA."
 
 #: app/drivers/esd-output.c:162
 #, c-format
@@ -330,57 +321,57 @@ msgid ""
 "Couldn't connect to ESD for sound output:\n"
 "%s"
 msgstr ""
-"Подключение к ESD для вывода звука не удалось по причине:\n"
+"п÷п╬п╢п╨п╩я▌я┤п╣п╫п╦п╣ п╨ ESD п╢п╩я▐ п╡я▀п╡п╬п╢п╟ п╥п╡я┐п╨п╟ п╫п╣ я┐п╢п╟п╩п╬я│я▄ п©п╬ п©я─п╦я┤п╦п╫п╣:\n"
 "%s"
 
 #: app/drivers/file-output.c:259 app/sample-editor.c:1894
 msgid "Can't open file for writing."
-msgstr "Невозможно открыть файл для записи."
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ я└п╟п╧п╩ п╢п╩я▐ п╥п╟п©п╦я│п╦."
 
 #: app/drivers/irix-output.c:98
 msgid "no settings (yet), sorry!"
-msgstr "(пока) нет настроек, извините!"
+msgstr "(п©п╬п╨п╟) п╫п╣я┌ п╫п╟я│я┌я─п╬п╣п╨, п╦п╥п╡п╦п╫п╦я┌п╣!"
 
 #: app/drivers/oss.c:201 app/drivers/sun-output.c:173
 #, c-format
 msgid "(%d samples)"
-msgstr "(%d сэмплов)"
+msgstr "(%d я│я█п╪п©п╩п╬п╡)"
 
 #: app/drivers/oss.c:224 app/drivers/sun-input.c:105
 msgid "These changes won't take effect until you restart sampling."
 msgstr ""
-"Эти изменения вступят в силу только после перезапуска процесса оцифровки."
+"п╜я┌п╦ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╡я│я┌я┐п©я▐я┌ п╡ я│п╦п╩я┐ я┌п╬п╩я▄п╨п╬ п©п╬я│п╩п╣ п©п╣я─п╣п╥п╟п©я┐я│п╨п╟ п©я─п╬я├п╣я│я│п╟ п╬я├п╦я└я─п╬п╡п╨п╦."
 
 #: app/drivers/oss.c:237
 msgid "Input device (e.g. '/dev/dsp'):"
-msgstr "Устройство ввода (например, '/dev/dsp'):"
+msgstr "пёя│я┌я─п╬п╧я│я┌п╡п╬ п╡п╡п╬п╢п╟ (п╫п╟п©я─п╦п╪п╣я─, '/dev/dsp'):"
 
 #: app/drivers/oss.c:238
 msgid "Output device (e.g. '/dev/dsp'):"
-msgstr "Устройство вывода (например, '/dev/dsp'):"
+msgstr "пёя│я┌я─п╬п╧я│я┌п╡п╬ п╡я▀п╡п╬п╢п╟ (п╫п╟п©я─п╦п╪п╣я─, '/dev/dsp'):"
 
 #: app/drivers/oss.c:431
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Couldn't open %s for %s:\n"
 "%s"
 msgstr ""
-"Невозможно открыть %s для оцифровки:\n"
+"п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ %s п╢п╩я▐ %s:\n"
 "%s"
 
 #: app/drivers/oss.c:466
-#, fuzzy, c-format
+#, c-format
 msgid "Required %s format not supported.\n"
-msgstr "Требуемый формат воспроизведения не поддерживается.\n"
+msgstr "п╒я─п╣п╠я┐п╣п╪я▀п╧ я└п╬я─п╪п╟я┌ %s п╫п╣ п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣я┌я│я▐.\n"
 
 #: app/drivers/jack-output.c:280
 #, c-format
 msgid "Running at %d Hz with %d frames"
-msgstr "Запущен при частоте %d Гц, %d кадров"
+msgstr "п≈п╟п©я┐я┴п╣п╫ п©я─п╦ я┤п╟я│я┌п╬я┌п╣ %d п⌠я├, %d п╨п╟п╢я─п╬п╡"
 
 #: app/drivers/jack-output.c:284
 msgid "Jack server not running?"
-msgstr "Сервер Jack не запущен?"
+msgstr "п║п╣я─п╡п╣я─ Jack п╫п╣ п╥п╟п©я┐я┴п╣п╫?"
 
 #: app/drivers/jack-output.c:354
 msgid "out_1"
@@ -391,13 +382,12 @@ msgid "out_2"
 msgstr "out_2"
 
 #: app/drivers/sdl-output.c:76
-#, fuzzy
 msgid "Experimental SDL support."
-msgstr "Операция не поддерживается."
+msgstr "п╜п╨я│п©п╣я─п╦п╪п╣п╫я┌п╟п╩я▄п╫п╟я▐ п©п╬п╢п╢п╣я─п╤п╨п╟ SDL."
 
 #: app/drivers/sun-output.c:214
 msgid "Output device (e.g. '/dev/audio'):"
-msgstr "Устройство вывода (т.е. '/dev/audio'):"
+msgstr "пёя│я┌я─п╬п╧я│я┌п╡п╬ п╡я▀п╡п╬п╢п╟ (я┌.п╣. '/dev/audio'):"
 
 #: app/drivers/sun-output.c:394 app/drivers/sun-output.c:465
 #: app/drivers/sun-input.c:229 app/drivers/sun-input.c:311
@@ -408,60 +398,59 @@ msgstr "%s: %s"
 #: app/drivers/sun-output.c:400
 #, c-format
 msgid "%s: Cannot play (%s)"
-msgstr "%s: Воспроизведение невозможно (%s)"
+msgstr "%s: п▓п╬я│п©я─п╬п╦п╥п╡п╣п╢п╣п╫п╦п╣ п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ (%s)"
 
 #: app/drivers/sun-output.c:407 app/drivers/sun-input.c:250
 #, c-format
 msgid "%s: Cannot handle %dHz (%s)"
-msgstr "%s: Неподдерживаемая частота: %d Гц (%s)"
+msgstr "%s: п²п╣п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣п╪п╟я▐ я┤п╟я│я┌п╬я┌п╟: %d п⌠я├ (%s)"
 
 #: app/drivers/sun-output.c:436 app/drivers/sun-input.c:280
 #, c-format
 msgid "%s: Required sound encoding not supported.\n"
-msgstr "%s Требуемая схема кодирования звука не поддерживается.\n"
+msgstr "%s п╒я─п╣п╠я┐п╣п╪п╟я▐ я│я┘п╣п╪п╟ п╨п╬п╢п╦я─п╬п╡п╟п╫п╦я▐ п╥п╡я┐п╨п╟ п╫п╣ п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣я┌я│я▐.\n"
 
 #: app/drivers/sun-output.c:459 app/drivers/sun-input.c:305
 #, c-format
 msgid "%s: Cannot set block size (%s)"
-msgstr "%s: Невозможно установить размер блока (%s)"
+msgstr "%s: п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╟п╥п╪п╣я─ п╠п╩п╬п╨п╟ (%s)"
 
 #: app/drivers/sun-input.c:117
 msgid "Input device (e.g. '/dev/audio'):"
-msgstr "Устройство ввода (т.е. '/dev/audio'):"
+msgstr "пёя│я┌я─п╬п╧я│я┌п╡п╬ п╡п╡п╬п╢п╟ (я┌.п╣. '/dev/audio'):"
 
 #: app/drivers/sun-input.c:242
 #, c-format
 msgid "%s: Cannot record (%s)"
-msgstr "%s: Запись невозможна (%s)"
+msgstr "%s: п≈п╟п©п╦я│я▄ п╫п╣п╡п╬п╥п╪п╬п╤п╫п╟ (%s)"
 
 #: app/envelope-box.c:1261
 msgid "Length"
-msgstr "Длина"
+msgstr "п■п╩п╦п╫п╟"
 
 #: app/envelope-box.c:1262
 msgid "Current"
-msgstr "Текущий"
+msgstr "п╒п╣п╨я┐я┴п╦п╧"
 
 #: app/envelope-box.c:1263
 msgid "Offset"
-msgstr "Смещение"
+msgstr "п║п╪п╣я┴п╣п╫п╦п╣"
 
 #: app/envelope-box.c:1264
 msgid "Value"
-msgstr "Значение"
+msgstr "п≈п╫п╟я┤п╣п╫п╦п╣"
 
 # ?
 #: app/envelope-box.c:1270 app/playlist.c:550
 msgid "Insert"
-msgstr "Вставить"
+msgstr "п▓я│я┌п╟п╡п╦я┌я▄"
 
 # ?
 #: app/envelope-box.c:1276 app/playlist.c:559
 msgid "Delete"
-msgstr "Удалить"
+msgstr "пёп╢п╟п╩п╦я┌я▄"
 
 #: app/envelope-box.c:1350
-#, fuzzy
 msgid ""
 "Graphical\n"
 "Envelope\n"
@@ -469,31 +458,31 @@ msgid ""
 "only with\n"
 "GooCanvas"
 msgstr ""
-"Графический\n"
-"редактор\n"
-"огибающей\n"
-"только в\n"
-"GNOME-версии"
+"п⌠я─п╟я└п╦я┤п╣я│п╨п╦п╧\n"
+"я─п╣п╢п╟п╨я┌п╬я─\n"
+"п╬пЁп╦п╠п╟я▌я┴п╣п╧\n"
+"я┌п╬п╩я▄п╨п╬ я│\n"
+"GooCanvas"
 
 #: app/envelope-box.c:1365
 msgid "Sustain"
-msgstr "Удержание"
+msgstr "пёп╢п╣я─п╤п╟п╫п╦п╣"
 
 #: app/envelope-box.c:1373
 msgid "Point"
-msgstr "Точка"
+msgstr "п╒п╬я┤п╨п╟"
 
 #: app/envelope-box.c:1375
 msgid "Loop"
-msgstr "Цикл"
+msgstr "п╕п╦п╨п╩"
 
 #: app/envelope-box.c:1383 app/sample-editor.c:305
 msgid "Start"
-msgstr "Начало"
+msgstr "п²п╟я┤п╟п╩п╬"
 
 #: app/envelope-box.c:1384 app/sample-editor.c:306
 msgid "End"
-msgstr "Конец"
+msgstr "п п╬п╫п╣я├"
 
 #: app/file-operations.c:104
 msgid "All supported types"
@@ -505,7 +494,7 @@ msgstr ""
 
 #: app/file-operations.c:196
 msgid "File"
-msgstr "Файл"
+msgstr "п╓п╟п╧п╩"
 
 #: app/file-operations.c:237
 #, c-format
@@ -516,144 +505,143 @@ msgstr ""
 
 #: app/file-operations.c:474
 msgid "Operation not supported."
-msgstr "Операция не поддерживается."
+msgstr "п·п©п╣я─п╟я├п╦я▐ п╫п╣ п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣я┌я│я▐."
 
 #: app/gui-settings.c:53
 msgid "Scopes Frequency"
-msgstr "Частота осциллографа"
+msgstr "п╖п╟я│я┌п╬я┌п╟ п╬я│я├п╦п╩п╩п╬пЁя─п╟я└п╟"
 
 #: app/gui-settings.c:56
 msgid "Tracker Frequency"
-msgstr "Частота трэкера"
+msgstr "п╖п╟я│я┌п╬я┌п╟ я┌я─я█п╨п╣я─п╟"
 
 #: app/gui-settings.c:318 app/gui-settings.c:530
 msgid "Tracker colors configuration"
-msgstr "Конфигурация цветовой схемы трэкера"
+msgstr "п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ я├п╡п╣я┌п╬п╡п╬п╧ я│я┘п╣п╪я▀ я┌я─я█п╨п╣я─п╟"
 
 #: app/gui-settings.c:320
 msgid "Reset"
-msgstr "Сбросить"
+msgstr "п║п╠я─п╬я│п╦я┌я▄"
 
 #: app/gui-settings.c:324
 msgid "Reset tracker colors to standard ST"
-msgstr "Вернуть стандартную цветовую схему ST"
+msgstr "п▓п╣я─п╫я┐я┌я▄ я│я┌п╟п╫п╢п╟я─я┌п╫я┐я▌ я├п╡п╣я┌п╬п╡я┐я▌ я│я┘п╣п╪я┐ ST"
 
 #: app/gui-settings.c:395
 msgid "GUI Configuration"
-msgstr "Конфигурация GUI"
+msgstr "п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ GUI"
 
 #: app/gui-settings.c:416
 msgid "Hexadecimal row numbers"
-msgstr "Шестнадцатеричная нумерация строк"
+msgstr "п╗п╣я│я┌п╫п╟п╢я├п╟я┌п╣я─п╦я┤п╫п╟я▐ п╫я┐п╪п╣я─п╟я├п╦я▐ я│я┌я─п╬п╨"
 
 #: app/gui-settings.c:422
 msgid "Use upper case letters for hex numbers"
-msgstr "Использовать заглавные буквы для шестнадцатеричных чисел"
+msgstr "п≤я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ п╥п╟пЁп╩п╟п╡п╫я▀п╣ п╠я┐п╨п╡я▀ п╢п╩я▐ я┬п╣я│я┌п╫п╟п╢я├п╟я┌п╣я─п╦я┤п╫я▀я┘ я┤п╦я│п╣п╩"
 
 #: app/gui-settings.c:428
 msgid "Asynchronous (IT-style) pattern editing"
-msgstr "Асинхронное редактирование паттернов (в стиле IT)"
+msgstr "п░я│п╦п╫я┘я─п╬п╫п╫п╬п╣ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п©п╟я┌я┌п╣я─п╫п╬п╡ (п╡ я│я┌п╦п╩п╣ IT)"
 
 #: app/gui-settings.c:434
 msgid "Fxx command updates Tempo/BPM sliders"
-msgstr "Команда Fxx изменяет индикаторы темпа и BPM"
+msgstr "п п╬п╪п╟п╫п╢п╟ Fxx п╦п╥п╪п╣п╫я▐п╣я┌ п╦п╫п╢п╦п╨п╟я┌п╬я─я▀ я┌п╣п╪п©п╟ п╦ BPM"
 
 #: app/gui-settings.c:440
 msgid "Switch to tracker after loading/saving"
-msgstr "Переключаться в окно трекера после сохранения или загрузки модуля"
+msgstr "п÷п╣я─п╣п╨п╩я▌я┤п╟я┌я▄я│я▐ п╡ п╬п╨п╫п╬ я┌я─п╣п╨п╣я─п╟ п©п╬я│п╩п╣ я│п╬я┘я─п╟п╫п╣п╫п╦я▐ п╦п╩п╦ п╥п╟пЁя─я┐п╥п╨п╦ п╪п╬п╢я┐п╩я▐"
 
 #: app/gui-settings.c:446
 msgid "Save window geometry on exit"
-msgstr "Запоминать геометрию окна при выходе"
+msgstr "п≈п╟п©п╬п╪п╦п╫п╟я┌я▄ пЁп╣п╬п╪п╣я┌я─п╦я▌ п╬п╨п╫п╟ п©я─п╦ п╡я▀я┘п╬п╢п╣"
 
 #: app/gui-settings.c:452
 msgid "Use note name B instead of H"
-msgstr "Обозначать ноту \"Си\" как B, а не H"
+msgstr "п·п╠п╬п╥п╫п╟я┤п╟я┌я▄ п╫п╬я┌я┐ \"п║п╦\" п╨п╟п╨ B, п╟ п╫п╣ H"
 
 #: app/gui-settings.c:458
 msgid "Save and restore permanent channels"
-msgstr "Сохр. и восст. перманентность каналов"
+msgstr "п║п╬я┘я─. п╦ п╡п╬я│я│я┌. п©п╣я─п╪п╟п╫п╣п╫я┌п╫п╬я│я┌я▄ п╨п╟п╫п╟п╩п╬п╡"
 
 #: app/gui-settings.c:470
 msgid "Scopes buffer size [MB]"
-msgstr "Размер буфера осциллографов [Мб]"
+msgstr "п═п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟ п╬я│я├п╦п╩п╩п╬пЁя─п╟я└п╬п╡ [п°п╠]"
 
 #: app/gui-settings.c:485
 msgid "Track line format:"
-msgstr "Формат сторки трэка:"
+msgstr "п╓п╬я─п╪п╟я┌ я│я┌п╬я─п╨п╦ я┌я─я█п╨п╟:"
 
 #: app/gui-settings.c:529
-#, fuzzy
 msgid "Color scheme"
-msgstr "Цв. схема"
+msgstr "п╕п╡. я│я┘п╣п╪п╟"
 
 #: app/gui-subs.c:34 app/gui.c:2390
 msgid "Ready."
-msgstr "Готово."
+msgstr "п⌠п╬я┌п╬п╡п╬."
 
 #: app/gui-subs.c:35
 msgid "Playing song..."
-msgstr "Играю песню..."
+msgstr "п≤пЁя─п╟я▌ п©п╣я│п╫я▌..."
 
 #: app/gui-subs.c:36
 msgid "Playing pattern..."
-msgstr "Играю паттерн..."
+msgstr "п≤пЁя─п╟я▌ п©п╟я┌я┌п╣я─п╫..."
 
 #: app/gui-subs.c:37
 msgid "Loading module..."
-msgstr "Загружаю модуль..."
+msgstr "п≈п╟пЁя─я┐п╤п╟я▌ п╪п╬п╢я┐п╩я▄..."
 
 #: app/gui-subs.c:38
 msgid "Module loaded."
-msgstr "Модуль загружен."
+msgstr "п°п╬п╢я┐п╩я▄ п╥п╟пЁя─я┐п╤п╣п╫."
 
 #: app/gui-subs.c:39
 msgid "Saving module..."
-msgstr "Сохраняю модуль..."
+msgstr "п║п╬я┘я─п╟п╫я▐я▌ п╪п╬п╢я┐п╩я▄..."
 
 #: app/gui-subs.c:40
 msgid "Module saved."
-msgstr "Модуль сохранен."
+msgstr "п°п╬п╢я┐п╩я▄ я│п╬я┘я─п╟п╫п╣п╫."
 
 #: app/gui-subs.c:41
 msgid "Loading sample..."
-msgstr "Загружаю сэмпл..."
+msgstr "п≈п╟пЁя─я┐п╤п╟я▌ я│я█п╪п©п╩..."
 
 #: app/gui-subs.c:42
 msgid "Sample loaded."
-msgstr "Сэмпл загружен."
+msgstr "п║я█п╪п©п╩ п╥п╟пЁя─я┐п╤п╣п╫."
 
 #: app/gui-subs.c:43
 msgid "Saving sample..."
-msgstr "Сохраняю сэмпл..."
+msgstr "п║п╬я┘я─п╟п╫я▐я▌ я│я█п╪п©п╩..."
 
 #: app/gui-subs.c:44
 msgid "Sample saved."
-msgstr "Сэмпл сохранен."
+msgstr "п║я█п╪п©п╩ я│п╬я┘я─п╟п╫п╣п╫."
 
 #: app/gui-subs.c:45
 msgid "Loading instrument..."
-msgstr "Загружаю инструмент..."
+msgstr "п≈п╟пЁя─я┐п╤п╟я▌ п╦п╫я│я┌я─я┐п╪п╣п╫я┌..."
 
 #: app/gui-subs.c:46
 msgid "Instrument loaded."
-msgstr "Инструмент загружен."
+msgstr "п≤п╫я│я┌я─я┐п╪п╣п╫я┌ п╥п╟пЁя─я┐п╤п╣п╫."
 
 #: app/gui-subs.c:47
 msgid "Saving instrument..."
-msgstr "Сохраняю инструмент..."
+msgstr "п║п╬я┘я─п╟п╫я▐я▌ п╦п╫я│я┌я─я┐п╪п╣п╫я┌..."
 
 #: app/gui-subs.c:48
 msgid "Instrument saved."
-msgstr "Инструмент сохранен."
+msgstr "п≤п╫я│я┌я─я┐п╪п╣п╫я┌ я│п╬я┘я─п╟п╫п╣п╫."
 
 #: app/gui-subs.c:49
 msgid "Saving song..."
-msgstr "Сохраняю песню..."
+msgstr "п║п╬я┘я─п╟п╫я▐я▌ п©п╣я│п╫я▌..."
 
 #: app/gui-subs.c:50
 msgid "Song saved."
-msgstr "Песня сохранена."
+msgstr "п÷п╣я│п╫я▐ я│п╬я┘я─п╟п╫п╣п╫п╟."
 
 #: app/gui-subs.c:498 app/gui-subs.c:518
 #, c-format
@@ -672,28 +660,27 @@ msgstr ""
 
 #: app/gui.c:133
 msgid "Tempo"
-msgstr "Темп"
+msgstr "п╒п╣п╪п©"
 
 #: app/gui.c:239 app/gui.c:2131
 msgid "Row highlighting configuration"
-msgstr "Настройка подсветки строк"
+msgstr "п²п╟я│я┌я─п╬п╧п╨п╟ п©п╬п╢я│п╡п╣я┌п╨п╦ я│я┌я─п╬п╨"
 
 #: app/gui.c:252
 msgid "Highlight rows (major / minor):"
-msgstr "Подсвечивать строки (главные / второстепенные):"
+msgstr "п÷п╬п╢я│п╡п╣я┤п╦п╡п╟я┌я▄ я│я┌я─п╬п╨п╦ (пЁп╩п╟п╡п╫я▀п╣ / п╡я┌п╬я─п╬я│я┌п╣п©п╣п╫п╫я▀п╣):"
 
 #: app/gui.c:382
-#, fuzzy
 msgid "Saving module failed"
-msgstr "Сохраняю модуль..."
+msgstr "п·я┬п╦п╠п╨п╟ я│п╬я┘я─п╟п╫п╣п╫п╦я▐ п╪п╬п╢я┐п╩я▐"
 
 #: app/gui.c:446
 msgid ""
 "Odd pattern rows contain data which will be lost after shrinking.\n"
 "Do you want to continue anyway?"
 msgstr ""
-"Нечётные строки содержат данные, которые при сжатии будут потеряны.\n"
-"Всё равно продолжить?"
+"п²п╣я┤я▒я┌п╫я▀п╣ я│я┌я─п╬п╨п╦ я│п╬п╢п╣я─п╤п╟я┌ п╢п╟п╫п╫я▀п╣, п╨п╬я┌п╬я─я▀п╣ п©я─п╦ я│п╤п╟я┌п╦п╦ п╠я┐п╢я┐я┌ п©п╬я┌п╣я─я▐п╫я▀.\n"
+"п▓я│я▒ я─п╟п╡п╫п╬ п©я─п╬п╢п╬п╩п╤п╦я┌я▄?"
 
 #: app/gui.c:471
 msgid ""
@@ -701,22 +688,22 @@ msgid ""
 "Some data at the end of the pattern will be lost.\n"
 "Do you want to continue anyway?"
 msgstr ""
-"Длина паттерна слишком велика для выполнения операции растягивания.\n"
-"Часть данных в конце паттерна будет утеряна.\n"
-"Всё равно продолжить?"
+"п■п╩п╦п╫п╟ п©п╟я┌я┌п╣я─п╫п╟ я│п╩п╦я┬п╨п╬п╪ п╡п╣п╩п╦п╨п╟ п╢п╩я▐ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ п╬п©п╣я─п╟я├п╦п╦ я─п╟я│я┌я▐пЁп╦п╡п╟п╫п╦я▐.\n"
+"п╖п╟я│я┌я▄ п╢п╟п╫п╫я▀я┘ п╡ п╨п╬п╫я├п╣ п©п╟я┌я┌п╣я─п╫п╟ п╠я┐п╢п╣я┌ я┐я┌п╣я─я▐п╫п╟.\n"
+"п▓я│я▒ я─п╟п╡п╫п╬ п©я─п╬п╢п╬п╩п╤п╦я┌я▄?"
 
 #: app/gui.c:512
 msgid ""
 "Are you sure you want to free the current project?\n"
 "All changes will be lost!"
 msgstr ""
-"Вы уверены, что хотите освободить текущий проект?\n"
-"Все изменения будут потеряны!"
+"п▓я▀ я┐п╡п╣я─п╣п╫я▀, я┤я┌п╬ я┘п╬я┌п╦я┌п╣ п╬я│п╡п╬п╠п╬п╢п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╧ п©я─п╬п╣п╨я┌?\n"
+"п▓я│п╣ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╠я┐п╢я┐я┌ п©п╬я┌п╣я─я▐п╫я▀!"
 
 #: app/gui.c:576
-#, fuzzy, c-format
+#, c-format
 msgid "Error when opening pattern file %s!"
-msgstr "Ошибка при загрузке паттерна."
+msgstr "п·я┬п╦п╠п╨п╟ п©я─п╦ п╥п╟пЁя─я┐п╥п╨п╣ я└п╟п╧п╩п╟ п©п╟я┌я┌п╣я─п╫п╟ %s!"
 
 #: app/gui.c:595
 msgid ""
@@ -724,28 +711,28 @@ msgid ""
 "pattern in module.\n"
 "Do you want to change the current pattern length?"
 msgstr ""
-"Длина загружаемого паттерна не совпадает с длиной текущего.\n"
-"Хотите ли Вы скорректировать длину текущего паттерна?"
+"п■п╩п╦п╫п╟ п╥п╟пЁя─я┐п╤п╟п╣п╪п╬пЁп╬ п©п╟я┌я┌п╣я─п╫п╟ п╫п╣ я│п╬п╡п©п╟п╢п╟п╣я┌ я│ п╢п╩п╦п╫п╬п╧ я┌п╣п╨я┐я┴п╣пЁп╬.\n"
+"п╔п╬я┌п╦я┌п╣ п╩п╦ п▓я▀ я│п╨п╬я─я─п╣п╨я┌п╦я─п╬п╡п╟я┌я▄ п╢п╩п╦п╫я┐ я┌п╣п╨я┐я┴п╣пЁп╬ п©п╟я┌я┌п╣я─п╫п╟?"
 
 #: app/gui.c:1716
 msgid "SoundTracker Startup"
-msgstr "Запуск SoundTracker"
+msgstr "п≈п╟п©я┐я│п╨ SoundTracker"
 
 #: app/gui.c:1775 app/gui.c:1807
 msgid "Loading..."
-msgstr "Загружаюсь..."
+msgstr "п≈п╟пЁя─я┐п╤п╟я▌я│я▄..."
 
 #: app/gui.c:1796
 msgid "Use SoundTracker!"
-msgstr "Вперёд!"
+msgstr "п▓п©п╣я─я▒п╢!"
 
 #: app/gui.c:1830
 msgid ""
 "Are you sure you want to quit?\n"
 "All changes will be lost!"
 msgstr ""
-"Вы уверены, что хотите завершить работу?\n"
-"Все изменения будут утеряны!"
+"п▓я▀ я┐п╡п╣я─п╣п╫я▀, я┤я┌п╬ я┘п╬я┌п╦я┌п╣ п╥п╟п╡п╣я─я┬п╦я┌я▄ я─п╟п╠п╬я┌я┐?\n"
+"п▓я│п╣ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╠я┐п╢я┐я┌ я┐я┌п╣я─я▐п╫я▀!"
 
 #: app/gui.c:1889 app/gui.c:1892
 msgid "FastTracker modules (*.xm)"
@@ -760,9 +747,8 @@ msgid "Microsoft RIFF (*.wav)"
 msgstr ""
 
 #: app/gui.c:1898
-#, fuzzy
 msgid "Extended pattern (*.xp)"
-msgstr "Текущий паттерн"
+msgstr "Extended pattern (*.xp)"
 
 #: app/gui.c:1905
 #, c-format
@@ -771,7 +757,7 @@ msgstr ""
 
 #: app/gui.c:1931
 msgid "Load Module"
-msgstr "Загрузить модуль"
+msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ п╪п╬п╢я┐п╩я▄"
 
 #: app/gui.c:1931
 msgid "Load the selected module into the tracker"
@@ -779,123 +765,121 @@ msgstr ""
 
 #: app/gui.c:1932
 msgid "Save Module"
-msgstr "Сохранить модуль"
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ п╪п╬п╢я┐п╩я▄"
 
 #: app/gui.c:1932
-#, fuzzy
 msgid "Save the current module"
-msgstr "_Сохранить текущий паттерн..."
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╧ п╪п╬п╢я┐п╩я▄"
 
 #: app/gui.c:1934
 msgid "Render WAV"
-msgstr "Создать WAV"
+msgstr "п║п╬п╥п╢п╟я┌я▄ WAV"
 
 #: app/gui.c:1934
-#, fuzzy
 msgid "Render the current module as WAV file"
-msgstr "Записать модуль как WAV..."
+msgstr "п≈п╟п©п╦я│п╟я┌я▄ я┌п╣п╨я┐я┴п╦п╧ п╪п╬п╢я┐п╩я▄ п╡ я└п╬я─п╪п╟я┌п╣ WAV"
 
 #: app/gui.c:1936
 msgid "Save XM without samples..."
-msgstr "Сохранить XM без сэмплов..."
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ XM п╠п╣п╥ я│я█п╪п©п╩п╬п╡..."
 
 #: app/gui.c:1937
 msgid "Load current pattern..."
-msgstr "_Загрузить паттерн..."
+msgstr "_п≈п╟пЁя─я┐п╥п╦я┌я▄ п©п╟я┌я┌п╣я─п╫..."
 
 #: app/gui.c:1938
 msgid "Save current pattern..."
-msgstr "_Сохранить текущий паттерн..."
+msgstr "_п║п╬я┘я─п╟п╫п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╧ п©п╟я┌я┌п╣я─п╫..."
 
 #: app/gui.c:1996
 msgid "Play Song"
-msgstr "Играть песню"
+msgstr "п≤пЁя─п╟я┌я▄ п©п╣я│п╫я▌"
 
 #: app/gui.c:2005
 msgid "Play Pattern"
-msgstr "Играть паттерн"
+msgstr "п≤пЁя─п╟я┌я▄ п©п╟я┌я┌п╣я─п╫"
 
 #: app/gui.c:2014
 msgid "Stop"
-msgstr "Стоп"
+msgstr "п║я┌п╬п©"
 
 #: app/gui.c:2019
 msgid "Pat"
-msgstr "Патт"
+msgstr "п÷п╟я┌я┌"
 
 #: app/gui.c:2025
 msgid "Edited pattern"
-msgstr "Текущий паттерн"
+msgstr "п╒п╣п╨я┐я┴п╦п╧ п©п╟я┌я┌п╣я─п╫"
 
 #: app/gui.c:2035
 msgid "When enabled, browsing the playlist does not change the edited pattern."
 msgstr ""
-"Когда включено, навигация по таблице паттернов не приводит к изменению "
-"номера редактируемого паттерна"
+"п п╬пЁп╢п╟ п╡п╨п╩я▌я┤п╣п╫п╬, п╫п╟п╡п╦пЁп╟я├п╦я▐ п©п╬ я┌п╟п╠п╩п╦я├п╣ п©п╟я┌я┌п╣я─п╫п╬п╡ п╫п╣ п©я─п╦п╡п╬п╢п╦я┌ п╨ п╦п╥п╪п╣п╫п╣п╫п╦я▌ "
+"п╫п╬п╪п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─я┐п╣п╪п╬пЁп╬ п©п╟я┌я┌п╣я─п╫п╟"
 
 #: app/gui.c:2051
 msgid "Number of Channels:"
-msgstr "Количество каналов:"
+msgstr "п п╬п╩п╦я┤п╣я│я┌п╡п╬ п╨п╟п╫п╟п╩п╬п╡:"
 
 #: app/gui.c:2068
 msgid "Pattern Length"
-msgstr "Длина паттерна"
+msgstr "п■п╩п╦п╫п╟ п©п╟я┌я┌п╣я─п╫п╟"
 
 #: app/gui.c:2097
 msgid "Set preferred accidental type"
-msgstr "Выбор знаков альтерации"
+msgstr "п▓я▀п╠п╬я─ п╥п╫п╟п╨п╬п╡ п╟п╩я▄я┌п╣я─п╟я├п╦п╦"
 
 #: app/gui.c:2103
 msgid "Measure"
-msgstr "Размер"
+msgstr "п═п╟п╥п╪п╣я─"
 
 #: app/gui.c:2104
 msgid "Enable row highlighting"
-msgstr "Включает подсветку строк"
+msgstr "п▓п╨п╩я▌я┤п╟п╣я┌ п©п╬п╢я│п╡п╣я┌п╨я┐ я│я┌я─п╬п╨"
 
 #: app/gui.c:2125
 msgid "Other..."
-msgstr "Другой..."
+msgstr "п■я─я┐пЁп╬п╧..."
 
 #: app/gui.c:2154
 msgid "Change effect column editing direction"
-msgstr "Выбор направления смещения при редактировании в колонке эффекта"
+msgstr "п▓я▀п╠п╬я─ п╫п╟п©я─п╟п╡п╩п╣п╫п╦я▐ я│п╪п╣я┴п╣п╫п╦я▐ п©я─п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╦ п╡ п╨п╬п╩п╬п╫п╨п╣ я█я└я└п╣п╨я┌п╟"
 
 #: app/gui.c:2185
 msgid "Global amplification"
-msgstr "Общее усиление"
+msgstr "п·п╠я┴п╣п╣ я┐я│п╦п╩п╣п╫п╦п╣"
 
 #: app/gui.c:2221
 msgid "Pitchbend"
-msgstr "Расстройка тона"
+msgstr "п═п╟я│я│я┌я─п╬п╧п╨п╟ я┌п╬п╫п╟"
 
 #: app/gui.c:2229
 msgid "Reset pitchbend to its normal value"
-msgstr "Вернуть расстройку тона к нормальному значению"
+msgstr "п▓п╣я─п╫я┐я┌я▄ я─п╟я│я│я┌я─п╬п╧п╨я┐ я┌п╬п╫п╟ п╨ п╫п╬я─п╪п╟п╩я▄п╫п╬п╪я┐ п╥п╫п╟я┤п╣п╫п╦я▌"
 
 #: app/gui.c:2241
 msgid "Editing"
-msgstr "Правка"
+msgstr "п÷я─п╟п╡п╨п╟"
 
 #: app/gui.c:2248
 msgid "Octave"
-msgstr "Октава"
+msgstr "п·п╨я┌п╟п╡п╟"
 
 #: app/gui.c:2257
 msgid "Jump"
-msgstr "Отступ"
+msgstr "п·я┌я│я┌я┐п©"
 
 #: app/gui.c:2266
 msgid "Instr"
-msgstr "Инструмент"
+msgstr "п≤п╫я│я┌я─я┐п╪п╣п╫я┌"
 
 #: app/gui.c:2282
 msgid "Sample"
-msgstr "Сэмпл"
+msgstr "п║я█п╪п©п╩"
 
 #: app/gui.c:2321
 msgid "Welcome to SoundTracker!"
-msgstr "Добро пожаловать в SoundTracker!"
+msgstr "п■п╬п╠я─п╬ п©п╬п╤п╟п╩п╬п╡п╟я┌я▄ п╡ SoundTracker!"
 
 #: app/gui.c:2348
 msgid "%M:%S"
@@ -908,45 +892,44 @@ msgstr ""
 
 #: app/instrument-editor.c:80
 msgid "VolFade"
-msgstr "Спад"
+msgstr "п║п©п╟п╢"
 
 # here a bit tricky...
 #: app/instrument-editor.c:81
 msgid "VibSpeed"
-msgstr "Вибрато: Скорость"
+msgstr "п▓п╦п╠я─п╟я┌п╬: п║п╨п╬я─п╬я│я┌я▄"
 
 #: app/instrument-editor.c:82
 msgid "VibDepth"
-msgstr "Глубина"
+msgstr "п⌠п╩я┐п╠п╦п╫п╟"
 
 #: app/instrument-editor.c:83
 msgid "VibSweep"
-msgstr "Нарастание"
+msgstr "п²п╟я─п╟я│я┌п╟п╫п╦п╣"
 
 #: app/instrument-editor.c:166 app/instrument-editor.c:196
 msgid "Can't open file."
-msgstr "Невозможно открыть файл."
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ я└п╟п╧п╩."
 
 #: app/instrument-editor.c:190
-#, fuzzy
 msgid "Saving instrument failed."
-msgstr "Сохраняю инструмент..."
+msgstr "п·я┬п╦п╠п╨п╟ я│п╬я┘я─п╟п╫п╣п╫п╦я▐ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╟."
 
 #: app/instrument-editor.c:216
 msgid "Sine"
-msgstr "Синусоида"
+msgstr "п║п╦п╫я┐я│п╬п╦п╢п╟"
 
 #: app/instrument-editor.c:216
 msgid "Square"
-msgstr "Прямоугольник"
+msgstr "п÷я─я▐п╪п╬я┐пЁп╬п╩я▄п╫п╦п╨"
 
 #: app/instrument-editor.c:216
 msgid "Saw Down"
-msgstr "Пила (вниз)"
+msgstr "п÷п╦п╩п╟ (п╡п╫п╦п╥)"
 
 #: app/instrument-editor.c:216
 msgid "Saw Up"
-msgstr "Пила (вверх)"
+msgstr "п÷п╦п╩п╟ (п╡п╡п╣я─я┘)"
 
 #: app/instrument-editor.c:218
 msgid "FastTracker instrumets (*.xi)"
@@ -954,19 +937,19 @@ msgstr ""
 
 #: app/instrument-editor.c:223
 msgid "Instrument Editor"
-msgstr "Редактор инструментов"
+msgstr "п═п╣п╢п╟п╨я┌п╬я─ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╬п╡"
 
 #: app/instrument-editor.c:232
 msgid "Volume envelope"
-msgstr "Огибающая громкости"
+msgstr "п·пЁп╦п╠п╟я▌я┴п╟я▐ пЁя─п╬п╪п╨п╬я│я┌п╦"
 
 #: app/instrument-editor.c:240
 msgid "Panning envelope"
-msgstr "Огибающая панорамирования"
+msgstr "п·пЁп╦п╠п╟я▌я┴п╟я▐ п©п╟п╫п╬я─п╟п╪п╦я─п╬п╡п╟п╫п╦я▐"
 
 #: app/instrument-editor.c:257
 msgid "Load Instrument"
-msgstr "Загрузить инструмент"
+msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ п╦п╫я│я┌я─я┐п╪п╣п╫я┌"
 
 #: app/instrument-editor.c:259
 msgid "Load instrument in the current instrument slot"
@@ -974,52 +957,52 @@ msgstr ""
 
 #: app/instrument-editor.c:260
 msgid "Save Instrument"
-msgstr "Сохранить инструмент"
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ п╦п╫я│я┌я─я┐п╪п╣п╫я┌"
 
 #: app/instrument-editor.c:262
 #, fuzzy
 msgid "Save the current instrument"
-msgstr "Текущий инструмент"
+msgstr "п╒п╣п╨я┐я┴п╦п╧ п╦п╫я│я┌я─я┐п╪п╣п╫я┌"
 
 #: app/instrument-editor.c:264
 msgid "Load XI"
-msgstr "Загрузить XI"
+msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ XI"
 
 #: app/instrument-editor.c:270
 msgid "Save XI"
-msgstr "Сохранить XI"
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ XI"
 
 #: app/instrument-editor.c:289
 msgid "Vibrato Type:"
-msgstr "Тип вибрато:"
+msgstr "п╒п╦п© п╡п╦п╠я─п╟я┌п╬:"
 
 #: app/instrument-editor.c:361
 msgid "Note:"
-msgstr "Нота:"
+msgstr "п²п╬я┌п╟:"
 
 #: app/instrument-editor.c:379
 msgid "Initialize"
-msgstr "Инициализировать"
+msgstr "п≤п╫п╦я├п╦п╟п╩п╦п╥п╦я─п╬п╡п╟я┌я▄"
 
 #: app/keys.c:54
 msgid "<none>"
-msgstr "<ничего>"
+msgstr "<п╫п╦я┤п╣пЁп╬>"
 
 #: app/keys.c:126
 msgid "The key that inserts the special keyoff note for FastTracker modules."
-msgstr "Клавиша, вставляющая команду отпускания ноты в модули FastTracker."
+msgstr "п п╩п╟п╡п╦я┬п╟, п╡я│я┌п╟п╡п╩я▐я▌я┴п╟я▐ п╨п╬п╪п╟п╫п╢я┐ п╬я┌п©я┐я│п╨п╟п╫п╦я▐ п╫п╬я┌я▀ п╡ п╪п╬п╢я┐п╩п╦ FastTracker."
 
 #: app/keys.c:128
 msgid "The key that increases \"jump\" value."
-msgstr "Клавиша, увеличивающая значение отступа"
+msgstr "п п╩п╟п╡п╦я┬п╟, я┐п╡п╣п╩п╦я┤п╦п╡п╟я▌я┴п╟я▐ п╥п╫п╟я┤п╣п╫п╦п╣ п╬я┌я│я┌я┐п©п╟"
 
 #: app/keys.c:130
 msgid "The key that decreases \"jump\" value."
-msgstr "Клавиша, уменьшающая значение отступа"
+msgstr "п п╩п╟п╡п╦я┬п╟, я┐п╪п╣п╫я▄я┬п╟я▌я┴п╟я▐ п╥п╫п╟я┤п╣п╫п╦п╣ п╬я┌я│я┌я┐п©п╟"
 
 #: app/keys.c:142
 msgid "Upper Octave Keys..."
-msgstr "Клавиши верхней октавы..."
+msgstr "п п╩п╟п╡п╦я┬п╦ п╡п╣я─я┘п╫п╣п╧ п╬п╨я┌п╟п╡я▀..."
 
 #: app/keys.c:143
 msgid ""
@@ -1027,13 +1010,13 @@ msgid ""
 "the key to the right of the TAB key. The rest of the keys should be ordered "
 "in a piano keyboard fashion, including the number keys row above."
 msgstr ""
-"Это клавиши верхней половины клавиатуры. Клавиша `до' обычно справа от Tab. "
-"Остальные клавиши расположены подобно клавиатуре пианино, включая клавиши с "
-"цифрами в верхнем ряду."
+"п╜я┌п╬ п╨п╩п╟п╡п╦я┬п╦ п╡п╣я─я┘п╫п╣п╧ п©п╬п╩п╬п╡п╦п╫я▀ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀. п п╩п╟п╡п╦я┬п╟ `п╢п╬' п╬п╠я▀я┤п╫п╬ я│п©я─п╟п╡п╟ п╬я┌ Tab. "
+"п·я│я┌п╟п╩я▄п╫я▀п╣ п╨п╩п╟п╡п╦я┬п╦ я─п╟я│п©п╬п╩п╬п╤п╣п╫я▀ п©п╬п╢п╬п╠п╫п╬ п╨п╩п╟п╡п╦п╟я┌я┐я─п╣ п©п╦п╟п╫п╦п╫п╬, п╡п╨п╩я▌я┤п╟я▐ п╨п╩п╟п╡п╦я┬п╦ я│ "
+"я├п╦я└я─п╟п╪п╦ п╡ п╡п╣я─я┘п╫п╣п╪ я─я▐п╢я┐."
 
 #: app/keys.c:149
 msgid "Lower Octave Keys..."
-msgstr "Клавиши нижней октавы..."
+msgstr "п п╩п╟п╡п╦я┬п╦ п╫п╦п╤п╫п╣п╧ п╬п╨я┌п╟п╡я▀..."
 
 #: app/keys.c:150
 msgid ""
@@ -1041,57 +1024,57 @@ msgid ""
 "the first character key to the right of the left Shift key. The rest of the "
 "keys should be ordered in a piano keyboard fashion, including the row above."
 msgstr ""
-"Это клавиши нижней половины клавиатуры. Клавиша `до' обычно справа от "
-"LShift. Остальные клавиши расположены подобно клавиатуре пианино, включая "
-"клавиши среднего буквенного ряда."
+"п╜я┌п╬ п╨п╩п╟п╡п╦я┬п╦ п╫п╦п╤п╫п╣п╧ п©п╬п╩п╬п╡п╦п╫я▀ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀. п п╩п╟п╡п╦я┬п╟ `п╢п╬' п╬п╠я▀я┤п╫п╬ я│п©я─п╟п╡п╟ п╬я┌ "
+"LShift. п·я│я┌п╟п╩я▄п╫я▀п╣ п╨п╩п╟п╡п╦я┬п╦ я─п╟я│п©п╬п╩п╬п╤п╣п╫я▀ п©п╬п╢п╬п╠п╫п╬ п╨п╩п╟п╡п╦п╟я┌я┐я─п╣ п©п╦п╟п╫п╦п╫п╬, п╡п╨п╩я▌я┤п╟я▐ "
+"п╨п╩п╟п╡п╦я┬п╦ я│я─п╣п╢п╫п╣пЁп╬ п╠я┐п╨п╡п╣п╫п╫п╬пЁп╬ я─я▐п╢п╟."
 
 #: app/keys.c:156
 msgid "Other Keys..."
-msgstr "Прочие клавиши..."
+msgstr "п÷я─п╬я┤п╦п╣ п╨п╩п╟п╡п╦я┬п╦..."
 
 #: app/keys.c:157
 msgid "Various other keys"
-msgstr "Клавиши, выполняющие прочие функции"
+msgstr "п п╩п╟п╡п╦я┬п╦, п╡я▀п©п╬п╩п╫я▐я▌я┴п╦п╣ п©я─п╬я┤п╦п╣ я└я┐п╫п╨я├п╦п╦"
 
 #: app/keys.c:535
 msgid "Function"
-msgstr "Функция"
+msgstr "п╓я┐п╫п╨я├п╦я▐"
 
 #: app/keys.c:536
 msgid "Assignment"
-msgstr "Назначенная клавиша"
+msgstr "п²п╟п╥п╫п╟я┤п╣п╫п╫п╟я▐ п╨п╩п╟п╡п╦я┬п╟"
 
 #: app/keys.c:545
 msgid "Keyboard Configuration"
-msgstr "Конфигурация клавиатуры"
+msgstr "п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀"
 
 #: app/keys.c:591
 msgid "Key Group Explanation"
-msgstr "Пояснение групп клавиатуры"
+msgstr "п÷п╬я▐я│п╫п╣п╫п╦п╣ пЁя─я┐п©п© п╨п╩п╟п╡п╦п╟я┌я┐я─я▀"
 
 #: app/keys.c:605
 msgid "Key Explanation"
-msgstr "Пояснение клавиш"
+msgstr "п÷п╬я▐я│п╫п╣п╫п╦п╣ п╨п╩п╟п╡п╦я┬"
 
 #: app/keys.c:631
 msgid "Modifiers:"
-msgstr "Модификаторы:"
+msgstr "п°п╬п╢п╦я└п╦п╨п╟я┌п╬я─я▀:"
 
 #: app/keys.c:653
 msgid "Learn selected key"
-msgstr "Запомнить выбранную клавишу"
+msgstr "п≈п╟п©п╬п╪п╫п╦я┌я▄ п╡я▀п╠я─п╟п╫п╫я┐я▌ п╨п╩п╟п╡п╦я┬я┐"
 
 #: app/keys.c:658
 msgid "Learn all keys"
-msgstr "Запомнить все клавиши"
+msgstr "п≈п╟п©п╬п╪п╫п╦я┌я▄ п╡я│п╣ п╨п╩п╟п╡п╦я┬п╦"
 
 #: app/keys.c:664
 msgid ""
 "Please press the desired key combination!\n"
 "Click into left list to cancel"
 msgstr ""
-"Пожалуйста, нажмите желаемую комбинацию клавиш!\n"
-"Щёлкните по списку слева для отмены"
+"п÷п╬п╤п╟п╩я┐п╧я│я┌п╟, п╫п╟п╤п╪п╦я┌п╣ п╤п╣п╩п╟п╣п╪я┐я▌ п╨п╬п╪п╠п╦п╫п╟я├п╦я▌ п╨п╩п╟п╡п╦я┬!\n"
+"п╘я▒п╩п╨п╫п╦я┌п╣ п©п╬ я│п©п╦я│п╨я┐ я│п╩п╣п╡п╟ п╢п╩я▐ п╬я┌п╪п╣п╫я▀"
 
 #: app/keys.c:919
 #, c-format
@@ -1101,7 +1084,7 @@ msgstr "CH%02d"
 #: app/keys.c:920
 #, c-format
 msgid "Fast jump to channel %d"
-msgstr "Быстрый переход к каналу номер %d"
+msgstr "п▒я▀я│я┌я─я▀п╧ п©п╣я─п╣я┘п╬п╢ п╨ п╨п╟п╫п╟п╩я┐ п╫п╬п╪п╣я─ %d"
 
 #: app/keys.c:995
 msgid ""
@@ -1109,37 +1092,37 @@ msgid ""
 "Please use the Keyboard Configuration dialog\n"
 "in the Settings menu."
 msgstr ""
-"Автоконфигурирование клавиш не удалось.\n"
-"Используйте диалог \"Конфигурация клавиатуры\"\n"
-"в меню \"Настройки\", пожалуйста."
+"п░п╡я┌п╬п╨п╬п╫я└п╦пЁя┐я─п╦я─п╬п╡п╟п╫п╦п╣ п╨п╩п╟п╡п╦я┬ п╫п╣ я┐п╢п╟п╩п╬я│я▄.\n"
+"п≤я│п©п╬п╩я▄п╥я┐п╧я┌п╣ п╢п╦п╟п╩п╬пЁ \"п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀\"\n"
+"п╡ п╪п╣п╫я▌ \"п²п╟я│я┌я─п╬п╧п╨п╦\", п©п╬п╤п╟п╩я┐п╧я│я┌п╟."
 
 #: app/menubar.c:92
 msgid ""
 "Are you sure you want to do this?\n"
 "All changes will be lost!"
 msgstr ""
-"Вы уверены в том, что делаете?\n"
-"Все изменения будут утеряны!"
+"п▓я▀ я┐п╡п╣я─п╣п╫я▀ п╡ я┌п╬п╪, я┤я┌п╬ п╢п╣п╩п╟п╣я┌п╣?\n"
+"п▓я│п╣ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╠я┐п╢я┐я┌ я┐я┌п╣я─я▐п╫я▀!"
 
 #: app/mixers/integer32.c:493
 msgid "Integers mixer, no interpolation, no filters, maximum sample length 1M"
-msgstr "Целочисленный микшер, без интерполяции, длина сэмплов не более 1Мб"
+msgstr "п╕п╣п╩п╬я┤п╦я│п╩п╣п╫п╫я▀п╧ п╪п╦п╨я┬п╣я─, п╠п╣п╥ п╦п╫я┌п╣я─п©п╬п╩я▐я├п╦п╦, п╢п╩п╦п╫п╟ я│я█п╪п©п╩п╬п╡ п╫п╣ п╠п╬п╩п╣п╣ 1п°п╠"
 
 #: app/module-info.c:123
 msgid "Instrument Name"
-msgstr "Название инструмента"
+msgstr "п²п╟п╥п╡п╟п╫п╦п╣ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╟"
 
 #: app/module-info.c:123
 msgid "#smpl"
-msgstr "#смпл"
+msgstr "#я│п╪п©п╩"
 
 #: app/module-info.c:124
 msgid "Sample Name"
-msgstr "Название сэмпла"
+msgstr "п²п╟п╥п╡п╟п╫п╦п╣ я│я█п╪п©п╩п╟"
 
 #: app/module-info.c:131
 msgid "Linear"
-msgstr "Линейно"
+msgstr "п⌡п╦п╫п╣п╧п╫п╬"
 
 #: app/module-info.c:131 app/sample-editor.c:226
 msgid "Amiga"
@@ -1147,19 +1130,19 @@ msgstr "Amiga"
 
 #: app/module-info.c:136
 msgid "Module Info"
-msgstr "Информация о модуле"
+msgstr "п≤п╫я└п╬я─п╪п╟я├п╦я▐ п╬ п╪п╬п╢я┐п╩п╣"
 
 #: app/module-info.c:170
 msgid "Songname:"
-msgstr "Название песни:"
+msgstr "п²п╟п╥п╡п╟п╫п╦п╣ п©п╣я│п╫п╦:"
 
 #: app/module-info.c:183
 msgid "Frequencies:"
-msgstr "Частоты:"
+msgstr "п╖п╟я│я┌п╬я┌я▀:"
 
 #: app/module-info.c:188
 msgid "ProTracker Mode"
-msgstr "Режим ProTracker"
+msgstr "п═п╣п╤п╦п╪ ProTracker"
 
 #: app/module-info.c:426
 #, c-format
@@ -1169,51 +1152,51 @@ msgid ""
 "\n"
 "Clear unused and reorder playlist?\n"
 msgstr ""
-"Неиспользуемых паттернов: %d (используемых: %d)\n"
-"Неиспользуемых инструментов: %d (используемых: %d)\n"
+"п²п╣п╦я│п©п╬п╩я▄п╥я┐п╣п╪я▀я┘ п©п╟я┌я┌п╣я─п╫п╬п╡: %d (п╦я│п©п╬п╩я▄п╥я┐п╣п╪я▀я┘: %d)\n"
+"п²п╣п╦я│п©п╬п╩я▄п╥я┐п╣п╪я▀я┘ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╬п╡: %d (п╦я│п©п╬п╩я▄п╥я┐п╣п╪я▀я┘: %d)\n"
 "\n"
-"Очистить неиспользуемые и скорректировать последовательность паттернов?\n"
+"п·я┤п╦я│я┌п╦я┌я▄ п╫п╣п╦я│п©п╬п╩я▄п╥я┐п╣п╪я▀п╣ п╦ я│п╨п╬я─я─п╣п╨я┌п╦я─п╬п╡п╟я┌я▄ п©п╬я│п╩п╣п╢п╬п╡п╟я┌п╣п╩я▄п╫п╬я│я┌я▄ п©п╟я┌я┌п╣я─п╫п╬п╡?\n"
 
 #: app/playlist.c:552
 msgid "Insert pattern that is being edited"
-msgstr "Вставить текущий паттерн"
+msgstr "п▓я│я┌п╟п╡п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╧ п©п╟я┌я┌п╣я─п╫"
 
 #: app/playlist.c:561
 msgid "Remove current playlist entry"
-msgstr "Удалить текущий пункт таблицы паттернов"
+msgstr "пёп╢п╟п╩п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╧ п©я┐п╫п╨я┌ я┌п╟п╠п╩п╦я├я▀ п©п╟я┌я┌п╣я─п╫п╬п╡"
 
 #: app/playlist.c:569
 msgid "Add + Cpy"
-msgstr "Вст + Кпр"
+msgstr "п▓я│я┌ + п п©я─"
 
 #: app/playlist.c:571
 msgid ""
 "Add a free pattern behind current position, and copy current pattern to it"
-msgstr "Вставить свободный паттерн после текущего и скопировать текущий в него"
+msgstr "п▓я│я┌п╟п╡п╦я┌я▄ я│п╡п╬п╠п╬п╢п╫я▀п╧ п©п╟я┌я┌п╣я─п╫ п©п╬я│п╩п╣ я┌п╣п╨я┐я┴п╣пЁп╬ п╦ я│п╨п╬п©п╦я─п╬п╡п╟я┌я▄ я┌п╣п╨я┐я┴п╦п╧ п╡ п╫п╣пЁп╬"
 
 #: app/playlist.c:574
 msgid "Add Free"
-msgstr "Вст своб"
+msgstr "п▓я│я┌ я│п╡п╬п╠"
 
 #: app/playlist.c:576
 msgid "Add a free pattern behind current position"
-msgstr "Вставить свободный паттерн после текущего"
+msgstr "п▓я│я┌п╟п╡п╦я┌я▄ я│п╡п╬п╠п╬п╢п╫я▀п╧ п©п╟я┌я┌п╣я─п╫ п©п╬я│п╩п╣ я┌п╣п╨я┐я┴п╣пЁп╬"
 
 #: app/playlist.c:586
 msgid "Len"
-msgstr "Длн"
+msgstr "п■п╩п╫"
 
 #: app/playlist.c:600
 msgid "Song length"
-msgstr "Длина песни"
+msgstr "п■п╩п╦п╫п╟ п©п╣я│п╫п╦"
 
 #: app/playlist.c:606
 msgid "Rstrt"
-msgstr "Рстрт"
+msgstr "п═я│я┌я─я┌"
 
 #: app/playlist.c:619
 msgid "Song restart position"
-msgstr "Рестарт песни с указанной позиции"
+msgstr "п═п╣я│я┌п╟я─я┌ п©п╣я│п╫п╦ я│ я┐п╨п╟п╥п╟п╫п╫п╬п╧ п©п╬п╥п╦я├п╦п╦"
 
 #: app/preferences.c:91
 msgid "Would you like to import settings from old version of Soundtracker?"
@@ -1242,19 +1225,19 @@ msgstr ""
 
 #: app/sample-editor.c:225
 msgid "No loop"
-msgstr "Без цикла"
+msgstr "п▒п╣п╥ я├п╦п╨п╩п╟"
 
 #: app/sample-editor.c:227
 msgid "PingPong"
-msgstr "Пинг-понг"
+msgstr "п÷п╦п╫пЁ-п©п╬п╫пЁ"
 
 #: app/sample-editor.c:231 app/sample-editor.c:1614
 msgid "8 bits"
-msgstr "8 бит"
+msgstr "8 п╠п╦я┌"
 
 #: app/sample-editor.c:232 app/sample-editor.c:1614
 msgid "16 bits"
-msgstr "16 бит"
+msgstr "16 п╠п╦я┌"
 
 #: app/sample-editor.c:237
 msgid "Apple/SGI audio (*aif, *.aiff, *.aifc)"
@@ -1342,161 +1325,162 @@ msgstr ""
 
 #: app/sample-editor.c:277
 msgid "Sample Editor"
-msgstr "Редактор сэмплов"
+msgstr "п═п╣п╢п╟п╨я┌п╬я─ я│я█п╪п©п╩п╬п╡"
 
 #: app/sample-editor.c:317 app/midi-settings-09x.c:416
 msgid "Volume"
-msgstr "Громкость"
+msgstr "п⌠я─п╬п╪п╨п╬я│я┌я▄"
 
 #: app/sample-editor.c:318
 msgid "Panning"
-msgstr "Панорамирование"
+msgstr "п÷п╟п╫п╬я─п╟п╪п╦я─п╬п╡п╟п╫п╦п╣"
 
 #: app/sample-editor.c:319
 msgid "Finetune"
-msgstr "Подстройка"
+msgstr "п÷п╬п╢я│я┌я─п╬п╧п╨п╟"
 
 #: app/sample-editor.c:339
 msgid "Selection:"
-msgstr "Выделение:"
+msgstr "п▓я▀п╢п╣п╩п╣п╫п╦п╣:"
 
 #: app/sample-editor.c:343 app/track-editor.c:195 app/track-editor.c:205
 msgid "None"
-msgstr "Ничего"
+msgstr "п²п╦я┤п╣пЁп╬"
 
 #: app/sample-editor.c:349
 msgid "All"
-msgstr "Все"
+msgstr "п▓я│п╣"
 
 #: app/sample-editor.c:370
 msgid "Length:"
-msgstr "Длина:"
+msgstr "п■п╩п╦п╫п╟:"
 
 #: app/sample-editor.c:386
 msgid "Set as loop"
-msgstr "Установить цикл"
+msgstr "пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я├п╦п╨п╩"
 
 #: app/sample-editor.c:394
 msgid "RelNote"
-msgstr "Отн. нота"
+msgstr "п·я┌п╫. п╫п╬я┌п╟"
 
 #: app/sample-editor.c:405 app/sample-editor.c:410
 msgid "Load Sample"
-msgstr "Загрузить сэмпл"
+msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ я│я█п╪п©п╩"
 
 #: app/sample-editor.c:405
-msgid "Load sample into the current samle slot"
-msgstr ""
+#, fuzzy
+msgid "Load sample into the current sample slot"
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ XM п╠п╣п╥ я│я█п╪п©п╩п╬п╡..."
 
 #: app/sample-editor.c:406
 msgid "Save Sample"
-msgstr "Сохранить сэмпл"
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ я│я█п╪п©п╩"
 
 #: app/sample-editor.c:406
 #, fuzzy
 msgid "Save the current sample"
-msgstr "Сохранить XM без сэмплов..."
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ XM п╠п╣п╥ я│я█п╪п©п╩п╬п╡..."
 
 #: app/sample-editor.c:407
 msgid "Save region as WAV..."
-msgstr "Сохранить участок как WAV..."
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ я┐я┤п╟я│я┌п╬п╨ п╨п╟п╨ WAV..."
 
 #: app/sample-editor.c:419
 msgid "Save WAV"
-msgstr "Сохранить WAV"
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ WAV"
 
 #: app/sample-editor.c:429
 msgid "Save Region"
-msgstr "Сохранить участок"
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ я┐я┤п╟я│я┌п╬п╨"
 
 #: app/sample-editor.c:440
 msgid "Monitor"
-msgstr "Оцифровка"
+msgstr "п·я├п╦я└я─п╬п╡п╨п╟"
 
 #: app/sample-editor.c:446
 msgid "Volume Ramp"
-msgstr "Спад громкости"
+msgstr "п║п©п╟п╢ пЁя─п╬п╪п╨п╬я│я┌п╦"
 
 #: app/sample-editor.c:452
 msgid "Trim"
-msgstr "Подровнять"
+msgstr "п÷п╬п╢я─п╬п╡п╫я▐я┌я▄"
 
 #: app/sample-editor.c:463
 msgid "Zoom to selection"
-msgstr "Показать выделение"
+msgstr "п÷п╬п╨п╟п╥п╟я┌я▄ п╡я▀п╢п╣п╩п╣п╫п╦п╣"
 
 #: app/sample-editor.c:469
 msgid "Show all"
-msgstr "Показать все"
+msgstr "п÷п╬п╨п╟п╥п╟я┌я▄ п╡я│п╣"
 
 #: app/sample-editor.c:475
 msgid "Zoom in (+50%)"
-msgstr "Увеличить (+50%)"
+msgstr "пёп╡п╣п╩п╦я┤п╦я┌я▄ (+50%)"
 
 #: app/sample-editor.c:481
 msgid "Zoom out (-50%)"
-msgstr "Уменьшить (-50%)"
+msgstr "пёп╪п╣п╫я▄я┬п╦я┌я▄ (-50%)"
 
 #: app/sample-editor.c:487
 msgid "Reverse"
-msgstr "Обратить"
+msgstr "п·п╠я─п╟я┌п╦я┌я▄"
 
 #: app/sample-editor.c:497
 msgid "Cut"
-msgstr "Вырезать"
+msgstr "п▓я▀я─п╣п╥п╟я┌я▄"
 
 #: app/sample-editor.c:503
 msgid "Remove"
-msgstr "Удалить"
+msgstr "пёп╢п╟п╩п╦я┌я▄"
 
 #: app/sample-editor.c:509
 msgid "Copy"
-msgstr "Копировать"
+msgstr "п п╬п©п╦я─п╬п╡п╟я┌я▄"
 
 #: app/sample-editor.c:515
 msgid "Paste"
-msgstr "Вставить"
+msgstr "п▓я│я┌п╟п╡п╦я┌я▄"
 
 #: app/sample-editor.c:521
 msgid "Clear Sample"
-msgstr "Очистить сэмпл"
+msgstr "п·я┤п╦я│я┌п╦я┌я▄ я│я█п╪п©п╩"
 
 #: app/sample-editor.c:527
 msgid "Crop"
-msgstr "Обрезать"
+msgstr "п·п╠я─п╣п╥п╟я┌я▄"
 
 #: app/sample-editor.c:596
 msgid "(no selection)"
-msgstr "(нет выделения)"
+msgstr "(п╫п╣я┌ п╡я▀п╢п╣п╩п╣п╫п╦я▐)"
 
 #: app/sample-editor.c:1099
 msgid "Out of memory for copybuffer.\n"
-msgstr "Недостаточно памяти для буфера копирования.\n"
+msgstr "п²п╣п╢п╬я│я┌п╟я┌п╬я┤п╫п╬ п©п╟п╪я▐я┌п╦ п╢п╩я▐ п╠я┐я└п╣я─п╟ п╨п╬п©п╦я─п╬п╡п╟п╫п╦я▐.\n"
 
 #: app/sample-editor.c:1224
 msgid "<just pasted>"
-msgstr "<только что вставлено>"
+msgstr "<я┌п╬п╩я▄п╨п╬ я┤я┌п╬ п╡я│я┌п╟п╡п╩п╣п╫п╬>"
 
 #: app/sample-editor.c:1309
 msgid "Load stereo sample"
-msgstr "Загрузить стереосэмпл"
+msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ я│я┌п╣я─п╣п╬я│я█п╪п©п╩"
 
 #: app/sample-editor.c:1311
 msgid "Left"
-msgstr "Левый"
+msgstr "п⌡п╣п╡я▀п╧"
 
 #: app/sample-editor.c:1312
 msgid "Mix"
-msgstr "Объединить"
+msgstr "п·п╠я┼п╣п╢п╦п╫п╦я┌я▄"
 
 #: app/sample-editor.c:1313
 msgid "Right"
-msgstr "Правый"
+msgstr "п÷я─п╟п╡я▀п╧"
 
 #: app/sample-editor.c:1314
 #, fuzzy
 msgid "2 smpls"
-msgstr "#смпл"
+msgstr "#я│п╪п©п╩"
 
 #: app/sample-editor.c:1315
 msgid "Load left and right channels into the current sample and the next one"
@@ -1518,11 +1502,11 @@ msgstr ""
 #: app/sample-editor.c:1396 app/sample-editor.c:1402 app/sample-editor.c:1488
 #: app/sample-editor.c:2143 app/sample-editor.c:2194
 msgid "Out of memory for sample data."
-msgstr "Недостаточно памяти для данных сэмпла."
+msgstr "п²п╣п╢п╬я│я┌п╟я┌п╬я┤п╫п╬ п©п╟п╪я▐я┌п╦ п╢п╩я▐ п╢п╟п╫п╫я▀я┘ я│я█п╪п©п╩п╟."
 
 #: app/sample-editor.c:1419 app/sample-editor.c:1431
 msgid "Read error."
-msgstr "Ошибка чтения."
+msgstr "п·я┬п╦п╠п╨п╟ я┤я┌п╣п╫п╦я▐."
 
 #: app/sample-editor.c:1575
 msgid ""
@@ -1531,30 +1515,30 @@ msgid ""
 "\n"
 "Please choose which channel to load:"
 msgstr ""
-"Вы выбрали стереосэмпл!\n"
-"(SoundTracker обрабатывает только моносэмплы)\n"
+"п▓я▀ п╡я▀п╠я─п╟п╩п╦ я│я┌п╣я─п╣п╬я│я█п╪п©п╩!\n"
+"(SoundTracker п╬п╠я─п╟п╠п╟я┌я▀п╡п╟п╣я┌ я┌п╬п╩я▄п╨п╬ п╪п╬п╫п╬я│я█п╪п©п╩я▀)\n"
 "\n"
-"Выберите, какой из каналов загрузить:"
+"п▓я▀п╠п╣я─п╦я┌п╣, п╨п╟п╨п╬п╧ п╦п╥ п╨п╟п╫п╟п╩п╬п╡ п╥п╟пЁя─я┐п╥п╦я┌я▄:"
 
 #: app/sample-editor.c:1615
 msgid "Signed"
-msgstr "Знаковый"
+msgstr "п≈п╫п╟п╨п╬п╡я▀п╧"
 
 #: app/sample-editor.c:1615
 msgid "Unsigned"
-msgstr "Беззнаковый"
+msgstr "п▒п╣п╥п╥п╫п╟п╨п╬п╡я▀п╧"
 
 #: app/sample-editor.c:1616
 msgid "Little-Endian"
-msgstr "Младший байт в конце (LE)"
+msgstr "п°п╩п╟п╢я┬п╦п╧ п╠п╟п╧я┌ п╡ п╨п╬п╫я├п╣ (LE)"
 
 #: app/sample-editor.c:1616
 msgid "Big-Endian"
-msgstr "Старший байт в конце (BE)"
+msgstr "п║я┌п╟я─я┬п╦п╧ п╠п╟п╧я┌ п╡ п╨п╬п╫я├п╣ (BE)"
 
 #: app/sample-editor.c:1625
 msgid "Load raw sample"
-msgstr "Загрузить сэмпл без заголовка"
+msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ я│я█п╪п©п╩ п╠п╣п╥ п╥п╟пЁп╬п╩п╬п╡п╨п╟"
 
 #: app/sample-editor.c:1633
 msgid ""
@@ -1563,67 +1547,67 @@ msgid ""
 "\n"
 "Please choose a format:"
 msgstr ""
-"Вы выбрали сэмпл, формат которого неизвестен.\n"
-"Вы можете загрузить его как raw-данные.\n"
+"п▓я▀ п╡я▀п╠я─п╟п╩п╦ я│я█п╪п©п╩, я└п╬я─п╪п╟я┌ п╨п╬я┌п╬я─п╬пЁп╬ п╫п╣п╦п╥п╡п╣я│я┌п╣п╫.\n"
+"п▓я▀ п╪п╬п╤п╣я┌п╣ п╥п╟пЁя─я┐п╥п╦я┌я▄ п╣пЁп╬ п╨п╟п╨ raw-п╢п╟п╫п╫я▀п╣.\n"
 "\n"
-"Выберите формат, пожалуйста:"
+"п▓я▀п╠п╣я─п╦я┌п╣ я└п╬я─п╪п╟я┌, п©п╬п╤п╟п╩я┐п╧я│я┌п╟:"
 
 #: app/sample-editor.c:1659
 msgid "Word format:"
-msgstr "Формат представления данных:"
+msgstr "п╓п╬я─п╪п╟я┌ п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╦я▐ п╢п╟п╫п╫я▀я┘:"
 
 #: app/sample-editor.c:1690
 msgid "Sampling Rate:"
-msgstr "Частота дискретизации:"
+msgstr "п╖п╟я│я┌п╬я┌п╟ п╢п╦я│п╨я─п╣я┌п╦п╥п╟я├п╦п╦:"
 
 #: app/sample-editor.c:1780
 msgid "Can't read sample"
-msgstr "Невозможно прочитать сэмпл"
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п©я─п╬я┤п╦я┌п╟я┌я▄ я│я█п╪п©п╩"
 
 #: app/sample-editor.c:1793
 msgid "Sample is too long for current mixer module. Loading anyway."
-msgstr "Сэмпл слишком длинный для текущего модуля микшера. Но грузим."
+msgstr "п║я█п╪п©п╩ я│п╩п╦я┬п╨п╬п╪ п╢п╩п╦п╫п╫я▀п╧ п╢п╩я▐ я┌п╣п╨я┐я┴п╣пЁп╬ п╪п╬п╢я┐п╩я▐ п╪п╦п╨я┬п╣я─п╟. п²п╬ пЁя─я┐п╥п╦п╪."
 
 #: app/sample-editor.c:1817
 msgid "Can only handle 8 and 16 bit samples with up to 2 channels"
-msgstr "Поддерживаются только сэмплы 8/16 бит, до 2 каналов"
+msgstr "п÷п╬п╢п╢п╣я─п╤п╦п╡п╟я▌я┌я│я▐ я┌п╬п╩я▄п╨п╬ я│я█п╪п©п╩я▀ 8/16 п╠п╦я┌, п╢п╬ 2 п╨п╟п╫п╟п╩п╬п╡"
 
 #: app/sample-editor.c:1951
 msgid "Please select region first."
-msgstr "Пожалуйста, отметьте участок, над которым будут выполняться действия"
+msgstr "п÷п╬п╤п╟п╩я┐п╧я│я┌п╟, п╬я┌п╪п╣я┌я▄я┌п╣ я┐я┤п╟я│я┌п╬п╨, п╫п╟п╢ п╨п╬я┌п╬я─я▀п╪ п╠я┐п╢я┐я┌ п╡я▀п©п╬п╩п╫я▐я┌я▄я│я▐ п╢п╣п╧я│я┌п╡п╦я▐"
 
 #: app/sample-editor.c:1977
 msgid "OK"
-msgstr "ОК"
+msgstr "п·п "
 
 #: app/sample-editor.c:1985
 msgid "Start sampling"
-msgstr "Начать оцифровку"
+msgstr "п²п╟я┤п╟я┌я▄ п╬я├п╦я└я─п╬п╡п╨я┐"
 
 #: app/sample-editor.c:1992
 msgid "Cancel"
-msgstr "Отмена"
+msgstr "п·я┌п╪п╣п╫п╟"
 
 #: app/sample-editor.c:2013
 msgid "No sampling driver available"
-msgstr "Нет драйвера оцифровки "
+msgstr "п²п╣я┌ п╢я─п╟п╧п╡п╣я─п╟ п╬я├п╦я└я─п╬п╡п╨п╦ "
 
 #: app/sample-editor.c:2021
 msgid "Sampling Window"
-msgstr "Окно оцифровки"
+msgstr "п·п╨п╫п╬ п╬я├п╦я└я─п╬п╡п╨п╦"
 
 #: app/sample-editor.c:2051
 #, fuzzy
 msgid "Sampling failed!"
-msgstr "Частота дискретизации:"
+msgstr "п╖п╟я│я┌п╬я┌п╟ п╢п╦я│п╨я─п╣я┌п╦п╥п╟я├п╦п╦:"
 
 #: app/sample-editor.c:2071
 msgid "Out of memory while sampling!"
-msgstr "Кончилась память в процессе оцифровки!"
+msgstr "п п╬п╫я┤п╦п╩п╟я│я▄ п©п╟п╪я▐я┌я▄ п╡ п©я─п╬я├п╣я│я│п╣ п╬я├п╦я└я─п╬п╡п╨п╦!"
 
 #: app/sample-editor.c:2126
 msgid "<just sampled>"
-msgstr "<только что оцифровано>"
+msgstr "<я┌п╬п╩я▄п╨п╬ я┤я┌п╬ п╬я├п╦я└я─п╬п╡п╟п╫п╬>"
 
 #: app/sample-editor.c:2152
 #, fuzzy
@@ -1633,31 +1617,31 @@ msgid ""
 "\n"
 "Please choose which channel to use:"
 msgstr ""
-"Вы выбрали стереосэмпл!\n"
-"(SoundTracker обрабатывает только моносэмплы)\n"
+"п▓я▀ п╡я▀п╠я─п╟п╩п╦ я│я┌п╣я─п╣п╬я│я█п╪п©п╩!\n"
+"(SoundTracker п╬п╠я─п╟п╠п╟я┌я▀п╡п╟п╣я┌ я┌п╬п╩я▄п╨п╬ п╪п╬п╫п╬я│я█п╪п©п╩я▀)\n"
 "\n"
-"Выберите, какой из каналов загрузить:"
+"п▓я▀п╠п╣я─п╦я┌п╣, п╨п╟п╨п╬п╧ п╦п╥ п╨п╟п╫п╟п╩п╬п╡ п╥п╟пЁя─я┐п╥п╦я┌я▄:"
 
 #: app/sample-editor.c:2378
 msgid "Recorded sample is too long for current mixer module. Using it anyway."
 msgstr ""
-"Записанный сэмпл слишком длинный для текущего модуля микшера. Но используем."
+"п≈п╟п©п╦я│п╟п╫п╫я▀п╧ я│я█п╪п©п╩ я│п╩п╦я┬п╨п╬п╪ п╢п╩п╦п╫п╫я▀п╧ п╢п╩я▐ я┌п╣п╨я┐я┴п╣пЁп╬ п╪п╬п╢я┐п╩я▐ п╪п╦п╨я┬п╣я─п╟. п²п╬ п╦я│п©п╬п╩я▄п╥я┐п╣п╪."
 
 #: app/sample-editor.c:2443
 msgid "Volume Ramping"
-msgstr "Спад громкости"
+msgstr "п║п©п╟п╢ пЁя─п╬п╪п╨п╬я│я┌п╦"
 
 #: app/sample-editor.c:2444
 msgid "Normalize"
-msgstr "Нормализовать"
+msgstr "п²п╬я─п╪п╟п╩п╦п╥п╬п╡п╟я┌я▄"
 
 #: app/sample-editor.c:2456
 msgid "Perform linear volume fade on Selection"
-msgstr "Произвести линейное спадание громкости на выбранном участке"
+msgstr "п÷я─п╬п╦п╥п╡п╣я│я┌п╦ п╩п╦п╫п╣п╧п╫п╬п╣ я│п©п╟п╢п╟п╫п╦п╣ пЁя─п╬п╪п╨п╬я│я┌п╦ п╫п╟ п╡я▀п╠я─п╟п╫п╫п╬п╪ я┐я┤п╟я│я┌п╨п╣"
 
 #: app/sample-editor.c:2465
 msgid "Left [%]:"
-msgstr "Левый [%]:"
+msgstr "п⌡п╣п╡я▀п╧ [%]:"
 
 #: app/sample-editor.c:2468 app/sample-editor.c:2485
 msgid "H"
@@ -1677,23 +1661,23 @@ msgstr ""
 
 #: app/sample-editor.c:2482
 msgid "Right [%]:"
-msgstr "Правый [%]:"
+msgstr "п÷я─п╟п╡я▀п╧ [%]:"
 
 #: app/sample-editor.c:2575
 msgid "Trim parameters"
-msgstr "Параметры подравнивания"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀ п©п╬п╢я─п╟п╡п╫п╦п╡п╟п╫п╦я▐"
 
 #: app/sample-editor.c:2581
 msgid "Trim at the beginning"
-msgstr "Подровнять начало"
+msgstr "п÷п╬п╢я─п╬п╡п╫я▐я┌я▄ п╫п╟я┤п╟п╩п╬"
 
 #: app/sample-editor.c:2585
 msgid "Trim at the end"
-msgstr "Подровнять конец"
+msgstr "п÷п╬п╢я─п╬п╡п╫я▐я┌я▄ п╨п╬п╫п╣я├"
 
 #: app/sample-editor.c:2591
 msgid "Threshold (dB)"
-msgstr "Порог (дБ)"
+msgstr "п÷п╬я─п╬пЁ (п╢п▒)"
 
 #: app/tips-dialog.c:44
 msgid ""
@@ -1702,10 +1686,10 @@ msgid ""
 "If you are new to this type of program, you will want to get hold of\n"
 "some XM or MOD files first and play with them."
 msgstr ""
-"Добро пожаловать в SoundTracker!\n"
+"п■п╬п╠я─п╬ п©п╬п╤п╟п╩п╬п╡п╟я┌я▄ п╡ SoundTracker!\n"
 "\n"
-"Если подобные программы Вам в новинку, вероятно, стоит для начала\n"
-"найти несколько готовых файлов XM или MOD и поиграться с ними."
+"п∙я│п╩п╦ п©п╬п╢п╬п╠п╫я▀п╣ п©я─п╬пЁя─п╟п╪п╪я▀ п▓п╟п╪ п╡ п╫п╬п╡п╦п╫п╨я┐, п╡п╣я─п╬я▐я┌п╫п╬, я│я┌п╬п╦я┌ п╢п╩я▐ п╫п╟я┤п╟п╩п╟\n"
+"п╫п╟п╧я┌п╦ п╫п╣я│п╨п╬п╩я▄п╨п╬ пЁп╬я┌п╬п╡я▀я┘ я└п╟п╧п╩п╬п╡ XM п╦п╩п╦ MOD п╦ п©п╬п╦пЁя─п╟я┌я▄я│я▐ я│ п╫п╦п╪п╦."
 
 #: app/tips-dialog.c:49
 msgid ""
@@ -1713,25 +1697,25 @@ msgid ""
 "input by decreasing the mixing buffer size of the \"Editing\" object in\n"
 "the Audio Configuration."
 msgstr ""
-"Вы можете сделать режим редактирования SoundTracker более чувствительным\n"
-"к клавиатуре, если уменьшите размер буфера объекта \"Редактирование\" в\n"
-"диалоге конфигурации аудио."
+"п▓я▀ п╪п╬п╤п╣я┌п╣ я│п╢п╣п╩п╟я┌я▄ я─п╣п╤п╦п╪ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ SoundTracker п╠п╬п╩п╣п╣ я┤я┐п╡я│я┌п╡п╦я┌п╣п╩я▄п╫я▀п╪\n"
+"п╨ п╨п╩п╟п╡п╦п╟я┌я┐я─п╣, п╣я│п╩п╦ я┐п╪п╣п╫я▄я┬п╦я┌п╣ я─п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟ п╬п╠я┼п╣п╨я┌п╟ \"п═п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣\" п╡\n"
+"п╢п╦п╟п╩п╬пЁп╣ п╨п╬п╫я└п╦пЁя┐я─п╟я├п╦п╦ п╟я┐п╢п╦п╬."
 
 #: app/tips-dialog.c:53
 msgid ""
 "You can adjust the loop points in the sample editor by holding Shift\n"
 "and using the left and right mousebuttons.\n"
 msgstr ""
-"Вы можете уточнить позиции точек зацикливания в редакторе сэмплов\n"
-"при помощи левой и правой кнопок мыши, нажав Shift.\n"
+"п▓я▀ п╪п╬п╤п╣я┌п╣ я┐я┌п╬я┤п╫п╦я┌я▄ п©п╬п╥п╦я├п╦п╦ я┌п╬я┤п╣п╨ п╥п╟я├п╦п╨п╩п╦п╡п╟п╫п╦я▐ п╡ я─п╣п╢п╟п╨я┌п╬я─п╣ я│я█п╪п©п╩п╬п╡\n"
+"п©я─п╦ п©п╬п╪п╬я┴п╦ п╩п╣п╡п╬п╧ п╦ п©я─п╟п╡п╬п╧ п╨п╫п╬п©п╬п╨ п╪я▀я┬п╦, п╫п╟п╤п╟п╡ Shift.\n"
 
 #: app/tips-dialog.c:56
 msgid ""
 "If you want to know more about tracking, and how the various commands\n"
 "work, have a look at http://www.united-trackers.org/"
 msgstr ""
-"Если вы хотите узнать больше о трекерах,\n"
-"загляните на http://www.united-trackers.org/"
+"п∙я│п╩п╦ п╡я▀ я┘п╬я┌п╦я┌п╣ я┐п╥п╫п╟я┌я▄ п╠п╬п╩я▄я┬п╣ п╬ я┌я─п╣п╨п╣я─п╟я┘,\n"
+"п╥п╟пЁп╩я▐п╫п╦я┌п╣ п╫п╟ http://www.united-trackers.org/"
 
 #: app/tips-dialog.c:59
 msgid ""
@@ -1739,355 +1723,355 @@ msgid ""
 "activating its sample and then clicking on the keyboard in the\n"
 "instrument editor page."
 msgstr ""
-"Вы можете привязать сэмплы инструмента к определенным клавишам,\n"
-"активировав нужный сэмпл и клацнув по клавиатуре на страничке\n"
-"редактора инструментов."
+"п▓я▀ п╪п╬п╤п╣я┌п╣ п©я─п╦п╡я▐п╥п╟я┌я▄ я│я█п╪п©п╩я▀ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╟ п╨ п╬п©я─п╣п╢п╣п╩п╣п╫п╫я▀п╪ п╨п╩п╟п╡п╦я┬п╟п╪,\n"
+"п╟п╨я┌п╦п╡п╦я─п╬п╡п╟п╡ п╫я┐п╤п╫я▀п╧ я│я█п╪п©п╩ п╦ п╨п╩п╟я├п╫я┐п╡ п©п╬ п╨п╩п╟п╡п╦п╟я┌я┐я─п╣ п╫п╟ я│я┌я─п╟п╫п╦я┤п╨п╣\n"
+"я─п╣п╢п╟п╨я┌п╬я─п╟ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╬п╡."
 
 #: app/tips-dialog.c:63
 msgid ""
 "Is your cursor trapped in a number entry field?\n"
 "Just press Return or Tab to free yourself!"
 msgstr ""
-"Застрял курсор где-нибудь в поле ввода чисел?\n"
-"Просто нажми Return или Tab -- и ты на свободе!"
+"п≈п╟я│я┌я─я▐п╩ п╨я┐я─я│п╬я─ пЁп╢п╣-п╫п╦п╠я┐п╢я▄ п╡ п©п╬п╩п╣ п╡п╡п╬п╢п╟ я┤п╦я│п╣п╩?\n"
+"п÷я─п╬я│я┌п╬ п╫п╟п╤п╪п╦ Return п╦п╩п╦ Tab -- п╦ я┌я▀ п╫п╟ я│п╡п╬п╠п╬п╢п╣!"
 
 #: app/tips-dialog.c:111
 msgid "Previous Tip"
-msgstr "Предыдущая подсказка"
+msgstr "п÷я─п╣п╢я▀п╢я┐я┴п╟я▐ п©п╬п╢я│п╨п╟п╥п╨п╟"
 
 #: app/tips-dialog.c:118
 msgid "Next Tip"
-msgstr "Следующая подсказка"
+msgstr "п║п╩п╣п╢я┐я▌я┴п╟я▐ п©п╬п╢я│п╨п╟п╥п╨п╟"
 
 #: app/tips-dialog.c:129
 msgid "Show tip next time"
-msgstr "Показывать в дальнейшем"
+msgstr "п÷п╬п╨п╟п╥я▀п╡п╟я┌я▄ п╡ п╢п╟п╩я▄п╫п╣п╧я┬п╣п╪"
 
 #: app/tips-dialog.c:145
 msgid "SoundTracker Tip of the day"
-msgstr "Подсказка дня от SoundTracker"
+msgstr "п÷п╬п╢я│п╨п╟п╥п╨п╟ п╢п╫я▐ п╬я┌ SoundTracker"
 
 #: app/track-editor.c:110
 msgid "Arpeggio"
-msgstr "Арпеджио"
+msgstr "п░я─п©п╣п╢п╤п╦п╬"
 
 #: app/track-editor.c:111
 msgid "Porta up"
-msgstr "Портаменто вверх"
+msgstr "п÷п╬я─я┌п╟п╪п╣п╫я┌п╬ п╡п╡п╣я─я┘"
 
 #: app/track-editor.c:112
 msgid "Porta down"
-msgstr "Портаменто вниз"
+msgstr "п÷п╬я─я┌п╟п╪п╣п╫я┌п╬ п╡п╫п╦п╥"
 
 #: app/track-editor.c:113 app/track-editor.c:177
 msgid "Tone porta"
-msgstr "Портаменто к ноте"
+msgstr "п÷п╬я─я┌п╟п╪п╣п╫я┌п╬ п╨ п╫п╬я┌п╣"
 
 #: app/track-editor.c:114 app/track-editor.c:173
 msgid "Vibrato"
-msgstr "Вибрато:"
+msgstr "п▓п╦п╠я─п╟я┌п╬:"
 
 #: app/track-editor.c:115
 msgid "Tone porta + Volume slide"
-msgstr "Портаменто + плавное изменение громкости"
+msgstr "п÷п╬я─я┌п╟п╪п╣п╫я┌п╬ + п©п╩п╟п╡п╫п╬п╣ п╦п╥п╪п╣п╫п╣п╫п╦п╣ пЁя─п╬п╪п╨п╬я│я┌п╦"
 
 #: app/track-editor.c:116
 msgid "Vibrato + Volume slide"
-msgstr "Вибрато + плавное изменение громкости"
+msgstr "п▓п╦п╠я─п╟я┌п╬ + п©п╩п╟п╡п╫п╬п╣ п╦п╥п╪п╣п╫п╣п╫п╦п╣ пЁя─п╬п╪п╨п╬я│я┌п╦"
 
 #: app/track-editor.c:117
 msgid "Tremolo"
-msgstr "Тремоло"
+msgstr "п╒я─п╣п╪п╬п╩п╬"
 
 #: app/track-editor.c:118 app/track-editor.c:174
 msgid "Set panning"
-msgstr "Установить панорамирование"
+msgstr "пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п©п╟п╫п╬я─п╟п╪п╦я─п╬п╡п╟п╫п╦п╣"
 
 #: app/track-editor.c:119 app/track-editor.c:121
 msgid "Position jump"
-msgstr "Переход к выбранной позиции"
+msgstr "п÷п╣я─п╣я┘п╬п╢ п╨ п╡я▀п╠я─п╟п╫п╫п╬п╧ п©п╬п╥п╦я├п╦п╦"
 
 #: app/track-editor.c:120 app/track-editor.c:122 app/track-editor.c:198
 msgid "Set volume"
-msgstr "Установить громкость"
+msgstr "пёя│я┌п╟п╫п╬п╡п╦я┌я▄ пЁя─п╬п╪п╨п╬я│я┌я▄"
 
 #: app/track-editor.c:123
 msgid "Pattern break"
-msgstr "Обрыв паттерн"
+msgstr "п·п╠я─я▀п╡ п©п╟я┌я┌п╣я─п╫"
 
 #: app/track-editor.c:125
 msgid "Set tempo/bpm"
-msgstr "Установить темп/BPM"
+msgstr "пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я┌п╣п╪п©/BPM"
 
 #: app/track-editor.c:126
 msgid "Set global volume"
-msgstr "Установить общую громкость"
+msgstr "пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╬п╠я┴я┐я▌ пЁя─п╬п╪п╨п╬я│я┌я▄"
 
 #: app/track-editor.c:127
 msgid "Global volume slide"
-msgstr "Плавное изменение общей громкости"
+msgstr "п÷п╩п╟п╡п╫п╬п╣ п╦п╥п╪п╣п╫п╣п╫п╦п╣ п╬п╠я┴п╣п╧ пЁя─п╬п╪п╨п╬я│я┌п╦"
 
 #: app/track-editor.c:130
 msgid "Key off"
-msgstr "Отпускание клавиши"
+msgstr "п·я┌п©я┐я│п╨п╟п╫п╦п╣ п╨п╩п╟п╡п╦я┬п╦"
 
 #: app/track-editor.c:131
 msgid "Set envelop position"
-msgstr "Установить позицию огибающей"
+msgstr "пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п©п╬п╥п╦я├п╦я▌ п╬пЁп╦п╠п╟я▌я┴п╣п╧"
 
 #: app/track-editor.c:135
 msgid "Panning slide"
-msgstr "Плавное изменение панорамирования"
+msgstr "п÷п╩п╟п╡п╫п╬п╣ п╦п╥п╪п╣п╫п╣п╫п╦п╣ п©п╟п╫п╬я─п╟п╪п╦я─п╬п╡п╟п╫п╦я▐"
 
 #: app/track-editor.c:136
 msgid "LP filter resonance"
-msgstr "Резонанс НЧ-фильтра"
+msgstr "п═п╣п╥п╬п╫п╟п╫я│ п²п╖-я└п╦п╩я▄я┌я─п╟"
 
 #: app/track-editor.c:137
 msgid "Multi retrig note"
-msgstr "Многократно повторить ноту"
+msgstr "п°п╫п╬пЁп╬п╨я─п╟я┌п╫п╬ п©п╬п╡я┌п╬я─п╦я┌я▄ п╫п╬я┌я┐"
 
 #: app/track-editor.c:139
 msgid "Tremor"
-msgstr "Тремор"
+msgstr "п╒я─п╣п╪п╬я─"
 
 #: app/track-editor.c:145
 msgid "LP filter cutoff"
-msgstr "Срез НЧ-фильтра"
+msgstr "п║я─п╣п╥ п²п╖-я└п╦п╩я▄я┌я─п╟"
 
 #: app/track-editor.c:150
 msgid "Fine porta up"
-msgstr "Точное портаменто вверх"
+msgstr "п╒п╬я┤п╫п╬п╣ п©п╬я─я┌п╟п╪п╣п╫я┌п╬ п╡п╡п╣я─я┘"
 
 #: app/track-editor.c:151
 msgid "Fine porta down"
-msgstr "Точное портаменто вниз"
+msgstr "п╒п╬я┤п╫п╬п╣ п©п╬я─я┌п╟п╪п╣п╫я┌п╬ п╡п╫п╦п╥"
 
 #: app/track-editor.c:152
 msgid "Set gliss control"
-msgstr "Установить режим глиссандо"
+msgstr "пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╣п╤п╦п╪ пЁп╩п╦я│я│п╟п╫п╢п╬"
 
 #: app/track-editor.c:153
 msgid "Set vibrato control"
-msgstr "Установить режим вибрато"
+msgstr "пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╣п╤п╦п╪ п╡п╦п╠я─п╟я┌п╬"
 
 #: app/track-editor.c:154
 msgid "Set finetune"
-msgstr "Установить подстройку"
+msgstr "пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п©п╬п╢я│я┌я─п╬п╧п╨я┐"
 
 #: app/track-editor.c:155
 msgid "Set loop begin/loop"
-msgstr "Установить начало цикла/цикл"
+msgstr "пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╫п╟я┤п╟п╩п╬ я├п╦п╨п╩п╟/я├п╦п╨п╩"
 
 #: app/track-editor.c:156
 msgid "Set tremolo control"
-msgstr "Установит режим тремоло"
+msgstr "пёя│я┌п╟п╫п╬п╡п╦я┌ я─п╣п╤п╦п╪ я┌я─п╣п╪п╬п╩п╬"
 
 #: app/track-editor.c:158
 msgid "Retrig note"
-msgstr "Повторить ноту"
+msgstr "п÷п╬п╡я┌п╬я─п╦я┌я▄ п╫п╬я┌я┐"
 
 #: app/track-editor.c:159 app/track-editor.c:171
 msgid "Fine volume slide up"
-msgstr "Точный подъем громкости"
+msgstr "п╒п╬я┤п╫я▀п╧ п©п╬п╢я┼п╣п╪ пЁя─п╬п╪п╨п╬я│я┌п╦"
 
 #: app/track-editor.c:160 app/track-editor.c:170
 msgid "Fine volume slide down"
-msgstr "Точный спад громкости"
+msgstr "п╒п╬я┤п╫я▀п╧ я│п©п╟п╢ пЁя─п╬п╪п╨п╬я│я┌п╦"
 
 #: app/track-editor.c:161
 msgid "Note cut"
-msgstr "Отключение ноты"
+msgstr "п·я┌п╨п╩я▌я┤п╣п╫п╦п╣ п╫п╬я┌я▀"
 
 #: app/track-editor.c:162
 msgid "Note delay"
-msgstr "Задержка ноты"
+msgstr "п≈п╟п╢п╣я─п╤п╨п╟ п╫п╬я┌я▀"
 
 #: app/track-editor.c:163
 msgid "Pattern delay"
-msgstr "Задержка паттерна"
+msgstr "п≈п╟п╢п╣я─п╤п╨п╟ п©п╟я┌я┌п╣я─п╫п╟"
 
 #: app/track-editor.c:168
 msgid "Volume slide down"
-msgstr "Затухание громкости"
+msgstr "п≈п╟я┌я┐я┘п╟п╫п╦п╣ пЁя─п╬п╪п╨п╬я│я┌п╦"
 
 #: app/track-editor.c:169
 msgid "Volume slide up"
-msgstr "Нарастание громкости"
+msgstr "п²п╟я─п╟я│я┌п╟п╫п╦п╣ пЁя─п╬п╪п╨п╬я│я┌п╦"
 
 #: app/track-editor.c:172
 msgid "Set vibrato speed"
-msgstr "Установить скорость вибрато"
+msgstr "пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я│п╨п╬я─п╬я│я┌я▄ п╡п╦п╠я─п╟я┌п╬"
 
 #: app/track-editor.c:175
 msgid "Panning slide left"
-msgstr "Сдвиг панорамирования влево"
+msgstr "п║п╢п╡п╦пЁ п©п╟п╫п╬я─п╟п╪п╦я─п╬п╡п╟п╫п╦я▐ п╡п╩п╣п╡п╬"
 
 #: app/track-editor.c:176
 msgid "Panning slide right"
-msgstr "Сдвиг панорамирования вправо"
+msgstr "п║п╢п╡п╦пЁ п©п╟п╫п╬я─п╟п╪п╦я─п╬п╡п╟п╫п╦я▐ п╡п©я─п╟п╡п╬"
 
 #: app/track-editor.c:181
 msgid "sine"
-msgstr "синусоида"
+msgstr "я│п╦п╫я┐я│п╬п╦п╢п╟"
 
 #: app/track-editor.c:182
 msgid "ramp down"
-msgstr "затухание"
+msgstr "п╥п╟я┌я┐я┘п╟п╫п╦п╣"
 
 #: app/track-editor.c:183
 msgid "square"
-msgstr "прямоугольник"
+msgstr "п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫п╦п╨"
 
 #: app/track-editor.c:228 app/track-editor.c:234 app/track-editor.c:251
 #: app/track-editor.c:257
 msgid "None ]"
-msgstr "Ничего ]"
+msgstr "п²п╦я┤п╣пЁп╬ ]"
 
 #: app/track-editor.c:357
 msgid "Jazz Edit:"
-msgstr "Редактирование Jazz:"
+msgstr "п═п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ Jazz:"
 
 #: app/track-editor.c:402
 msgid "Tracker"
-msgstr "Трэкер"
+msgstr "п╒я─я█п╨п╣я─"
 
 #: app/tracker.c:88
 msgid "Tracker background"
-msgstr "Фон трэкера"
+msgstr "п╓п╬п╫ я┌я─я█п╨п╣я─п╟"
 
 #: app/tracker.c:89
 msgid "Cursor background"
-msgstr "Фон курсора"
+msgstr "п╓п╬п╫ п╨я┐я─я│п╬я─п╟"
 
 #: app/tracker.c:90
 msgid "Major lines highlighting"
-msgstr "Подсветка основных строк"
+msgstr "п÷п╬п╢я│п╡п╣я┌п╨п╟ п╬я│п╫п╬п╡п╫я▀я┘ я│я┌я─п╬п╨"
 
 #: app/tracker.c:91
 msgid "Minor lines highlighting"
-msgstr "Подсветка вспомогательных строк"
+msgstr "п÷п╬п╢я│п╡п╣я┌п╨п╟ п╡я│п©п╬п╪п╬пЁп╟я┌п╣п╩я▄п╫я▀я┘ я│я┌я─п╬п╨"
 
-#: app/tracker.c:92
+#: app/tracker.c:92 soundtracker.glade:142
 msgid "Selection"
-msgstr "Выделение"
+msgstr "п▓я▀п╢п╣п╩п╣п╫п╦п╣"
 
 #: app/tracker.c:93
 msgid "Notes"
-msgstr "Ноты"
+msgstr "п²п╬я┌я▀"
 
 #: app/tracker.c:94
 msgid "Delimiters"
-msgstr "Разделители"
+msgstr "п═п╟п╥п╢п╣п╩п╦я┌п╣п╩п╦"
 
 #: app/tracker.c:95
 msgid "Channel numbers"
-msgstr "Номера каналов"
+msgstr "п²п╬п╪п╣я─п╟ п╨п╟п╫п╟п╩п╬п╡"
 
 #: app/tracker.c:96
 msgid "Cursor idle"
-msgstr "Курсор при ожидании"
+msgstr "п я┐я─я│п╬я─ п©я─п╦ п╬п╤п╦п╢п╟п╫п╦п╦"
 
 #: app/tracker.c:97
 msgid "Cursor editing"
-msgstr "Курсор при редактировании"
+msgstr "п я┐я─я│п╬я─ п©я─п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╦"
 
 #: app/tracker-settings.c:273
 msgid "Font list"
-msgstr "Список шрифтов"
+msgstr "п║п©п╦я│п╬п╨ я┬я─п╦я└я┌п╬п╡"
 
 #: app/tracker-settings.c:295
 msgid "Add font"
-msgstr "Добавить шрифт"
+msgstr "п■п╬п╠п╟п╡п╦я┌я▄ я┬я─п╦я└я┌"
 
 #: app/tracker-settings.c:301
 msgid "Delete font"
-msgstr "Удалить шрифт"
+msgstr "пёп╢п╟п╩п╦я┌я▄ я┬я─п╦я└я┌"
 
 #: app/tracker-settings.c:307
 msgid "Apply font"
-msgstr "Применить шрифт"
+msgstr "п÷я─п╦п╪п╣п╫п╦я┌я▄ я┬я─п╦я└я┌"
 
 #: app/tracker-settings.c:323
 msgid "Select font..."
-msgstr "Выберите шрифт..."
+msgstr "п▓я▀п╠п╣я─п╦я┌п╣ я┬я─п╦я└я┌..."
 
 #: app/transposition.c:199
 msgid "Whole Song"
-msgstr "Вся песня"
+msgstr "п▓я│я▐ п©п╣я│п╫я▐"
 
 #: app/transposition.c:200
 msgid "All Patterns"
-msgstr "Все паттерны"
+msgstr "п▓я│п╣ п©п╟я┌я┌п╣я─п╫я▀"
 
 #: app/transposition.c:201
 msgid "Current Pattern"
-msgstr "Текущий паттерн"
+msgstr "п╒п╣п╨я┐я┴п╦п╧ п©п╟я┌я┌п╣я─п╫"
 
 #: app/transposition.c:202
 msgid "Current Track"
-msgstr "Текущий трэк"
+msgstr "п╒п╣п╨я┐я┴п╦п╧ я┌я─я█п╨"
 
 #: app/transposition.c:206
 msgid "Current Instrument"
-msgstr "Текущий инструмент"
+msgstr "п╒п╣п╨я┐я┴п╦п╧ п╦п╫я│я┌я─я┐п╪п╣п╫я┌"
 
 #: app/transposition.c:207
 msgid "All Instruments"
-msgstr "Все инструменты"
+msgstr "п▓я│п╣ п╦п╫я│я┌я─я┐п╪п╣п╫я┌я▀"
 
 #: app/transposition.c:211
 msgid "Half note up"
-msgstr "На полтона выше"
+msgstr "п²п╟ п©п╬п╩я┌п╬п╫п╟ п╡я▀я┬п╣"
 
 #: app/transposition.c:212
 msgid "Half note down"
-msgstr "На полтона ниже"
+msgstr "п²п╟ п©п╬п╩я┌п╬п╫п╟ п╫п╦п╤п╣"
 
 #: app/transposition.c:213
 msgid "Octave up"
-msgstr "На октаву выше"
+msgstr "п²п╟ п╬п╨я┌п╟п╡я┐ п╡я▀я┬п╣"
 
 #: app/transposition.c:214
 msgid "Octave down"
-msgstr "На октаву ниже"
+msgstr "п²п╟ п╬п╨я┌п╟п╡я┐ п╫п╦п╤п╣"
 
 #: app/transposition.c:217
 msgid "Exchange 1 <-> 2"
-msgstr "Обменять 1 <-> 2"
+msgstr "п·п╠п╪п╣п╫я▐я┌я▄ 1 <-> 2"
 
 #: app/transposition.c:218
 msgid "Change 1 -> 2"
-msgstr "Сменить 1 -> 2"
+msgstr "п║п╪п╣п╫п╦я┌я▄ 1 -> 2"
 
 # or else Tools will mess with Instruments in the translated version :(
 #: app/transposition.c:226
 msgid "Transposition Tools"
-msgstr "Средства транспонирования"
+msgstr "п║я─п╣п╢я│я┌п╡п╟ я┌я─п╟п╫я│п©п╬п╫п╦я─п╬п╡п╟п╫п╦я▐"
 
 #: app/transposition.c:239
 msgid "Scope of the operation:"
-msgstr "Область действия:"
+msgstr "п·п╠п╩п╟я│я┌я▄ п╢п╣п╧я│я┌п╡п╦я▐:"
 
 #: app/transposition.c:244
 msgid "Note Transposition"
-msgstr "Транспонирование нот"
+msgstr "п╒я─п╟п╫я│п©п╬п╫п╦я─п╬п╡п╟п╫п╦п╣ п╫п╬я┌"
 
 #: app/transposition.c:270
 msgid "Instrument Changing"
-msgstr "Смена инструмента"
+msgstr "п║п╪п╣п╫п╟ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╟"
 
 #: app/transposition.c:282
 msgid "Instrument 1:"
-msgstr "Инструмент 1:"
+msgstr "п≤п╫я│я┌я─я┐п╪п╣п╫я┌ 1:"
 
 #: app/transposition.c:284 app/transposition.c:293
 msgid "Current instrument"
-msgstr "Текущий инструмент"
+msgstr "п╒п╣п╨я┐я┴п╦п╧ п╦п╫я│я┌я─я┐п╪п╣п╫я┌"
 
 #: app/transposition.c:291
 msgid "Instrument 2:"
-msgstr "Инструмент 2:"
+msgstr "п≤п╫я│я┌я─я┐п╪п╣п╫я┌ 2:"
 
 #: app/xm.c:195
 msgid "Pattern header reading error."
@@ -2096,12 +2080,12 @@ msgstr ""
 #: app/xm.c:202
 #, fuzzy, c-format
 msgid "Pattern length out of range: %d."
-msgstr "Длина паттерна вне диапазона: %d.\n"
+msgstr "п■п╩п╦п╫п╟ п©п╟я┌я┌п╣я─п╫п╟ п╡п╫п╣ п╢п╦п╟п©п╟п╥п╬п╫п╟: %d.\n"
 
 #: app/xm.c:224
 #, fuzzy
 msgid "Error loading notes."
-msgstr "Ошибка при загрузке паттернов."
+msgstr "п·я┬п╦п╠п╨п╟ п©я─п╦ п╥п╟пЁя─я┐п╥п╨п╣ п©п╟я┌я┌п╣я─п╫п╬п╡."
 
 #: app/xm.c:329
 msgid "Sample header reading error"
@@ -2115,7 +2099,7 @@ msgstr ""
 #: app/xm.c:703
 #, fuzzy
 msgid "Instrument header reading error"
-msgstr "Смена инструмента"
+msgstr "п║п╪п╣п╫п╟ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╟"
 
 #: app/xm.c:538
 msgid "XM Load Error: Number of samples in instrument > 128.\n"
@@ -2136,7 +2120,7 @@ msgstr ""
 #: app/xm.c:564
 #, fuzzy
 msgid "Panning envelope points reading error"
-msgstr "Огибающая панорамирования"
+msgstr "п·пЁп╦п╠п╟я▌я┴п╟я▐ п©п╟п╫п╬я─п╟п╪п╦я─п╬п╡п╟п╫п╦я▐"
 
 #: app/xm.c:570
 msgid "Envelope parameters reading error"
@@ -2145,16 +2129,16 @@ msgstr ""
 #: app/xm.c:591
 #, fuzzy, c-format
 msgid "XM Load Warning: Invalid vibtype %d, using Sine.\n"
-msgstr "Неверный тип вибрато %d, использую синусоиду.\n"
+msgstr "п²п╣п╡п╣я─п╫я▀п╧ я┌п╦п© п╡п╦п╠я─п╟я┌п╬ %d, п╦я│п©п╬п╩я▄п╥я┐я▌ я│п╦п╫я┐я│п╬п╦п╢я┐.\n"
 
 #: app/xm.c:631
 msgid "File is no XI instrument."
-msgstr "Файл не является инструментом XI."
+msgstr "п╓п╟п╧п╩ п╫п╣ я▐п╡п╩я▐п╣я┌я│я▐ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╬п╪ XI."
 
 #: app/xm.c:651
 #, c-format
 msgid "Unknown XI version 0x%x\n"
-msgstr "Неверная версия XI 0x%x\n"
+msgstr "п²п╣п╡п╣я─п╫п╟я▐ п╡п╣я─я│п╦я▐ XI 0x%x\n"
 
 #: app/xm.c:657
 msgid "Instrument sample map reading error"
@@ -2175,7 +2159,7 @@ msgstr ""
 #: app/xm.c:693
 #, c-format
 msgid "Invalid vibtype %d, using Sine.\n"
-msgstr "Неверный тип вибрато %d, использую синусоиду.\n"
+msgstr "п²п╣п╡п╣я─п╫я▀п╧ я┌п╦п© п╡п╦п╠я─п╟я┌п╬ %d, п╦я│п©п╬п╩я▄п╥я┐я▌ я│п╦п╫я┐я│п╬п╦п╢я┐.\n"
 
 #: app/xm.c:769
 msgid ""
@@ -2190,7 +2174,7 @@ msgstr ""
 #: app/xm.c:940
 #, fuzzy
 msgid "Instrument header reading error."
-msgstr "Инструмент загружен."
+msgstr "п≤п╫я│я┌я─я┐п╪п╣п╫я┌ п╥п╟пЁя─я┐п╤п╣п╫."
 
 #: app/xm.c:947
 msgid "Sample header reading error."
@@ -2202,7 +2186,7 @@ msgstr ""
 
 #: app/xm.c:1009 app/xm.c:1141
 msgid "Error while loading patterns."
-msgstr "Ошибка при загрузке паттернов."
+msgstr "п·я┬п╦п╠п╨п╟ п©я─п╦ п╥п╟пЁя─я┐п╥п╨п╣ п©п╟я┌я┌п╣я─п╫п╬п╡."
 
 #: app/xm.c:1036
 #, c-format
@@ -2217,7 +2201,7 @@ msgstr ""
 
 #: app/xm.c:1080
 msgid "Can't open file"
-msgstr "Невозможно открыть файл"
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ я└п╟п╧п╩"
 
 #: app/xm.c:1094
 msgid "XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n"
@@ -2234,11 +2218,11 @@ msgstr ""
 #: app/xm.c:1136
 #, fuzzy
 msgid "Error while loading pattern order table."
-msgstr "Ошибка при загрузке паттернов."
+msgstr "п·я┬п╦п╠п╨п╟ п©я─п╦ п╥п╟пЁя─я┐п╥п╨п╣ п©п╟я┌я┌п╣я─п╫п╬п╡."
 
 #: app/xm.c:1147
 msgid "Error while loading instruments."
-msgstr "Ошибка при загрузке инструментов."
+msgstr "п·я┬п╦п╠п╨п╟ п©я─п╦ п╥п╟пЁя─я┐п╥п╨п╣ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╬п╡."
 
 #: app/xm.c:1158
 #, c-format
@@ -2246,8 +2230,8 @@ msgid ""
 "Module contains sample(s) that are too long for the current mixer.\n"
 "Maximum sample length is %d."
 msgstr ""
-"Модуль содержит сэмпл(ы) со слишком большой для текущего микшера длиной.\n"
-"Максимальная длина сэмпла -- %d."
+"п°п╬п╢я┐п╩я▄ я│п╬п╢п╣я─п╤п╦я┌ я│я█п╪п©п╩(я▀) я│п╬ я│п╩п╦я┬п╨п╬п╪ п╠п╬п╩я▄я┬п╬п╧ п╢п╩я▐ я┌п╣п╨я┐я┴п╣пЁп╬ п╪п╦п╨я┬п╣я─п╟ п╢п╩п╦п╫п╬п╧.\n"
+"п°п╟п╨я│п╦п╪п╟п╩я▄п╫п╟я▐ п╢п╩п╦п╫п╟ я│я█п╪п©п╩п╟ -- %d."
 
 #: app/xm.c:1230
 msgid ""
@@ -2257,63 +2241,63 @@ msgstr ""
 
 #: app/xm.c:1558
 msgid "Not FastTracker XM and not supported MOD format!"
-msgstr "Неподдерживаемый формат MOD или не FastTracker XM!"
+msgstr "п²п╣п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣п╪я▀п╧ я└п╬я─п╪п╟я┌ MOD п╦п╩п╦ п╫п╣ FastTracker XM!"
 
 #: app/xm.c:1573 app/xm.c:1594
 msgid "Error when file reading or unexpected end of file"
-msgstr "Ошибка при чтении файла или неожиданный его конец."
+msgstr "п·я┬п╦п╠п╨п╟ п©я─п╦ я┤я┌п╣п╫п╦п╦ я└п╟п╧п╩п╟ п╦п╩п╦ п╫п╣п╬п╤п╦п╢п╟п╫п╫я▀п╧ п╣пЁп╬ п╨п╬п╫п╣я├."
 
 #: app/xm.c:1577
 msgid "Incorrect or unsupported version of pattern file!"
-msgstr "Неправильная или неподдерживаемая версия файла паттерна!"
+msgstr "п²п╣п©я─п╟п╡п╦п╩я▄п╫п╟я▐ п╦п╩п╦ п╫п╣п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣п╪п╟я▐ п╡п╣я─я│п╦я▐ я└п╟п╧п╩п╟ п©п╟я┌я┌п╣я─п╫п╟!"
 
 #: app/xm.c:1581
 msgid "Incorrect pattern length!"
-msgstr "Неправильная длина паттерна!"
+msgstr "п²п╣п©я─п╟п╡п╦п╩я▄п╫п╟я▐ п╢п╩п╦п╫п╟ п©п╟я┌я┌п╣я─п╫п╟!"
 
 #: app/xm.c:1624 app/xm.c:1650
 msgid "Error during saving pattern!"
-msgstr "Ошибка при записи паттерна!"
+msgstr "п·я┬п╦п╠п╨п╟ п©я─п╦ п╥п╟п©п╦я│п╦ п©п╟я┌я┌п╣я─п╫п╟!"
 
 #: app/midi-settings-09x.c:409
 msgid "Auto connect"
-msgstr "Автоматическое соединение"
+msgstr "п░п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╬п╣ я│п╬п╣п╢п╦п╫п╣п╫п╦п╣"
 
 #: app/midi-settings-09x.c:424
 msgid "Channel"
-msgstr "Канал"
+msgstr "п п╟п╫п╟п╩"
 
 #: app/midi-settings-09x.c:433
 msgid "Client number"
-msgstr "Номер клиента"
+msgstr "п²п╬п╪п╣я─ п╨п╩п╦п╣п╫я┌п╟"
 
 #: app/midi-settings-09x.c:443
 msgid "Port number"
-msgstr "Номер порта"
+msgstr "п²п╬п╪п╣я─ п©п╬я─я┌п╟"
 
 #: app/midi-settings-09x.c:461
 msgid "Input"
-msgstr "Ввод"
+msgstr "п▓п╡п╬п╢"
 
 #: app/midi-settings-09x.c:470
 msgid "For future development"
-msgstr "Для дальнейшей разработки"
+msgstr "п■п╩я▐ п╢п╟п╩я▄п╫п╣п╧я┬п╣п╧ я─п╟п╥я─п╟п╠п╬я┌п╨п╦"
 
 #: app/midi-settings-09x.c:476
 msgid "Output"
-msgstr "Выход"
+msgstr "п▓я▀я┘п╬п╢"
 
 #: app/midi-settings-09x.c:487
 msgid "Debug level"
-msgstr "Уровень отладки"
+msgstr "пёя─п╬п╡п╣п╫я▄ п╬я┌п╩п╟п╢п╨п╦"
 
 #: app/midi-settings-09x.c:499
 msgid "Misc"
-msgstr "Прочее"
+msgstr "п÷я─п╬я┤п╣п╣"
 
 #: app/midi-settings-09x.c:540
 msgid "MIDI Configuration"
-msgstr "Конфигурация MIDI..."
+msgstr "п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ MIDI..."
 
 #: app/midi-09x.c:235
 #, c-format
@@ -2345,324 +2329,415 @@ msgstr ""
 msgid "error closing handle (%s)\n"
 msgstr ""
 
+#: soundtracker.glade:10
+msgid "Pattern"
+msgstr "п÷п╟я┌я┌п╣я─п╫"
+
+#: soundtracker.glade:49
+msgid "Track"
+msgstr "п╒я─я█п╨"
+
+#: soundtracker.glade:88 soundtracker.glade:501
+msgid "_Kill notes"
+msgstr "_п║я┌п╣я─п╣я┌я▄ п╫п╬я┌я▀"
+
+#: soundtracker.glade:104 soundtracker.glade:518
+msgid "_Insert track"
+msgstr "п▓я│_я┌п╟п╡п╦я┌я▄ я┌я─п╣п╨"
+
+#: soundtracker.glade:112 soundtracker.glade:526
+msgid "_Delete track"
+msgstr "_пёп╢п╟п╩п╦я┌я▄ я┌я─п╣п╨"
+
+#: soundtracker.glade:125 soundtracker.glade:539
+msgid "Increment cmd value"
+msgstr "п░п╡я┌п╬я┐п╡п╣п╩п╦я┤п╣п╫п╦п╣ п©п╟я─п╟п╪п╣я┌я─п╟ п╨п╬п╪п╟п╫п╢я▀"
+
+#: soundtracker.glade:131 soundtracker.glade:546
+msgid "Decrement cmd value"
+msgstr "п░п╡я┌п╬я┐п╪п╣п╫я▄я┬п╣п╫п╦п╣ п©п╟я─п╟п╪п╣я┌я─п╟ п╨п╬п╪п╟п╫п╢я▀"
+
+#: soundtracker.glade:150 soundtracker.glade:575
+msgid "C_lear block marks"
+msgstr "п║_п╫я▐я┌я▄ п╡я▀п╢п╣п╩п╣п╫п╦п╣"
+
+#: soundtracker.glade:185 soundtracker.glade:589
+msgid "_Interpolate effects"
+msgstr "_п╜я└я└п╣п╨я┌я▀ п╦п╫я┌п╣я─п©п╬п╩я▐я├п╦п╦"
+
+#: soundtracker.glade:219
+msgid "_File"
+msgstr "_п╓п╟п╧п╩"
+
+#: soundtracker.glade:261
+msgid "Save Module as _WAVБ─╕"
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ _п╪п╬п╢я┐п╩я▄ п╨п╟п╨ WAV..."
+
+#: soundtracker.glade:270
+msgid "Save _XM without samplesБ─╕"
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ XM _п╠п╣п╥ я│я█п╪п©п╩п╬п╡."
+
+#: soundtracker.glade:299
+msgid "_Module"
+msgstr "_п°п╬п╢я┐п╩я▄"
+
+#: soundtracker.glade:306
+msgid "Clear _All"
+msgstr "п·я┤п╦я│я┌п╦я┌я▄ _п╡я│п╣"
+
+#: soundtracker.glade:315
+msgid "Clear _Patterns Only"
+msgstr "п·я┤п╦я│я┌п╦я┌я▄ я┌п╬п╩я▄п╨п╬ _п©п╟я┌я┌п╣я─п╫я▀"
+
+#: soundtracker.glade:330
+msgid "_Optimize Module"
+msgstr "_п·п©я┌п╦п╪п╦п╥п╦я─п╬п╡п╟я┌я▄ п╪п╬п╢я┐п╩я▄"
+
+#: soundtracker.glade:342
+msgid "_Edit"
+msgstr "_п÷я─п╟п╡п╨п╟"
+
+#: soundtracker.glade:382
+msgid "_Jazz edit mode"
+msgstr "п═п╣_п╤п╦п╪ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ Jazz"
+
+#: soundtracker.glade:391
+msgid "_Record keyreleases"
+msgstr "_п≈п╟п©п╦я│я▀п╡п╟я┌я▄ п╬я┌п©я┐я│п╨п╟п╫п╦я▐ п╨п╩п╟п╡п╦я┬"
+
+#: soundtracker.glade:404
+msgid "Transp_ositionБ─╕"
+msgstr "_п╒я─п╟п╫я│п©п╬п╥п╦я├п╦я▐"
+
+#: soundtracker.glade:417 soundtracker.glade:643
+msgid "_Pattern"
+msgstr "п÷_п╟я┌я┌п╣я─п╫"
+
+#: soundtracker.glade:459 soundtracker.glade:738
+msgid "_Track"
+msgstr "п╒я─_я█п╨"
+
+#: soundtracker.glade:558
+msgid "_Selection"
+msgstr "_п▓я▀п╢п╣п╩п╣п╫п╦п╣"
+
+#: soundtracker.glade:566
+msgid "_Mark mode"
+msgstr "_п═п╣п╤п╦п╪ п╡я▀п╢п╣п╩п╣п╫п╦я▐"
+
+#: soundtracker.glade:603
+msgid "Transpose half-note up"
+msgstr "п╒я─п╟п╫я│п©п╬п╫п╦я─п╬п╡п╟я┌я▄ п╫п╟ п©п╬п╩я┌п╬п╫п╟ п╡п╡п╣я─я┘"
+
+#: soundtracker.glade:611
+msgid "Transpose half-note down"
+msgstr "п╒я─п╟п╫я│п©п╬п╫п╦я─п╬п╡п╟я┌я▄ п╫п╟ п©п╬п╩я┌п╬п╫п╟ п╡п╫п╦п╥"
+
+#: soundtracker.glade:619
+msgid "Transpose octave up"
+msgstr "п╒я─п╟п╫я│п©п╬п╫п╦я─п╬п╡п╟я┌я▄ п╫п╟ п╬п╨я┌п╟п╡я┐ п╡п╡п╣я─я┘"
+
+#: soundtracker.glade:627
+msgid "Transpose octave down"
+msgstr "п╒я─п╟п╫я│п©п╬п╫п╦я─п╬п╡п╟я┌я▄ п╫п╟ п╬п╨я┌п╟п╡я┐ п╡п╫п╦п╥"
+
+#: soundtracker.glade:650
+msgid "_Load PatternБ─╕"
+msgstr "_п≈п╟пЁя─я┐п╥п╦я┌я▄ п©п╟я┌я┌п╣я─п╫Б─╕"
+
+#: soundtracker.glade:659
+msgid "_Save Current PatternБ─╕"
+msgstr "_п║п╬я┘я─п╟п╫п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╧ п©п╟я┌я┌п╣я─п╫Б─╕"
+
+#: soundtracker.glade:674
+msgid "_Find Unused Pattern"
+msgstr "_п²п╟п╧я┌п╦ я│п╡п╬п╠п╬п╢п╫я▀п╧ п©п╟я┌я┌п╣я─п╫"
+
+#: soundtracker.glade:683
+msgid "_Copy Current to Unused Pattern"
+msgstr "_п п╬п©п╦я─п╬п╡п╟я┌я▄ я┌п╣п╨я┐я┴п╦п╧ п©п╟я┌я┌п╣я─п╫ п╡ я│п╡п╬п╠п╬п╢п╫я▀п╧"
+
+#: soundtracker.glade:697
+msgid "C_lear Unused Patterns"
+msgstr "_п·я┤п╦я│я┌п╦я┌я▄ я│п╡п╬п╠п╬п╢п╫я▀п╣ п©п╟я┌я┌п╣я─п╫я▀"
+
+#: soundtracker.glade:705
+msgid "_Pack Patterns"
+msgstr "_пёп©п╟п╨п╬п╡п╟я┌я▄ п©п╟я┌я┌п╣я─п╫я▀"
+
+#: soundtracker.glade:718
+msgid "S_hrink Current Pattern"
+msgstr "п║_п╤п╟я┌я▄ я┌п╣п╨я┐я┴п╦п╧ п©п╟я┌я┌п╣я─п╫"
+
+#: soundtracker.glade:726
+msgid "_Expand Current Pattern"
+msgstr "п═_п╟я│я┌я▐п╫я┐я┌я▄ я┌п╣п╨я┐я┴п╦п╧ п©п╟я┌я┌п╣я─п╫"
+
+#: soundtracker.glade:746
+msgid "_Toggle Current Track Permanentness"
+msgstr "п≤п╥п╪п╣п╫п╦я┌я▄ я│п╬я│я┌п╬я▐п╫п╦п╣ _п©п╣я─п╪п╟п╫п╣п╫я┌п╫п╬я│я┌п╦ п╨п╟п╫п╟п╩п╟"
+
+#: soundtracker.glade:754
+msgid "Toggle _All Tracks Permanentness"
+msgstr "п≤п╥п╪п╣п╫п╦я┌я▄ я│п╬я│я┌п╬я▐п╫п╦п╣ п©п╣я─п╪п╟п╫п╣п╫я┌п╫п╬я│я┌п╦ _п╡я│п╣я┘ п╨п╟п╫п╟п╩п╬п╡"
+
+#: soundtracker.glade:766
+msgid "_Instrument"
+msgstr "_п≤п╫я│я┌я─я┐п╪п╣п╫я┌"
+
+#: soundtracker.glade:773
+msgid "_Load XIБ─╕"
+msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ XIБ─╕"
+
+#: soundtracker.glade:782
+msgid "_Save XIБ─╕"
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ XIБ─╕"
+
+#: soundtracker.glade:796
+msgid "_Clear Current"
+msgstr "_п·я┤п╦я│я┌п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╧"
+
+#: soundtracker.glade:811
+msgid "_Delete Unused Instruments"
+msgstr "_пёп╢п╟п╩п╦я┌я▄ п╫п╣п╦я│п©п╬п╩я▄п╥я┐п╣п╪я▀п╣ п╦п╫я│я┌я─я┐п╪п╣п╫я┌я▀"
+
+#: soundtracker.glade:826
+msgid "_Settings"
+msgstr "_п²п╟я│я┌я─п╬п╧п╨п╦"
+
+#: soundtracker.glade:834
+msgid "Display _Oscilloscopes"
+msgstr "_п·я│я├п╦п╩п╩п╬пЁя─п╟я└я▀"
+
+#: soundtracker.glade:842
+msgid "_Tracker"
+msgstr "_п╒я─я█п╨п╣я─"
+
+#: soundtracker.glade:850
+msgid "_Flicker-free Scrolling"
+msgstr "_п÷я─п╬п╨я─я┐я┌п╨п╟ п╠п╣п╥ п╪п╣я─я├п╟п╫п╦я▐"
+
+#: soundtracker.glade:858
+msgid "_Previous Font"
+msgstr "п÷я─п╣п╢_я▀п╢я┐я┴п╦п╧ я┬я─п╦я└я┌"
+
+#: soundtracker.glade:867
+msgid "_Next Font"
+msgstr "п║п╩_п╣п╢я┐я▌я┴п╦п╧ я┬я─п╦я└я┌"
+
+#: soundtracker.glade:881
+msgid "Change Preferred _Accidental Type"
+msgstr "п≤п╥п╪п╣п╫п╦я┌я▄ я┌п╦п© п╥п╫п╟п╨п╬п╡ _п╟п╩я▄я┌п╣я─п╟я├п╦п╦"
+
+#: soundtracker.glade:890
+msgid "Change Effect Column _Editing Direction"
+msgstr "п║п╪п╣п╫п╦я┌я▄ п╫п╟п©я─п╟п╡п╩п╣п╫п╦п╣ _я│п╪п╣я┴п╣п╫п╦я▐ п╨я┐я─я│п╬я─п╟ п╡ п╨п╬п╩п╬п╫п╨п╣ я█я└я└п╣п╨я┌п╟"
+
+#: soundtracker.glade:907
+msgid "_Keyboard ConfigurationБ─╕"
+msgstr "п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ _п╨п╩п╟п╡п╦п╟я┌я┐я─я▀Б─╕"
+
+#: soundtracker.glade:917
+msgid "_Audio ConfigurationБ─╕"
+msgstr "п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ _п╟я┐п╢п╦п╬Б─╕"
+
+#: soundtracker.glade:927
+msgid "_GUI ConfigurationБ─╕"
+msgstr "п п╬п╫я└п╦_пЁя┐я─п╟я├п╦я▐ GUIБ─╕"
+
+#: soundtracker.glade:937
+msgid "_MIDI ConfigurationБ─╕"
+msgstr "п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ _MIDIБ─╕"
+
+#: soundtracker.glade:953
+msgid "_Disable Splash Screen"
+msgstr "п░п╡я┌п╬я│п╬п╨я─я▀я┌п╦п╣ _п╥п╟я│я┌п╟п╡п╨п╦"
+
+#: soundtracker.glade:960
+msgid "_Save Settings Now"
+msgstr "_п║п╬я┘я─п╟п╫п╦я┌я▄ п╫п╟я│я┌я─п╬п╧п╨п╦"
+
+#: soundtracker.glade:971
+msgid "Save Settings on _Exit"
+msgstr "п║п╬я┘я─п╟п╫я▐я┌я▄ п╫п╟я│я┌я─п╬п╧п╨п╦ п©я─п╦ _п╡я▀я┘п╬п╢п╣"
+
+#: soundtracker.glade:983
+msgid "_Help"
+msgstr "_п║п©я─п╟п╡п╨п╟"
+
+#: soundtracker.glade:1005
+msgid "Show _TipsБ─╕"
+msgstr "_п÷п╬п╢я│п╨п╟п╥п╨п╦Б─╕"
+
+#: soundtracker.glade:1014
+msgid "_XM Effects"
+msgstr "_п╜я└я└п╣п╨я┌я▀ XMБ─╕"
+
 #~ msgid "(%d bytes)"
-#~ msgstr "(%d байт)"
+#~ msgstr "(%d п╠п╟п╧я┌)"
 
 #~ msgid "Estimated audio delay: %f microseconds"
-#~ msgstr "Ожидаемая задержка звука: %f микросекунд"
+#~ msgstr "п·п╤п╦п╢п╟п╣п╪п╟я▐ п╥п╟п╢п╣я─п╤п╨п╟ п╥п╡я┐п╨п╟: %f п╪п╦п╨я─п╬я│п╣п╨я┐п╫п╢"
 
 #~ msgid "ALSA card number:"
-#~ msgstr "Номер карты ALSA:"
+#~ msgstr "п²п╬п╪п╣я─ п╨п╟я─я┌я▀ ALSA:"
 
 #~ msgid ""
 #~ "Couldn't open ALSA device for sound input (card:%d, device:%d):\n"
 #~ "%s"
 #~ msgstr ""
-#~ "Невозможно открыть устройство ALSA для ввода звука\n"
-#~ "(карта: %d, устройство: %d):\n"
+#~ "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ я┐я│я┌я─п╬п╧я│я┌п╡п╬ ALSA п╢п╩я▐ п╡п╡п╬п╢п╟ п╥п╡я┐п╨п╟\n"
+#~ "(п╨п╟я─я┌п╟: %d, я┐я│я┌я─п╬п╧я│я┌п╡п╬: %d):\n"
 #~ "%s"
 
 #~ msgid "Required sound output parameters not supported.\n"
-#~ msgstr "Требуемые параметры воспроизведения не поддерживаются.\n"
+#~ msgstr "п╒я─п╣п╠я┐п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀ п╡п╬я│п©я─п╬п╦п╥п╡п╣п╢п╣п╫п╦я▐ п╫п╣ п©п╬п╢п╢п╣я─п╤п╦п╡п╟я▌я┌я│я▐.\n"
 
 #~ msgid ""
 #~ "Couldn't open ALSA device for sound output (card:%d, device:%d):\n"
 #~ "%s"
 #~ msgstr ""
-#~ "Невозможно открыть устройство ALSA для вывода звука\n"
-#~ "(карта: %d, устройство: %d):\n"
+#~ "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ я┐я│я┌я─п╬п╧я│я┌п╡п╬ ALSA п╢п╩я▐ п╡я▀п╡п╬п╢п╟ п╥п╡я┐п╨п╟\n"
+#~ "(п╨п╟я─я┌п╟: %d, я┐я│я┌я─п╬п╧я│я┌п╡п╬: %d):\n"
 #~ "%s"
 
 #~ msgid "Required output-channel parameters not supported.\n"
-#~ msgstr "Требуемые параметры канала воспроизведения не поддерживаются.\n"
+#~ msgstr "п╒я─п╣п╠я┐п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀ п╨п╟п╫п╟п╩п╟ п╡п╬я│п©я─п╬п╦п╥п╡п╣п╢п╣п╫п╦я▐ п╫п╣ п©п╬п╢п╢п╣я─п╤п╦п╡п╟я▌я┌я│я▐.\n"
 
 #~ msgid "Alsa setup error.\n"
-#~ msgstr "Ошибка настройки ALSA.\n"
+#~ msgstr "п·я┬п╦п╠п╨п╟ п╫п╟я│я┌я─п╬п╧п╨п╦ ALSA.\n"
 
 #~ msgid ""
 #~ "Couldn't open %s for sound output:\n"
 #~ "%s"
 #~ msgstr ""
-#~ "Невозможно открыть %s для вывода звука:\n"
+#~ "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ %s п╢п╩я▐ п╡я▀п╡п╬п╢п╟ п╥п╡я┐п╨п╟:\n"
 #~ "%s"
 
 #~ msgid "transport master"
-#~ msgstr "Ведущий"
+#~ msgstr "п▓п╣п╢я┐я┴п╦п╧"
 
 #~ msgid "declick"
-#~ msgstr "Устранение щелчков"
+#~ msgstr "пёя│я┌я─п╟п╫п╣п╫п╦п╣ я┴п╣п╩я┤п╨п╬п╡"
 
 #~ msgid "soundtracker"
 #~ msgstr "soundtracker"
 
 #~ msgid "Save Song"
-#~ msgstr "Сохранить песню"
+#~ msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ п©п╣я│п╫я▌"
 
 #~ msgid "Question"
-#~ msgstr "Вопрос"
+#~ msgstr "п▓п╬п©я─п╬я│"
 
 #~ msgid "Yes"
-#~ msgstr "Да"
+#~ msgstr "п■п╟"
 
 #~ msgid "No"
-#~ msgstr "Нет"
+#~ msgstr "п²п╣я┌"
 
 #~ msgid "Warning"
-#~ msgstr "Предупреждение"
+#~ msgstr "п÷я─п╣п╢я┐п©я─п╣п╤п╢п╣п╫п╦п╣"
 
 #~ msgid "Error!"
-#~ msgstr "Ошибка!"
+#~ msgstr "п·я┬п╦п╠п╨п╟!"
 
 #~ msgid "Close"
-#~ msgstr "Закрыть"
+#~ msgstr "п≈п╟п╨я─я▀я┌я▄"
 
 #~ msgid "No file selected."
-#~ msgstr "Файл не выбран."
+#~ msgstr "п╓п╟п╧п╩ п╫п╣ п╡я▀п╠я─п╟п╫."
 
 #~ msgid "Are you sure you want to overwrite the file?"
-#~ msgstr "Вы уверены, что хотите перезаписать файл?"
+#~ msgstr "п▓я▀ я┐п╡п╣я─п╣п╫я▀, я┤я┌п╬ я┘п╬я┌п╦я┌п╣ п©п╣я─п╣п╥п╟п©п╦я│п╟я┌я▄ я└п╟п╧п╩?"
 
 #~ msgid "Load XM..."
-#~ msgstr "Загрузить XM..."
+#~ msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ XM..."
 
 #~ msgid "Save XM..."
-#~ msgstr "Сохранить XM..."
+#~ msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ XM..."
 
 #~ msgid "Save song as XM..."
-#~ msgstr "Сохранить песню как XM..."
+#~ msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ п©п╣я│п╫я▌ п╨п╟п╨ XM..."
 
 #~ msgid "Load Instrument..."
-#~ msgstr "Загрузить инструмент..."
+#~ msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ п╦п╫я│я┌я─я┐п╪п╣п╫я┌..."
 
 #~ msgid "Save Instrument..."
-#~ msgstr "Сохранить инструмент..."
+#~ msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ п╦п╫я│я┌я─я┐п╪п╣п╫я┌..."
 
 #~ msgid ""
 #~ "The keyboard configuration file is defective.\n"
 #~ "Please use the Keyboard Configuration dialog."
 #~ msgstr ""
-#~ "Файл конфигурации клавиатуры поврежден.\n"
-#~ "Пожалуйста, используйте диалог \"Конфигурация клавиатуры\"."
+#~ "п╓п╟п╧п╩ п╨п╬п╫я└п╦пЁя┐я─п╟я├п╦п╦ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀ п©п╬п╡я─п╣п╤п╢п╣п╫.\n"
+#~ "п÷п╬п╤п╟п╩я┐п╧я│я┌п╟, п╦я│п©п╬п╩я▄п╥я┐п╧я┌п╣ п╢п╦п╟п╩п╬пЁ \"п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀\"."
 
 #~ msgid "Ok"
-#~ msgstr "ОК"
+#~ msgstr "п·п "
 
 #~ msgid "_Open..."
-#~ msgstr "_Открыть..."
+#~ msgstr "_п·я┌п╨я─я▀я┌я▄..."
 
 #~ msgid "Save _as..."
-#~ msgstr "_Сохранить как..."
-
-#~ msgid "Save Module as _WAV..."
-#~ msgstr "Сохранить _модуль как WAV..."
+#~ msgstr "_п║п╬я┘я─п╟п╫п╦я┌я▄ п╨п╟п╨..."
 
 #~ msgid "_Quit"
-#~ msgstr "_Выход"
-
-#~ msgid "Clear _All"
-#~ msgstr "Очистить _все"
-
-#~ msgid "Clear _Patterns Only"
-#~ msgstr "Очистить только _паттерны"
-
-#~ msgid "_Optimize Module"
-#~ msgstr "_Оптимизировать модуль"
+#~ msgstr "_п▓я▀я┘п╬п╢"
 
 #~ msgid "C_ut"
-#~ msgstr "Выр_езать"
+#~ msgstr "п▓я▀я─_п╣п╥п╟я┌я▄"
 
 #~ msgid "_Copy"
-#~ msgstr "_Копировать"
+#~ msgstr "_п п╬п©п╦я─п╬п╡п╟я┌я▄"
 
 #~ msgid "_Paste"
-#~ msgstr "_Вставить"
-
-#~ msgid "_Kill notes"
-#~ msgstr "_Стереть ноты"
-
-#~ msgid "_Insert track"
-#~ msgstr "Вс_тавить трек"
-
-#~ msgid "_Delete track"
-#~ msgstr "_Удалить трек"
-
-#~ msgid "Increment cmd value"
-#~ msgstr "Автоувеличение параметра команды"
-
-#~ msgid "Decrement cmd value"
-#~ msgstr "Автоуменьшение параметра команды"
-
-#~ msgid "_Mark mode"
-#~ msgstr "_Режим выделения"
-
-#~ msgid "C_lear block marks"
-#~ msgstr "С_нять выделение"
-
-#~ msgid "_Interpolate effects"
-#~ msgstr "_Эффекты интерполяции"
-
-#~ msgid "Transpose half-note up"
-#~ msgstr "Транспонировать на полтона вверх"
-
-#~ msgid "Transpose half-note down"
-#~ msgstr "Транспонировать на полтона вниз"
-
-#~ msgid "Transpose octave up"
-#~ msgstr "Транспонировать на октаву вверх"
-
-#~ msgid "Transpose octave down"
-#~ msgstr "Транспонировать на октаву вниз"
+#~ msgstr "_п▓я│я┌п╟п╡п╦я┌я▄"
 
 #~ msgid "P_aste"
-#~ msgstr "В_ставить"
-
-#~ msgid "_Jazz Edit Mode"
-#~ msgstr "Режим редактирования _Jazz"
-
-#~ msgid "_Record keyreleases"
-#~ msgstr "_Записывать отпускания клавиш"
-
-#~ msgid "Transp_osition..."
-#~ msgstr "_Транспозиция"
-
-#~ msgid "_Pattern"
-#~ msgstr "П_аттерн"
-
-#~ msgid "_Track"
-#~ msgstr "Тр_эк"
-
-#~ msgid "_Selection"
-#~ msgstr "_Выделение"
-
-#~ msgid "_Find Unused Pattern"
-#~ msgstr "_Найти свободный паттерн"
-
-#~ msgid "_Copy Current to Unused Pattern"
-#~ msgstr "_Копировать текущий паттерн в свободный"
-
-#~ msgid "C_lear Unused Patterns"
-#~ msgstr "_Очистить свободные паттерны"
-
-#~ msgid "_Pack Patterns"
-#~ msgstr "_Упаковать паттерны"
-
-#~ msgid "_Save Current Pattern"
-#~ msgstr "_Сохранить текущий паттерн"
-
-#~ msgid "L_oad Pattern"
-#~ msgstr "_Загрузить паттерн"
-
-#~ msgid "Sh_rink Current Pattern"
-#~ msgstr "С_жать текущий паттерн"
-
-#~ msgid "_Expand Current Pattern"
-#~ msgstr "Р_астянуть текущий паттерн"
-
-#~ msgid "_Toggle Current Channel Permanentness"
-#~ msgstr "Изменить состояние _перманентности канала"
-
-#~ msgid "Toggle _All Channels Permanentness"
-#~ msgstr "Изменить состояние перманентности _всех каналов"
+#~ msgstr "п▓_я│я┌п╟п╡п╦я┌я▄"
 
 #~ msgid "_Load XI..."
-#~ msgstr "_Загрузить XI..."
+#~ msgstr "_п≈п╟пЁя─я┐п╥п╦я┌я▄ XI..."
 
 #~ msgid "_Save XI..."
-#~ msgstr "_Сохранить XI..."
-
-#~ msgid "_Clear Current"
-#~ msgstr "_Очистить текущий"
-
-#~ msgid "_Delete Unused Instruments"
-#~ msgstr "_Удалить неиспользуемые инструменты"
-
-#~ msgid "_Flicker-free scrolling"
-#~ msgstr "_Прокрутка без мерцания"
-
-#~ msgid "_Previous font"
-#~ msgstr "Пред_ыдущий шрифт"
-
-#~ msgid "_Next font"
-#~ msgstr "Сл_едующий шрифт"
-
-#~ msgid "Change preferred _accidental type"
-#~ msgstr "Изменить тип знаков _альтерации"
+#~ msgstr "_п║п╬я┘я─п╟п╫п╦я┌я▄ XI..."
 
 #~ msgid "Change effect column editing _direction"
-#~ msgstr "Измен. напр. _смещения в колонке эффекта"
-
-#~ msgid "Display _Oscilloscopes"
-#~ msgstr "_Осциллографы"
-
-#~ msgid "_Tracker"
-#~ msgstr "_Трэкер"
+#~ msgstr "п≤п╥п╪п╣п╫. п╫п╟п©я─. _я│п╪п╣я┴п╣п╫п╦я▐ п╡ п╨п╬п╩п╬п╫п╨п╣ я█я└я└п╣п╨я┌п╟"
 
 #~ msgid "_Keyboard Configuration..."
-#~ msgstr "_Конфигурация клавиатуры..."
+#~ msgstr "_п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀..."
 
 #~ msgid "_Audio Configuration..."
-#~ msgstr "Конфигурация _аудио..."
+#~ msgstr "п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ _п╟я┐п╢п╦п╬..."
 
 #~ msgid "_GUI Configuration..."
-#~ msgstr "Кон_фигурация GUI..."
+#~ msgstr "п п╬п╫_я└п╦пЁя┐я─п╟я├п╦я▐ GUI..."
 
 #~ msgid "_MIDI Configuration..."
-#~ msgstr "Кон_фигурация MIDI..."
-
-#~ msgid "Disable splash screen"
-#~ msgstr "Автосокрытие заставки"
-
-#~ msgid "_Save Settings now"
-#~ msgstr "_Сохранить настройки"
-
-#~ msgid "Save Settings on _Exit"
-#~ msgstr "Сохранять настройки при _выходе"
+#~ msgstr "п п╬п╫_я└п╦пЁя┐я─п╟я├п╦я▐ MIDI..."
 
 #~ msgid "_About..."
-#~ msgstr "_О программе..."
-
-#~ msgid "Show _Tips..."
-#~ msgstr "_Подсказки..."
-
-#~ msgid "_XM Effects..."
-#~ msgstr "_Эффекты XM..."
-
-#~ msgid "_File"
-#~ msgstr "_Файл"
-
-#~ msgid "_Module"
-#~ msgstr "_Модуль"
-
-#~ msgid "_Edit"
-#~ msgstr "_Правка"
-
-#~ msgid "_Instrument"
-#~ msgstr "_Инструмент"
-
-#~ msgid "_Settings"
-#~ msgstr "_Настройки"
-
-#~ msgid "_Help"
-#~ msgstr "_Справка"
+#~ msgstr "_п· п©я─п╬пЁя─п╟п╪п╪п╣..."
 
 #~ msgid ""
 #~ "A directory called '.soundtracker2' has been created in your\n"
 #~ "home directory to store configuration files.\n"
 #~ msgstr ""
-#~ "Каталог под названием '.soundtracker2' создан в вашем домашнем\n"
-#~ "каталоге для хранения файлов конфигурации.\n"
+#~ "п п╟я┌п╟п╩п╬пЁ п©п╬п╢ п╫п╟п╥п╡п╟п╫п╦п╣п╪ '.soundtracker2' я│п╬п╥п╢п╟п╫ п╡ п╡п╟я┬п╣п╪ п╢п╬п╪п╟я┬п╫п╣п╪\n"
+#~ "п╨п╟я┌п╟п╩п╬пЁп╣ п╢п╩я▐ я┘я─п╟п╫п╣п╫п╦я▐ я└п╟п╧п╩п╬п╡ п╨п╬п╫я└п╦пЁя┐я─п╟я├п╦п╦.\n"
 
 #~ msgid "Load Sample..."
-#~ msgstr "Загрузить сэмпл..."
+#~ msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ я│я█п╪п©п╩..."
 
 #~ msgid "Save WAV..."
-#~ msgstr "Сохранить WAV..."
+#~ msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ WAV..."
 
 #~ msgid "8363"
 #~ msgstr "8363"
 
 #~ msgid "Execute"
-#~ msgstr "Выполнить"
+#~ msgstr "п▓я▀п©п╬п╩п╫п╦я┌я▄"
 
 #~ msgid "Apply"
-#~ msgstr "Применить"
+#~ msgstr "п÷я─п╦п╪п╣п╫п╦я┌я▄"

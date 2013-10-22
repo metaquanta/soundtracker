@@ -29,11 +29,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: soundtracker 0.6.8\n"
 "Report-Msgid-Bugs-To: soundtracker-discuss@soundtracker.org\n"
-"POT-Creation-Date: 2013-10-13 23:27+0400\n"
-"PO-Revision-Date: 2013-10-13 23:27+0400\n"
+"POT-Creation-Date: 2013-10-23 01:06+0400\n"
+"PO-Revision-Date: 2013-10-23 01:06+0400\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: en\n"
+"Language: en@quot\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -58,27 +58,27 @@ msgstr "Editing Output"
 msgid "Sampling"
 msgstr "Sampling"
 
-#: app/audioconfig.c:188
+#: app/audioconfig.c:192
 msgid "Driver Module"
 msgstr "Driver Module"
 
-#: app/audioconfig.c:241
+#: app/audioconfig.c:245
 msgid "Mixer Module"
 msgstr "Mixer Module"
 
-#: app/audioconfig.c:242 app/drivers/alsa1x.c:734
+#: app/audioconfig.c:246 app/drivers/alsa1x.c:734
 msgid "Description"
 msgstr "Description"
 
-#: app/audioconfig.c:249
+#: app/audioconfig.c:253
 msgid "Audio Configuration"
 msgstr "Audio Configuration"
 
-#: app/audioconfig.c:269
+#: app/audioconfig.c:273
 msgid "File output"
 msgstr "File output"
 
-#: app/audioconfig.c:277
+#: app/audioconfig.c:281
 msgid "Mixers"
 msgstr "Mixers"
 
@@ -1401,8 +1401,8 @@ msgid "Load Sample"
 msgstr "Load Sample"
 
 #: app/sample-editor.c:405
-msgid "Load sample into the current samle slot"
-msgstr "Load sample into the current samle slot"
+msgid "Load sample into the current sample slot"
+msgstr "Load sample into the current sample slot"
 
 #: app/sample-editor.c:406
 msgid "Save Sample"
@@ -1984,7 +1984,7 @@ msgstr "Major lines highlighting"
 msgid "Minor lines highlighting"
 msgstr "Minor lines highlighting"
 
-#: app/tracker.c:92
+#: app/tracker.c:92 soundtracker.glade:142
 msgid "Selection"
 msgstr "Selection"
 
@@ -2360,3 +2360,247 @@ msgstr "error subscribing sequencer port (%s)\n"
 #, c-format
 msgid "error closing handle (%s)\n"
 msgstr "error closing handle (%s)\n"
+
+#: soundtracker.glade:10
+msgid "Pattern"
+msgstr "Pattern"
+
+#: soundtracker.glade:49
+msgid "Track"
+msgstr "Track"
+
+#: soundtracker.glade:88 soundtracker.glade:501
+msgid "_Kill notes"
+msgstr "_Kill notes"
+
+#: soundtracker.glade:104 soundtracker.glade:518
+msgid "_Insert track"
+msgstr "_Insert track"
+
+#: soundtracker.glade:112 soundtracker.glade:526
+msgid "_Delete track"
+msgstr "_Delete track"
+
+#: soundtracker.glade:125 soundtracker.glade:539
+msgid "Increment cmd value"
+msgstr "Increment cmd value"
+
+#: soundtracker.glade:131 soundtracker.glade:546
+msgid "Decrement cmd value"
+msgstr "Decrement cmd value"
+
+#: soundtracker.glade:150 soundtracker.glade:575
+msgid "C_lear block marks"
+msgstr "C_lear block marks"
+
+#: soundtracker.glade:185 soundtracker.glade:589
+msgid "_Interpolate effects"
+msgstr "_Interpolate effects"
+
+#: soundtracker.glade:219
+msgid "_File"
+msgstr "_File"
+
+#: soundtracker.glade:261
+msgid "Save Module as _WAV…"
+msgstr "Save Module as _WAV…"
+
+#: soundtracker.glade:270
+msgid "Save _XM without samples…"
+msgstr "Save _XM without samples…"
+
+#: soundtracker.glade:299
+msgid "_Module"
+msgstr "_Module"
+
+#: soundtracker.glade:306
+msgid "Clear _All"
+msgstr "Clear _All"
+
+#: soundtracker.glade:315
+msgid "Clear _Patterns Only"
+msgstr "Clear _Patterns Only"
+
+#: soundtracker.glade:330
+msgid "_Optimize Module"
+msgstr "_Optimize Module"
+
+#: soundtracker.glade:342
+msgid "_Edit"
+msgstr "_Edit"
+
+#: soundtracker.glade:382
+msgid "_Jazz edit mode"
+msgstr "_Jazz edit mode"
+
+#: soundtracker.glade:391
+msgid "_Record keyreleases"
+msgstr "_Record keyreleases"
+
+#: soundtracker.glade:404
+msgid "Transp_osition…"
+msgstr "Transp_osition…"
+
+#: soundtracker.glade:417 soundtracker.glade:643
+msgid "_Pattern"
+msgstr "_Pattern"
+
+#: soundtracker.glade:459 soundtracker.glade:738
+msgid "_Track"
+msgstr "_Track"
+
+#: soundtracker.glade:558
+msgid "_Selection"
+msgstr "_Selection"
+
+#: soundtracker.glade:566
+msgid "_Mark mode"
+msgstr "_Mark mode"
+
+#: soundtracker.glade:603
+msgid "Transpose half-note up"
+msgstr "Transpose half-note up"
+
+#: soundtracker.glade:611
+msgid "Transpose half-note down"
+msgstr "Transpose half-note down"
+
+#: soundtracker.glade:619
+msgid "Transpose octave up"
+msgstr "Transpose octave up"
+
+#: soundtracker.glade:627
+msgid "Transpose octave down"
+msgstr "Transpose octave down"
+
+#: soundtracker.glade:650
+msgid "_Load Pattern…"
+msgstr "_Load Pattern…"
+
+#: soundtracker.glade:659
+msgid "_Save Current Pattern…"
+msgstr "_Save Current Pattern…"
+
+#: soundtracker.glade:674
+msgid "_Find Unused Pattern"
+msgstr "_Find Unused Pattern"
+
+#: soundtracker.glade:683
+msgid "_Copy Current to Unused Pattern"
+msgstr "_Copy Current to Unused Pattern"
+
+#: soundtracker.glade:697
+msgid "C_lear Unused Patterns"
+msgstr "C_lear Unused Patterns"
+
+#: soundtracker.glade:705
+msgid "_Pack Patterns"
+msgstr "_Pack Patterns"
+
+#: soundtracker.glade:718
+msgid "S_hrink Current Pattern"
+msgstr "S_hrink Current Pattern"
+
+#: soundtracker.glade:726
+msgid "_Expand Current Pattern"
+msgstr "_Expand Current Pattern"
+
+#: soundtracker.glade:746
+msgid "_Toggle Current Track Permanentness"
+msgstr "_Toggle Current Track Permanentness"
+
+#: soundtracker.glade:754
+msgid "Toggle _All Tracks Permanentness"
+msgstr "Toggle _All Tracks Permanentness"
+
+#: soundtracker.glade:766
+msgid "_Instrument"
+msgstr "_Instrument"
+
+#: soundtracker.glade:773
+msgid "_Load XI…"
+msgstr "_Load XI…"
+
+#: soundtracker.glade:782
+msgid "_Save XI…"
+msgstr "_Save XI…"
+
+#: soundtracker.glade:796
+msgid "_Clear Current"
+msgstr "_Clear Current"
+
+#: soundtracker.glade:811
+msgid "_Delete Unused Instruments"
+msgstr "_Delete Unused Instruments"
+
+#: soundtracker.glade:826
+msgid "_Settings"
+msgstr "_Settings"
+
+#: soundtracker.glade:834
+msgid "Display _Oscilloscopes"
+msgstr "Display _Oscilloscopes"
+
+#: soundtracker.glade:842
+msgid "_Tracker"
+msgstr "_Tracker"
+
+#: soundtracker.glade:850
+msgid "_Flicker-free Scrolling"
+msgstr "_Flicker-free Scrolling"
+
+#: soundtracker.glade:858
+msgid "_Previous Font"
+msgstr "_Previous Font"
+
+#: soundtracker.glade:867
+msgid "_Next Font"
+msgstr "_Next Font"
+
+#: soundtracker.glade:881
+msgid "Change Preferred _Accidental Type"
+msgstr "Change Preferred _Accidental Type"
+
+#: soundtracker.glade:890
+msgid "Change Effect Column _Editing Direction"
+msgstr "Change Effect Column _Editing Direction"
+
+#: soundtracker.glade:907
+msgid "_Keyboard Configuration…"
+msgstr "_Keyboard Configuration…"
+
+#: soundtracker.glade:917
+msgid "_Audio Configuration…"
+msgstr "_Audio Configuration…"
+
+#: soundtracker.glade:927
+msgid "_GUI Configuration…"
+msgstr "_GUI Configuration…"
+
+#: soundtracker.glade:937
+msgid "_MIDI Configuration…"
+msgstr "_MIDI Configuration…"
+
+#: soundtracker.glade:953
+msgid "_Disable Splash Screen"
+msgstr "_Disable Splash Screen"
+
+#: soundtracker.glade:960
+msgid "_Save Settings Now"
+msgstr "_Save Settings Now"
+
+#: soundtracker.glade:971
+msgid "Save Settings on _Exit"
+msgstr "Save Settings on _Exit"
+
+#: soundtracker.glade:983
+msgid "_Help"
+msgstr "_Help"
+
+#: soundtracker.glade:1005
+msgid "Show _Tips…"
+msgstr "Show _Tips…"
+
+#: soundtracker.glade:1014
+msgid "_XM Effects"
+msgstr "_XM Effects"

@@ -42,3 +42,5 @@ app/xm-player.c
 app/xm.c
 app/midi-settings-09x.c
 app/midi-09x.c
+soundtracker.glade
+envelope-box.glade
