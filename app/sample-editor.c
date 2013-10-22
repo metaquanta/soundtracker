@@ -402,7 +402,7 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
 
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
-    file_selection_create(DIALOG_LOAD_SAMPLE, _("Load Sample"), gui_settings.loadsmpl_path, sample_editor_load_wav, 3, TRUE, FALSE, TRUE, in_f, N_("Load sample into the current samle slot"));
+    file_selection_create(DIALOG_LOAD_SAMPLE, _("Load Sample"), gui_settings.loadsmpl_path, sample_editor_load_wav, 3, TRUE, FALSE, TRUE, in_f, N_("Load sample into the current sample slot"));
     file_selection_create(DIALOG_SAVE_SAMPLE, _("Save Sample"), gui_settings.savesmpl_path, sample_editor_save_wav, 4, FALSE, TRUE, TRUE, out_f, N_("Save the current sample"));
     file_selection_create(DIALOG_SAVE_RGN_SAMPLE, _("Save region as WAV..."), gui_settings.savesmpl_path, sample_editor_save_region_wav, -1, FALSE, TRUE, FALSE, out_f, NULL);
 #endif
