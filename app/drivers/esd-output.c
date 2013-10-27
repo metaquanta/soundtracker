@@ -227,19 +227,21 @@ esd_savesettings (void *dp,
     return TRUE;
 }
 
-st_io_driver driver_out_esd = {
-    { "ESD Output",
+st_driver driver_out_esd = {
+    "ESD Output",
 
-      esd_new,
-      esd_destroy,
+    esd_new,
+    esd_destroy,
 
-      esd_open,
-      esd_release,
+    esd_open,
+    esd_release,
 
-      esd_getwidget,
-      esd_loadsettings,
-      esd_savesettings,
-    },
+    esd_getwidget,
+    esd_loadsettings,
+    esd_savesettings,
+
+    NULL,
+    NULL,
 
     esd_get_play_time,
     esd_get_play_rate

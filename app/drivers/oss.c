@@ -591,37 +591,41 @@ oss_savesettings (void *dp,
     return TRUE;
 }
 
-st_io_driver driver_out_oss = {
-    { "OSS Output",
+st_driver driver_out_oss = {
+    "OSS Output",
 
-      oss_new_playback,
-      oss_destroy,
+    oss_new_playback,
+    oss_destroy,
 
-      oss_open,
-      oss_release,
+    oss_open,
+    oss_release,
 
-      oss_getwidget,
-      oss_loadsettings,
-      oss_savesettings,
-    },
+    oss_getwidget,
+    oss_loadsettings,
+    oss_savesettings,
+
+	NULL,
+	NULL,
 
     oss_get_play_time,
     oss_get_play_rate
 };
 
-st_io_driver driver_in_oss = {
-    { "OSS Input",
+st_driver driver_in_oss = {
+    "OSS Input",
 
-      oss_new_sampling,
-      oss_destroy,
+    oss_new_sampling,
+    oss_destroy,
 
-      oss_open,
-      oss_release,
+    oss_open,
+    oss_release,
 
-      oss_getwidget,
-      oss_loadsettings,
-      oss_savesettings,
-    },
+    oss_getwidget,
+    oss_loadsettings,
+    oss_savesettings,
+
+    NULL,
+    NULL,
 
     oss_get_play_time,
     oss_get_play_rate

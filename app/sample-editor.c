@@ -132,7 +132,7 @@ static gboolean libaf2 = TRUE;
 static SampleDisplay *monitorscope;
 static GtkWidget *cancelbutton, *okbutton, *startsamplingbutton;
 
-st_io_driver *sampling_driver = NULL;
+st_driver *sampling_driver = NULL;
 void *sampling_driver_object = NULL;
 
 static GtkWidget *samplingwindow = NULL;
@@ -2046,7 +2046,7 @@ sample_editor_monitor_clicked (void)
 	rate = 44100;
 	format = ST_MIXER_FORMAT_S16_LE;
 
-	if(!sampling_driver->common.open(sampling_driver_object)) {
+	if(!sampling_driver->open(sampling_driver_object)) {
 		sample_editor_stop_sampling();
 		gui_error_dialog(N_("Sampling failed!"));
 	}
@@ -2100,7 +2100,7 @@ sample_editor_stop_sampling (void)
 	return TRUE;
     }
 
-    sampling_driver->common.release(sampling_driver_object);
+    sampling_driver->release(sampling_driver_object);
 
     gtk_widget_hide(samplingwindow);
 
@@ -2127,7 +2127,7 @@ sample_editor_ok_clicked (void)
     guint multiply, mode = 0;
     gboolean stereo = format & ST_MIXER_FORMAT_STEREO;
 
-    sampling_driver->common.release(sampling_driver_object);
+    sampling_driver->release(sampling_driver_object);
     gtk_widget_hide(samplingwindow);
 
     g_return_if_fail(current_sample != NULL);

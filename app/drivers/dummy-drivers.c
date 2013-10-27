@@ -80,29 +80,45 @@ dummy_open (void *dp)
     return FALSE;
 }
 
-st_io_driver driver_out_dummy = {
-    { "No Output",
+st_driver driver_out_dummy = {
+    "No Output",
 
-      dummy_new,
-      dummy_destroy,
+    dummy_new,
+    dummy_destroy,
 
-      dummy_open,
-      dummy_release,
+    dummy_open,
+    dummy_release,
 
-      dummy_getwidget,
-    },
+    dummy_getwidget,
+
+    NULL,
+    NULL,
+
+    NULL,
+    NULL,
+
+    NULL,
+    NULL,
 };
 
-st_io_driver driver_in_dummy = {
-    { "No Input",
+st_driver driver_in_dummy = {
+    "No Input",
 
-      dummy_new,
-      dummy_destroy,
+    dummy_new,
+    dummy_destroy,
 
-      dummy_open,
-      dummy_release,
+    dummy_open,
+    dummy_release,
 
-      dummy_getwidget,
-    },
+    dummy_getwidget,
+
+    NULL,
+    NULL,
+
+    NULL,
+    NULL,
+
+    NULL,
+    NULL,
 };
 

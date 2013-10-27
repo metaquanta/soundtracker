@@ -182,19 +182,21 @@ sdl_savesettings (void *dp,
     return TRUE;
 }
 
-st_io_driver driver_out_sdl = {
-    { "SDL Output",
+st_driver driver_out_sdl = {
+    "SDL Output",
 
-      sdl_new,
-      sdl_destroy,
+    sdl_new,
+    sdl_destroy,
 
-      sdl_open,
-      sdl_release,
+    sdl_open,
+    sdl_release,
 
-      sdl_getwidget,
-      sdl_loadsettings,
-      sdl_savesettings,
-    },
+    sdl_getwidget,
+    sdl_loadsettings,
+    sdl_savesettings,
+
+    NULL,
+    NULL,
 
     sdl_get_play_time,
     sdl_get_play_rate

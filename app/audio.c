@@ -53,12 +53,12 @@
 #include "gui-subs.h"
 #include "tracer.h"
 
-extern st_io_driver driver_out_file;
+extern st_driver driver_out_file;
 
 st_mixer *mixer = NULL;
-st_io_driver *playback_driver = NULL;
-st_io_driver *editing_driver = NULL;
-st_io_driver *current_driver = NULL;
+st_driver *playback_driver = NULL;
+st_driver *editing_driver = NULL;
+st_driver *current_driver = NULL;
 void *playback_driver_object = NULL;
 void *editing_driver_object = NULL;
 void *current_driver_object = NULL;
@@ -189,7 +189,7 @@ audio_ctlpipe_play_song (int songpos,
     g_assert(xm != NULL);
     g_assert(!playing);
 
-    if(playback_driver->common.open(playback_driver_object)) {
+    if(playback_driver->open(playback_driver_object)) {
 	current_driver_object = playback_driver_object;
 	current_driver = playback_driver;
 	audio_prepare_for_playing();
@@ -234,7 +234,7 @@ audio_ctlpipe_render_song_to_file (gchar *filename)
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
     *((gchar**)file_driver_object) = filename;
 
-    if(driver_out_file.common.open(file_driver_object)) {
+    if(driver_out_file.open(file_driver_object)) {
 	current_driver_object = file_driver_object;
 	current_driver = &driver_out_file;
 	audio_prepare_for_playing();
@@ -253,21 +253,21 @@ audio_ctlpipe_render_song_to_file (gchar *filename)
 GtkWidget*
 audio_file_output_getwidget (void)
 {
-	return driver_out_file.common.getwidget(file_driver_object);
+	return driver_out_file.getwidget(file_driver_object);
 }
 
 void
 audio_file_output_load_config (void)
 {
-	file_driver_object = driver_out_file.common.new();
-	driver_out_file.common.loadsettings(file_driver_object, "file-output");
+	file_driver_object = driver_out_file.new();
+	driver_out_file.loadsettings(file_driver_object, "file-output");
 }
 
 void
 audio_file_output_shutdown (void)
 {
     if(file_driver_object != NULL) {
-	driver_out_file.common.destroy(file_driver_object);
+	driver_out_file.destroy(file_driver_object);
 	file_driver_object = NULL;
     }
 }
@@ -276,7 +276,7 @@ void
 audio_file_output_save_config (void)
 {
     if(file_driver_object != NULL) {
-	driver_out_file.common.savesettings(file_driver_object, "file-output");
+	driver_out_file.savesettings(file_driver_object, "file-output");
     }
 }
 #endif
@@ -294,7 +294,7 @@ audio_ctlpipe_play_pattern (int pattern,
     g_assert(!playing);
 
     if(only1row) {
-	if(editing_driver->common.open(editing_driver_object)) {
+	if(editing_driver->open(editing_driver_object)) {
 	    current_driver_object = editing_driver_object;
 	    current_driver = editing_driver;
 	    audio_prepare_for_playing();
@@ -304,7 +304,7 @@ audio_ctlpipe_play_pattern (int pattern,
 	    a = AUDIO_BACKPIPE_DRIVER_OPEN_FAILED;
 	}
     } else {
-	if(playback_driver->common.open(playback_driver_object)) {
+	if(playback_driver->open(playback_driver_object)) {
 	    current_driver_object = playback_driver_object;
 	    current_driver = playback_driver;
 	    audio_prepare_for_playing();
@@ -327,7 +327,7 @@ audio_ctlpipe_play_note (int channel,
     audio_backpipe_id a = AUDIO_BACKPIPE_PLAYING_NOTE_STARTED;
 
     if(!playing) {
-	if(editing_driver->common.open(editing_driver_object)) {
+	if(editing_driver->open(editing_driver_object)) {
 	    current_driver_object = editing_driver_object;
 	    current_driver = editing_driver;
 	    audio_prepare_for_playing();
@@ -355,7 +355,7 @@ audio_ctlpipe_play_note_full (int channel,
     audio_backpipe_id a = AUDIO_BACKPIPE_PLAYING_NOTE_STARTED;
 
     if(!playing) {
-	if(editing_driver->common.open(editing_driver_object)) {
+	if(editing_driver->open(editing_driver_object)) {
 	    current_driver_object = editing_driver_object;
 	    current_driver = editing_driver;
 	    audio_prepare_for_playing();
@@ -389,7 +389,7 @@ audio_ctlpipe_stop_playing (void)
 
     if(playing == 1) {
 	xmplayer_stop();
-	current_driver->common.release(current_driver_object);
+	current_driver->release(current_driver_object);
 	current_driver = NULL;
 	current_driver_object = NULL;
 	playing = 0;

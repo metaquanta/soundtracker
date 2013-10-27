@@ -231,17 +231,22 @@ irix_get_play_rate (void *d)
     return 48000;
 }
 
-st_io_driver driver_out_irix = {
-    { "IRIX Output",
+st_driver driver_out_irix = {
+    "IRIX Output",
 
-      irix_new,
-      irix_destroy,
+    irix_new,
+    irix_destroy,
 
-      irix_open,
-      irix_release,
+    irix_open,
+    irix_release,
 
-      irix_getwidget,
-    },
+    irix_getwidget,
+
+    NULL,
+    NULL,
+
+    NULL,
+    NULL,
 
     irix_get_play_time,
     irix_get_play_rate

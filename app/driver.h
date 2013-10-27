@@ -51,6 +51,16 @@ typedef struct st_driver {
     // save configuration to specified preferences section
     // can use get/put the functions from preferences.h
     gboolean    (*savesettings)  (void *d, const gchar *section);
+
+    // activate the driver when it becomes the current one
+    void        (*activate)      (void *d);
+
+    // deactivate the driver
+    void        (*deactivate)    (void *d);
+
+    // get time offset since first sound output
+    double   (*get_play_time) (void *d);
+    int      (*get_play_rate) (void *d);
 } st_driver;
 
 #endif /* _ST_DRIVER_H */

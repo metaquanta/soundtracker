@@ -54,7 +54,7 @@ typedef struct audio_object {
     const char *shorttitle;
     int type;
     void **driver_object;
-    st_io_driver **driver;
+    st_driver **driver;
     GtkWidget *drivernbook;
 } audio_object;
 
@@ -87,30 +87,18 @@ static audio_object audio_objects[] = {
 static void ***audio_driver_objects[NUM_AUDIO_OBJECTS];
 
 static void
-audioconfig_driver_load_config (audio_object *ao)
-{
-    st_io_driver *d = *ao->driver;
-    char buf[256];
-
-    if(d->common.loadsettings) {
-	g_sprintf(buf, "audio-object-%s", ao->shorttitle);
-	d->common.loadsettings(*ao->driver_object, buf);
-    }
-}
-
-static void
 audioconfig_list_select (GtkTreeSelection *sel, guint page)
 {
     GtkTreeModel *mdl;
     GtkTreeIter iter;
     gchar *str;
-    
+
     if(gtk_tree_selection_get_selected(sel, &mdl, &iter)) {
 
 	guint row = atoi(str = gtk_tree_model_get_string_from_iter(mdl, &iter));
 	audio_object *object = &audio_objects[page];
-	st_io_driver *old_driver = *object->driver;
-	st_io_driver *new_driver = g_list_nth_data(drivers[object->type], row);
+	st_driver *old_driver = *object->driver;
+	st_driver *new_driver = g_list_nth_data(drivers[object->type], row);
 
 	g_free(str);
 
@@ -120,8 +108,12 @@ audioconfig_list_select (GtkTreeSelection *sel, guint page)
 	    gui_play_stop();
 
 	    // get new driver object
+	    if(old_driver->deactivate)//!!! TODO check correct deactivation when JACK is only/the first
+	        old_driver->deactivate(object->driver_object);
 	    *object->driver_object = audio_driver_objects[page][row];
 	    *object->driver = new_driver;
+	    if(new_driver->activate)
+	        new_driver->activate(object->driver_object);
 	}
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(object->drivernbook), row);
     }
@@ -204,13 +196,16 @@ audioconfig_notebook_add_page (GtkNotebook *nbook, guint n)
     gtk_box_pack_start(GTK_BOX(box1), dnbook, TRUE, TRUE, 0);
 
     for(i = 0, l = drivers[audio_objects[n].type]; l; i++, l = l->next) {
-	st_io_driver *driver = l->data;
+	st_driver *driver = l->data;
 	gtk_list_store_append(list_store, &iter);
 	gtk_list_store_set(list_store, &iter, 0, *((gchar **)l->data), -1);
 
-	if(driver == *audio_objects[n].driver)
+	if(driver == *audio_objects[n].driver) {
 	    active = i;
-	widget = driver->common.getwidget(audio_driver_objects[n][i]);
+	    if(driver->activate)
+			driver->activate(audio_driver_objects[n][i]);
+	}
+	widget = driver->getwidget(audio_driver_objects[n][i]);
 	alignment = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
 	gtk_container_add(GTK_CONTAINER(alignment), widget);
 	gtk_notebook_append_page(GTK_NOTEBOOK(dnbook), alignment, NULL);
@@ -220,6 +215,8 @@ audioconfig_notebook_add_page (GtkNotebook *nbook, guint n)
     gui_list_handle_selection(list, G_CALLBACK(audioconfig_list_select), (gpointer)n);
     if(active != -1) {
 	gui_list_select(list, active, FALSE, 0.0);
+    } else { /* Just call "activate" method of the first driver in the list */
+		//!!! TODO
     }
 
     label = gtk_label_new(gettext(audio_objects[n].title));
@@ -296,9 +293,7 @@ audioconfig_load_config (void)
     GList *l;
     guint i, n[NUM_AUDIO_OBJECTS];
 
-    for(i = 0; i < NUM_AUDIO_OBJECTS; i++)
-	n[i] = 0;
-
+    memset(n, 0, sizeof(n));
 	for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
 		guint j;
 
@@ -316,27 +311,33 @@ audioconfig_load_config (void)
 
     for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
 	guint j;
-	st_io_driver *d = *audio_objects[i].driver;
+	char buf[256];
+	st_driver *d = *audio_objects[i].driver;
 
+	g_sprintf(buf, "audio-object-%s", audio_objects[i].shorttitle);
 	audio_driver_objects[i] = g_new(void**,
 					  g_list_length(drivers[audio_objects[i].type]));
 	for(j = 0, l = drivers[audio_objects[i].type]; l; j++, l = l->next) {
-	    st_io_driver *driver = l->data;
-	    audio_driver_objects[i][j] = driver->common.new();
+		st_driver *driver = l->data;
+		// create driver instance
+		void *a_d_o = audio_driver_objects[i][j] = driver->new();
+
+		if(driver->loadsettings)
+			driver->loadsettings(a_d_o, buf);
 	}
 
 	if(!d) {
-	    // set default driver if none has been configured
+	    // set the first driver as current if none has been configured
 	    if(drivers[audio_objects[i].type] != NULL) {
 		d = *audio_objects[i].driver = drivers[audio_objects[i].type]->data;
 	    }
 	}
 
-	if(d) {
-	    // create driver instance
-	    *audio_objects[i].driver_object = audio_driver_objects[i][n[i]];
-	    audioconfig_driver_load_config(&audio_objects[i]);
-	}
+	// set the current driver's object and activate it if required
+	if(d)
+		*audio_objects[i].driver_object = audio_driver_objects[i][n[i]];
+		if(d->activate)
+			d->activate(audio_driver_objects[i][n[i]]);
     }
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
     audio_file_output_load_config();
@@ -370,21 +371,24 @@ void
 audioconfig_save_config (void)
 {
     char buf[256];
-    int i;
+    guint i, j;
+    GList *l;
 
     // Write the driver module names
     for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
 	prefs_put_string("audio-objects", audio_objects[i].shorttitle,
-			 ((st_driver*)*(audio_objects[i].driver))->name);
+			(*audio_objects[i].driver)->name);
     }
 
-    /* Write the driver module's configurations in extra files */
-    for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
-	gboolean (*savesettings)(void *, const gchar *) = ((st_driver*)*(audio_objects[i].driver))->savesettings;
+    /* Write the driver module's configurations */
+	for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
+		g_sprintf(buf, "audio-object-%s", audio_objects[i].shorttitle);
+		for(j = 0, l = drivers[audio_objects[i].type]; l; l = l->next, j++) {
+			st_driver *driver = l->data;
+			gboolean (*savesettings)(void *, const gchar *) = driver->savesettings;
 
-		if(savesettings) {
-			g_sprintf(buf, "audio-object-%s", audio_objects[i].shorttitle);
-			savesettings(*audio_objects[i].driver_object, buf);
+		if(savesettings)
+			savesettings(audio_driver_objects[i][j], buf);
 		}
 	}
 
@@ -400,12 +404,19 @@ audioconfig_shutdown (void)
     GList *l;
     guint i;
 
+	if(playback_driver->deactivate)
+		playback_driver->deactivate(playback_driver_object);
+	if(editing_driver->deactivate)
+		editing_driver->deactivate(editing_driver_object);
+	if(sampling_driver->deactivate)
+		sampling_driver->deactivate(sampling_driver_object);
+
     for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
 	guint j;
 
 	for(j = 0, l = drivers[audio_objects[i].type]; l; j++, l = l->next) {
-	    st_io_driver *driver = l->data;
-	    driver->common.destroy(audio_driver_objects[i][j]);
+	    st_driver *driver = l->data;
+	    driver->destroy(audio_driver_objects[i][j]);
 	}
     }
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)

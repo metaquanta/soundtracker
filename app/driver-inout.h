@@ -27,14 +27,6 @@
 
 #include "driver.h"
 
-typedef struct st_io_driver {
-    st_driver common;
-
-    // get time offset since first sound output
-    double   (*get_play_time) (void *d);
-    int      (*get_play_rate) (void *d);
-} st_io_driver;
-
 /* Install / remove poll() handlers, similar to gdk_input_add() */
 gpointer audio_poll_add       (int fd,
 			       GdkInputCondition cond,

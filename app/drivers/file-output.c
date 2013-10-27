@@ -315,21 +315,24 @@ file_savesettings (void *dp,
     return TRUE;
 }
 
-st_io_driver driver_out_file = {
-    { "WAV Rendering Output using libfile",
+st_driver driver_out_file = {
+    "WAV Rendering Output using libfile",
 
-      file_new,
-      file_destroy,
+    file_new,
+    file_destroy,
 
-      file_open,
-      file_release,
+    file_open,
+    file_release,
 
-      file_getwidget,
-      file_loadsettings,
-      file_savesettings,
-    },
+    file_getwidget,
+    file_loadsettings,
+    file_savesettings,
+
+    NULL,
+    NULL,
 
     file_get_play_time,
+    NULL,
 };
 
 #endif

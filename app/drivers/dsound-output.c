@@ -421,19 +421,21 @@ dsound_savesettings (void *dp,
     return TRUE;
 }
 
-st_io_driver driver_out_dsound = {
-    { "DirectSound Output",
+st_driver driver_out_dsound = {
+    "DirectSound Output",
 
-      dsound_new,
-      dsound_destroy,
+    dsound_new,
+    dsound_destroy,
 
-      dsound_open,
-      dsound_release,
+    dsound_open,
+    dsound_release,
 
-      dsound_getwidget,
-      dsound_loadsettings,
-      dsound_savesettings,
-    },
+    dsound_getwidget,
+    dsound_loadsettings,
+    dsound_savesettings,
+
+    NULL,
+    NULL,
 
     dsound_get_play_time,
     dsound_get_play_rate

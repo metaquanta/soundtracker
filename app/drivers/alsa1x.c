@@ -1495,37 +1495,41 @@ alsa_savesettings (void *dp,
     return TRUE;
 }
 
-st_io_driver driver_out_alsa1x = {
-    { "ALSA-1.0.x Output",
+st_driver driver_out_alsa1x = {
+    "ALSA-1.0.x Output",
 
-      alsa_new_out,
-      alsa_destroy,
+    alsa_new_out,
+    alsa_destroy,
 
-      alsa_open,
-      alsa_release,
+    alsa_open,
+    alsa_release,
 
-      alsa_getwidget,
-      alsa_loadsettings,
-      alsa_savesettings,
-    },
+    alsa_getwidget,
+    alsa_loadsettings,
+    alsa_savesettings,
+
+    NULL,
+    NULL,
 
     alsa_get_play_time,
     alsa_get_play_rate
 };
 
-st_io_driver driver_in_alsa1x = {
-    { "ALSA-1.0.x Input",
+st_driver driver_in_alsa1x = {
+    "ALSA-1.0.x Input",
 
-      alsa_new_in,
-      alsa_destroy,
+    alsa_new_in,
+    alsa_destroy,
 
-      alsa_open,
-      alsa_release,
+    alsa_open,
+    alsa_release,
 
-      alsa_getwidget,
-      alsa_loadsettings,
-      alsa_savesettings,
-    },
+    alsa_getwidget,
+    alsa_loadsettings,
+    alsa_savesettings,
+
+    NULL,
+    NULL,
 
     alsa_get_play_time,
     alsa_get_play_rate

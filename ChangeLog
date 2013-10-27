@@ -1,9 +1,18 @@
+2013-10-27  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/mixers/kbfloat-mix.c: Removed unused NO_GASP conditional;
+	* app/audio.[ch], app/audioconfig.c, app/driver-inout.h, app/driver.h,
+	app/sample-editor.[ch], app/drivers/alsa1x.c, app/drivers/dsound-output.c,
+	app/drivers/dummy-drivers.c, app/drivers/esd-output.c,
+	app/drivers/file-output.c, app/drivers/irix-output.c, app/drivers/oss.c,
+	app/drivers/sdl-output.c: Drivers API is cleaned up and extended for
+	the upcoming JACK driver ("activate" and "deactivate" methods are added).
+
 2013-10-16  Yury Aliaev  <mutab0r@rambler.ru>
-	configure.in: Fixed compilation with --no-asm option.
+	* configure.in: Fixed compilation with --no-asm option.
 
 2013-10-13  Yury Aliaev  <mutab0r@rambler.ru>
-	po/*: Upgrade to gettext-0.18.2, clean-ups;
-	app/audio.c, app/audioconfig.c, app/gui.c, app/sample-editor.c,
+	* po/*: Upgrade to gettext-0.18.2, clean-ups;
+	* app/audio.c, app/audioconfig.c, app/gui.c, app/sample-editor.c,
 	configure.in: clean-ups regarding to compilation with audiofile library
 	and without sample output libraries at all.
 
