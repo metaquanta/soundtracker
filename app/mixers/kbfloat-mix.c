@@ -26,7 +26,7 @@
 
 #include "kb-x86-asm.h"
 
-#if defined(NO_ASM) || defined(NO_GASP) || !defined(__i386__)
+#if defined(NO_ASM) || !defined(__i386__)
 
 gboolean
 kbasm_post_mixing (float *tempbuf,
