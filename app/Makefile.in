@@ -53,7 +53,7 @@ build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = soundtracker$(EXEEXT)
 @NO_GDK_PIXBUF_FALSE@am__append_1 = scalablepic.c scalablepic.h
-@DRIVER_ALSA_09x_TRUE@am__append_2 = midi-09x.c midi-utils-09x.c midi-settings-09x.c \
+@DRIVER_ALSA_09x_TRUE@am__append_2 = midi-09x.c midi-utils-09x.c \
 @DRIVER_ALSA_09x_TRUE@	midi.h midi-settings.h midi-utils.h
 
 subdir = app
@@ -80,21 +80,21 @@ am__soundtracker_SOURCES_DIST = audio.c audio.h audioconfig.c \
 	file-operations.c file-operations.h gui-settings.c \
 	gui-settings.h gui-subs.c gui-subs.h gui.c gui.h \
 	instrument-editor.c instrument-editor.h keys.c keys.h main.c \
-	main.h menubar.c menubar.h mixer.h module-info.c module-info.h \
-	playlist.c playlist.h poll.c poll.h preferences.c \
-	preferences.h recode.c recode.h sample-display.c \
-	sample-display.h sample-editor.c sample-editor.h scope-group.c \
-	scope-group.h st-subs.c st-subs.h time-buffer.c time-buffer.h \
-	tips-dialog.c tips-dialog.h track-editor.c track-editor.h \
-	tracker.c tracker.h tracker-settings.c tracker-settings.h \
+	main.h menubar.c menubar.h midi-settings-09x.c mixer.h \
+	module-info.c module-info.h playlist.c playlist.h poll.c \
+	poll.h preferences.c preferences.h recode.c recode.h \
+	sample-display.c sample-display.h sample-editor.c \
+	sample-editor.h scope-group.c scope-group.h st-subs.c \
+	st-subs.h time-buffer.c time-buffer.h tips-dialog.c \
+	tips-dialog.h track-editor.c track-editor.h tracker.c \
+	tracker.h tracker-settings.c tracker-settings.h \
 	transposition.c transposition.h xm.c xm.h xm-player.c \
 	xm-player.h tracer.c tracer.h scalablepic.c scalablepic.h \
-	midi-09x.c midi-utils-09x.c midi-settings-09x.c midi.h \
-	midi-settings.h midi-utils.h
+	midi-09x.c midi-utils-09x.c midi.h midi-settings.h \
+	midi-utils.h
 @NO_GDK_PIXBUF_FALSE@am__objects_1 = scalablepic.$(OBJEXT)
 @DRIVER_ALSA_09x_TRUE@am__objects_2 = midi-09x.$(OBJEXT) \
-@DRIVER_ALSA_09x_TRUE@	midi-utils-09x.$(OBJEXT) \
-@DRIVER_ALSA_09x_TRUE@	midi-settings-09x.$(OBJEXT)
+@DRIVER_ALSA_09x_TRUE@	midi-utils-09x.$(OBJEXT)
 am_soundtracker_OBJECTS = audio.$(OBJEXT) audioconfig.$(OBJEXT) \
 	cheat-sheet.$(OBJEXT) clavier.$(OBJEXT) clock.$(OBJEXT) \
 	endian-conv.$(OBJEXT) envelope-box.$(OBJEXT) errors.$(OBJEXT) \
@@ -102,11 +102,12 @@ am_soundtracker_OBJECTS = audio.$(OBJEXT) audioconfig.$(OBJEXT) \
 	file-operations.$(OBJEXT) gui-settings.$(OBJEXT) \
 	gui-subs.$(OBJEXT) gui.$(OBJEXT) instrument-editor.$(OBJEXT) \
 	keys.$(OBJEXT) main.$(OBJEXT) menubar.$(OBJEXT) \
-	module-info.$(OBJEXT) playlist.$(OBJEXT) poll.$(OBJEXT) \
-	preferences.$(OBJEXT) recode.$(OBJEXT) \
-	sample-display.$(OBJEXT) sample-editor.$(OBJEXT) \
-	scope-group.$(OBJEXT) st-subs.$(OBJEXT) time-buffer.$(OBJEXT) \
-	tips-dialog.$(OBJEXT) track-editor.$(OBJEXT) tracker.$(OBJEXT) \
+	midi-settings-09x.$(OBJEXT) module-info.$(OBJEXT) \
+	playlist.$(OBJEXT) poll.$(OBJEXT) preferences.$(OBJEXT) \
+	recode.$(OBJEXT) sample-display.$(OBJEXT) \
+	sample-editor.$(OBJEXT) scope-group.$(OBJEXT) \
+	st-subs.$(OBJEXT) time-buffer.$(OBJEXT) tips-dialog.$(OBJEXT) \
+	track-editor.$(OBJEXT) tracker.$(OBJEXT) \
 	tracker-settings.$(OBJEXT) transposition.$(OBJEXT) \
 	xm.$(OBJEXT) xm-player.$(OBJEXT) tracer.$(OBJEXT) \
 	$(am__objects_1) $(am__objects_2)
@@ -317,13 +318,14 @@ soundtracker_SOURCES = audio.c audio.h audioconfig.c audioconfig.h \
 	file-operations.c file-operations.h gui-settings.c \
 	gui-settings.h gui-subs.c gui-subs.h gui.c gui.h \
 	instrument-editor.c instrument-editor.h keys.c keys.h main.c \
-	main.h menubar.c menubar.h mixer.h module-info.c module-info.h \
-	playlist.c playlist.h poll.c poll.h preferences.c \
-	preferences.h recode.c recode.h sample-display.c \
-	sample-display.h sample-editor.c sample-editor.h scope-group.c \
-	scope-group.h st-subs.c st-subs.h time-buffer.c time-buffer.h \
-	tips-dialog.c tips-dialog.h track-editor.c track-editor.h \
-	tracker.c tracker.h tracker-settings.c tracker-settings.h \
+	main.h menubar.c menubar.h midi-settings-09x.c mixer.h \
+	module-info.c module-info.h playlist.c playlist.h poll.c \
+	poll.h preferences.c preferences.h recode.c recode.h \
+	sample-display.c sample-display.h sample-editor.c \
+	sample-editor.h scope-group.c scope-group.h st-subs.c \
+	st-subs.h time-buffer.c time-buffer.h tips-dialog.c \
+	tips-dialog.h track-editor.c track-editor.h tracker.c \
+	tracker.h tracker-settings.c tracker-settings.h \
 	transposition.c transposition.h xm.c xm.h xm-player.c \
 	xm-player.h tracer.c tracer.h $(am__append_1) $(am__append_2)
 soundtracker_LDADD = drivers/libdrivers.a mixers/libmixers.a ${ST_S_JACK_LIBS}

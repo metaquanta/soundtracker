@@ -22,7 +22,7 @@ soundtracker_SOURCES = \
 	keys.c keys.h \
 	main.c main.h \
 	menubar.c menubar.h \
-	mixer.h \
+	midi-settings-09x.c mixer.h \
 	module-info.c module-info.h \
 	playlist.c playlist.h \
 	poll.c poll.h \
@@ -47,7 +47,7 @@ if !NO_GDK_PIXBUF
 endif
 
 if DRIVER_ALSA_09x
-  soundtracker_SOURCES += midi-09x.c midi-utils-09x.c midi-settings-09x.c \
+  soundtracker_SOURCES += midi-09x.c midi-utils-09x.c \
 	midi.h midi-settings.h midi-utils.h
 endif
 
