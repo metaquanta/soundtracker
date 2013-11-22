@@ -108,7 +108,7 @@ audioconfig_list_select (GtkTreeSelection *sel, guint page)
 	    gui_play_stop();
 
 	    // get new driver object
-	    if(old_driver->deactivate)//!!! TODO check correct deactivation when JACK is only/the first
+	    if(old_driver->deactivate)
 	        old_driver->deactivate(object->driver_object);
 	    *object->driver_object = audio_driver_objects[page][row];
 	    *object->driver = new_driver;
@@ -200,11 +200,9 @@ audioconfig_notebook_add_page (GtkNotebook *nbook, guint n)
 	gtk_list_store_append(list_store, &iter);
 	gtk_list_store_set(list_store, &iter, 0, *((gchar **)l->data), -1);
 
-	if(driver == *audio_objects[n].driver) {
+	if(driver == *audio_objects[n].driver)
 	    active = i;
-	    if(driver->activate)
-			driver->activate(audio_driver_objects[n][i]);
-	}
+
 	widget = driver->getwidget(audio_driver_objects[n][i]);
 	alignment = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
 	gtk_container_add(GTK_CONTAINER(alignment), widget);
@@ -213,11 +211,10 @@ audioconfig_notebook_add_page (GtkNotebook *nbook, guint n)
     }
     
     gui_list_handle_selection(list, G_CALLBACK(audioconfig_list_select), (gpointer)n);
-    if(active != -1) {
+    if(active != -1)
 	gui_list_select(list, active, FALSE, 0.0);
-    } else { /* Just call "activate" method of the first driver in the list */
-		//!!! TODO
-    }
+    else
+	gui_list_select(list, 0, FALSE, 0.0);
 
     label = gtk_label_new(gettext(audio_objects[n].title));
     gtk_widget_show(label);
