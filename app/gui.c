@@ -198,6 +198,7 @@ gui_accidentals_clicked (GtkWidget *widget, gpointer data)
 	if(GTK_IS_ENTRY(focus_widget)) { /* Emulate Ctrl + A if the cursor is in an entry */
 		g_signal_emit_by_name(focus_widget, "move-cursor", GTK_MOVEMENT_DISPLAY_LINE_ENDS, -1, FALSE, NULL);
 		g_signal_emit_by_name(focus_widget, "move-cursor", GTK_MOVEMENT_DISPLAY_LINE_ENDS, 1, TRUE, NULL);
+		return;
 	}
     gui_settings.sharp = !gui_settings.sharp;
     gtk_widget_hide(alt[gui_settings.sharp ? 1 : 0]);
@@ -774,6 +775,7 @@ gui_handle_standard_keys (int shift,
 	break;
     case GDK_Menu:
 	play_current_pattern_row();
+	handled = TRUE;
 	break;
     case ' ':
         if(ctrl || alt || shift)

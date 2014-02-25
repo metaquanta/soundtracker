@@ -1,3 +1,6 @@
+2014-02-25  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui.c: small GUI fixes;
+
 2013-11-22  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/audioconfig.c: Postponed bugfix and code cleanup.
 
