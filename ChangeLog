@@ -1,5 +1,10 @@
+2014-04-12  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/file-operations.[ch], app/gui.c, app/instrument-editor.c,
+	app/sample-editor.c: switching back from file operations page
+	is improved;
+
 2014-02-25  Yury Aliaev  <mutab0r@rambler.ru>
-	* app/gui.c: small GUI fixes;
+	* app/gui.c: small GUI fixes.
 
 2013-11-22  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/audioconfig.c: Postponed bugfix and code cleanup.

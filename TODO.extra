@@ -166,3 +166,7 @@ Acquire focus on file name entry when activating file selection page.
 "Delete instrument" button
 
 Fix beginning dragging when file is selected by single click and following switching to tracker page.
+
+Jack input driver
+
+Transpositorium: also whithin selection

@@ -41,7 +41,7 @@ struct file_op_tmp {
 	gint order, index;
 	const gchar *title, *path;
 	void (*clickfunc)();
-	gboolean is_single_click, is_save, need_return;
+	gboolean is_single_click, is_save;
 	const gchar ***formats;
 	const gchar *tip;
 };
@@ -50,12 +50,13 @@ struct file_op {
 	GtkWidget *dialog, *entry;
 	gint index; /* sub-page index for embedded selectors, otherwise -1 */
 	void (*callback)();
-	gboolean is_single_click, need_return;
+	gboolean is_single_click;
 };
 
 static gboolean skip_selection = FALSE; /* Some single-click magick to avoid artifacts when directory changes */
 static gint current_subpage = 0;
 static gint current_page = 0;
+static gboolean need_return = FALSE;
 
 static GtkWidget *rightnb = NULL, *leftbox;
 static GSList *fileop_list;
@@ -128,7 +129,7 @@ add_filters(GtkFileChooser *fc, const char **formats[])
 
 void
 file_selection_create (guint index, const gchar * title, const gchar *path, void(*clickfunc)(),
-                       gint order, gboolean is_single_click, gboolean is_save, gboolean need_return,
+                       gint order, gboolean is_single_click, gboolean is_save,
                        const gchar **formats[], const gchar *tip)
 {
 	static gboolean firsttime = TRUE;
@@ -160,7 +161,6 @@ file_selection_create (guint index, const gchar * title, const gchar *path, void
 		fileop_pool[num_allocated - 1].clickfunc = clickfunc;
 		fileop_pool[num_allocated - 1].is_save = is_save;
 		fileop_pool[num_allocated - 1].is_single_click = is_single_click;
-		fileop_pool[num_allocated - 1].need_return = need_return;
 		fileop_pool[num_allocated - 1].index = index;
 		fileop_pool[num_allocated - 1].path = path;
 		fileop_pool[num_allocated - 1].formats = formats;
@@ -266,11 +266,15 @@ file_chosen(struct file_op *fops)
 	if(!fops->is_single_click)
 		if(fops->index == -1) { /* Standalone dialog checks overwriting itself */
 			fops->callback(newname);
-			if(fops->need_return)
+			if(need_return) {
+				need_return = FALSE;
 				gui_go_to_page(current_page);
+			}
 		} else {
-			if(check_overwrite_save(newname, fops, filename) && fops->need_return)
+			if(check_overwrite_save(newname, fops, filename) && need_return) {
+				need_return = FALSE;
 				gui_go_to_page(current_page);
+			}
 		}
 	else {/* Single-click magick: directory changes, phantom file chosing skips etc */
 		if(skip_selection)
@@ -278,8 +282,10 @@ file_chosen(struct file_op *fops)
 		else {
 			if(g_file_test(filename, G_FILE_TEST_IS_REGULAR || G_FILE_TEST_IS_SYMLINK)) {
 				fops->callback(newname);
-				if(fops->need_return)
+				if(need_return) {
+					need_return = FALSE;
 					gui_go_to_page(current_page);
+				}
 			} else if(g_file_test(filename, G_FILE_TEST_IS_DIR))
 				set_filepath(fops->dialog, newname);
 		}
@@ -343,8 +349,10 @@ save_clicked (struct file_op *fop)
 	fullpath = g_strconcat(utfpath, "/", name, NULL);
 	g_free(utfpath);
 
-	if(check_overwrite_save(fullpath, fop, NULL) && fop->need_return)
+	if(check_overwrite_save(fullpath, fop, NULL) && need_return) {
+		need_return = FALSE;
 		gui_go_to_page(current_page);
+	}
 
 	g_free(fullpath);
 }
@@ -368,7 +376,6 @@ foreach_fn(gpointer lm, gpointer data)
 
 	fileops[index].index = num;
 	fileops[index].callback = elem->clickfunc;
-	fileops[index].need_return = elem->need_return;
 
 	/* Radio buttons */
 	thing = gtk_radio_button_new_with_label (thing ? gtk_radio_button_get_group (GTK_RADIO_BUTTON (thing)) : NULL,
@@ -478,6 +485,7 @@ fileops_open_dialog (GtkWidget *w,
 	if(fileops[n].index != -1) {
 		current_page = notebook_current_page;
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(rightnb), fileops[n].index);
+		need_return = TRUE;
 		gui_go_to_fileops_page();
 
 		return;

@@ -1930,14 +1930,14 @@ gui_final (int argc,
     }
     gtk_window_set_icon_from_file(GTK_WINDOW(mainwindow), PREFIX"/share/soundtracker/soundtracker-icon.png", NULL);
 
-	file_selection_create(DIALOG_LOAD_MOD, _("Load Module"), gui_settings.loadmod_path, load_xm, 0, TRUE, FALSE, FALSE, mod_formats, N_("Load the selected module into the tracker"));
-	file_selection_create(DIALOG_SAVE_MOD, _("Save Module"), gui_settings.savemod_path, save_song, 1, FALSE, TRUE, FALSE, save_mod_formats, N_("Save the current module"));
+	file_selection_create(DIALOG_LOAD_MOD, _("Load Module"), gui_settings.loadmod_path, load_xm, 0, TRUE, FALSE, mod_formats, N_("Load the selected module into the tracker"));
+	file_selection_create(DIALOG_SAVE_MOD, _("Save Module"), gui_settings.savemod_path, save_song, 1, FALSE, TRUE, save_mod_formats, N_("Save the current module"));
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
-	file_selection_create(DIALOG_SAVE_MOD_AS_WAV, _("Render WAV"), gui_settings.savemodaswav_path, save_wav, 2, FALSE, TRUE, TRUE, wav_formats, N_("Render the current module as WAV file"));
+	file_selection_create(DIALOG_SAVE_MOD_AS_WAV, _("Render WAV"), gui_settings.savemodaswav_path, save_wav, 2, FALSE, TRUE, wav_formats, N_("Render the current module as WAV file"));
 #endif
-	file_selection_create(DIALOG_SAVE_SONG_AS_XM, _("Save XM without samples..."), gui_settings.savesongasxm_path, save_xm, -1, FALSE, TRUE, FALSE, save_mod_formats, NULL);
-	file_selection_create(DIALOG_LOAD_PATTERN, _("Load current pattern..."), gui_settings.loadpat_path, load_pat, -1, FALSE, FALSE, FALSE, xp_formats, NULL);
-	file_selection_create(DIALOG_SAVE_PATTERN, _("Save current pattern..."), gui_settings.savepat_path, save_pat, -1, FALSE, TRUE, FALSE, xp_formats, NULL);
+	file_selection_create(DIALOG_SAVE_SONG_AS_XM, _("Save XM without samples..."), gui_settings.savesongasxm_path, save_xm, -1, FALSE, TRUE, save_mod_formats, NULL);
+	file_selection_create(DIALOG_LOAD_PATTERN, _("Load current pattern..."), gui_settings.loadpat_path, load_pat, -1, FALSE, FALSE, xp_formats, NULL);
+	file_selection_create(DIALOG_SAVE_PATTERN, _("Save current pattern..."), gui_settings.savepat_path, save_pat, -1, FALSE, TRUE, xp_formats, NULL);
 
 	mainvbox0 = gui_get_widget("mainvbox0");
 	if(!mainvbox0)
