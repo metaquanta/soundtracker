@@ -168,6 +168,7 @@ instrument_editor_load_instrument (gchar *fn)
 
 	instrument_editor_update(TRUE);
     sample_editor_set_sample(&instr->samples[0]);
+    xm_set_modified(1);
 }
 
 static void

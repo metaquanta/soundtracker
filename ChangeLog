@@ -2,6 +2,8 @@
 	* app/file-operations.[ch], app/gui.c, app/instrument-editor.c,
 	app/sample-editor.c: switching back from file operations page
 	is improved;
+	* app/instrument-editor.c: module is marked as modified when a new
+	instrument has been loaded.
 
 2014-02-25  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c: small GUI fixes.

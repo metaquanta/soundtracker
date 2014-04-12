@@ -16,7 +16,6 @@ header are different;
 61) Generate "Button release" event at file chooser when selecting the 
 file. Seems this should help against "weird dragging" and using of Menu 
 button in the tracker;
-63) set modified at instrument loading.
 
 Some remarks about asm mixer bug: at the sample end and loop points there are ugly clicks
 (ramping works badly). Also when the previous channel has amplitude > 0, the following one
