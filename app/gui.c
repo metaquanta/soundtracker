@@ -371,7 +371,7 @@ gui_mixer_set_pattern (int pattern)
 }
 
 static void
-gui_save (const gchar *data, gboolean save_smpls)
+gui_save (const gchar *data, gboolean save_smpls, gboolean switch_needed)
 {
 	gchar *localname = gui_filename_from_utf8(data);
 
@@ -384,7 +384,8 @@ gui_save (const gchar *data, gboolean save_smpls)
 	    statusbar_update(STATUS_IDLE, FALSE);
 	} else {
 	    xm_set_modified(0);
-	    gui_auto_switch_page();
+	    if(switch_needed)
+		    gui_auto_switch_page();
 	    statusbar_update(STATUS_MODULE_SAVED, FALSE);
 	    gui_update_title (data);
 	}
@@ -396,7 +397,7 @@ void
 gui_save_current (void)
 {
 	if(current_filename)
-		gui_save(current_filename, TRUE);
+		gui_save(current_filename, TRUE, FALSE);
 	else
 		fileops_open_dialog(NULL, (gpointer)1);
 }
@@ -528,14 +529,14 @@ static void
 save_song (gchar *fn)
 {
 	file_selection_save_path(fn, &gui_settings.savemod_path);
-	gui_save(fn, TRUE); /* with samples */
+	gui_save(fn, TRUE, TRUE); /* with samples */
 }
 
 static void
 save_xm (gchar *fn)
 {
 	file_selection_save_path(fn, &gui_settings.savesongasxm_path);
-	gui_save(fn, FALSE); /* without samples */
+	gui_save(fn, FALSE, TRUE); /* without samples */
 }
 
 static void
