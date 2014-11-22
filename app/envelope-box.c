@@ -939,7 +939,6 @@ void envelope_box_set_envelope(EnvelopeBox *e, STEnvelope *env)
     if(env == NULL) {
 	env = &dummy_envelope;
     }
-
     e->current = env;
 
     // Some preliminary Paranoia...
@@ -977,6 +976,7 @@ void envelope_box_set_envelope(EnvelopeBox *e, STEnvelope *env)
     e->cur_point = e->points[0];
 #endif
 
+    envelope_box_block_loop_spins(e, TRUE);
     gtk_toggle_button_set_state(e->enable, env->flags & EF_ON);
     gtk_toggle_button_set_state(e->sustain, env->flags & EF_SUSTAIN);
     gtk_toggle_button_set_state(e->loop, env->flags & EF_LOOP);
@@ -985,7 +985,6 @@ void envelope_box_set_envelope(EnvelopeBox *e, STEnvelope *env)
     gtk_spin_button_set_value(e->spin_length, env->num_points);
     e->length_set_modified = TRUE;
 
-    envelope_box_block_loop_spins(e, TRUE);
     gtk_spin_button_set_value(e->spin_pos, 0);
     gtk_spin_button_set_value(e->spin_offset, env->points[0].pos);
     gtk_spin_button_set_value(e->spin_value, env->points[0].val);

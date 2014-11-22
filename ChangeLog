@@ -1,3 +1,7 @@
+2014-11-22  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/envelope-box.c: Bugfix (loop and sustain points are preserved
+	when changing current instrument).
+
 2014-06-01  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c: fixed switching to tracker after current module saving
 	from a page other than tracker.
