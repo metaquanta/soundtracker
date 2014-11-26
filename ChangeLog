@@ -1,3 +1,6 @@
+2014-11-26  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/drivers/oss.c: Fixed a crash because of incorrect buffer size.
+
 2014-11-22  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/envelope-box.c: Bugfix (loop and sustain points are preserved
 	when changing current instrument).

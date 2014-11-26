@@ -12,10 +12,11 @@ asm/C/integer mixers, so it might be coming from somewhere else;
 58) Check (wet.xm) why after opening original ft2 xm and saving it as is some fields in the instrument
 header are different;
 59) Complete Russian translation and cheat-sheet page, check what happens with sl.po;
-60) Crash when using OSS driver after ALSA;
 61) Generate "Button release" event at file chooser when selecting the 
 file. Seems this should help against "weird dragging" and using of Menu 
 button in the tracker;
+62) Leave only two buttons at the sampling dialog: "Start/Ready (changing its label)" and "Cancel".
+Re-write it to a standard Gtk dialog;
 
 Some remarks about asm mixer bug: at the sample end and loop points there are ugly clicks
 (ramping works badly). Also when the previous channel has amplitude > 0, the following one

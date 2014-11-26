@@ -127,12 +127,13 @@ oss_poll_ready_sampling (gpointer data,
                          GdkInputCondition condition)
 {
 	oss_driver * const d = data;
+	int size = (d->stereo + 1) * (d->bits / 8) * d->fragsize;
 
-	if(read(d->soundfd, d->sndbuf, d->fragsize) != d->fragsize)
+	if(read(d->soundfd, d->sndbuf, size) != size)
 		perror("OSS input: read()");
 
-	if(sample_editor_sampled(d->sndbuf, d->fragsize, d->playrate, d->mf))
-		d->sndbuf = calloc(1, d->fragsize);
+	if(sample_editor_sampled(d->sndbuf, size, d->playrate, d->mf))
+		d->sndbuf = calloc(1, size);
 }
 
 static void
@@ -498,7 +499,7 @@ oss_open (void *dp)
 		d->realtimecaps = i & DSP_CAP_REALTIME;
 	}
 
-    d->sndbuf = calloc(1, d->fragsize);
+    d->sndbuf = calloc(1, (d->stereo + 1) * (d->bits / 8) * d->fragsize);
 
 	if(d->sampling) {
 		if(d->stereo == 1) {
