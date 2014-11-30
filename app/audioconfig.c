@@ -109,11 +109,11 @@ audioconfig_list_select (GtkTreeSelection *sel, guint page)
 
 	    // get new driver object
 	    if(old_driver->deactivate)
-	        old_driver->deactivate(object->driver_object);
+	        old_driver->deactivate(*object->driver_object);
 	    *object->driver_object = audio_driver_objects[page][row];
 	    *object->driver = new_driver;
 	    if(new_driver->activate)
-	        new_driver->activate(object->driver_object);
+	        new_driver->activate(*object->driver_object);
 	}
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(object->drivernbook), row);
     }
