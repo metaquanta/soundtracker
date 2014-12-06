@@ -1,3 +1,10 @@
+2014-12-06  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/audio.c, app/cheat-sheet.c, app/drivers/jack-output.c,
+	app/file-operations.c, app/gui-subs.[ch], app/gui.c,
+	app/instrument-editor.c, app/keys.c, app/preferences.c,
+	app/sample-editor.c, app/xm.c: A small bug with error/warning dialogs is
+	fixed.
+
 2014-11-26  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/drivers/oss.c: Fixed a crash because of incorrect buffer size.
 

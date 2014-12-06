@@ -51,13 +51,14 @@ static void
 prefs_check_prefs_dir (void)
 {
     struct stat st;
+    static GtkWidget *dialog = NULL;
     gchar *dir = prefs_get_prefsdir();
 
     if(stat(dir, &st) < 0) {
 	mkdir(dir, S_IRUSR | S_IWUSR | S_IXUSR);
     strcat(dir, "/tmp");
 	mkdir(dir, S_IRUSR | S_IWUSR | S_IXUSR);
-	gui_warning_dialog("A directory called '.soundtracker' has been created in your\nhome directory to store configuration files.\n");
+	gui_warning_dialog(&dialog, N_("A directory called '.soundtracker' has been created in your\nhome directory to store configuration files.\n"), FALSE);
     }
 }
 
@@ -93,8 +94,9 @@ prefs_init (void)
 
 						if(!g_spawn_command_line_sync("soundtracker_convert_config -f", NULL, NULL, NULL, &err)) {
 							gchar *buff = g_strdup_printf(_("An error is occured during converting config:\n%s"), error->message);
+							static GtkWidget *dialog = NULL;
 
-							gui_error_dialog(buff);
+							gui_error_dialog(&dialog, buff, TRUE);
 							g_free(buff);
 							g_error_free(err);
 						} else {
@@ -107,8 +109,9 @@ prefs_init (void)
 				g_free(buf);
 			} else {
 				gchar *buf = g_strdup_printf(_("An error is occured during reading or parsing config:\n%s"), error->message);
+				static GtkWidget *dialog = NULL;
 
-				gui_error_dialog(buf);
+				gui_error_dialog(&dialog, buf, TRUE);
 				g_free(buf);
 			}
 			g_error_free(error);
@@ -131,8 +134,9 @@ prefs_save (void)
 	g_file_set_contents(config, contents, length, &error);
 	if(error) {
 		gchar *buf = g_strdup_printf(_("An error is occured during saving config:\n%s"), error->message);
+		static GtkWidget *dialog = NULL;
 
-		gui_error_dialog(buf);
+		gui_error_dialog(&dialog, buf, TRUE);
 		g_free(buf);
 		g_error_free(error);
 	}

@@ -453,19 +453,18 @@ gui_button (GtkWidget * win, char *stock,
 }
 
 void
-gui_message_dialog (const gchar *text, GtkMessageType type, const gchar *title)
+gui_message_dialog (GtkWidget **dialog, const gchar *text, GtkMessageType type, const gchar *title, gboolean need_update)
 {
-	static GtkWidget *dialog = NULL;
-
-	if(!dialog)
-		dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, type,
-		                                GTK_BUTTONS_CLOSE, "%s", _(text));
-	else
+	if(!*dialog) {
+		*dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, type,
+		                                 GTK_BUTTONS_CLOSE, "%s", _(text));
+		gtk_window_set_title(GTK_WINDOW(*dialog), _(title));
+	} else if(need_update) {
 		gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), _(text));
+	}
 
-	gtk_window_set_title(GTK_WINDOW(dialog), _(title));
-	gtk_dialog_run(GTK_DIALOG(dialog));
-	gtk_widget_hide(dialog);
+	gtk_dialog_run(GTK_DIALOG(*dialog));
+	gtk_widget_hide(*dialog);
 }
 
 gboolean
@@ -494,7 +493,7 @@ gui_filename_from_utf8 (const gchar *old_name)
 	gchar *name = g_filename_from_utf8(old_name, -1, NULL, NULL, &error);
 
 	if(!name) {
-		dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, GTK_MESSAGE_WARNING, GTK_BUTTONS_CLOSE,
+		dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
 		                               _("An error occured when filename character set conversion:\n%s\n"
 		                               "The file operation probably failed."), error->message);
 		gtk_dialog_run(GTK_DIALOG(dialog));
@@ -514,7 +513,7 @@ gui_filename_to_utf8 (const gchar *old_name)
 	gchar *name = g_filename_to_utf8(old_name, -1, NULL, NULL, &error);
 
 	if(!name) {
-		dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, GTK_MESSAGE_WARNING, GTK_BUTTONS_CLOSE,
+		dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
 		                               _("An error occured when filename character set conversion:\n%s\n"
 		                               "The file operation probably failed."), error->message);
 		gtk_dialog_run(GTK_DIALOG(dialog));

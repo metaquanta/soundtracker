@@ -71,14 +71,17 @@ cheat_sheet_dialog (void)
 	}
 
 	if(!linguas[i]) {
-		gui_error_dialog(N_("No Cheat Sheet pages are found!"));
+		static GtkWidget *dialog = NULL;
+
+		gui_error_dialog(&dialog, N_("No Cheat Sheet pages are found!"), FALSE);
 		return;
 	}
 
 	if(!g_file_load_contents(file, NULL, &contents, &size, NULL, &error)) {
 		gchar *mess = g_strdup_printf(_("Cheat sheet file %s cannot be loaded.\n%s"), path, error->message);
+		static GtkWidget *dialog = NULL;
 
-		gui_error_dialog(mess);
+		gui_error_dialog(&dialog, mess, TRUE);
 
 		g_free(mess);
 		g_error_free(error);

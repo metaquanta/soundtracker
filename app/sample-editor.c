@@ -1096,7 +1096,9 @@ sample_editor_copy_cut_common (gboolean copy,
 	copybufferlen = cutlen;
 	copybuffer = malloc(copybufferlen * 2);
 	if(!copybuffer) {
-	    gui_error_dialog(N_("Out of memory for copybuffer.\n"));
+	    static GtkWidget *dialog = NULL;
+
+	    gui_error_dialog(&dialog, N_("Out of memory for copybuffer.\n"), FALSE);
 	} else {
 	    memcpy(copybuffer,
 		   oldsample->sample.data + ss,
@@ -1376,9 +1378,11 @@ sample_editor_load_wav_main (const int mode)
 		gint n_cur;
 
 		if((n_cur = modinfo_get_current_sample()) == 127) {
-			gui_warning_dialog(N_("You have selected the last sample of the instrument, but going "
-			                      "to load the second stereo channel to the next sample. Please select "
-			                      "a sample slot with lower number or use another loading mode."));
+			static GtkWidget *dialog = NULL;
+
+			gui_warning_dialog(&dialog, N_("You have selected the last sample of the instrument, but going "
+			                               "to load the second stereo channel to the next sample. Please select "
+			                               "a sample slot with lower number or use another loading mode."), FALSE);
 			return TRUE;
 		}
 		next = &(instrument_editor_get_instrument()->samples[n_cur + 1]);
@@ -1393,13 +1397,17 @@ sample_editor_load_wav_main (const int mode)
 
     len = 2 * wavload_frameCount * wavload_channelCount;
     if(!(tmp = malloc(len))) {
-	gui_error_dialog(N_("Out of memory for sample data."));
+	static GtkWidget *dialog = NULL;
+
+	gui_error_dialog(&dialog, N_("Out of memory for sample data."), FALSE);
 	goto errnobuf;
     }
 	if(mode == MODE_MONO)
 		sbuf = tmp;
 	else if(!(sbuf = malloc(2 * wavload_frameCount))) {
-		gui_error_dialog(N_("Out of memory for sample data."));
+		static GtkWidget *dialog = NULL;
+
+		gui_error_dialog(&dialog, N_("Out of memory for sample data."), FALSE);
 		free(tmp);
 		goto errnobuf;
 	}
@@ -1416,7 +1424,9 @@ sample_editor_load_wav_main (const int mode)
 #else
 	if(wavload_frameCount != afReadFrames(wavload_file, AF_DEFAULT_TRACK, sbuf_loadto, wavload_frameCount)) {
 #endif
-	    gui_error_dialog(N_("Read error."));
+	    static GtkWidget *dialog = NULL;
+
+	    gui_error_dialog(&dialog, N_("Read error."), FALSE);
 	    goto errnodata;
 	}
     } else {
@@ -1427,8 +1437,10 @@ sample_editor_load_wav_main (const int mode)
 				       wavload_channelCount * wavload_sampleWidth / 8,
 				       wavload_frameCount,
 				       f)) {
+	    static GtkWidget *dialog = NULL;
+
 	    fclose(f);
-	    gui_error_dialog(N_("Read error."));
+	    gui_error_dialog(&dialog, N_("Read error."), FALSE);
 	    goto errnodata;
 	}
 	fclose(f);
@@ -1485,7 +1497,9 @@ sample_editor_load_wav_main (const int mode)
 
 	if(mode == MODE_STEREO_2) {
 		if(!(sbuf2 = malloc(2 * wavload_frameCount))) {
-			gui_error_dialog(N_("Out of memory for sample data."));
+			static GtkWidget *dialog = NULL;
+
+			gui_error_dialog(&dialog, N_("Out of memory for sample data."), FALSE);
 			goto errnodata;
 		}
 
@@ -1777,7 +1791,9 @@ sample_editor_load_wav (const gchar *fn)
 	    wavload_through_library = FALSE;
 	    sample_editor_open_raw_sample_dialog(fn);
 	} else {
-	    gui_error_dialog(N_("Can't read sample"));
+	    static GtkWidget *dialog = NULL;
+
+	    gui_error_dialog(&dialog, N_("Can't read sample"), FALSE);
 	}
 	return;
     }
@@ -1790,7 +1806,8 @@ sample_editor_load_wav (const gchar *fn)
     wavload_frameCount = afGetFrameCount(wavload_file, AF_DEFAULT_TRACK);
 #endif
     if(wavload_frameCount > mixer->max_sample_length) {
-	gui_warning_dialog(N_("Sample is too long for current mixer module. Loading anyway."));
+	static GtkWidget *dialog = NULL;
+	gui_warning_dialog(&dialog, N_("Sample is too long for current mixer module. Loading anyway."), FALSE);
     }
 
 #if USE_SNDFILE
@@ -1814,7 +1831,9 @@ sample_editor_load_wav (const gchar *fn)
 
 
     if((wavload_sampleWidth != 16 && wavload_sampleWidth != 8) || wavload_channelCount > 2) {
-	gui_error_dialog(N_("Can only handle 8 and 16 bit samples with up to 2 channels"));
+	static GtkWidget *dialog = NULL;
+
+	gui_error_dialog(&dialog, N_("Can only handle 8 and 16 bit samples with up to 2 channels"), FALSE);
 	goto errwrongformat;
     }
 
@@ -1891,7 +1910,9 @@ sample_editor_save_wav_main (const gchar *fn,
 	g_free(localname);
 
     if(!outfile) {
-	gui_error_dialog(N_("Can't open file for writing."));
+	static GtkWidget *dialog = NULL;
+
+	gui_error_dialog(&dialog, N_("Can't open file for writing."), FALSE);
 	return;
     }
 
@@ -1948,7 +1969,8 @@ sample_editor_save_region_wav (const gchar *fn)
     }
     
     if(rss == -1) {
-        gui_error_dialog(N_("Please select region first."));
+        static GtkWidget *dialog = NULL;
+        gui_error_dialog(&dialog, N_("Please select region first."), FALSE);
 	return;
     }
 	sample_editor_save_wav_main(fn, rss, rse - rss);
@@ -2010,7 +2032,9 @@ static void
 sample_editor_monitor_clicked (void)
 {
     if(!sampling_driver || !sampling_driver_object) {
-	gui_error_dialog(N_("No sampling driver available"));
+	static GtkWidget *dialog = NULL;
+
+	gui_error_dialog(&dialog, N_("No sampling driver available"), FALSE);
 	return;
     }
 
@@ -2047,8 +2071,10 @@ sample_editor_monitor_clicked (void)
 	format = ST_MIXER_FORMAT_S16_LE;
 
 	if(!sampling_driver->open(sampling_driver_object)) {
+		static GtkWidget *dialog = NULL;
+
 		sample_editor_stop_sampling();
-		gui_error_dialog(N_("Sampling failed!"));
+		gui_error_dialog(&dialog, N_("Sampling failed!"), FALSE);
 	}
 }
 
@@ -2140,7 +2166,9 @@ sample_editor_ok_clicked (void)
 		recordedlen = recordedlen >> 1;
 
 	if(!(sbuf = malloc(recordedlen))) {
-		gui_error_dialog(N_("Out of memory for sample data."));
+		static GtkWidget *dialog = NULL;
+
+		gui_error_dialog(&dialog, N_("Out of memory for sample data."), FALSE);
 		return;
 	}
 
@@ -2166,9 +2194,11 @@ sample_editor_ok_clicked (void)
 				break;
 			case MODE_STEREO_2:
 				if((n_cur = modinfo_get_current_sample()) == 127) {
-					gui_warning_dialog(N_("You have selected the last sample of the instrument, but going "
-					                      "to load the second stereo channel to the next sample. Please select "
-					                      "a sample slot with lower number or use another loading mode."));
+					static GtkWidget *dialog = NULL;
+
+					gui_warning_dialog(&dialog, N_("You have selected the last sample of the instrument, but going "
+					                               "to load the second stereo channel to the next sample. Please select "
+					                               "a sample slot with lower number or use another loading mode."), FALSE);
 					replay = TRUE;
 				}
 				next = &(instrument_editor_get_instrument()->samples[n_cur + 1]);
@@ -2191,7 +2221,9 @@ sample_editor_ok_clicked (void)
 
 	if(mode == MODE_STEREO_2)
 		if(!(sbuf2 = malloc(recordedlen))) {
-			gui_error_dialog(N_("Out of memory for sample data."));
+			static GtkWidget *dialog = NULL;
+
+			gui_error_dialog(&dialog, N_("Out of memory for sample data."), FALSE);
 			free(sbuf);
 			return;
 		}
@@ -2375,7 +2407,8 @@ sample_editor_ok_clicked (void)
 	recordbufs = NULL;
 
     if(recordedlen > mixer->max_sample_length) {
-	gui_warning_dialog(N_("Recorded sample is too long for current mixer module. Using it anyway."));
+	static GtkWidget *dialog = NULL;
+	gui_warning_dialog(&dialog, N_("Recorded sample is too long for current mixer module. Using it anyway."), FALSE);
     }
 
     current_sample->sample.length = recordedlen >> 1;/* Sample size is given in 16-bit words */
