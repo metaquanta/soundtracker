@@ -4,7 +4,7 @@
 in the callback) and main notebook switch callback;
 22) Convert ESD driver into the modern Pulseaudio API.
 36) Pressing Ctrl-O in Instrument editor crashes ST at some machines;
-49) Update or even rewrite JACK driver;
+49) JACK driver master mode;
 54) Using discretization frequency > 64 kHz gives wrong notes (pitch is 2 times higher, independent on
 the discretization frequency). It is a mixer bug, file output does the same. This bus appears with
 asm/C/integer mixers, so it might be coming from somewhere else;
@@ -16,13 +16,18 @@ header are different;
 file. Seems this should help against "weird dragging" and using of Menu 
 button in the tracker;
 62) Leave only two buttons at the sampling dialog: "Start/Ready (changing its label)" and "Cancel".
-Re-write it to a standard Gtk dialog;
-
-Some remarks about asm mixer bug: at the sample end and loop points there are ugly clicks
-(ramping works badly). Also when the previous channel has amplitude > 0, the following one
-will be triggered to the minimal negative value (maybe it's a cause of the first issue
-'cause really ramping and looping is performing using additional channels. Probably the bug
-is in the mixing or post-mixing code.
+Re-write it to a standard Gtk dialog. Also the dialog after stereo sampling and sound file loading:
+make it with radio buttons for options and "Ok" button4
+63) Recording from ALSA works, but not stably;
 
 Scopes stop working at some relation between sound and scopes buffer. Explore this issue and probably
 exclude manual scope buffer size setting. Or remain it for after time?
+
+Notes on jack driver.
+1) All action should be performed inside audio thread. Jack's process() 
+function have only to initiate the execution of audio thread loop (see 
+how this is implemented inside ALSA library).
+2) Two options: each time 
+activate and connect jack client on behalf of playing requiest or keep 
+it all the time running and connected, but just disable audio thread 
+calling when no playing is being performed.

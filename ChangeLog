@@ -1,3 +1,6 @@
+2014-12-21  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/drivers/jack-output.c: Jack output driver now works.
+
 2014-12-06  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/audio.c, app/cheat-sheet.c, app/drivers/jack-output.c,
 	app/file-operations.c, app/gui-subs.[ch], app/gui.c,
