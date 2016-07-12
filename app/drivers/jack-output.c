@@ -183,6 +183,7 @@ jack_driver_process_wrapper (nframes_t nframes, void *arg)
 	} else {
 		d->locked = FALSE;
 		jack_driver_process_core (nframes, d);
+	}
 	return 0;
 }
 
