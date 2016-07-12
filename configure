@@ -6573,7 +6573,7 @@ $as_echo "#define HAVE_DCGETTEXT 1" >>confdefs.h
 
 
 
-SND_MODULES="gtk+-2.0 >= 2.20 gthread-2.0 gmodule-2.0"
+SND_MODULES="gtk+-2.0 >= 2.20 gthread-2.0 gmodule-2.0 x11"
 
 
 

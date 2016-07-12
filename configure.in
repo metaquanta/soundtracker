@@ -57,7 +57,7 @@ AM_GNU_GETTEXT([external])
 dnl -----------------------------------------------------------------------
 dnl Test for GTK+ / GooCanvas
 dnl -----------------------------------------------------------------------
-SND_MODULES="gtk+-2.0 >= 2.20 gthread-2.0 gmodule-2.0"
+SND_MODULES="gtk+-2.0 >= 2.20 gthread-2.0 gmodule-2.0 x11"
 
 PKG_CHECK_MODULES(GTK, $SND_MODULES)
 AC_SUBST(GTK_CFLAGS)

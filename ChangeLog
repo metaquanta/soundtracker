@@ -1,3 +1,6 @@
+2016-07-12  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui-subs.c: Bugfix (wrong pointer usage).
+
 2014-12-21  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/drivers/jack-output.c: Jack output driver now works.
 

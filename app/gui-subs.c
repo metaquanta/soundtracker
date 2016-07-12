@@ -460,7 +460,7 @@ gui_message_dialog (GtkWidget **dialog, const gchar *text, GtkMessageType type, 
 		                                 GTK_BUTTONS_CLOSE, "%s", _(text));
 		gtk_window_set_title(GTK_WINDOW(*dialog), _(title));
 	} else if(need_update) {
-		gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), _(text));
+		gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(*dialog), _(text));
 	}
 
 	gtk_dialog_run(GTK_DIALOG(*dialog));
