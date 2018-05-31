@@ -1329,7 +1329,7 @@ sample_editor_open_stereo_dialog (GtkWidget **window, GtkWidget **buttons, const
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
 
 static gboolean
-sample_editor_load_wav_main (const int mode)
+sample_editor_load_wav_main (const int mode, FILE *f)
 { 
     /* Initialized global variables:
 
@@ -1412,7 +1412,6 @@ sample_editor_load_wav_main (const int mode)
 	    goto errnodata;
 	}
     } else {
-	FILE *f = fopen(wavload_filename, "r");
 	if(!f)
 	    goto errnodata;
 	if(wavload_frameCount != fread(sbuf_loadto,
@@ -1425,7 +1424,6 @@ sample_editor_load_wav_main (const int mode)
 	    gui_error_dialog(&dialog, N_("Read error."), FALSE);
 	    goto errnodata;
 	}
-	fclose(f);
     }
 
     if(wavload_sampleWidth == 8) {
@@ -1562,9 +1560,9 @@ sample_editor_load_wav_main (const int mode)
 }
 
 static void
-sample_editor_open_stereowav_dialog (void)
+sample_editor_open_stereowav_dialog (FILE *f)
 {
-	static GtkWidget *window = NULL;
+	static GtkWidget *window = NULL, *mixbutton;
 	gboolean replay;
 	gint response;
 
@@ -1580,12 +1578,12 @@ sample_editor_open_stereowav_dialog (void)
 			return;
 
 		response = find_current_toggle(load_radio, 4) + 1; /* +1 since 0 means mono mode */
-		replay = sample_editor_load_wav_main(MODE_STEREO_2);
+		replay = sample_editor_load_wav_main(MODE_STEREO_2, f);
 	} while(response == MODE_STEREO_2 && replay);
 }
 
 static void
-sample_editor_open_raw_sample_dialog (const gchar *filename)
+sample_editor_open_raw_sample_dialog (FILE *f)
 {
     static GtkWidget *window = NULL, *combo;
     static GtkListStore *ls;
@@ -1605,8 +1603,6 @@ sample_editor_open_raw_sample_dialog (const gchar *filename)
 
     // Standard sampling rates
     static const guint rates[] = {8000, 8363, 11025, 12000, 16000, 22050, 24000, 32000, 33452, 44100, 48000};
-
-    wavload_filename = filename; // store for later usage
 
 	if(!window) {
 	    window = gtk_dialog_new_with_buttons(_("Load raw sample"), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
@@ -1719,11 +1715,10 @@ sample_editor_open_raw_sample_dialog (const gchar *filename)
 
 	    if(wavload_channelCount == 2) {
 		wavload_frameCount /= 2;
-		sample_editor_open_stereowav_dialog();
+		sample_editor_open_stereowav_dialog(f);
 	    } else {
-		sample_editor_load_wav_main(MODE_MONO);
+		sample_editor_load_wav_main(MODE_MONO, f);
 	    }
-
 	}
 }
 
@@ -1750,9 +1745,9 @@ sample_editor_load_wav (const gchar *fn)
 
 #if USE_SNDFILE
     wavinfo.format = 0;
-    wavload_file = sf_open(fn, SFM_READ, &wavinfo);
+    wavload_file = sf_open(localname, SFM_READ, &wavinfo);
 #else
-    wavload_file = afOpenFile(fn, "r", NULL);
+    wavload_file = afOpenFile(localname, "r", NULL);
 #endif
     if(!wavload_file) {
 	FILE *f = fopen(localname, "r");
@@ -1760,9 +1755,10 @@ sample_editor_load_wav (const gchar *fn)
 	if(f) {
 	    fseek(f, 0, SEEK_END);
 	    wavload_frameCount = ftell(f);
-	    fclose(f);
+	    fseek(f, 0, SEEK_SET);
 	    wavload_through_library = FALSE;
-	    sample_editor_open_raw_sample_dialog(fn);
+	    sample_editor_open_raw_sample_dialog(f);
+	    fclose(f);
 	} else {
 	    static GtkWidget *dialog = NULL;
 
@@ -1770,6 +1766,7 @@ sample_editor_load_wav (const gchar *fn)
 	}
 	return;
     }
+    g_free(localname);
 
     wavload_through_library = TRUE;
 
@@ -1811,12 +1808,10 @@ sample_editor_load_wav (const gchar *fn)
     }
 
     if(wavload_channelCount == 1) {
-	sample_editor_load_wav_main(MODE_MONO);
+	sample_editor_load_wav_main(MODE_MONO, NULL);
     } else {
-	sample_editor_open_stereowav_dialog();
+	sample_editor_open_stereowav_dialog(NULL);
     }
-
-    return;
 
   errwrongformat:
 #if USE_SNDFILE

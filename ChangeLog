@@ -1,6 +1,6 @@
 2018-05-31  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/sample-editor.c: Stereo conversion dialogs are made more 
-compact.
+	compact; file opening/closing issues are cleaned up and fixed.
 
 2016-07-12  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui-subs.c: Bugfix (wrong pointer usage).
