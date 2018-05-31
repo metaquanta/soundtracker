@@ -69,7 +69,7 @@ static GtkWidget *spin_volume, *spin_panning, *spin_finetune, *spin_relnote;
 static GtkWidget *savebutton, *savebutton_rgn;
 static SampleDisplay *sampledisplay;
 static GtkWidget *sample_editor_hscrollbar;
-static GtkWidget *loopradio[3], *resolution_radio[2];
+static GtkWidget *loopradio[3], *resolution_radio[2], *load_radio[4], *record_radio[4];
 static GtkWidget *spin_loopstart, *spin_loopend;
 
 static struct SampleEditor { // simplifies future encapsulation of this into a Gtk+ widget
@@ -94,9 +94,9 @@ static int sample_editor_volramp_last_values[2] = { 100, 100 };
 
 enum {
     MODE_MONO = 0,
+    MODE_STEREO_MIX,
     MODE_STEREO_LEFT,
     MODE_STEREO_RIGHT,
-    MODE_STEREO_MIX,
     MODE_STEREO_2
 };
 
@@ -1299,49 +1299,31 @@ sample_editor_reverse_clicked (void)
     sample_display_set_selection(sampledisplay, ss, se);
 }
 
-#define NUM_BUTTONS 4
 static void
-sample_editor_open_stereo_dialog (GtkWidget **window, GtkWidget **mixbutton, const gchar *text)
+sample_editor_open_stereo_dialog (GtkWidget **window, GtkWidget **buttons, const gchar *text,
+                                  const gchar *title)
 {
-    GtkWidget *label, *separator, *bbox, *box1;
-    GtkWidget *buttons[NUM_BUTTONS];
-    gint i;
+	static const gchar *labels[] = {N_("Mix"), N_("Left"), N_("Right"), N_("2 samples"), NULL};
+	GtkWidget *label, *box1;
 
-    if(!*window) {
-	*window = gtk_dialog_new_with_buttons (_("Load stereo sample"), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
-					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
-	buttons[0] = gtk_dialog_add_button(GTK_DIALOG(*window), _("Left"), MODE_STEREO_LEFT);
-	*mixbutton = buttons[1] = gtk_dialog_add_button(GTK_DIALOG(*window), _("Mix"), MODE_STEREO_MIX);
-	buttons[2] = gtk_dialog_add_button(GTK_DIALOG(*window), _("Right"), MODE_STEREO_RIGHT);
-	buttons[3] = gtk_dialog_add_button(GTK_DIALOG(*window), _("2 smpls"), MODE_STEREO_2);
-	gtk_widget_set_tooltip_text(buttons[3], _("Load left and right channels into the current sample and the next one"));
+	if(!*window) {
+		*window = gtk_dialog_new_with_buttons(_(title), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
+		                                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, 
+		                                      GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
+		gui_dialog_adjust(*window, 2);
+		box1 = gtk_dialog_get_content_area(GTK_DIALOG(*window));
+		gtk_box_set_spacing(GTK_BOX(box1), 2);
 
-	gui_dialog_adjust(*window, 2);
-	box1 = gtk_dialog_get_content_area(GTK_DIALOG(*window));
-	gtk_box_set_spacing(GTK_BOX(box1), 2);
+		label = gtk_label_new(_(text));
+		gtk_label_set_justify(GTK_LABEL (label),GTK_JUSTIFY_CENTER);
+		gtk_box_pack_start(GTK_BOX (box1), label, FALSE, TRUE, 0);
+		gtk_widget_show(label);
 
-	separator = gtk_hseparator_new();
-	gtk_box_pack_end (GTK_BOX (box1), separator, FALSE, TRUE, 4);
-	gtk_widget_show(separator);
-
-	bbox = gtk_hbutton_box_new();
-	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);  
-	gtk_box_pack_end(GTK_BOX(box1), bbox, TRUE, TRUE, 0);
-	gtk_widget_show(bbox);
-
-    /* A bit trick to move buttons to vbox from action area, but leaving them active */
-	for(i = 0; i < NUM_BUTTONS; i++) {
-	    g_object_ref(buttons[i]);
-	    gtk_container_remove(GTK_CONTAINER(gtk_dialog_get_action_area(GTK_DIALOG(*window))), buttons[i]);
-	    gtk_box_pack_end(GTK_BOX(bbox), buttons[i], FALSE, TRUE, 0);
-	}
-
-	label = gtk_label_new(_(text));
-	gtk_label_set_justify(GTK_LABEL (label),GTK_JUSTIFY_CENTER);
-	gtk_box_pack_start(GTK_BOX (box1), label, FALSE, TRUE, 0);
-	gtk_widget_show(label);
-    } else
-	gtk_window_present(GTK_WINDOW(*window));
+		make_radio_group(labels, box1, buttons, FALSE, FALSE, NULL);
+		gtk_widget_set_tooltip_text(buttons[3], _("Load left and right channels into the current sample and the next one"));
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[0]), TRUE);
+	} else
+		gtk_window_present(GTK_WINDOW(*window));
 }
 
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
@@ -1387,7 +1369,7 @@ sample_editor_load_wav_main (const int mode)
 		}
 		next = &(instrument_editor_get_instrument()->samples[n_cur + 1]);
 		if(next->sample.length) {
-			if(!gui_ok_cancel_modal(mainwindow, N_("The next sample which is about to be overwriten is not empty!\n"
+			if(!gui_ok_cancel_modal(mainwindow, N_("The next sample which is about to be overwritten is not empty!\n"
 			                                       "Would you like to overwrite it?")))
 				return TRUE;
 		}
@@ -1582,33 +1564,24 @@ sample_editor_load_wav_main (const int mode)
 static void
 sample_editor_open_stereowav_dialog (void)
 {
-	static GtkWidget *window = NULL, *mixbutton;
+	static GtkWidget *window = NULL;
 	gboolean replay;
+	gint response;
 
-	sample_editor_open_stereo_dialog(&window, &mixbutton,
-	                                 N_("You have selected a stereo sample!\n(SoundTracker can only handle mono samples!)\n\nPlease choose which channel to load:"));
+	sample_editor_open_stereo_dialog(&window, load_radio,
+	                                 N_("You have selected a stereo sample!\n(SoundTracker can only handle mono samples!)\n\nPlease choose which channel to load:"),
+	                                 N_("Stereo sample loading"));
 
 	do {
-		gint response;
-
-		replay = FALSE;
-
-		gtk_widget_grab_focus(mixbutton);
 		response = gtk_dialog_run(GTK_DIALOG(window));
+
 		gtk_widget_hide(window);
-		switch (response) {
-		case MODE_STEREO_LEFT:
-		case MODE_STEREO_MIX:
-		case MODE_STEREO_RIGHT:
-			sample_editor_load_wav_main(response);
-			break;
-		case MODE_STEREO_2:
-			replay = sample_editor_load_wav_main(MODE_STEREO_2);
-			break;
-		default: /* All other events including DELETE_EVENT */
-			break;
-		}
-	} while(replay);
+		if(response != GTK_RESPONSE_OK)
+			return;
+
+		response = find_current_toggle(load_radio, 4) + 1; /* +1 since 0 means mono mode */
+		replay = sample_editor_load_wav_main(MODE_STEREO_2);
+	} while(response == MODE_STEREO_2 && replay);
 }
 
 static void
@@ -2173,20 +2146,25 @@ sample_editor_ok_clicked (void)
 	}
 
 	if(stereo) {
-		static GtkWidget *window = NULL, *mixbutton;
+		static GtkWidget *window = NULL;
 		gboolean replay;
 
-		sample_editor_open_stereo_dialog(&window, &mixbutton,
-		                                 N_("You have recorded a stereo sample!\n(SoundTracker can only handle mono samples!)\n\nPlease choose which channel to use:"));
+		sample_editor_open_stereo_dialog(&window, record_radio,
+		                                 N_("You have recorded a stereo sample!\n(SoundTracker can only handle mono samples!)\n\nPlease choose which channel to use:"),
+		                                 N_("Converting stereo sample"));
 
 		do {
 			gint n_cur;
 
 			replay = FALSE;
 
-			gtk_widget_grab_focus(mixbutton);
 			mode = gtk_dialog_run(GTK_DIALOG(window));
 			gtk_widget_hide(window);
+
+			if(mode != GTK_RESPONSE_OK)
+				mode = 0; /* Cancelling or other possible unclear status -- do nothing */
+			else
+				mode = find_current_toggle(record_radio, 4) + 1; /* +1 since 0 means mono mode */
 			switch(mode) {
 			case MODE_STEREO_LEFT:
 			case MODE_STEREO_MIX:
