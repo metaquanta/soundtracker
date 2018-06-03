@@ -17,8 +17,7 @@ header are different;
 file. Seems this should help against "weird dragging" and using of Menu 
 button in the tracker;
 62) Leave only two buttons at the sampling dialog: "Start/Ready (changing its label)" and "Cancel".
-Re-write it to a standard Gtk dialog. Also the dialog after stereo sampling and sound file loading:
-make it with radio buttons for options and "Ok" button4
+Re-write it to a standard Gtk dialog;
 63) Recording from ALSA works, but not stably;
 
 Scopes stop working at some relation between sound and scopes buffer. Explore this issue and probably

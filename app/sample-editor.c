@@ -101,24 +101,25 @@ enum {
 };
 
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
-static gboolean wavload_through_library;
-
 static GtkWidget *wavload_dialog;
-static const char *wavload_samplename;
+
+struct wl {
+	gboolean through_library;
+	const char *samplename;
 
 #if USE_SNDFILE
-static SNDFILE *wavload_file;
-static SF_INFO wavinfo;
-static sf_count_t wavload_frameCount;
+	SNDFILE *file;
+	SF_INFO wavinfo;
+	sf_count_t frameCount;
 #else
-static AFfilehandle wavload_file;
-static AFframecount wavload_frameCount;
+	AFfilehandle file;
+	AFframecount frameCount;
 #endif
 
-static int wavload_sampleWidth, wavload_channelCount, wavload_endianness, wavload_unsignedwords;
-static long wavload_rate;
+	int sampleWidth, channelCount, endianness, unsignedwords;
+	long rate;
+};
 
-static const gchar *wavload_filename;
 static GtkWidget *wavload_raw_resolution_w[2];
 static GtkWidget *wavload_raw_channels_w[2];
 static GtkWidget *wavload_raw_signed_w[2];
@@ -1329,23 +1330,8 @@ sample_editor_open_stereo_dialog (GtkWidget **window, GtkWidget **buttons, const
 #if USE_SNDFILE || !defined (NO_AUDIOFILE)
 
 static gboolean
-sample_editor_load_wav_main (const int mode, FILE *f)
-{ 
-    /* Initialized global variables:
-
-       wavload_through_library (TRUE or FALSE)
-       wavload_samplename     (the name the sample is going to get in the XM)
-       wavload_frameCount     (length of the file /stereo /16bits)
-
-       with audiofile:
-	 wavload_file;
-	 wavload_sampleWidth, wavload_channelCount;
-       without audiofile:
-         wavload_filename;
-	 wavload_sampleWidth, wavload_channelCount;
-	 wavload_endianness, wavload_unsignedwords;
-    */
-
+sample_editor_load_wav_main (const int mode, FILE *f, struct wl *wavload)
+{
     void *sbuf, *sbuf_loadto, *tmp, *sbuf2 = NULL;
 #if USE_SNDFILE
     sf_count_t len;
@@ -1377,7 +1363,7 @@ sample_editor_load_wav_main (const int mode, FILE *f)
 
     statusbar_update(STATUS_LOADING_SAMPLE, TRUE);
 
-    len = 2 * wavload_frameCount * wavload_channelCount;
+    len = 2 * wavload->frameCount * wavload->channelCount;
     if(!(tmp = malloc(len))) {
 	static GtkWidget *dialog = NULL;
 
@@ -1386,7 +1372,7 @@ sample_editor_load_wav_main (const int mode, FILE *f)
     }
 	if(mode == MODE_MONO)
 		sbuf = tmp;
-	else if(!(sbuf = malloc(2 * wavload_frameCount))) {
+	else if(!(sbuf = malloc(2 * wavload->frameCount))) {
 		static GtkWidget *dialog = NULL;
 
 		gui_error_dialog(&dialog, N_("Out of memory for sample data."), FALSE);
@@ -1394,17 +1380,17 @@ sample_editor_load_wav_main (const int mode, FILE *f)
 		goto errnobuf;
 	}
 
-    if(wavload_sampleWidth == 16) {
+    if(wavload->sampleWidth == 16) {
 	sbuf_loadto = tmp;
     } else {
 	sbuf_loadto = tmp + len / 2;
     }
 
-    if(wavload_through_library) {
+    if(wavload->through_library) {
 #if USE_SNDFILE
-	if(wavload_frameCount != sf_readf_short(wavload_file, sbuf_loadto, wavload_frameCount)) {
+	if(wavload->frameCount != sf_readf_short(wavload->file, sbuf_loadto, wavload->frameCount)) {
 #else
-	if(wavload_frameCount != afReadFrames(wavload_file, AF_DEFAULT_TRACK, sbuf_loadto, wavload_frameCount)) {
+	if(wavload->frameCount != afReadFrames(wavload->file, AF_DEFAULT_TRACK, sbuf_loadto, wavload->frameCount)) {
 #endif
 	    static GtkWidget *dialog = NULL;
 
@@ -1414,9 +1400,9 @@ sample_editor_load_wav_main (const int mode, FILE *f)
     } else {
 	if(!f)
 	    goto errnodata;
-	if(wavload_frameCount != fread(sbuf_loadto,
-				       wavload_channelCount * wavload_sampleWidth / 8,
-				       wavload_frameCount,
+	if(wavload->frameCount != fread(sbuf_loadto,
+				       wavload->channelCount * wavload->sampleWidth / 8,
+				       wavload->frameCount,
 				       f)) {
 	    static GtkWidget *dialog = NULL;
 
@@ -1426,8 +1412,8 @@ sample_editor_load_wav_main (const int mode, FILE *f)
 	}
     }
 
-    if(wavload_sampleWidth == 8) {
-	if(wavload_through_library || wavload_unsignedwords) {
+    if(wavload->sampleWidth == 8) {
+	if(wavload->through_library || wavload->unsignedwords) {
 	    st_sample_8bit_signed_unsigned(sbuf_loadto, len / 2);
 	}
 	st_convert_sample(sbuf_loadto,
@@ -1436,39 +1422,39 @@ sample_editor_load_wav_main (const int mode, FILE *f)
 			  16,
 			  len / 2);
     } else {
-	if(wavload_through_library) {
+	if(wavload->through_library) {
 	    // I think that is what the virtualByteOrder stuff is for.
 	    // le_16_array_to_host_order(sbuf, len / 2);
 	} else {
 #ifdef WORDS_BIGENDIAN
-	    if(wavload_endianness == 0) {
+	    if(wavload->endianness == 0) {
 #else
-	    if(wavload_endianness == 1) {
+	    if(wavload->endianness == 1) {
 #endif
 		byteswap_16_array(tmp, len / 2);
 	    }
-	    if(wavload_unsignedwords) {
+	    if(wavload->unsignedwords) {
 		st_sample_16bit_signed_unsigned(sbuf_loadto, len / 2);
 	    }
 	}
     }
 
     sample_editor_lock_sample();
-    sample_editor_init_sample(wavload_samplename);
+    sample_editor_init_sample(wavload->samplename);
     current_sample->sample.data = sbuf;
-    current_sample->treat_as_8bit = (wavload_sampleWidth == 8);
-    current_sample->sample.length = wavload_frameCount;
+    current_sample->treat_as_8bit = (wavload->sampleWidth == 8);
+    current_sample->sample.length = wavload->frameCount;
 
     // Initialize relnote and finetune such that sample is played in original speed
-    if(wavload_through_library) {
+    if(wavload->through_library) {
 #if USE_SNDFILE
-	current_sample->treat_as_8bit = ((wavinfo.format & (SF_FORMAT_PCM_S8 | SF_FORMAT_PCM_U8)) != 0);
-	rate = wavinfo.samplerate;
+	current_sample->treat_as_8bit = ((wavload->wavinfo.format & (SF_FORMAT_PCM_S8 | SF_FORMAT_PCM_U8)) != 0);
+	rate = wavload->wavinfo.samplerate;
 #else
-	rate = afGetRate(wavload_file, AF_DEFAULT_TRACK);
+	rate = afGetRate(wavload->file, AF_DEFAULT_TRACK);
 #endif
     } else {
-	rate = wavload_rate;
+	rate = wavload->rate;
     }
     xm_freq_note_to_relnote_finetune(rate,
 				     4 * 12 + 1, // at C-4
@@ -1476,7 +1462,7 @@ sample_editor_load_wav_main (const int mode, FILE *f)
 				     &current_sample->finetune);
 
 	if(mode == MODE_STEREO_2) {
-		if(!(sbuf2 = malloc(2 * wavload_frameCount))) {
+		if(!(sbuf2 = malloc(2 * wavload->frameCount))) {
 			static GtkWidget *dialog = NULL;
 
 			gui_error_dialog(&dialog, N_("Out of memory for sample data."), FALSE);
@@ -1484,10 +1470,10 @@ sample_editor_load_wav_main (const int mode, FILE *f)
 		}
 
 		g_mutex_lock(next->sample.lock);
-		sample_editor_init_sample_full(next, wavload_samplename);
+		sample_editor_init_sample_full(next, wavload->samplename);
 		next->sample.data = sbuf2;
-		next->treat_as_8bit = (wavload_sampleWidth == 8);
-		next->sample.length = wavload_frameCount;
+		next->treat_as_8bit = (wavload->sampleWidth == 8);
+		next->sample.length = wavload->frameCount;
 
 		xm_freq_note_to_relnote_finetune(rate,
 		                                 4 * 12 + 1, // at C-4
@@ -1498,7 +1484,7 @@ sample_editor_load_wav_main (const int mode, FILE *f)
     if(mode != MODE_MONO) {
 	gint16 *a = tmp, *b = sbuf, *c = sbuf2;
 
-	count = wavload_frameCount;
+	count = wavload->frameCount;
 
 	/* Code could probably be made shorter. But this is readable. */
 	switch(mode) {
@@ -1548,21 +1534,21 @@ sample_editor_load_wav_main (const int mode, FILE *f)
 	if(sbuf != tmp)
 		free(tmp);
   errnobuf:
-    if(wavload_through_library) {
+    if(wavload->through_library) {
 #if USE_SNDFILE
-	sf_close (wavload_file);
+	sf_close(wavload->file);
 #else
-	afCloseFile(wavload_file);
+	afCloseFile(wavload->file);
 #endif
-	wavload_file = NULL;
+	wavload->file = NULL;
     }
     return FALSE;
 }
 
 static void
-sample_editor_open_stereowav_dialog (FILE *f)
+sample_editor_open_stereowav_dialog (FILE *f, struct wl *wavload)
 {
-	static GtkWidget *window = NULL, *mixbutton;
+	static GtkWidget *window = NULL;
 	gboolean replay;
 	gint response;
 
@@ -1578,12 +1564,12 @@ sample_editor_open_stereowav_dialog (FILE *f)
 			return;
 
 		response = find_current_toggle(load_radio, 4) + 1; /* +1 since 0 means mono mode */
-		replay = sample_editor_load_wav_main(MODE_STEREO_2, f);
+		replay = sample_editor_load_wav_main(MODE_STEREO_2, f, wavload);
 	} while(response == MODE_STEREO_2 && replay);
 }
 
 static void
-sample_editor_open_raw_sample_dialog (FILE *f)
+sample_editor_open_raw_sample_dialog (FILE *f, struct wl *wavload)
 {
     static GtkWidget *window = NULL, *combo;
     static GtkListStore *ls;
@@ -1699,25 +1685,25 @@ sample_editor_open_raw_sample_dialog (FILE *f)
 	gtk_widget_hide(window);
 
 	if(response == GTK_RESPONSE_OK) {
-	    wavload_sampleWidth = find_current_toggle(wavload_raw_resolution_w, 2) == 1 ? 16 : 8;
-	    wavload_endianness = find_current_toggle(wavload_raw_endian_w, 2);
-	    wavload_channelCount = find_current_toggle(wavload_raw_channels_w, 2) == 1 ? 2 : 1;
-	    wavload_unsignedwords = find_current_toggle(wavload_raw_signed_w, 2);
+	    wavload->sampleWidth = find_current_toggle(wavload_raw_resolution_w, 2) == 1 ? 16 : 8;
+	    wavload->endianness = find_current_toggle(wavload_raw_endian_w, 2);
+	    wavload->channelCount = find_current_toggle(wavload_raw_channels_w, 2) == 1 ? 2 : 1;
+	    wavload->unsignedwords = find_current_toggle(wavload_raw_signed_w, 2);
 
 	    if(!gtk_combo_box_get_active_iter(GTK_COMBO_BOX(combo), &iter))
-		wavload_rate = 8363;
+		wavload->rate = 8363;
 	    else
-		gtk_tree_model_get(GTK_TREE_MODEL(ls), &iter, 0, &wavload_rate, -1);
+		gtk_tree_model_get(GTK_TREE_MODEL(ls), &iter, 0, &wavload->rate, -1);
 
-	    if(wavload_sampleWidth == 16) {
-		wavload_frameCount /= 2;
+	    if(wavload->sampleWidth == 16) {
+		wavload->frameCount /= 2;
 	    }
 
-	    if(wavload_channelCount == 2) {
-		wavload_frameCount /= 2;
-		sample_editor_open_stereowav_dialog(f);
+	    if(wavload->channelCount == 2) {
+		wavload->frameCount /= 2;
+		sample_editor_open_stereowav_dialog(f, wavload);
 	    } else {
-		sample_editor_load_wav_main(MODE_MONO, f);
+		sample_editor_load_wav_main(MODE_MONO, f, wavload);
 	    }
 	}
 }
@@ -1725,6 +1711,7 @@ sample_editor_open_raw_sample_dialog (FILE *f)
 static void
 sample_editor_load_wav (const gchar *fn)
 {
+	struct wl wavload;
 
 #if USE_SNDFILE != 1
     int sampleFormat;
@@ -1737,27 +1724,27 @@ sample_editor_load_wav (const gchar *fn)
 
     file_selection_save_path(fn, &gui_settings.loadsmpl_path);
 
-    wavload_samplename = strrchr(fn, '/');
-    if(!wavload_samplename)
-	wavload_samplename = fn;
+    wavload.samplename = strrchr(fn, '/');
+    if(!wavload.samplename)
+	wavload.samplename = fn;
     else
-	wavload_samplename++;
+	wavload.samplename++;
 
 #if USE_SNDFILE
-    wavinfo.format = 0;
-    wavload_file = sf_open(localname, SFM_READ, &wavinfo);
+    wavload.wavinfo.format = 0;
+    wavload.file = sf_open(localname, SFM_READ, &wavload.wavinfo);
 #else
-    wavload_file = afOpenFile(localname, "r", NULL);
+    wavload.file = afOpenFile(localname, "r", NULL);
 #endif
-    if(!wavload_file) {
+    if(!wavload.file) {
 	FILE *f = fopen(localname, "r");
 	g_free(localname);
 	if(f) {
 	    fseek(f, 0, SEEK_END);
-	    wavload_frameCount = ftell(f);
+	    wavload.frameCount = ftell(f);
 	    fseek(f, 0, SEEK_SET);
-	    wavload_through_library = FALSE;
-	    sample_editor_open_raw_sample_dialog(f);
+	    wavload.through_library = FALSE;
+	    sample_editor_open_raw_sample_dialog(f, &wavload);
 	    fclose(f);
 	} else {
 	    static GtkWidget *dialog = NULL;
@@ -1768,58 +1755,57 @@ sample_editor_load_wav (const gchar *fn)
     }
     g_free(localname);
 
-    wavload_through_library = TRUE;
+    wavload.through_library = TRUE;
 
 #if USE_SNDFILE
-    wavload_frameCount = wavinfo.frames;
+    wavload.frameCount = wavload.wavinfo.frames;
 #else
-    wavload_frameCount = afGetFrameCount(wavload_file, AF_DEFAULT_TRACK);
+    wavload.frameCount = afGetFrameCount(wavload.file, AF_DEFAULT_TRACK);
 #endif
-    if(wavload_frameCount > mixer->max_sample_length) {
+    if(wavload.frameCount > mixer->max_sample_length) {
 	static GtkWidget *dialog = NULL;
 	gui_warning_dialog(&dialog, N_("Sample is too long for current mixer module. Loading anyway."), FALSE);
     }
 
 #if USE_SNDFILE
 
-    wavload_channelCount = wavinfo.channels;
-    wavload_sampleWidth = 16;
+    wavload.channelCount = wavload.wavinfo.channels;
+    wavload.sampleWidth = 16;
     
 #else
 
-    wavload_channelCount = afGetChannels(wavload_file, AF_DEFAULT_TRACK);
-    afGetSampleFormat(wavload_file, AF_DEFAULT_TRACK, &sampleFormat, &wavload_sampleWidth);
+    wavload.channelCount = afGetChannels(wavload.file, AF_DEFAULT_TRACK);
+    afGetSampleFormat(wavload.file, AF_DEFAULT_TRACK, &sampleFormat, &wavload.sampleWidth);
 
     /* I think audiofile-0.1.7 does this automatically, but I'm not sure */
 #ifdef WORDS_BIGENDIAN
-    afSetVirtualByteOrder(wavload_file, AF_DEFAULT_TRACK, AF_BYTEORDER_BIGENDIAN);
+    afSetVirtualByteOrder(wavload.file, AF_DEFAULT_TRACK, AF_BYTEORDER_BIGENDIAN);
 #else
-    afSetVirtualByteOrder(wavload_file, AF_DEFAULT_TRACK, AF_BYTEORDER_LITTLEENDIAN);
+    afSetVirtualByteOrder(wavload.file, AF_DEFAULT_TRACK, AF_BYTEORDER_LITTLEENDIAN);
 #endif
 
 #endif
 
 
-    if((wavload_sampleWidth != 16 && wavload_sampleWidth != 8) || wavload_channelCount > 2) {
+    if((wavload.sampleWidth != 16 && wavload.sampleWidth != 8) || wavload.channelCount > 2) {
 	static GtkWidget *dialog = NULL;
 
 	gui_error_dialog(&dialog, N_("Can only handle 8 and 16 bit samples with up to 2 channels"), FALSE);
 	goto errwrongformat;
     }
 
-    if(wavload_channelCount == 1) {
-	sample_editor_load_wav_main(MODE_MONO, NULL);
+    if(wavload.channelCount == 1) {
+	sample_editor_load_wav_main(MODE_MONO, NULL, &wavload);
     } else {
-	sample_editor_open_stereowav_dialog(NULL);
+	sample_editor_open_stereowav_dialog(NULL, &wavload);
     }
 
   errwrongformat:
 #if USE_SNDFILE
-    sf_close(wavload_file);
+    sf_close(wavload.file);
 #else
-    afCloseFile(wavload_file);
+    afCloseFile(wavload.file);
 #endif
-    wavload_file = NULL;
     return;
 }
 
