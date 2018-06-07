@@ -37,7 +37,7 @@ gboolean     sample_editor_handle_keys               (int shift,
 void         sample_editor_set_sample                (STSample *);
 void         sample_editor_update                    (void);
 
-gboolean     sample_editor_stop_sampling             (void);
+void         sample_editor_stop_sampling             (void);
 
 void         sample_editor_start_updating            (void);
 void         sample_editor_stop_updating             (void);

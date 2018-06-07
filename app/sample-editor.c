@@ -41,6 +41,7 @@
 #include <glib/gprintf.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "sample-editor.h"
 #include "xm.h"
@@ -59,7 +60,7 @@
 #include "module-info.h"
 #include "file-operations.h"
 #include "gui-settings.h"
-#include "xm.h"
+#include "clock.h"
 
 // == GUI variables
 
@@ -131,7 +132,7 @@ static gboolean libaf2 = TRUE;
 // = Sampler variables
 
 static SampleDisplay *monitorscope;
-static GtkWidget *cancelbutton, *okbutton, *startsamplingbutton;
+static GtkWidget *clearbutton, *okbutton, *sclock;
 
 st_driver *sampling_driver = NULL;
 void *sampling_driver_object = NULL;
@@ -145,7 +146,8 @@ struct recordbuf {
 };
 
 static struct recordbuf *recordbufs, *current;
-static guint recordedlen, sampling, rate;
+static guint recordedlen, rate, toggled_id;
+static gboolean sampling, monitoring, has_data;
 static STMixerFormat format;
 
 // = Editing operations variables
@@ -160,7 +162,6 @@ static int update_freq = 50;
 static int gtktimer = -1;
 
 static void sample_editor_ok_clicked(void);
-static void sample_editor_start_sampling_clicked(void);
 
 static void sample_editor_spin_volume_changed(GtkSpinButton *spin);
 static void sample_editor_spin_panning_changed(GtkSpinButton *spin);
@@ -438,7 +439,7 @@ sample_editor_page_create (GtkNotebook *nb)
 #endif
 
     
-    thing = gtk_button_new_with_label(_("Monitor"));
+    thing = gtk_button_new_with_label(_("Sampling"));
     g_signal_connect(thing, "clicked",
 		       G_CALLBACK(sample_editor_monitor_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
@@ -1934,91 +1935,167 @@ sample_editor_save_region_wav (const gchar *fn)
 
 /* ============================ Sampling functions coming up -------- */
 
-GtkWidget*
-sample_editor_create_sampling_widgets (void)
+static void
+clear_buffers (void)
 {
-    GtkWidget *box, *thing, *box2;
+	struct recordbuf *r, *r2;
 
-    box = gtk_vbox_new(FALSE, 2);
-
-    thing = sample_display_new(FALSE);
-    gtk_box_pack_start(GTK_BOX(box), thing, TRUE, TRUE, 0);
-    gtk_widget_show(thing);
-    monitorscope = SAMPLE_DISPLAY(thing);
-    
-    box2 = gtk_hbox_new(TRUE, 4);
-    gtk_box_pack_start(GTK_BOX(box), box2, FALSE, TRUE, 0);
-    gtk_widget_show(box2);
-
-    thing = gtk_button_new_with_label(_("OK"));
-    g_signal_connect(thing, "clicked",
-		       G_CALLBACK(sample_editor_ok_clicked), NULL);
-    gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
-    gtk_widget_set_sensitive(thing, 0);
-    gtk_widget_show(thing);
-    okbutton = thing;
-
-    thing = gtk_button_new_with_label(_("Start sampling"));
-    g_signal_connect(thing, "clicked",
-		       G_CALLBACK(sample_editor_start_sampling_clicked), NULL);
-    gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
-    gtk_widget_show(thing);
-    startsamplingbutton = thing;
-
-    thing = gtk_button_new_with_label(_("Cancel"));
-    g_signal_connect(thing, "clicked",
-		       G_CALLBACK(sample_editor_stop_sampling), NULL);
-    gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
-    gtk_widget_show(thing);
-    cancelbutton = thing;
-
-    return box;
+	/* Free allocated sample buffers */
+	for(r = recordbufs; r; r = r2) {
+		r2 = r->next;
+		free(r->data);
+		free(r);
+	}
+	recordbufs = NULL;
 }
 
 static void
-sampler_page_enable_widgets (int enable)
+enable_widgets (gboolean enable)
 {
-    gtk_widget_set_sensitive(okbutton, !enable);
-    gtk_widget_set_sensitive(startsamplingbutton, enable);
+    gtk_widget_set_sensitive(okbutton, enable);
+    gtk_widget_set_sensitive(clearbutton, enable);
+}
+
+static void
+sampling_response (GtkWidget *dialog, gint response, GtkToggleButton *button)
+{
+	gtk_widget_hide(samplingwindow);
+	sampling = FALSE;
+
+	if(button->active) {
+		g_signal_handler_block(G_OBJECT(button), toggled_id); /* To prevent data storing on record stop */
+		gtk_toggle_button_set_state(button, FALSE);
+		g_signal_handler_unblock(G_OBJECT(button), toggled_id);
+	}
+	if(monitoring) {
+		sampling_driver->release(sampling_driver_object);
+		monitoring = FALSE;
+	}
+
+	if(response == GTK_RESPONSE_OK)
+		sample_editor_ok_clicked();
+
+	clock_stop(CLOCK(sclock));
+	clock_set_seconds(CLOCK(sclock), 0);
+	clear_buffers();
+	has_data = FALSE;
+}
+
+static void
+sampling_widget_hide (GtkToggleButton *button)
+{
+	sampling_response(NULL, GTK_RESPONSE_CANCEL, button);
+}
+
+static void
+record_toggled (GtkWidget *button)
+{
+	if(GTK_TOGGLE_BUTTON(button)->active) {
+		recordedlen = 0;
+		if(recordbufs)
+			clear_buffers();
+
+		if(!monitoring) {
+			sampling_driver->open(sampling_driver_object);
+			monitoring = TRUE;
+		}
+		sampling = TRUE;
+		clock_set_seconds(CLOCK(sclock), 0);
+		clock_start(CLOCK(sclock));
+	} else {
+		sampling = FALSE;
+		sampling_driver->release(sampling_driver_object);
+		monitoring = FALSE;
+
+		has_data = TRUE;
+		enable_widgets(has_data);
+		// _set_chain() instead to display the whole sample
+		sample_display_set_data(monitorscope, recordbufs->data, ST_MIXER_FORMAT_S16_LE,
+		                        recordbufs->length >> (mixer_get_resolution(format & 0x7) - 1), FALSE);
+
+		clock_stop(CLOCK(sclock));
+	}
+}
+
+static void
+clear_clicked (void)
+{
+	has_data = FALSE;
+	enable_widgets(has_data);
+
+	recordedlen = 0;
+	clear_buffers();
+	if(!monitoring) {
+		sampling_driver->open(sampling_driver_object);
+		monitoring = TRUE;
+	}
+	clock_set_seconds(CLOCK(sclock), 0);
 }
 
 static void
 sample_editor_monitor_clicked (void)
 {
-    if(!sampling_driver || !sampling_driver_object) {
-	static GtkWidget *dialog = NULL;
+	if(!sampling_driver || !sampling_driver_object) {
+		static GtkWidget *dialog = NULL;
 
-	gui_error_dialog(&dialog, N_("No sampling driver available"), FALSE);
-	return;
-    }
+		gui_error_dialog(&dialog, N_("No sampling driver available"), FALSE);
+		return;
+	}
 
 	if(!samplingwindow) {
-		GtkWidget *mainbox, *thing;
+		GtkWidget *mainbox, *thing, *box, *box2;
+		GtkAccelGroup *group = gtk_accel_group_new();
+		GClosure *closure;
 
-		samplingwindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-		gtk_window_set_title(GTK_WINDOW(samplingwindow), _("Sampling Window"));
-		gtk_window_set_transient_for(GTK_WINDOW(samplingwindow), GTK_WINDOW(mainwindow));
-		g_signal_connect(samplingwindow, "delete_event",
-			G_CALLBACK(sample_editor_stop_sampling), NULL);
-		gui_set_escape_close(samplingwindow);
+		samplingwindow = gtk_dialog_new_with_buttons(_("Sampling Window"), GTK_WINDOW(mainwindow), 0,
+		                                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
+		gtk_window_add_accel_group(GTK_WINDOW(samplingwindow), group);
+		g_signal_connect(samplingwindow, "delete-event",
+		                 G_CALLBACK(gui_delete_noop), NULL);
 
-		mainbox = gtk_vbox_new(FALSE, 2);
+		okbutton = gtk_dialog_add_button(GTK_DIALOG(samplingwindow), GTK_STOCK_OK, GTK_RESPONSE_OK);
+
+		mainbox = gtk_dialog_get_content_area(GTK_DIALOG(samplingwindow));
 		gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-		gtk_container_add(GTK_CONTAINER(samplingwindow), mainbox);
-		gtk_widget_show(mainbox);
 
-		thing = sample_editor_create_sampling_widgets();
-		gtk_box_pack_start(GTK_BOX(mainbox), thing, TRUE, TRUE, 0);
-		gtk_widget_show(thing);
+		box = gtk_vbox_new(FALSE, 2);
 
-		gtk_widget_show (samplingwindow);
+		thing = sample_display_new(FALSE);
+		gtk_box_pack_start(GTK_BOX(box), thing, TRUE, TRUE, 0);
+		monitorscope = SAMPLE_DISPLAY(thing);
+
+		box2 = gtk_hbox_new(FALSE, 4);
+		gtk_box_pack_start(GTK_BOX(box), box2, FALSE, TRUE, 0);
+
+		thing = gtk_toggle_button_new_with_label(_("Record"));
+		closure = g_cclosure_new_swap(G_CALLBACK(sampling_widget_hide), thing, NULL);
+		gtk_accel_group_connect(group, GDK_Escape, 0, 0, closure);
+		toggled_id = g_signal_connect(thing, "toggled",
+		                              G_CALLBACK(record_toggled), NULL);
+		gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, FALSE, 0);
+		g_signal_connect(samplingwindow, "response",
+		                 G_CALLBACK(sampling_response), thing);
+
+		clearbutton = thing = gtk_button_new_with_label(_("Clear"));
+		g_signal_connect(thing, "clicked",
+		                 G_CALLBACK(clear_clicked), NULL);
+		gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, FALSE, 0);
+
+		sclock = clock_new();
+		clock_set_format(CLOCK(sclock), _("%M:%S"));
+		clock_set_seconds(CLOCK(sclock), 0);
+		gtk_box_pack_start(GTK_BOX(box2), sclock, FALSE, TRUE, 0);
+
+		gtk_box_pack_start(GTK_BOX(mainbox), box, TRUE, TRUE, 0);
+		gtk_widget_show_all(samplingwindow);
 	} else
 		gtk_window_present(GTK_WINDOW(samplingwindow));
 
-	sampler_page_enable_widgets(TRUE);
+	enable_widgets(FALSE);
 
 	recordbufs = NULL;
-	sampling = 0;
+	sampling = FALSE;
+	has_data = FALSE;
 	recordedlen = 0;
 	current = NULL;
 	rate = 44100;
@@ -2029,7 +2106,9 @@ sample_editor_monitor_clicked (void)
 
 		sample_editor_stop_sampling();
 		gui_error_dialog(&dialog, N_("Sampling failed!"), FALSE);
-	}
+		monitoring = FALSE;
+	} else
+		monitoring = TRUE;
 }
 
 /* Count is in bytes, not samples. The function returns TRUE if the buffer is acquired and the driver shall allocate a new one */
@@ -2056,7 +2135,7 @@ sample_editor_sampled (void *src,
 		newbuf->length = count;
 		newbuf->data = src;
 
-		if(!recordbufs){
+		if(!recordbufs){ /* Sampling start */
 			recordbufs = newbuf;
 			rate = mixfreq;
 			format = mixformat;
@@ -2071,29 +2150,22 @@ sample_editor_sampled (void *src,
 	return sampled;
 }
 
-gboolean
+void
 sample_editor_stop_sampling (void)
 {
-    struct recordbuf *r, *r2;
 
-    if(!samplingwindow) {
-	return TRUE;
-    }
+	sampling = FALSE;
+	has_data = FALSE;
 
-    sampling_driver->release(sampling_driver_object);
+	if(samplingwindow) {
+		if(monitoring)
+			sampling_driver->release(sampling_driver_object);
+		gtk_widget_hide(samplingwindow);
 
-    gtk_widget_hide(samplingwindow);
+		clear_buffers();
+	}
 
-    /* clear the recorded sample */
-    for(r = recordbufs; r; r = r2) {
-	r2 = r->next;
-	free(r->data);
-	free(r);
-    }
-    recordbufs = NULL;
-
-    /* Stop delete event propagation */
-    return TRUE;
+	monitoring = FALSE;
 }
 
 static void
@@ -2107,10 +2179,7 @@ sample_editor_ok_clicked (void)
     guint multiply, mode = 0;
     gboolean stereo = format & ST_MIXER_FORMAT_STEREO;
 
-    sampling_driver->release(sampling_driver_object);
-    gtk_widget_hide(samplingwindow);
-
-    g_return_if_fail(current_sample != NULL);
+    g_return_if_fail(current_sample != NULL && has_data);
 
 	format &= 0x7;
 	multiply = mixer_get_resolution(format) - 1; /* 0 - 8 bit, 1 - 16, used for shifts */
@@ -2166,13 +2235,6 @@ sample_editor_ok_clicked (void)
 					                                             "Would you like to overwrite it?"));
 				break;
 			default:
-				/* clear the recorded sample and exit */
-				for(r = recordbufs; r; r = r2) {
-					r2 = r->next;
-					free(r->data);
-					free(r);
-				}
-				recordbufs = NULL;
 				return;
 			}
 		} while(replay);
@@ -2360,10 +2422,7 @@ sample_editor_ok_clicked (void)
 				sbuf += r->length >> 1;
 			}
 		}
-		free(r->data);
-		free(r);
 	}
-	recordbufs = NULL;
 
     if(recordedlen > mixer->max_sample_length) {
 	static GtkWidget *dialog = NULL;
@@ -2391,13 +2450,6 @@ sample_editor_ok_clicked (void)
     instrument_editor_update(TRUE);
     sample_editor_update();
     xm_set_modified(1);
-}
-
-static void
-sample_editor_start_sampling_clicked (void)
-{
-    sampler_page_enable_widgets(FALSE);
-    sampling = 1;
 }
 
 /* ==================== VOLUME RAMPING DIALOG =================== */

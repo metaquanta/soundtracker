@@ -16,8 +16,8 @@ header are different;
 61) Generate "Button release" event at file chooser when selecting the 
 file. Seems this should help against "weird dragging" and using of Menu 
 button in the tracker;
-62) Leave only two buttons at the sampling dialog: "Start/Ready (changing its label)" and "Cancel".
-Re-write it to a standard Gtk dialog;
+62) Record indicator for the sampling monitor in record mode; display 
+the whole sample after recording;
 63) Recording from ALSA works, but not stably;
 
 Scopes stop working at some relation between sound and scopes buffer. Explore this issue and probably

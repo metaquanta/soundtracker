@@ -1,3 +1,7 @@
+2018-06-07  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/sample-editor.c: Sampling dialog is rewritten to be more 
+convenient.
+
 2018-06-02  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/sample-editor.c: Code optimization and cleanup.
 
