@@ -127,7 +127,7 @@ integer32_setstereo (int on)
 }
 
 static void
-integer32_setmixfreq (guint16 frequency)
+integer32_setmixfreq (guint32 frequency)
 {
     mixfreq = frequency;
 }

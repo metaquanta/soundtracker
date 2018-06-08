@@ -60,7 +60,7 @@ typedef struct st_mixer {
     gboolean (*setstereo)    (int on);
 
     /* set mixing frequency */
-    void     (*setmixfreq)   (guint16 frequency);
+    void     (*setmixfreq)   (guint32 frequency);
 
     /* set final amplification factor (0.0 = mute ... 1.0 = normal ... +inf = REAL LOUD! :D)*/
     void     (*setampfactor) (float amplification);

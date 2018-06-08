@@ -191,7 +191,7 @@ kb_x86_setstereo (int on)
 }
 
 static void
-kb_x86_setmixfreq (guint16 frequency)
+kb_x86_setmixfreq (guint32 frequency)
 {
     mixfreq = frequency;
 }

@@ -1,3 +1,8 @@
+2018-06-08  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/mixer.h, app/mixers/integer32.c, app/mixers/kb-x86.c: the bug 
+with high discretization frequences is fixed (now even 96 ksamples/s is 
+ok).
+
 2018-06-07  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/sample-editor.c: Sampling dialog is rewritten to be more 
 convenient.
