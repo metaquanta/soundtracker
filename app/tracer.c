@@ -81,7 +81,7 @@ tracer_updatesample (st_mixer_sample_info *si)
 }
 
 static void
-tracer_setmixfreq (guint16 frequency)
+tracer_setmixfreq (guint32 frequency)
 {
     mixfreq = frequency;
 }
