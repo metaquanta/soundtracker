@@ -1,6 +1,7 @@
 2018-06-13  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/st-subs.c, app/drivers/jack-output.c: code cleanup (unneeded 
-headers).
+headers);
+	* app/clock.c, app/scalablepic.c: memory leaks are fixed.
 
 2018-06-08  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/mixer.h, app/mixers/integer32.c, app/mixers/kb-x86.c: the bug 

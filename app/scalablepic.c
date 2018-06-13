@@ -169,12 +169,14 @@ static void scalable_pic_draw (GtkWidget *widget, GdkRectangle *area)
 	    need_resize = TRUE;
 	}
 
-	if (need_resize || (sp->copy == NULL))	
+	if (need_resize || (sp->copy == NULL)) {
+		if(sp->copy)
+			gdk_pixbuf_unref(sp->copy);
 	    sp->copy = gdk_pixbuf_new (gdk_pixbuf_get_colorspace (sp->pic),
 			       gdk_pixbuf_get_has_alpha (sp->pic),
 			       gdk_pixbuf_get_bits_per_sample (sp->pic),
 			       sp->maxwidth,sp->maxheight);
-			       
+	}
 	gdk_pixbuf_scale (sp->pic, sp->copy, 0, 0,
 			    widget->allocation.width, widget->allocation.height,
 			    0.0, 0.0,

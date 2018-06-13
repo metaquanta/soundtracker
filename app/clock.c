@@ -43,6 +43,8 @@ guint clock_get_type(void){
 static void clock_destroy(GtkObject *object){
 	g_return_if_fail(object != NULL);
 	clock_stop(CLOCK(object));
+	g_free(CLOCK(object)->tm);
+	g_free(CLOCK(object)->fmt);
 	GTK_OBJECT_CLASS(parent_class)->destroy(object);
 }
 
