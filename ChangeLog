@@ -3,7 +3,9 @@
 headers);
 	* app/clock.c, app/scalablepic.c: memory leaks are fixed;
 	* app/tracer.c: tracer interface is now consistent with the 
-previous fix.
+previous fix;
+	* app/cheat-sheet.c, app/envelope-box.c, app/gui.c, GBS files: the 
+uniform data dir entry is implemented.
 
 2018-06-08  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/mixer.h, app/mixers/integer32.c, app/mixers/kb-x86.c: the bug 
