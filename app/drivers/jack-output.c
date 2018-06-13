@@ -55,7 +55,7 @@
 #include "driver-inout.h"
 #include "mixer.h"
 #include "errors.h"
-#include "gui.h"
+#include "gui-subs.h"
 #include "preferences.h"
 
 /* suggested by Erik de Castro Lopo */

@@ -28,7 +28,6 @@
 
 #include "st-subs.h"
 #include "xm.h"
-#include "gui-settings.h"
 
 int
 st_init_pattern_channels (XMPattern *p,
