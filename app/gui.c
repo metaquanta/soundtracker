@@ -63,7 +63,7 @@
 #include "extspinbutton.h"
 #include "clock.h"
 
-#define XML_FILE PREFIX"/share/soundtracker/soundtracker.xml"
+#define XML_FILE DATADIR"/"PACKAGE"/"PACKAGE".xml"
 
 int gui_playing_mode = 0;
 int notebook_current_page = NOTEBOOK_PAGE_FILE;
@@ -1773,7 +1773,7 @@ gui_splash (void)
 
 #ifndef NO_GDK_PIXBUF
     GError *error = NULL;
-    gui_splash_logo = gdk_pixbuf_new_from_file(PREFIX"/share/soundtracker/soundtracker_splash.png", &error);
+    gui_splash_logo = gdk_pixbuf_new_from_file(DATADIR"/"PACKAGE"/soundtracker_splash.png", &error);
     if(gui_splash_logo) {
 	thing = gtk_hseparator_new();
 	gtk_widget_show(thing);
@@ -1969,7 +1969,7 @@ gui_final (int argc,
 				  gui_settings.st_window_x,
 				  gui_settings.st_window_y);
     }
-    gtk_window_set_icon_from_file(GTK_WINDOW(mainwindow), PREFIX"/share/soundtracker/soundtracker-icon.png", NULL);
+    gtk_window_set_icon_from_file(GTK_WINDOW(mainwindow), DATADIR"/"PACKAGE"/soundtracker-icon.png", NULL);
 
 	file_selection_create(DIALOG_LOAD_MOD, _("Load Module"), gui_settings.loadmod_path, load_xm, 0, TRUE, FALSE, mod_formats, N_("Load the selected module into the tracker"));
 	file_selection_create(DIALOG_SAVE_MOD, _("Save Module"), gui_settings.savemod_path, save_song, 1, FALSE, TRUE, save_mod_formats, N_("Save the current module"));
@@ -2030,7 +2030,7 @@ gui_final (int argc,
     gtk_table_attach_defaults(GTK_TABLE(table), hbox, 0, 2, 0, 1);
     gtk_widget_show(hbox);
 
-    pmw = gtk_image_new_from_file(PREFIX"/share/soundtracker/play.xpm");
+    pmw = gtk_image_new_from_file(DATADIR"/"PACKAGE"/play.xpm");
     pbutton = thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
     g_signal_connect(thing, "clicked",
@@ -2039,7 +2039,7 @@ gui_final (int argc,
     gtk_widget_set_tooltip_text(thing, _("Play Song"));
     gtk_widget_show_all(thing);
 
-    pmw = gtk_image_new_from_file(PREFIX"/share/soundtracker/play_cur.xpm");
+    pmw = gtk_image_new_from_file(DATADIR"/"PACKAGE"/play_cur.xpm");
     thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
     g_signal_connect(thing, "clicked",
@@ -2048,7 +2048,7 @@ gui_final (int argc,
     gtk_widget_set_tooltip_text(thing, _("Play Pattern"));
     gtk_widget_show_all(thing);
 
-    pmw = gtk_image_new_from_file(PREFIX"/share/soundtracker/stop.xpm");
+    pmw = gtk_image_new_from_file(DATADIR"/"PACKAGE"/stop.xpm");
     thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
     g_signal_connect(thing, "clicked",
@@ -2071,7 +2071,7 @@ gui_final (int argc,
     g_signal_connect(spin_editpat, "value-changed",
 		     G_CALLBACK(gui_editpat_changed), NULL);
 		       
-    pmw = gtk_image_new_from_file(PREFIX"/share/soundtracker/lock.xpm");
+    pmw = gtk_image_new_from_file(DATADIR"/"PACKAGE"/lock.xpm");
     toggle_lock_editpat = thing = gtk_toggle_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE,0);		
@@ -2126,10 +2126,10 @@ gui_final (int argc,
     gtk_widget_show(hbox);
     
     vbox = gtk_vbox_new(FALSE, 0);
-    alt[0] = gtk_image_new_from_file(PREFIX"/share/soundtracker/sharp.xpm");
+    alt[0] = gtk_image_new_from_file(DATADIR"/"PACKAGE"/sharp.xpm");
     gtk_box_pack_start(GTK_BOX(vbox), alt[0], FALSE, FALSE, 0);
     
-    alt[1] = gtk_image_new_from_file(PREFIX"/share/soundtracker/flat.xpm");
+    alt[1] = gtk_image_new_from_file(DATADIR"/"PACKAGE"/flat.xpm");
     gtk_widget_show(alt[gui_settings.sharp ? 0 : 1]);
     gtk_box_pack_start(GTK_BOX(vbox), alt[1], FALSE, FALSE, 0);
     gtk_widget_show(vbox);
@@ -2183,10 +2183,10 @@ gui_final (int argc,
     add_empty_hbox(hbox);
     
     vbox = gtk_vbox_new(FALSE, 0);
-    arrow[0] = gtk_image_new_from_file(PREFIX"/share/soundtracker/downarrow.xpm");
+    arrow[0] = gtk_image_new_from_file(DATADIR"/"PACKAGE"/downarrow.xpm");
     gtk_box_pack_start(GTK_BOX(vbox), arrow[0], FALSE, FALSE, 0);
     
-    arrow[1] = gtk_image_new_from_file(PREFIX"/share/soundtracker/rightarrow.xpm");
+    arrow[1] = gtk_image_new_from_file(DATADIR"/"PACKAGE"/rightarrow.xpm");
     gtk_box_pack_start(GTK_BOX(vbox), arrow[1], FALSE, FALSE, 0);
     gtk_widget_show(arrow[gui_settings.advance_cursor_in_fx_columns ? 1 : 0]);
     gtk_widget_show(vbox);
@@ -2206,7 +2206,7 @@ gui_final (int argc,
     gtk_widget_show(thing);
 
 #ifndef NO_GDK_PIXBUF
-    scopegroup = SCOPE_GROUP(scope_group_new(gdk_pixbuf_new_from_file(PREFIX"/share/soundtracker/muted.png", &error)));
+    scopegroup = SCOPE_GROUP(scope_group_new(gdk_pixbuf_new_from_file(DATADIR"/"PACKAGE"/muted.png", &error)));
 #else
     scopegroup = SCOPE_GROUP(scope_group_new());
 #endif

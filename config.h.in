@@ -3,6 +3,9 @@
 /* Define if building universal (internal helper macro) */
 #undef AC_APPLE_UNIVERSAL_BUILD
 
+/* Data directory */
+#undef DATADIR
+
 /* Set if new (v0.9) ALSA driver wanted */
 #undef DRIVER_ALSA_09x
 

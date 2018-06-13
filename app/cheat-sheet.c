@@ -60,7 +60,7 @@ cheat_sheet_dialog (void)
 
 	linguas = g_get_language_names();
 	while(linguas[i]) {
-		path = g_strdup_printf(PREFIX"/share/"PACKAGE"/cheat-sheet.%s.html", linguas[i]);
+		path = g_strdup_printf(DATADIR"/"PACKAGE"/cheat-sheet.%s.html", linguas[i]);
 		if(g_file_test(path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR)) {
 			file = g_file_new_for_path(path);
 			break;

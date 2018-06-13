@@ -1333,7 +1333,7 @@ GtkWidget* envelope_box_new(const gchar *label)
     gtk_widget_show_all(thing);
 
 	cb[0].data = cb[1].data = cb[2].data = e;
-	builder = gui_builder_from_file(PREFIX"/share/soundtracker/envelope-box.xml", cb);
+	builder = gui_builder_from_file(DATADIR"/"PACKAGE"/envelope-box.xml", cb);
 	menu = GTK_WIDGET(gtk_builder_get_object(builder, "env_editor_zoom_menu"));
 	gui_popup_menu_attach(menu, thing, NULL);
 	g_object_unref(builder);
