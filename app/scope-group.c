@@ -86,7 +86,7 @@ scope_group_set_num_channels (ScopeGroup *s,
 
     // Add new scopes to table
     for(i = s->numchan; i < num_channels; i++) {
-	gtk_object_ref(GTK_OBJECT(s->scopebuttons[i]));
+	g_object_ref(G_OBJECT(s->scopebuttons[i]));
 	gtk_table_attach_defaults(GTK_TABLE(s->table), s->scopebuttons[i], i / 2, i / 2 + 1, i % 2, i % 2 + 1);
     }
 

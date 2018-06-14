@@ -833,8 +833,7 @@ press_key (Clavier *clavier, gint key)
   clavier->is_pressed = TRUE;
   clavier->key_pressed = key;
 
-  gtk_signal_emit (GTK_OBJECT (clavier), 
-		   clavier_signals[CLAVIERKEY_PRESS], key);
+  g_signal_emit(G_OBJECT(clavier), clavier_signals[CLAVIERKEY_PRESS], 0, key);
 
   /*  printf("press: %i\n", key); */
 }
@@ -844,7 +843,7 @@ release_key (Clavier *clavier)
 {
   clavier->is_pressed = FALSE;
 
-  gtk_signal_emit (GTK_OBJECT (clavier), clavier_signals[CLAVIERKEY_RELEASE], 
+  g_signal_emit(G_OBJECT(clavier), clavier_signals[CLAVIERKEY_RELEASE], 0,
 		   clavier->key_pressed);
 
   /*  printf ("release: %i\n", clavier->key_pressed); */
@@ -920,12 +919,12 @@ clavier_motion_notify (GtkWidget *widget, GdkEventMotion *event)
 
     if(key != clavier->key_entered) {
 	if(clavier->key_entered != -1) {
-	    gtk_signal_emit (GTK_OBJECT (clavier), 
-			     clavier_signals[CLAVIERKEY_LEAVE], clavier->key_entered);
+	    g_signal_emit(G_OBJECT(clavier), 
+			     clavier_signals[CLAVIERKEY_LEAVE], 0, clavier->key_entered);
 	}
 	clavier->key_entered = key;
-	gtk_signal_emit (GTK_OBJECT (clavier), 
-			 clavier_signals[CLAVIERKEY_ENTER], key);
+	g_signal_emit(G_OBJECT(clavier), 
+			 clavier_signals[CLAVIERKEY_ENTER], 0, key);
     }
 
     if (clavier->is_pressed) {
@@ -945,8 +944,8 @@ clavier_leave_notify (GtkWidget *widget,
     Clavier *clavier = CLAVIER (widget);
 
     if(clavier->key_entered != -1) {
-	gtk_signal_emit (GTK_OBJECT (clavier), 
-			 clavier_signals[CLAVIERKEY_LEAVE], clavier->key_entered);
+	g_signal_emit(G_OBJECT(clavier),
+			 clavier_signals[CLAVIERKEY_LEAVE], 0, clavier->key_entered);
 	clavier->key_entered = -1;
     }
     

@@ -327,7 +327,7 @@ track_editor_set_num_channels (int n)
 
     // Remove superfluous togglebuttons from table
     for(i = n; i < jazz_numshown; i++) {
-	gtk_object_ref(GTK_OBJECT(jazztoggles[i]));
+	g_object_ref(G_OBJECT(jazztoggles[i]));
 	gtk_container_remove(GTK_CONTAINER(jazztable), GTK_WIDGET(jazztoggles[i]));
     }
 
@@ -440,9 +440,9 @@ static void
 vscrollbar_changed (GtkAdjustment *adj)
 {
     if(ASYNCEDIT || (gui_playing_mode != PLAYING_SONG && gui_playing_mode != PLAYING_PATTERN)) {
-	gtk_signal_handler_block_by_func(GTK_OBJECT(tracker), GTK_SIGNAL_FUNC(update_vscrollbar), NULL);
+	g_signal_handlers_block_by_func(G_OBJECT(tracker), G_CALLBACK(update_vscrollbar), NULL);
 	tracker_set_patpos(TRACKER(tracker), adj->value);
-	gtk_signal_handler_unblock_by_func(GTK_OBJECT(tracker), GTK_SIGNAL_FUNC(update_vscrollbar), NULL);
+	g_signal_handlers_unblock_by_func(G_OBJECT(tracker), G_CALLBACK(update_vscrollbar), NULL);
     }
 }
 

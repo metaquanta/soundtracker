@@ -458,8 +458,8 @@ gui_settings_dialog (void)
     thing = gtk_check_button_new_with_label(_("Save and restore permanent channels"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.store_perm);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
-    gtk_signal_connect(GTK_OBJECT(thing), "toggled",
-		       GTK_SIGNAL_FUNC(gui_settings_perm_toggled), NULL);
+    g_signal_connect(G_OBJECT(thing), "toggled",
+		       G_CALLBACK(gui_settings_perm_toggled), NULL);
 
     gui_subs_set_slider_value(&prefs_scopesfreq_slider, gui_settings.scopes_update_freq);
     gui_subs_set_slider_value(&prefs_trackerfreq_slider, gui_settings.tracker_update_freq);
@@ -539,7 +539,7 @@ gui_settings_dialog (void)
     ts_box = vbox1 = gtk_vbox_new(FALSE, 2);
     gtk_box_pack_start(GTK_BOX(mainhbox), vbox1, TRUE, TRUE, 0);
 
-    gtk_object_ref(GTK_OBJECT(trackersettings));
+    g_object_ref(G_OBJECT(trackersettings));
     gtk_box_pack_start(GTK_BOX(vbox1), trackersettings, TRUE, TRUE, 0);
 
     thing = gtk_hseparator_new();

@@ -134,7 +134,7 @@ tracker_set_num_channels (Tracker *t,
 	init_display(t, widget->allocation.width, widget->allocation.height);
 	gtk_widget_queue_draw(widget);
     }
-    gtk_signal_emit(GTK_OBJECT(t), tracker_signals[SIG_XPANNING], t->leftchan, t->num_channels, t->disp_numchans);
+    g_signal_emit(G_OBJECT(t), tracker_signals[SIG_XPANNING], 0, t->leftchan, t->num_channels, t->disp_numchans);
 }
 
 void
@@ -153,7 +153,7 @@ tracker_set_patpos (Tracker *t,
 	    } else {
 		tracker_idle_draw(t);
 	    }
-	    gtk_signal_emit(GTK_OBJECT(t), tracker_signals[SIG_PATPOS], row, t->curpattern->length, t->disp_rows);
+	    g_signal_emit(G_OBJECT(t), tracker_signals[SIG_PATPOS], 0, row, t->curpattern->length, t->disp_rows);
 	}
     }
 }
@@ -189,7 +189,7 @@ tracker_set_pattern (Tracker *t,
 	if(pattern != NULL) {
 	    if(t->patpos >= pattern->length)
 		t->patpos = pattern->length - 1;
-	    gtk_signal_emit(GTK_OBJECT(t), tracker_signals[SIG_PATPOS], t->patpos, pattern->length, t->disp_rows);
+	    g_signal_emit(G_OBJECT(t), tracker_signals[SIG_PATPOS], 0, t->patpos, pattern->length, t->disp_rows);
 	}
 	gtk_widget_queue_draw(GTK_WIDGET(t));
     }
@@ -244,7 +244,7 @@ tracker_set_xpanning (Tracker *t,
 	    else if(t->cursor_ch >= t->leftchan + t->disp_numchans)
 		t->cursor_ch = t->leftchan + t->disp_numchans - 1;
 	}
-	gtk_signal_emit(GTK_OBJECT(t), tracker_signals[SIG_XPANNING], t->leftchan, t->num_channels, t->disp_numchans);
+	g_signal_emit(G_OBJECT(t), tracker_signals[SIG_XPANNING], 0, t->leftchan, t->num_channels, t->disp_numchans);
     }
 }
 
@@ -899,8 +899,8 @@ init_display (Tracker *t,
     adjust_xpanning(t);
 
     if(t->curpattern) {
-	gtk_signal_emit(GTK_OBJECT(t), tracker_signals[SIG_PATPOS], t->patpos, t->curpattern->length, t->disp_rows);
-	gtk_signal_emit(GTK_OBJECT(t), tracker_signals[SIG_XPANNING], t->leftchan, t->num_channels, t->disp_numchans);
+	g_signal_emit(G_OBJECT(t), tracker_signals[SIG_PATPOS], 0, t->patpos, t->curpattern->length, t->disp_rows);
+	g_signal_emit(G_OBJECT(t), tracker_signals[SIG_XPANNING], 0, t->leftchan, t->num_channels, t->disp_numchans);
     }
     
     if(t->enable_backing_store) {
@@ -1258,7 +1258,7 @@ tracker_button_press (GtkWidget      *widget,
 	gdk_window_get_pointer (event->window, &x, &y, &state);
 	if(t->button == 1) {
 	    /* Start selecting block */
-	    gtk_signal_emit(GTK_OBJECT(t), tracker_signals[SIG_MAINMENU_BLOCKMARK_SET], 1);
+	    g_signal_emit(G_OBJECT(t), tracker_signals[SIG_MAINMENU_BLOCKMARK_SET], 0, 1);
 	    t->inSelMode = FALSE;
 	    tracker_mouse_to_cursor_pos(t, x, y, &t->sel_start_ch, &cursor_item, &t->sel_start_row);
 	    t->sel_end_row = t->sel_start_row;
@@ -1268,7 +1268,7 @@ tracker_button_press (GtkWidget      *widget,
 	} else if(t->button == 2) {
 	    /* Tracker cursor posititioning and clear block mark if any */
 	    if(t->inSelMode || t->sel_start_ch != -1) {
-		gtk_signal_emit(GTK_OBJECT(t), tracker_signals[SIG_MAINMENU_BLOCKMARK_SET], 0);
+		g_signal_emit(G_OBJECT(t), tracker_signals[SIG_MAINMENU_BLOCKMARK_SET], 0, 0);
 		t->sel_start_ch = t->sel_end_ch = -1;
 		t->sel_start_row = t->sel_end_row = -1;
 		t->inSelMode = FALSE;			
@@ -1349,7 +1349,7 @@ tracker_button_release (GtkWidget      *widget,
 
     if(t->mouse_selecting && event->button == 1) {
 	t->mouse_selecting = 0;
-	gtk_signal_emit(GTK_OBJECT(t), tracker_signals[SIG_MAINMENU_BLOCKMARK_SET], 0);
+	g_signal_emit(G_OBJECT(t), tracker_signals[SIG_MAINMENU_BLOCKMARK_SET], 0, 0);
     }
 
     return TRUE;

@@ -3853,7 +3853,7 @@ if test $GCC != yes; then
 	exit 1
 fi
 
-CFLAGS="$CFLAGS -Wall"
+CFLAGS="$CFLAGS -Wall -DG_DISABLE_DEPRECATED"
 
 
 # Check whether --enable-asm was given.

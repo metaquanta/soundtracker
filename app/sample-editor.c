@@ -452,8 +452,8 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_widget_show(thing);
 
     thing = gtk_button_new_with_label(_("Trim"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_trim_dialog), NULL);
+    g_signal_connect(G_OBJECT(thing), "clicked",
+		       G_CALLBACK(sample_editor_trim_dialog), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
@@ -527,8 +527,8 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_widget_show(thing);
 
     thing = gtk_button_new_with_label(_("Crop"));
-    gtk_signal_connect(GTK_OBJECT(thing), "clicked",
-		       GTK_SIGNAL_FUNC(sample_editor_crop_clicked), NULL);
+    g_signal_connect(G_OBJECT(thing), "clicked",
+		       G_CALLBACK(sample_editor_crop_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
 
@@ -620,9 +620,9 @@ static void
 sample_editor_blocked_set_display_loop (int start,
 					int end)
 {
-    gtk_signal_handler_block_by_func(GTK_OBJECT(sampledisplay), GTK_SIGNAL_FUNC(sample_editor_display_loop_changed), NULL);
+    g_signal_handlers_block_by_func(G_OBJECT(sampledisplay), G_CALLBACK(sample_editor_display_loop_changed), NULL);
     sample_display_set_loop(sampledisplay, start, end);
-    gtk_signal_handler_unblock_by_func(GTK_OBJECT(sampledisplay), GTK_SIGNAL_FUNC(sample_editor_display_loop_changed), NULL);
+    g_signal_handlers_unblock_by_func(G_OBJECT(sampledisplay), G_CALLBACK(sample_editor_display_loop_changed), NULL);
 }
 
 void

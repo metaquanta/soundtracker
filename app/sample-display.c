@@ -130,7 +130,7 @@ sample_display_set_data (SampleDisplay *s,
 	
     s->win_start = 0;
     s->win_length = len;
-    gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], s->win_start, s->win_start + s->win_length);
+    g_signal_emit(G_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], 0, s->win_start, s->win_start + s->win_length);
 	
     s->sel_start = -1;
     s->old_ss = s->old_se = -1;
@@ -160,7 +160,7 @@ sample_display_set_loop (SampleDisplay *s,
     s->loop_end = end;
 
     gtk_widget_queue_draw(GTK_WIDGET(s));
-    gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_LOOP_CHANGED], start, end);
+    g_signal_emit(G_OBJECT(s), sample_display_signals[SIG_LOOP_CHANGED], 0, start, end);
 }
 
 void 
@@ -182,7 +182,7 @@ sample_display_set_selection (SampleDisplay *s,
     s->sel_end = end;
 
     sample_display_idle_draw(s);
-    gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_SELECTION_CHANGED], start, end);
+    g_signal_emit(G_OBJECT(s), sample_display_signals[SIG_SELECTION_CHANGED], 0, start, end);
 }
 
 void
@@ -214,7 +214,7 @@ sample_display_set_window (SampleDisplay *s,
 
     s->win_start = start;
     s->win_length = end - start;
-    gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], start, end);
+    g_signal_emit(G_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], 0, start, end);
 
     gtk_widget_queue_draw(GTK_WIDGET(s));
 }
@@ -759,14 +759,14 @@ sample_display_handle_motion (SampleDisplay *s,
 	s->sel_start = ss;
 	s->sel_end = se;
 	sample_display_idle_draw(s);
-	gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_SELECTION_CHANGED], ss, se);
+	g_signal_emit(G_OBJECT(s), sample_display_signals[SIG_SELECTION_CHANGED], 0, ss, se);
     }
 
     if(s->loop_start != ls || s->loop_end != le) {
 	s->loop_start = ls;
 	s->loop_end = le;
 	sample_display_idle_draw(s);
-	gtk_signal_emit(GTK_OBJECT(s), sample_display_signals[SIG_LOOP_CHANGED], ls, le);
+	g_signal_emit(G_OBJECT(s), sample_display_signals[SIG_LOOP_CHANGED], 0, ls, le);
     }
 }
 

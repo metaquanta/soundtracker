@@ -178,14 +178,14 @@ gui_put_labelled_spin_button (GtkWidget *destbox,
     gtk_widget_show(*spin);
 	if(callback)
 		g_signal_connect(*spin, "value-changed",
-		                 GTK_SIGNAL_FUNC(callback), callbackdata);
+		                 G_CALLBACK(callback), callbackdata);
 }
 
 void
 file_selection_save_path (const gchar *fn,
 			  gchar **store)
 {
-	gchar *dn = g_dirname(fn);
+	gchar *dn = g_path_get_dirname(fn);
 
 	if(*store)
 		g_free(*store);

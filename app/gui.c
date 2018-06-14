@@ -314,7 +314,7 @@ popwin_hide (GtkWidget *widget, GParamSpec *ps, gpointer data)
 void
 gui_update_title (const gchar *filename)
 {
-    gchar *title;
+	gchar *title;
 	if(filename && g_strcmp0(filename, current_filename)) {
 		if(current_filename){
 			g_free(current_filename);
@@ -322,7 +322,15 @@ gui_update_title (const gchar *filename)
 		current_filename = g_strdup(filename);
 	}
 
-    title = g_strdup_printf("SoundTracker "VERSION": %s%s", xm_get_modified() ? "*" : "", current_filename ? g_basename(current_filename) : "");
+	if(current_filename) {
+		gchar *bn;
+
+		bn = g_path_get_basename(current_filename);
+		title = g_strdup_printf("SoundTracker "VERSION": %s%s", xm_get_modified() ? "*" : "", bn);
+		g_free(bn);
+	} else
+		title = g_strdup_printf("SoundTracker "VERSION": %s", xm_get_modified() ? "*" : "");
+
     gtk_window_set_title(GTK_WINDOW(mainwindow), title);
     g_free(title);
 }
@@ -864,9 +872,9 @@ keyevent (GtkWidget *widget,
 
 	if(handled) {
 	    if(pressed) {
-		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key-press-event");
+		g_signal_stop_emission_by_name(G_OBJECT(widget), "key-press-event");
 	    } else {
-		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key-release-event");
+		g_signal_stop_emission_by_name(G_OBJECT(widget), "key-release-event");
 	    }
 	}
     } else {
@@ -876,7 +884,7 @@ keyevent (GtkWidget *widget,
 	    if(notebook_current_page == NOTEBOOK_PAGE_FILE) /* Saving file by enter pressing in filename entry */
 			break;
 	    case GDK_Tab:
-		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key-press-event");
+		g_signal_stop_emission_by_name(G_OBJECT(widget), "key-press-event");
 		gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
 		break;
 	    }
@@ -2285,8 +2293,8 @@ gui_final (int argc,
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), 0);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
-    gtk_signal_connect (GTK_OBJECT(thing), "toggled",
-			GTK_SIGNAL_FUNC(editing_toggled), NULL);
+    g_signal_connect (G_OBJECT(thing), "toggled",
+			G_CALLBACK(editing_toggled), NULL);
 
     thing = gtk_label_new(_("Octave"));
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);

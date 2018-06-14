@@ -269,9 +269,9 @@ playlist_songpos_changed (GtkAdjustment *adj,
 	playlist_draw_contents (p);
 
     if(!p->signals_disabled)
-	gtk_signal_emit(GTK_OBJECT(p),
+	g_signal_emit(G_OBJECT(p),
 			playlist_signals[SIG_CURRENT_POSITION_CHANGED],
-			newpos);
+			0, newpos);
 }
 
 static void
@@ -305,9 +305,9 @@ playlist_songlength_changed (GtkSpinButton *spin,
     if(!p->frozen)
 	playlist_draw_contents(p);
     if(!p->signals_disabled)
-	gtk_signal_emit(GTK_OBJECT(p),
+	g_signal_emit(G_OBJECT(p),
 			playlist_signals[SIG_SONG_LENGTH_CHANGED],
-			p->length);
+			0, p->length);
 }
 
 static void
@@ -324,9 +324,9 @@ playlist_songpat_changed (GtkSpinButton *spin,
     p->patterns[p->current_position] = n;
 
     if(!p->signals_disabled)
-	gtk_signal_emit(GTK_OBJECT(p),
+	g_signal_emit(G_OBJECT(p),
 			playlist_signals[SIG_ENTRY_CHANGED],
-			p->current_position, n);
+			0, p->current_position, n);
 }
 
 static void
@@ -347,9 +347,9 @@ playlist_restartpos_changed (GtkSpinButton *spin,
     p->restart_position = n;
 
     if(!p->signals_disabled)
-	gtk_signal_emit(GTK_OBJECT(p),
+	g_signal_emit(G_OBJECT(p),
 			playlist_signals[SIG_RESTART_POSITION_CHANGED],
-			n);
+			0, n);
 }
 
 void
@@ -384,9 +384,9 @@ playlist_insert_pattern (Playlist *p,
     if(!p->signals_disabled) {
 	/* This also makes gui.c update the playlist copy which is
 	 * held in the global XM structure. */
-	gtk_signal_emit(GTK_OBJECT(p),
+	g_signal_emit(G_OBJECT(p),
 			playlist_signals[SIG_SONG_LENGTH_CHANGED],
-			p->length);
+			0, p->length);
     }
 }
 
@@ -425,9 +425,9 @@ playlist_delete_clicked (GtkWidget *w,
     pos = rint(GTK_ADJUSTMENT(p->adj_songpos)->value);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(p->spin_songpat), p->patterns[pos]);
     if(!p->signals_disabled)
-	gtk_signal_emit(GTK_OBJECT(p),
+	g_signal_emit(G_OBJECT(p),
 			playlist_signals[SIG_ENTRY_CHANGED],
-			pos, p->patterns[pos]);
+			0, pos, p->patterns[pos]);
 }
 
 static void

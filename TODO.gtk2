@@ -1,6 +1,5 @@
 6) Huge CPU overhead (partially fixed); Also sample display redrawing takes too much CPU
 when sample is being changed. Make a separate thread for redrawing?
-9) Contains a lot of obsolete code. Try to compile finally with -DG_DISABLE_DEPRECATED
 14) some CPU-consuming code in the instrument list selection callback (really 
 in the callback) and main notebook switch callback;
 22) Convert ESD driver into the modern Pulseaudio API.
