@@ -504,7 +504,7 @@ playlist_new (void)
 
     /* current pattern */
     adj = gtk_adjustment_new((p->patterns)[p->current_position], p->min_pattern, p->max_pattern, 1.0, 5.0, 0.0);
-    p->spin_songpat = extspinbutton_new(GTK_ADJUSTMENT (adj), 1.0, 0);
+    p->spin_songpat = extspinbutton_new(GTK_ADJUSTMENT (adj), 1.0, 0, TRUE);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(p->spin_songpat));
     gtk_widget_show(p->spin_songpat);
     g_signal_connect(p->spin_songpat, "value-changed",
@@ -594,7 +594,7 @@ playlist_new (void)
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
 
     adj = gtk_adjustment_new(p->length, 1.0, p->max_length, 1.0, 5.0, 0.0);
-    thing1 = p->spin_songlength = extspinbutton_new(GTK_ADJUSTMENT(adj), 1.0, 0);
+    thing1 = p->spin_songlength = extspinbutton_new(GTK_ADJUSTMENT(adj), 1.0, 0, TRUE);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(thing1));
     gtk_widget_show(thing1);
     gtk_widget_set_tooltip_text(thing1, _("Song length"));
@@ -613,7 +613,7 @@ playlist_new (void)
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
 
     adj = gtk_adjustment_new(p->current_position, 0.0, p->length - 1, 1.0, 5.0, 0.0);
-    thing1 = p->spin_restartpos = extspinbutton_new(GTK_ADJUSTMENT(adj), 1.0, 0);
+    thing1 = p->spin_restartpos = extspinbutton_new(GTK_ADJUSTMENT(adj), 1.0, 0, TRUE);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(thing1));
     gtk_widget_show(thing1);
     gtk_widget_set_tooltip_text(thing1, _("Song restart position"));

@@ -407,10 +407,10 @@ gui_settings_dialog (void)
     vbox1 = gtk_vbox_new(FALSE, 2);
     gtk_box_pack_start(GTK_BOX(mainhbox), vbox1, FALSE, TRUE, 0);
 
-    thing = gui_subs_create_slider(&prefs_scopesfreq_slider);
+    thing = gui_subs_create_slider(&prefs_scopesfreq_slider, FALSE);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
 
-    thing = gui_subs_create_slider(&prefs_trackerfreq_slider);
+    thing = gui_subs_create_slider(&prefs_trackerfreq_slider, FALSE);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
 
     thing = gtk_check_button_new_with_label(_("Hexadecimal row numbers"));
@@ -470,7 +470,7 @@ gui_settings_dialog (void)
     thing = gtk_label_new(_("Scopes buffer size [MB]"));
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
     add_empty_hbox(box1);
-    thing = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new((double)gui_settings.scopes_buffer_size / 1000000, 0.5, 5.0, 0.1, 1.0, 0.0)), 0, 0);
+    thing = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new((double)gui_settings.scopes_buffer_size / 1000000, 0.5, 5.0, 0.1, 1.0, 0.0)), 0, 0, FALSE);
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
     gtk_spin_button_set_digits(GTK_SPIN_BUTTON(thing), 1);
     g_signal_connect(thing, "value-changed",

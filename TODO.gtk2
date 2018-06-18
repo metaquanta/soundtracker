@@ -1,5 +1,6 @@
 6) Huge CPU overhead (partially fixed); Also sample display redrawing takes too much CPU
 when sample is being changed. Make a separate thread for redrawing?
+Actually when changing non-emplty <-> empty sample
 14) some CPU-consuming code in the instrument list selection callback (really 
 in the callback) and main notebook switch callback;
 22) Convert ESD driver into the modern Pulseaudio API.

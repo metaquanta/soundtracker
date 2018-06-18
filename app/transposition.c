@@ -279,7 +279,7 @@ transposition_dialog (void)
 
     add_empty_hbox(box1);
 
-    gui_put_labelled_spin_button(box1, _("Instrument 1:"), 1, 128, &transposition_instrument_w[0], NULL, NULL);
+    gui_put_labelled_spin_button(box1, _("Instrument 1:"), 1, 128, &transposition_instrument_w[0], NULL, NULL, FALSE);
 
     thing = gtk_button_new_with_label(_("Current instrument"));
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
@@ -288,7 +288,7 @@ transposition_dialog (void)
 
     add_empty_hbox(box1);
 
-    gui_put_labelled_spin_button(box1, _("Instrument 2:"), 1, 128, &transposition_instrument_w[1], NULL, NULL);
+    gui_put_labelled_spin_button(box1, _("Instrument 2:"), 1, 128, &transposition_instrument_w[1], NULL, NULL, FALSE);
 
     thing = gtk_button_new_with_label(_("Current instrument"));
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);

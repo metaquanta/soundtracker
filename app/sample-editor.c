@@ -304,8 +304,8 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, TRUE, 0);
 
     make_radio_group((const char**)looplabels, vbox, loopradio, FALSE, FALSE, sample_editor_loopradio_changed);
-    gui_put_labelled_spin_button(vbox, _("Start"), 0, 0, &spin_loopstart, sample_editor_loop_changed, NULL);
-    gui_put_labelled_spin_button(vbox, _("End"), 0, 0, &spin_loopend, sample_editor_loop_changed, NULL);
+    gui_put_labelled_spin_button(vbox, _("Start"), 0, 0, &spin_loopstart, sample_editor_loop_changed, NULL, TRUE);
+    gui_put_labelled_spin_button(vbox, _("End"), 0, 0, &spin_loopend, sample_editor_loop_changed, NULL, TRUE);
     sample_editor_loopradio_changed();
 
     thing = gtk_vseparator_new();
@@ -316,9 +316,9 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_widget_show(vbox);
     gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, TRUE, 0);
 
-    gui_put_labelled_spin_button(vbox, _("Volume"), 0, 64, &spin_volume, sample_editor_spin_volume_changed, NULL);
-    gui_put_labelled_spin_button(vbox, _("Panning"), -128, 127, &spin_panning, sample_editor_spin_panning_changed, NULL);
-    gui_put_labelled_spin_button(vbox, _("Finetune"), -128, 127, &spin_finetune, sample_editor_spin_finetune_changed, NULL);
+    gui_put_labelled_spin_button(vbox, _("Volume"), 0, 64, &spin_volume, sample_editor_spin_volume_changed, NULL, TRUE);
+    gui_put_labelled_spin_button(vbox, _("Panning"), -128, 127, &spin_panning, sample_editor_spin_panning_changed, NULL, TRUE);
+    gui_put_labelled_spin_button(vbox, _("Finetune"), -128, 127, &spin_finetune, sample_editor_spin_finetune_changed, NULL, TRUE);
     make_radio_group((const char**)resolutionlabels, vbox, resolution_radio, FALSE, FALSE, sample_editor_resolution_changed);
 
     thing = gtk_vseparator_new();
@@ -393,7 +393,7 @@ sample_editor_page_create (GtkNotebook *nb)
 
     add_empty_vbox(vbox);
 
-    gui_put_labelled_spin_button(vbox, _("RelNote"), -128, 127, &spin_relnote, sample_editor_spin_relnote_changed, NULL);
+    gui_put_labelled_spin_button(vbox, _("RelNote"), -128, 127, &spin_relnote, sample_editor_spin_relnote_changed, NULL, TRUE);
 
     thing = gtk_vseparator_new();
     gtk_widget_show(thing);
@@ -2506,7 +2506,7 @@ sample_editor_open_volume_ramp_dialog (void)
     box1 = gtk_hbox_new(FALSE, 4);
     gtk_box_pack_start(GTK_BOX(mainbox), box1, FALSE, TRUE, 0);
 
-    gui_put_labelled_spin_button(box1, _("Left [%]:"), -1000, 1000, &sample_editor_volramp_spin_w[0], NULL, NULL);
+    gui_put_labelled_spin_button(box1, _("Left [%]:"), -1000, 1000, &sample_editor_volramp_spin_w[0], NULL, NULL, FALSE);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(sample_editor_volramp_spin_w[0]), sample_editor_volramp_last_values[0]);
 
     thing = gtk_button_new_with_label(_("H"));
@@ -2523,7 +2523,7 @@ sample_editor_open_volume_ramp_dialog (void)
 
     add_empty_hbox(box1);
 
-    gui_put_labelled_spin_button(box1, _("Right [%]:"), -1000, 1000, &sample_editor_volramp_spin_w[1], NULL, NULL);
+    gui_put_labelled_spin_button(box1, _("Right [%]:"), -1000, 1000, &sample_editor_volramp_spin_w[1], NULL, NULL, FALSE);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(sample_editor_volramp_spin_w[1]), sample_editor_volramp_last_values[1]);
 
     thing = gtk_button_new_with_label(_("H"));

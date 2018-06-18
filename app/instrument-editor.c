@@ -294,7 +294,7 @@ instrument_page_create (GtkNotebook *nb)
     thing = make_labelled_radio_group_box(_("Vibrato Type:"), vibtypelabels, instrument_editor_vibtype_w, instrument_editor_vibtype_changed);
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
-    thing = gui_subs_create_slider(&instrument_page_sliders[0]);
+    thing = gui_subs_create_slider(&instrument_page_sliders[0], TRUE);
     gtk_box_pack_start(GTK_BOX(box3), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     add_empty_hbox(box3);
@@ -304,13 +304,13 @@ instrument_page_create (GtkNotebook *nb)
     gtk_widget_show(box3);
 
     add_empty_hbox(box3);
-    thing = gui_subs_create_slider(&instrument_page_sliders[1]);
+    thing = gui_subs_create_slider(&instrument_page_sliders[1], TRUE);
     gtk_box_pack_start(GTK_BOX(box3), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
-    thing = gui_subs_create_slider(&instrument_page_sliders[2]);
+    thing = gui_subs_create_slider(&instrument_page_sliders[2], TRUE);
     gtk_box_pack_start(GTK_BOX(box3), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
-    thing = gui_subs_create_slider(&instrument_page_sliders[3]);
+    thing = gui_subs_create_slider(&instrument_page_sliders[3], TRUE);
     gtk_box_pack_start(GTK_BOX(box3), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     add_empty_hbox(box3);

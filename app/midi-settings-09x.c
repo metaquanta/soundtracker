@@ -432,7 +432,8 @@ create_midi_notebook(midi_prefs settings)
 
   gui_put_labelled_spin_button(page, _("Client number"), 0, 255,
                                &mi_spin_client, input_client_changed, 
-                               &mi_spin_client);
+                               &mi_spin_client,
+                               FALSE);
   /* Calling the next function sets the CHANGED flag
      for the input page.  Needs to be reset before leaving this call. */
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(mi_spin_client),
@@ -442,7 +443,8 @@ create_midi_notebook(midi_prefs settings)
 
   gui_put_labelled_spin_button(page,	 _("Port number"), 0, 255,
                                &mi_spin_port, input_port_changed, 
-                               &mi_spin_port);
+                               &mi_spin_port,
+                               FALSE);
   /* Calling the next function sets the CHANGED flag
      for the input page.  Needs to be reset before leaving this call. */
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(mi_spin_port),
@@ -487,7 +489,8 @@ create_midi_notebook(midi_prefs settings)
   gui_put_labelled_spin_button(page, _("Debug level"), MIDI_DEBUG_OFF,
                                MIDI_DEBUG_HIGHEST - 1,
                                &mm_spin_debug, misc_debug_changed, 
-                               &mm_spin_debug);
+                               &mm_spin_debug,
+                               FALSE);
   /* Calling the next function sets the CHANGED flag
      for the misc. page.  Needs to be reset before leaving this call. */
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(mm_spin_debug),

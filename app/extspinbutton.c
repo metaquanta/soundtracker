@@ -70,16 +70,15 @@ extspinbutton_size_request (GtkWidget      *widget,
 static void
 extspinbutton_value_changed (GtkSpinButton *spin)
 {
-    if(gtk_window_get_focus(GTK_WINDOW(mainwindow))) {
-	// Should only do this if this widget is really in the main window.
-	gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
-    }
+	if(gtk_widget_has_focus(GTK_WIDGET(spin)))
+		gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
 }
 
 GtkWidget *
 extspinbutton_new (GtkAdjustment *adjustment,
 		   gfloat climb_rate,
-		   guint digits)
+		   guint digits,
+		   gboolean in_mainwindow)
 {
     ExtSpinButton *s;
 
@@ -87,8 +86,9 @@ extspinbutton_new (GtkAdjustment *adjustment,
     s->size_hack = TRUE;
     gtk_spin_button_configure(GTK_SPIN_BUTTON(s), adjustment, climb_rate, digits);
 
-    g_signal_connect(s, "value-changed",
-		     G_CALLBACK(extspinbutton_value_changed), NULL);
+	if(in_mainwindow)
+		g_signal_connect(s, "value-changed",
+		                 G_CALLBACK(extspinbutton_value_changed), NULL);
 
     return GTK_WIDGET(s);
 }

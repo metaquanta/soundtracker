@@ -1,10 +1,16 @@
+2018-06-18  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/envelope-box.c, app/extspinbutton.[ch], app/gui-settings.c,
+	app/gui-subs.[ch], app/gui.c, app/instrument-editor.c,
+	app/midi-settings-09x.c, app/playlist.c, app/sample-editor.c,
+	app/transposition.c: extended spin button code is optimized (an
+	attempt to improve the interactivity). But this seems not to be the
+	cause...
+
 2018-06-13  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/cheat-sheet.c, app/clavier.c, app/gui-settings.c, app/gui-subs.c,
 	app/gui.c, app/playlist.c, app/sample-display.c, app/sample-editor.c,
 	app/scope-group.c, app/track-editor.c, app/tracker.c: many 
-	deprecated symbols are removed (I hope, most of them).
-
-2018-06-13  Yury Aliaev  <mutab0r@rambler.ru>
+	deprecated symbols are removed (I hope, most of them);
 	* app/st-subs.c, app/drivers/jack-output.c: code cleanup (unneeded 
 	headers);
 	* app/clock.c, app/scalablepic.c: memory leaks are fixed;

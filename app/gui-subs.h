@@ -97,7 +97,8 @@ void                 gui_put_labelled_spin_button     (GtkWidget *destbox,
 						       int max,
 						       GtkWidget **spin,
 						       void(*callback)(),
-						       void *callbackdata);
+						       void *callbackdata,
+						       gboolean in_mainwindow);
 void                 gui_update_range_adjustment      (GtkRange *range,
 						       int pos,
 						       int upper,
@@ -126,7 +127,8 @@ typedef struct gui_subs_slider {
     gboolean update_without_signal;
 } gui_subs_slider;
 
-GtkWidget *          gui_subs_create_slider           (gui_subs_slider *s);
+GtkWidget *          gui_subs_create_slider           (gui_subs_slider *s,
+                                                       gboolean in_mainwindow);
 
 void                 gui_subs_set_slider_value        (gui_subs_slider *s,
                                                        int v);

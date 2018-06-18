@@ -255,14 +255,14 @@ measure_dialog ()
 
     add_empty_hbox(mainbox);
     adj = gtk_adjustment_new((double)gui_settings.highlight_rows_n, 1, 32, 1, 2, 0.0);
-    majspin = extspinbutton_new(GTK_ADJUSTMENT(adj), 0, 0);
+    majspin = extspinbutton_new(GTK_ADJUSTMENT(adj), 0, 0, FALSE);
     gtk_box_pack_start(GTK_BOX(mainbox), majspin, FALSE, TRUE, 0);
 
     gtk_spin_button_set_digits(GTK_SPIN_BUTTON(majspin), 0);
     g_signal_connect(majspin, "value-changed",
 		       G_CALLBACK(gui_settings_highlight_rows_changed), NULL);
     adj = gtk_adjustment_new((double)gui_settings.highlight_rows_minor_n, 1, 16, 1, 2, 0.0);
-    thing = extspinbutton_new(GTK_ADJUSTMENT(adj), 0, 0);
+    thing = extspinbutton_new(GTK_ADJUSTMENT(adj), 0, 0, FALSE);
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
 
     gtk_spin_button_set_digits(GTK_SPIN_BUTTON(thing), 0);
@@ -2071,7 +2071,7 @@ gui_final (int argc,
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
 
-    spin_editpat = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 255, 1.0, 10.0, 0.0)), 1, 0);
+    spin_editpat = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 255, 1.0, 10.0, 0.0)), 1, 0, TRUE);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(spin_editpat));
     gtk_widget_set_tooltip_text(spin_editpat, _("Edited pattern"));
     gtk_box_pack_start(GTK_BOX(hbox), spin_editpat, FALSE, TRUE, 0);
@@ -2086,12 +2086,12 @@ gui_final (int argc,
     gtk_widget_set_tooltip_text(thing, _("When enabled, browsing the playlist does not change the edited pattern."));
     gtk_widget_show_all(thing);
 
-    thing = gui_subs_create_slider(&tempo_slider);
+    thing = gui_subs_create_slider(&tempo_slider, TRUE);
     gtk_table_attach_defaults(GTK_TABLE(table), thing, 0, 1, 3, 4);
 
     gtk_widget_show(thing);
 
-    thing = gui_subs_create_slider(&bpm_slider);
+    thing = gui_subs_create_slider(&bpm_slider, TRUE);
     gtk_table_attach_defaults(GTK_TABLE(table), thing, 1, 2, 3, 4);
     gtk_widget_show(thing);
 
@@ -2105,7 +2105,7 @@ gui_final (int argc,
 
     add_empty_hbox(hbox);
 
-    spin_numchans = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(8, 2, 32, 2.0, 8.0, 0.0)), 1, 0);
+    spin_numchans = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(8, 2, 32, 2.0, 8.0, 0.0)), 1, 0, TRUE);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(spin_numchans));
     gtk_box_pack_start(GTK_BOX(hbox), spin_numchans, FALSE, TRUE, 0);
     g_signal_connect(spin_numchans, "value-changed",
@@ -2122,7 +2122,7 @@ gui_final (int argc,
 
     add_empty_hbox(hbox);
 
-    spin_patlen = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(64, 1, 256, 1.0, 16.0, 0.0)), 1, 0);
+    spin_patlen = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(64, 1, 256, 1.0, 16.0, 0.0)), 1, 0, TRUE);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(spin_patlen));
     gtk_box_pack_start(GTK_BOX(hbox), spin_patlen, FALSE, TRUE, 0);
     g_signal_connect(spin_patlen, "value-changed",
@@ -2300,7 +2300,7 @@ gui_final (int argc,
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
 
-    spin_octave = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(3.0, 0.0, 6.0, 1.0, 1.0, 0.0)), 0, 0);
+    spin_octave = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(3.0, 0.0, 6.0, 1.0, 1.0, 0.0)), 0, 0, TRUE);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(spin_octave));
     gtk_box_pack_start(GTK_BOX(hbox), spin_octave, FALSE, TRUE, 0);
     gtk_widget_show(spin_octave);
@@ -2309,7 +2309,7 @@ gui_final (int argc,
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
 
-    spin_jump = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(1.0, 0.0, 16.0, 1.0, 1.0, 0.0)), 0, 0);
+    spin_jump = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(1.0, 0.0, 16.0, 1.0, 1.0, 0.0)), 0, 0, TRUE);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(spin_jump));
     gtk_box_pack_start(GTK_BOX(hbox), spin_jump, FALSE, TRUE, 0);
     gtk_widget_show(spin_jump);
@@ -2318,7 +2318,7 @@ gui_final (int argc,
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
 
-    curins_spin = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(1.0, 1.0, 128.0, 1.0, 16.0, 0.0)), 0, 0);
+    curins_spin = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(1.0, 1.0, 128.0, 1.0, 16.0, 0.0)), 0, 0, TRUE);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(curins_spin));
     gtk_box_pack_start(GTK_BOX(hbox), curins_spin, FALSE, TRUE, 0);
     gtk_widget_show(curins_spin);
@@ -2334,7 +2334,7 @@ gui_final (int argc,
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
 
-    cursmpl_spin = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(0.0, 0.0, 127.0, 1.0, 4.0, 0.0)), 0, 0);
+    cursmpl_spin = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(0.0, 0.0, 127.0, 1.0, 4.0, 0.0)), 0, 0, TRUE);
     extspinbutton_disable_size_hack(EXTSPINBUTTON(cursmpl_spin));
     gtk_box_pack_start(GTK_BOX(hbox), cursmpl_spin, FALSE, TRUE, 0);
     gtk_widget_show(cursmpl_spin);

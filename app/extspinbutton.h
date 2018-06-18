@@ -46,7 +46,8 @@ struct _ExtSpinButtonClass
 guint          extspinbutton_get_type            (void);
 GtkWidget*     extspinbutton_new              	 (GtkAdjustment *adjustment,
 						  gfloat climb_rate,
-						  guint digits);
+						  guint digits,
+						  gboolean in_mainwindow);
 void           extspinbutton_disable_size_hack   (ExtSpinButton *b);
 
 #endif /* _EXTSPINBUTTON_H */

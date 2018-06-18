@@ -159,7 +159,8 @@ gui_put_labelled_spin_button (GtkWidget *destbox,
 			      int max,
 			      GtkWidget **spin,
 			      void(*callback)(),
-			      void *callbackdata)
+			      void *callbackdata,
+			      gboolean in_mainwindow)
 {
     GtkWidget *hbox, *thing;
 
@@ -173,7 +174,7 @@ gui_put_labelled_spin_button (GtkWidget *destbox,
 
     add_empty_hbox(hbox);
 
-    *spin = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(min, min, max, 1.0, 5.0, 0.0)), 0, 0);
+    *spin = extspinbutton_new(GTK_ADJUSTMENT(gtk_adjustment_new(min, min, max, 1.0, 5.0, 0.0)), 0, 0, in_mainwindow);
     gtk_box_pack_start(GTK_BOX(hbox), *spin, FALSE, TRUE, 0);
     gtk_widget_show(*spin);
 	if(callback)
@@ -222,7 +223,7 @@ gui_subs_slider_update_2 (GtkSpinButton *spin,
 }
 
 GtkWidget *
-gui_subs_create_slider (gui_subs_slider *s)
+gui_subs_create_slider (gui_subs_slider *s, gboolean in_mainwindow)
 {
     GtkWidget *thing, *box;
 
@@ -245,7 +246,7 @@ gui_subs_create_slider (gui_subs_slider *s)
     }
 
     s->adjustment2 = GTK_ADJUSTMENT(gtk_adjustment_new(s->min, s->min, s->max, 1, (s->max - s->min) / 10, 0));
-    thing = extspinbutton_new(s->adjustment2, 0, 0);
+    thing = extspinbutton_new(s->adjustment2, 0, 0, in_mainwindow);
     gtk_box_pack_start(GTK_BOX(box), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing, "value-changed",

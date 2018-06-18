@@ -1257,10 +1257,10 @@ GtkWidget* envelope_box_new(const gchar *label)
     gtk_box_pack_start(GTK_BOX(box2), box3, FALSE, TRUE, 0);
     gtk_widget_show(box3);
 
-    gui_put_labelled_spin_button(box3, _("Length"), 1, 12, (GtkWidget**)&e->spin_length, spin_length_changed, e);
-    gui_put_labelled_spin_button(box3, _("Current"), 0, 11, (GtkWidget**)&e->spin_pos, spin_pos_changed, e);
-    gui_put_labelled_spin_button(box3, _("Offset"), 0, 65535, (GtkWidget**)&e->spin_offset, spin_offset_changed, e);
-    gui_put_labelled_spin_button(box3, _("Value"), 0, 64, (GtkWidget**)&e->spin_value, spin_value_changed, e);
+    gui_put_labelled_spin_button(box3, _("Length"), 1, 12, (GtkWidget**)&e->spin_length, spin_length_changed, e, TRUE);
+    gui_put_labelled_spin_button(box3, _("Current"), 0, 11, (GtkWidget**)&e->spin_pos, spin_pos_changed, e, TRUE);
+    gui_put_labelled_spin_button(box3, _("Offset"), 0, 65535, (GtkWidget**)&e->spin_offset, spin_offset_changed, e, TRUE);
+    gui_put_labelled_spin_button(box3, _("Value"), 0, 64, (GtkWidget**)&e->spin_value, spin_value_changed, e, TRUE);
 
     box4 = gtk_hbox_new(TRUE, 4);
     gtk_box_pack_start(GTK_BOX(box3), box4, FALSE, TRUE, 0);
@@ -1369,7 +1369,7 @@ GtkWidget* envelope_box_new(const gchar *label)
 		       G_CALLBACK(handle_sustain_button), e);
     e->sustain = GTK_TOGGLE_BUTTON(thing);
 
-    gui_put_labelled_spin_button(box3, _("Point"), 0, 11, (GtkWidget**)&e->spin_sustain, handle_spin_sustain, e);
+    gui_put_labelled_spin_button(box3, _("Point"), 0, 11, (GtkWidget**)&e->spin_sustain, handle_spin_sustain, e, TRUE);
 
     thing = gtk_check_button_new_with_label(_("Loop"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), 0);
@@ -1379,8 +1379,8 @@ GtkWidget* envelope_box_new(const gchar *label)
 		       G_CALLBACK(handle_loop_button), e);
     e->loop = GTK_TOGGLE_BUTTON(thing);
 
-    gui_put_labelled_spin_button(box3, _("Start"), 0, 11, (GtkWidget**)&e->spin_loop_start, handle_spin_loop_start, e);
-    gui_put_labelled_spin_button(box3, _("End"), 0, 11, (GtkWidget**)&e->spin_loop_end, handle_spin_loop_end, e);
+    gui_put_labelled_spin_button(box3, _("Start"), 0, 11, (GtkWidget**)&e->spin_loop_start, handle_spin_loop_start, e, TRUE);
+    gui_put_labelled_spin_button(box3, _("End"), 0, 11, (GtkWidget**)&e->spin_loop_end, handle_spin_loop_end, e, TRUE);
 
     return GTK_WIDGET(e);
 }
