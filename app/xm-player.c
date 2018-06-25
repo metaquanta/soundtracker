@@ -663,7 +663,9 @@ xmplayer_final_channel_ops (int chnr)
     int vol, pan;
     channel *ch = &channels[chnr];
 
-    if(player_mute_channels[chnr]) {
+    if(player_mute_channels[chnr] &&
+       (xmplayer_playmode == PLAYING_SONG ||
+        xmplayer_playmode == PLAYING_PATTERN)) {
 	driver_setvolume(chnr, 0);
 	return;
     }

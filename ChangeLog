@@ -1,3 +1,8 @@
+2018-06-25  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/track-editor.c, app/xm-player.c: when out of editing mode,
+	note keys' pressing produces sounds independent on the cursor
+	position (note/instr/eff column, muted channel).
+
 2018-06-18  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/envelope-box.c, app/extspinbutton.[ch], app/gui-settings.c,
 	app/gui-subs.[ch], app/gui.c, app/instrument-editor.c,

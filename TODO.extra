@@ -129,9 +129,6 @@ ESC keyboard shortcut to leave all dialogs
 
 Arrows in file selection
 
-When out of editing mode, note keys pressing produce sounds independent on the
-cursor position (note/instr/eff column, muted channel)
-
 "Jazz trying mode" (configurable): when out of the editing mode, the sound is
 playing like in Jazz mode, when the new pressed key doesn't finish the sounds
 triggered previously (polyphonic).
