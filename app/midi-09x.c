@@ -606,7 +606,7 @@ static void midi_process_note_on( snd_seq_ev_note_t *pnote)
 
 	/* Play the note in the channel specified by the MIDI channel. */
 
-	gui_play_note( channel, note);
+	gui_play_note( channel, note, FALSE);
 
 	/* Give warning when MIDI channel and cursor channel are different. */
 

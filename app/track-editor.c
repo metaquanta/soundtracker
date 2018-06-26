@@ -56,9 +56,10 @@ static int track_buffer_length;
 /* Block stuff */
 static XMPattern block_buffer;
 
-/* this array contains -1 if the note is not running, or the channel number where
-   it is being played. this is necessary to handle the key on/off situation. */
-static int note_running[96];
+/* this array contains -1 if the note is not running on the specified channel
+   or the note number if it is being played. This is necessary to handle the
+   key on/off situation. */
+static int note_running[32];
 
 static int update_freq = 30;
 static int gtktimer = -1;
@@ -465,25 +466,8 @@ track_editor_toggle_insert_noteoff (GtkCheckMenuItem *b)
 	insert_noteoff = gtk_check_menu_item_get_active(b);
 }
 
-static gboolean
-track_editor_is_channel_playing (int ch)
-{
-    /* Is there a note playing on channel `ch'? Used for jazz edit. */
-
-    int i;
-
-    for(i = 0; i < sizeof(note_running) / sizeof(note_running[0]); i++) {
-	if(note_running[i] == ch) {
-	    return TRUE;
-	}
-    }
-
-    return FALSE;
-}
-
 static int
-track_editor_find_next_jazz_channel (int current_channel,
-				     int note)
+track_editor_find_next_jazz_channel (int current_channel)
 {
     /* Jazz Edit Mode. The user has selected some channels that we can
        use. Go to the next one where no sample is currently
@@ -494,12 +478,25 @@ track_editor_find_next_jazz_channel (int current_channel,
     for(j = 0, n = (current_channel + 1) % xm->num_channels;
 	j < xm->num_channels - 1;
 	j++, n = (n+1) % xm->num_channels) {
-	if(jazztoggles[n]->active && !track_editor_is_channel_playing(n)) {
+	if(jazztoggles[n]->active && note_running[n] == -1) {
 	    return n;
 	}
     }
 
     return current_channel;
+}
+
+/* Returns the channel number on which the specified note is running,
+   or -1 if no such note is found */
+static gint
+note_is_running (const guint note)
+{
+	guint i;
+	for(i = 0; i < sizeof(note_running) / sizeof(note_running[0]); i++)
+		if(note_running[i] == note)
+			return i;
+
+	return -1;
 }
 
 void
@@ -508,9 +505,9 @@ track_editor_do_the_note_key (int notekeymeaning,
 			      guint32 xkeysym,
 			      int modifiers)
 {
-    static int playchan = 0;
+    static int playchan = 0, trychan = 0;
 
-    int j, n;
+    int n;
     int note;
 
     note = notekeymeaning + 12 * gui_get_current_octave_value() + 1;
@@ -518,41 +515,48 @@ track_editor_do_the_note_key (int notekeymeaning,
     if(!(note >= 0 && note < 96))
 	return;
 
-    if(pressed) {
-	if(note_running[note] == -1) {
-	    if(jazz_enabled) {
-		if(GTK_TOGGLE_BUTTON(editing_toggle)->active) {
-		    gui_play_note(tracker->cursor_ch, note);
-		    note_running[note] = tracker->cursor_ch;
-		    n = track_editor_find_next_jazz_channel(tracker->cursor_ch, note);
-		    tracker_step_cursor_channel(tracker, n - tracker->cursor_ch);
-		} else {
-		    playchan = track_editor_find_next_jazz_channel(playchan, note);
-		    gui_play_note(playchan, note);
-		    note_running[note] = playchan;
+	if(pressed) {
+		if(note_is_running(note) == -1) {
+			if(jazz_enabled) {
+				if(GTK_TOGGLE_BUTTON(editing_toggle)->active) {
+					gui_play_note(tracker->cursor_ch, note, FALSE);
+					note_running[tracker->cursor_ch] = note;
+					n = track_editor_find_next_jazz_channel(tracker->cursor_ch);
+					tracker_step_cursor_channel(tracker, n - tracker->cursor_ch);
+				} else {
+					playchan = track_editor_find_next_jazz_channel(playchan);
+					gui_play_note(playchan, note, FALSE);
+					note_running[playchan] = note;
+				}
+			} else {
+				if(gui_settings.try_polyphony &&
+				   (!GTK_TOGGLE_BUTTON(editing_toggle)->active) &&
+				   gui_playing_mode != PLAYING_SONG &&
+				   gui_playing_mode != PLAYING_PATTERN) {
+					gui_play_note(trychan, note, TRUE);
+					note_running[trychan] = note;
+					/* All 32 channels are using for trying independent on
+					   actual number of channels used */
+					trychan = (trychan + 1) & 31;
+				} else {
+					gui_play_note(tracker->cursor_ch, note, FALSE);
+					note_running[tracker->cursor_ch] = note;
+				}
+			}
 		}
-	    } else {
-		gui_play_note(tracker->cursor_ch, note);
-		note_running[note] = tracker->cursor_ch;
-	    }
+	} else {
+		gint pc;
+
+		if((pc = note_is_running(note)) != -1) {
+			if(keys_is_key_pressed(xkeysym, modifiers)) {
+				/* this is just an auto-repeat fake keyoff. pooh.
+				   in reality this key is still being held down */
+				return;
+			}
+			gui_play_note_keyoff(pc);
+		}
+		note_running[pc] = -1;
 	}
-    } else {
-	if(note_running[note] != -1) {
-	    if(keys_is_key_pressed(xkeysym, modifiers)) {
-		/* this is just an auto-repeat fake keyoff. pooh.
-		   in reality this key is still being held down */
-		return;
-	    }
-	    for(j = 0, n = 0; j < sizeof(note_running) / sizeof(note_running[0]); j++) {
-		n += (note_running[j] == note_running[note]);
-	    }
-	    if(n == 1) {
-	        // only do the keyoff if all previous keys are off.
-		gui_play_note_keyoff(note_running[note]);
-	    }
-	    note_running[note] = -1;
-	}
-    }
 }
 
 gboolean
@@ -583,8 +587,7 @@ track_editor_handle_keys (int shift,
 					if(i < 96) {
 						if(t->cursor_item == 0) {
 							if(!jazztoggles[tracker->cursor_ch]->active && jazz_enabled) {
-								int n = track_editor_find_next_jazz_channel(tracker->cursor_ch, m + 12 *
-								gui_get_current_octave_value() + 1);
+								int n = track_editor_find_next_jazz_channel(tracker->cursor_ch);
 								tracker_step_cursor_channel(tracker, n - tracker->cursor_ch);
 							}
 

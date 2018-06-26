@@ -322,7 +322,8 @@ audio_ctlpipe_play_pattern (int pattern,
 static void
 audio_ctlpipe_play_note (int channel,
 			 int note,
-			 int instrument)
+			 int instrument,
+			 gboolean all)
 {
     audio_backpipe_id a = AUDIO_BACKPIPE_PLAYING_NOTE_STARTED;
 
@@ -342,7 +343,7 @@ audio_ctlpipe_play_note (int channel,
     if(!playing)
 	return;
 
-    xmplayer_play_note(channel, note, instrument);
+    xmplayer_play_note(channel, note, instrument, all);
 }
 
 static void
@@ -539,8 +540,8 @@ audio_thread (void)
 	    audio_ctlpipe_play_pattern(a[0], a[1], a[2]);
 	    break;
 	case AUDIO_CTLPIPE_PLAY_NOTE:
-	    readpipe(ctlpipe, a, 3 * sizeof(a[0]));
-	    audio_ctlpipe_play_note(a[0], a[1], a[2]);
+	    readpipe(ctlpipe, a, 4 * sizeof(a[0]));
+	    audio_ctlpipe_play_note(a[0], a[1], a[2], a[3]);
 	    break;
 	case AUDIO_CTLPIPE_PLAY_NOTE_FULL:
 	    readpipe(ctlpipe, &a[0], 2 * sizeof(a[0]));

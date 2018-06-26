@@ -36,6 +36,7 @@ typedef struct gui_prefs {
 
     gboolean advance_cursor_in_fx_columns;
     gboolean asynchronous_editing;
+    gboolean try_polyphony;
 
     gboolean tempo_bpm_update;
     gboolean auto_switch;

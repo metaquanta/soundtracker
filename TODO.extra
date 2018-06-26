@@ -129,15 +129,12 @@ ESC keyboard shortcut to leave all dialogs
 
 Arrows in file selection
 
-"Jazz trying mode" (configurable): when out of the editing mode, the sound is
-playing like in Jazz mode, when the new pressed key doesn't finish the sounds
-triggered previously (polyphonic).
-
 More careful handling of note recording positions in real-time with delay calculation and human-made delay pre-compensation.
 
 Last edited song list.
 
 "Play from cursor" and "Play block"
+Also: "Loop" toggle button (+ Ctrl+ L) for song, pattern, block
 
 FT2-like style of effects and volume representation (to think how to do this better. At the one
 hand is't rather inconvinient to subtract 0x10 from the volume to obtain its true value. But

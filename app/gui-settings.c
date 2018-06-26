@@ -103,6 +103,13 @@ gui_settings_asyncedit_toggled (GtkWidget *widget)
 }
 
 static void
+gui_settings_trypoly_toggled (GtkWidget *widget)
+{
+    gui_play_stop();
+    gui_settings.try_polyphony = GTK_TOGGLE_BUTTON(widget)->active;
+}
+
+static void
 gui_settings_tempo_bpm_update_toggled (GtkWidget *widget)
 {
     int o = gui_settings.tempo_bpm_update;
@@ -431,6 +438,12 @@ gui_settings_dialog (void)
     g_signal_connect(thing, "toggled",
 		       G_CALLBACK(gui_settings_asyncedit_toggled), NULL);
 
+    thing = gtk_check_button_new_with_label(_("Polyphonic try (non-editing) mode"));
+    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.try_polyphony);
+    gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
+    g_signal_connect(thing, "toggled",
+		       G_CALLBACK(gui_settings_trypoly_toggled), NULL);
+
     thing = gtk_check_button_new_with_label(_("Fxx command updates Tempo/BPM sliders"));
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.tempo_bpm_update);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
@@ -560,6 +573,7 @@ gui_settings_load_config (void)
 	gui_settings.tracker_upcase = prefs_get_bool(SECTION, "gui-use-upper-case", FALSE);
 	gui_settings.advance_cursor_in_fx_columns = prefs_get_bool(SECTION, "gui-advance-cursor-in-fx-columns", FALSE);
 	gui_settings.asynchronous_editing = prefs_get_bool(SECTION, "gui-asynchronous-editing", FALSE);
+	gui_settings.try_polyphony = prefs_get_bool(SECTION, "gui-try-polyphony", TRUE);
 	gui_settings.tracker_line_format = prefs_get_string(SECTION, "gui-tracker-line-format", "---0000000");
 	gui_settings.tracker_font = prefs_get_string(SECTION, "tracker-font", "fixed");
 	gui_settings.tempo_bpm_update = prefs_get_bool(SECTION, "gui-tempo-bpm-update", TRUE);
@@ -625,6 +639,7 @@ gui_settings_save_config (void)
     prefs_put_bool(SECTION, "gui-use-upper-case", gui_settings.tracker_upcase);
     prefs_put_bool(SECTION, "gui-advance-cursor-in-fx-columns", gui_settings.advance_cursor_in_fx_columns);
     prefs_put_bool(SECTION, "gui-asynchronous-editing", gui_settings.asynchronous_editing);
+    prefs_put_bool(SECTION, "gui-try-polyphony", gui_settings.try_polyphony);
     prefs_put_string(SECTION, "gui-tracker-line-format", gui_settings.tracker_line_format);
 	prefs_put_string(SECTION, "tracker-font", gui_settings.tracker_font);
     prefs_put_bool(SECTION, "gui-tempo-bpm-update", gui_settings.tempo_bpm_update);

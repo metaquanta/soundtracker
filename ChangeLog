@@ -1,5 +1,10 @@
+2018-06-26  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/audio.c, app/gui-settings.[ch], app/gui.[ch], app/midi-09x.c,
+	app/track-editor.c, app/xm-player.[ch]: Polyphonic playing in try
+	(out of editing) mode (optional).
+
 2018-06-25  Yury Aliaev  <mutab0r@rambler.ru>
-	* app/track-editor.c, app/xm-player.c: when out of editing mode,
+	* app/track-editor.c, app/xm-player.c: When out of editing mode,
 	note keys' pressing produces sounds independent on the cursor
 	position (note/instr/eff column, muted channel).
 
@@ -7,14 +12,14 @@
 	* app/envelope-box.c, app/extspinbutton.[ch], app/gui-settings.c,
 	app/gui-subs.[ch], app/gui.c, app/instrument-editor.c,
 	app/midi-settings-09x.c, app/playlist.c, app/sample-editor.c,
-	app/transposition.c: extended spin button code is optimized (an
+	app/transposition.c: Extended spin button code is optimized (an
 	attempt to improve the interactivity). But this seems not to be the
 	cause...
 
 2018-06-13  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/cheat-sheet.c, app/clavier.c, app/gui-settings.c, app/gui-subs.c,
 	app/gui.c, app/playlist.c, app/sample-display.c, app/sample-editor.c,
-	app/scope-group.c, app/track-editor.c, app/tracker.c: many 
+	app/scope-group.c, app/track-editor.c, app/tracker.c: Many 
 	deprecated symbols are removed (I hope, most of them);
 	* app/st-subs.c, app/drivers/jack-output.c: code cleanup (unneeded 
 	headers);
@@ -25,7 +30,7 @@
 	uniform data dir entry is implemented.
 
 2018-06-08  Yury Aliaev  <mutab0r@rambler.ru>
-	* app/mixer.h, app/mixers/integer32.c, app/mixers/kb-x86.c: the bug 
+	* app/mixer.h, app/mixers/integer32.c, app/mixers/kb-x86.c: The bug 
 	with high discretization frequences is fixed (now even 96 ksamples/s is 
 	ok).
 

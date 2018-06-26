@@ -34,7 +34,7 @@ extern guint8 curtick;
 void        xmplayer_init_module       (void);
 gboolean    xmplayer_init_play_song    (int songpos, int patpos, gboolean initall);
 gboolean    xmplayer_init_play_pattern (int pattern, int patpos, int only1row);
-gboolean    xmplayer_play_note         (int channel, int note, int instrument);
+gboolean    xmplayer_play_note         (int channel, int note, int instrument, gboolean all);
 gboolean    xmplayer_play_note_full    (int channel,
 					int note,
 					STSample *sample,

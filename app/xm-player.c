@@ -1429,11 +1429,12 @@ xmplayer_init_module (void)
 }
 
 static gboolean
-xmplayer_init_playing (gboolean init_all)
+xmplayer_init_playing (gboolean init_all, gboolean all)
 {
     int i;
 
-    driver_setnumch(xm->num_channels);
+    nchan = all ? 32 : xm->num_channels;
+    driver_setnumch(nchan);
 
     current_time = 0.0;
 
@@ -1442,7 +1443,6 @@ xmplayer_init_playing (gboolean init_all)
     nsamp = 128;
     ismod = xm->flags & XM_FLAGS_IS_MOD;
     linearfreq = !(xm->flags & XM_FLAGS_AMIGA_FREQ);
-    nchan = xm->num_channels;
     loopord = xm->restart_position;
     curtick = player_tempo-1;
     patdelay = 0;
@@ -1491,7 +1491,7 @@ xmplayer_init_play_song (int songpos,
     if(songpos == 0 && init_all)
 	xmplayer_init_module();
 
-    return xmplayer_init_playing(init_all);
+    return xmplayer_init_playing(init_all, FALSE);
 }
 
 gboolean
@@ -1508,7 +1508,7 @@ xmplayer_init_play_pattern (int pattern,
     curpattern = &xm->patterns[pattern];
     xmplayer_playmode = PLAYING_PATTERN;
 
-    return xmplayer_init_playing(TRUE);
+    return xmplayer_init_playing(TRUE, FALSE);
 }
 
 void
@@ -1520,11 +1520,12 @@ xmplayer_stop (void)
 gboolean
 xmplayer_play_note (int channel,
 		    int note,
-		    int instrument)
+		    int instrument,
+		    gboolean all)
 {
     if(!xmplayer_playmode) {
 	xmplayer_playmode = PLAYING_NOTE;
-	if(!xmplayer_init_playing(TRUE))
+	if(!xmplayer_init_playing(TRUE, all))
 	    return FALSE;
     }
 
@@ -1562,7 +1563,8 @@ xmplayer_play_note_full (int chnr,
 
     if(!xmplayer_playmode) {
 	xmplayer_playmode = PLAYING_NOTE;
-	if(!xmplayer_init_playing(TRUE))
+	/* In sample editor the polyphony is not needed to try a sample */
+	if(!xmplayer_init_playing(TRUE, FALSE))
 	    return FALSE;
     }
 

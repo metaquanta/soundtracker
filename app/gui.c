@@ -1394,7 +1394,8 @@ gui_load_xm (const char *filename)
 
 void
 gui_play_note (int channel,
-	       int note)
+	       int note,
+	       gboolean all)
 {
     int instrument = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin));
     audio_ctlpipe_id a = AUDIO_CTLPIPE_PLAY_NOTE;
@@ -1402,7 +1403,8 @@ gui_play_note (int channel,
 	if(write(audio_ctlpipe, &a, sizeof(a)) != sizeof(a) ||
 	   write(audio_ctlpipe, &channel, sizeof(channel)) != sizeof(channel) ||
 	   write(audio_ctlpipe, &note, sizeof(note)) != sizeof(note) ||
-	   write(audio_ctlpipe, &instrument, sizeof(instrument)) != sizeof(instrument)) {
+	   write(audio_ctlpipe, &instrument, sizeof(instrument)) != sizeof(instrument) ||
+	   write(audio_ctlpipe, &all, sizeof(all)) != sizeof(all)) {
 		static GtkWidget *dialog = NULL;
 		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
 	}

@@ -65,7 +65,8 @@ int                  gui_final                        (int argc, char *argv[]);
 void                 gui_playlist_initialize          (void);
 
 void                 gui_play_note                    (int channel,
-						       int note);
+						       int note,
+						       gboolean all);
 void                 gui_play_note_full               (unsigned channel,
 						       unsigned note,
 						       struct STSample *sample,
