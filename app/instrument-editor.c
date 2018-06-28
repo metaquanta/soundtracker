@@ -441,7 +441,7 @@ instrument_editor_handle_keys (int shift,
 
     i = keys_get_key_meaning(keyval, ENCODE_MODIFIERS(shift, ctrl, alt));
     if(i != -1 && KEYS_MEANING_TYPE(i) == KEYS_MEANING_NOTE) {
-	track_editor_do_the_note_key(i, pressed, keyval, ENCODE_MODIFIERS(shift, ctrl, alt));
+	track_editor_do_the_note_key(i, pressed, keyval, ENCODE_MODIFIERS(shift, ctrl, alt), TRUE);
 	return TRUE;
     }
 

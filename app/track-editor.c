@@ -503,7 +503,8 @@ void
 track_editor_do_the_note_key (int notekeymeaning,
 			      gboolean pressed,
 			      guint32 xkeysym,
-			      int modifiers)
+			      int modifiers,
+			      gboolean always_poly)
 {
     static int playchan = 0, trychan = 0;
 
@@ -517,27 +518,27 @@ track_editor_do_the_note_key (int notekeymeaning,
 
 	if(pressed) {
 		if(note_is_running(note) == -1) {
-			if(jazz_enabled) {
-				if(GTK_TOGGLE_BUTTON(editing_toggle)->active) {
-					gui_play_note(tracker->cursor_ch, note, FALSE);
-					note_running[tracker->cursor_ch] = note;
-					n = track_editor_find_next_jazz_channel(tracker->cursor_ch);
-					tracker_step_cursor_channel(tracker, n - tracker->cursor_ch);
-				} else {
-					playchan = track_editor_find_next_jazz_channel(playchan);
-					gui_play_note(playchan, note, FALSE);
-					note_running[playchan] = note;
-				}
+			if(gui_settings.try_polyphony &&
+			   (always_poly || (!GTK_TOGGLE_BUTTON(editing_toggle)->active)) &&
+			   gui_playing_mode != PLAYING_SONG &&
+			   gui_playing_mode != PLAYING_PATTERN) {
+				gui_play_note(trychan, note, TRUE);
+				note_running[trychan] = note;
+				/* All 32 channels are using for trying independent on
+				   actual number of channels used */
+				trychan = (trychan + 1) & 31;
 			} else {
-				if(gui_settings.try_polyphony &&
-				   (!GTK_TOGGLE_BUTTON(editing_toggle)->active) &&
-				   gui_playing_mode != PLAYING_SONG &&
-				   gui_playing_mode != PLAYING_PATTERN) {
-					gui_play_note(trychan, note, TRUE);
-					note_running[trychan] = note;
-					/* All 32 channels are using for trying independent on
-					   actual number of channels used */
-					trychan = (trychan + 1) & 31;
+				if(jazz_enabled) {
+					if(GTK_TOGGLE_BUTTON(editing_toggle)->active) {
+						gui_play_note(tracker->cursor_ch, note, FALSE);
+						note_running[tracker->cursor_ch] = note;
+						n = track_editor_find_next_jazz_channel(tracker->cursor_ch);
+						tracker_step_cursor_channel(tracker, n - tracker->cursor_ch);
+					} else {
+						playchan = track_editor_find_next_jazz_channel(playchan);
+						gui_play_note(playchan, note, FALSE);
+						note_running[playchan] = note;
+					}
 				} else {
 					gui_play_note(tracker->cursor_ch, note, FALSE);
 					note_running[tracker->cursor_ch] = note;
@@ -577,7 +578,7 @@ track_editor_handle_keys (int shift,
 
 	if(i != -1) {
 		if(tip == KEYS_MEANING_NOTE && !GTK_TOGGLE_BUTTON(editing_toggle)->active)
-			track_editor_do_the_note_key(m, pressed, keyval, ENCODE_MODIFIERS(shift, ctrl, alt));
+			track_editor_do_the_note_key(m, pressed, keyval, ENCODE_MODIFIERS(shift, ctrl, alt), FALSE);
 
 		if(t->cursor_item == 0) {
 			if(tip == KEYS_MEANING_NOTE) {
@@ -650,7 +651,7 @@ track_editor_handle_keys (int shift,
 						}
 					}
 					show_editmode_status();
-					track_editor_do_the_note_key(m, pressed, keyval, ENCODE_MODIFIERS(shift, ctrl, alt));
+					track_editor_do_the_note_key(m, pressed, keyval, ENCODE_MODIFIERS(shift, ctrl, alt), FALSE);
 				}
 
 				return TRUE;

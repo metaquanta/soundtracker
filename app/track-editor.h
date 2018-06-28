@@ -42,7 +42,8 @@ gboolean  track_editor_handle_keys         (int shift,
 void      track_editor_do_the_note_key     (int note,
 					    gboolean pressed,
 					    guint32 xkeysym,
-					    int modifiers);
+					    int modifiers,
+					    gboolean always_poly);
 
 void      track_editor_toggle_jazz_edit    (GtkCheckMenuItem *b);
 void	  track_editor_toggle_insert_noteoff (GtkCheckMenuItem *b);

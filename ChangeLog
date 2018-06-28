@@ -1,3 +1,8 @@
+2018-06-28  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/file-operations.c, app/instrument-editor.c, app/module-info.c,
+	app/track-editor.[ch]: Polyphonic try mode is now also available at
+	the file, instrument editor and module info pages.
+
 2018-06-26  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/audio.c, app/gui-settings.[ch], app/gui.[ch], app/midi-09x.c,
 	app/track-editor.c, app/xm-player.[ch]: Polyphonic playing in try
