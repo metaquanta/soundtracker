@@ -1,3 +1,6 @@
+2018-06-29  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/sample-editor.c: better fiddling with sounds in sample editor.
+
 2018-06-28  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/file-operations.c, app/instrument-editor.c, app/module-info.c,
 	app/track-editor.[ch]: Polyphonic try mode is now also available at

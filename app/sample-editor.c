@@ -698,25 +698,39 @@ sample_editor_handle_keys (int shift,
 			   guint32 keyval,
 			   gboolean pressed)
 {
+	static gint playing = -1;
     int i;
     int s = sampledisplay->sel_start, e = sampledisplay->sel_end;
-
-    if(!pressed)
-	return FALSE;
+    int modifiers = ENCODE_MODIFIERS(shift, ctrl, alt);
 
     if(s == -1) {
 	s = 0;
 	e = current_sample->sample.length;
     }
 
-    i = keys_get_key_meaning(keyval, ENCODE_MODIFIERS(shift, ctrl, alt));
-    if(i != -1 && KEYS_MEANING_TYPE(i) == KEYS_MEANING_NOTE) {
-	i += 12 * gui_get_current_octave_value() + 1;
-	if(i < 96 && current_sample != NULL) {
-	    gui_play_note_full(tracker->cursor_ch, i, current_sample, s, e - s);
+	i = keys_get_key_meaning(keyval, modifiers);
+	if(i != -1 && KEYS_MEANING_TYPE(i) == KEYS_MEANING_NOTE) {
+		i += 12 * gui_get_current_octave_value() + 1;
+		if(!pressed) {
+			/* Autorepeat fake keyoff */
+			if(keys_is_key_pressed(keyval, modifiers))
+				return FALSE;
+
+			if(playing == i) {
+				gui_play_stop();
+				playing = -1;
+				return TRUE;
+			}
+
+			return FALSE;
+		}
+
+		if(i < 96 && current_sample != NULL && playing != i) {
+			playing = i;
+			gui_play_note_full(tracker->cursor_ch, i, current_sample, s, e - s);
+		}
+		return TRUE;
 	}
-	return TRUE;
-    }
 
     return FALSE;
 }

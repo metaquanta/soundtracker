@@ -155,7 +155,8 @@ Check if in some dialogs items are very close to each other and increase spacing
 
 Automatic extension adding to file names if not specified (configurable).
 
-Acquire focus on file name entry when activating file selection page.
+Acquire focus on file name entry when activating file selection page. -- seems this works,
+but Enter doesn't cause to the file loading/saving; also arrwos for navigation could be great.
 
 "Delete instrument" button
 
