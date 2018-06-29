@@ -567,8 +567,6 @@ track_editor_handle_keys (int shift,
 			  guint32 keyval,
 			  gboolean pressed)
 {
-	static int current_channel = -1;
-
 	int c, i, m, tip;
 	Tracker *t = tracker;
 	gboolean handled = FALSE;
@@ -674,21 +672,32 @@ track_editor_handle_keys (int shift,
 	}
 
     if(!pressed){
-	if (tip == KEYS_MEANING_CH){
-	    current_channel = -1;
-	    return TRUE;
-	}
 	return FALSE;
     }
 
     switch (tip){
-    case KEYS_MEANING_FUNC:
-	m = gui_get_current_jump_value ();
-	if ((m += KEYS_MEANING_VALUE(i) ? -1 : 1)  <= 16 &&
-	     m >= 0) gui_set_jump_value (m);
-	return TRUE;
+	case KEYS_MEANING_FUNC:
+		switch(KEYS_MEANING_VALUE(i)) {
+		case 0:
+			m = gui_get_current_jump_value() + 1;
+			if(m <= 16)
+				gui_set_jump_value(m);
+			break;
+		case 1:
+			m = gui_get_current_jump_value() - 1;
+			if(m >= 0)
+				gui_set_jump_value(m);
+			break;
+		case 2:
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(scopegroup->scopebuttons[t->cursor_ch]),
+			                             !GTK_TOGGLE_BUTTON(scopegroup->scopebuttons[t->cursor_ch])->active);
+			break;
+		default:
+			break;
+		}
+		return TRUE;
     case KEYS_MEANING_CH:
-	tracker_set_cursor_channel (t, current_channel = KEYS_MEANING_VALUE(i));
+	tracker_set_cursor_channel (t, KEYS_MEANING_VALUE(i));
 	if (GTK_TOGGLE_BUTTON(editing_toggle)->active) show_editmode_status();
 	return TRUE;
     }
@@ -774,12 +783,6 @@ track_editor_handle_keys (int shift,
 	tracker_step_cursor_channel(t, shift ? -1 : 1);
 	handled = TRUE;
 	break;
-/*    case GDK_Shift_R:
-	play_song();
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(editing_toggle), TRUE);
-	tracker_redraw(tracker);
-	handled = TRUE;
-        break;*/
     case GDK_Delete:
 	if(GTK_TOGGLE_BUTTON(editing_toggle)->active) {
 	    XMNote *note = &t->curpattern->channels[t->cursor_ch][t->patpos];
@@ -869,17 +872,6 @@ track_editor_handle_keys (int shift,
            handled = TRUE;
        }
        break;
-
-    case ' ':
-	if (current_channel >= 0){
-	    if (current_channel > (t->num_channels - 1))
-		current_channel = t->num_channels - 1;
-	    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(scopegroup->scopebuttons[current_channel]),
-					 !GTK_TOGGLE_BUTTON(scopegroup->scopebuttons[current_channel])->active);
-	    handled = TRUE;
-	}
-	break;
-
     default:
 	if(!ctrl && !alt) {
 	    if(GTK_TOGGLE_BUTTON(editing_toggle)->active) {

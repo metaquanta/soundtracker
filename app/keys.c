@@ -120,15 +120,18 @@ static keys_key keys2[] = {
     { NULL }
 };
 
-static keys_key keys3[3+32+1] = { /* 3 fixed entries,
+#define NUM_SPECIAL 4
+static keys_key keys3[NUM_SPECIAL + 32 + 1] = { /* NUM_SPECIAL fixed entries,
 				     32 dynamically generated ones (see keys_generate_channel_explanations()),
 				     1 NULL terminator */
     { "KOFF", N_("The key that inserts the special keyoff note for FastTracker modules."),
-      0, KEYS_MEANING_TYPE_MAKE(KEYS_MEANING_KEYOFF), 0, 0 },
+      0, KEYS_MEANING_TYPE_MAKE(KEYS_MEANING_KEYOFF), 0, 0, 0 },
     { "JMP+", N_("The key that increases \"jump\" value."),
-      0, KEYS_MEANING_TYPE_MAKE(KEYS_MEANING_FUNC), 0, 0 },
+      0, KEYS_MEANING_TYPE_MAKE(KEYS_MEANING_FUNC), '`', 0, 0 },
     { "JMP-", N_("The key that decreases \"jump\" value."),
-      0, KEYS_MEANING_TYPE_MAKE(KEYS_MEANING_FUNC) + 1, 0, 0 },
+      0, KEYS_MEANING_TYPE_MAKE(KEYS_MEANING_FUNC) + 1, '~', 0, ENCODE_MODIFIERS(1, 0, 0) },
+    { "Mute", N_("Mute/unmute current channel."),
+      0, KEYS_MEANING_TYPE_MAKE(KEYS_MEANING_FUNC) + 2, 'm', 0, ENCODE_MODIFIERS(0, 1, 0) },
 };
 
 typedef struct keys_group {
@@ -980,7 +983,7 @@ keys_init (void)
 
     keys_fixup_xkeymap();
     keys_make_xkeys();
-    keys_generate_channel_explanations(keys3 + 3, 32);
+    keys_generate_channel_explanations(keys3 + NUM_SPECIAL, 32);
     keys3[sizeof(keys3)/sizeof(keys3[0]) - 1].title = NULL;
 
 	/* First try automatic config to obtain defaults and than overwrite with user-defined values */
@@ -988,10 +991,10 @@ keys_init (void)
 	   || !keys_try_automatic_config('x', -1, 10, 0, WHITE, keys2)
 	   || !keys_try_automatic_config('2', 0, 8, 13, BLACK, keys1 + 1)
 	   || !keys_try_automatic_config('s', 0, 7, 1, BLACK, keys2 + 1)
-	   || !keys_ch_try_automatic_config ('E', -2, 8, keys3 + 3, ENCODE_MODIFIERS(1, 0, 0))
-	   || !keys_ch_try_automatic_config ('S', -1, 8, keys3 + 11, ENCODE_MODIFIERS(1, 0, 0))
-	   || !keys_ch_try_automatic_config ('E', -2, 8, keys3 + 19, ENCODE_MODIFIERS(1, 0, 1))
-	   || !keys_ch_try_automatic_config ('S', -1, 8, keys3 + 27, ENCODE_MODIFIERS(1, 0, 1))) {
+	   || !keys_ch_try_automatic_config ('E', -2, 8, keys3 + NUM_SPECIAL, ENCODE_MODIFIERS(1, 0, 0))
+	   || !keys_ch_try_automatic_config ('S', -1, 8, keys3 + NUM_SPECIAL + 8, ENCODE_MODIFIERS(1, 0, 0))
+	   || !keys_ch_try_automatic_config ('E', -2, 8, keys3 + NUM_SPECIAL + 16, ENCODE_MODIFIERS(1, 0, 1))
+	   || !keys_ch_try_automatic_config ('S', -1, 8, keys3 + NUM_SPECIAL + 24, ENCODE_MODIFIERS(1, 0, 1))) {
 	    // Automatic key configuration unsuccessful. Popup requester.
 	    gui_warning_dialog(&dialog, N_("Automatic key configuration unsuccessful.\nPlease use the Keyboard Configuration dialog\n"
 				 "in the Settings menu."), FALSE);

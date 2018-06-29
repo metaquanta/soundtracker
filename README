@@ -78,8 +78,12 @@ Shift - Space           Toggle "jazz edit" mode
 
 F1 ... F7		Change editing octave
 Left Ctrl-1 ... -8	Change jump value
-Two configurable keys   Increase/decrease jump value (see Settings->Keyboard->
-			other keys)
+Two configurable keys	Increase/decrease jump value (see Settings->Keyboard->
+(` and ~ (Shift + `)	other keys)
+by default)
+Ctrl + m		Mute/unmute the current channel
+(also configurable)
+
 
 CrsrUp / Down		Walk around in current pattern
 PgUp / Down		Walk around in current pattern, quickly

@@ -1,5 +1,8 @@
 2018-06-29  Yury Aliaev  <mutab0r@rambler.ru>
-	* app/sample-editor.c: better fiddling with sounds in sample editor.
+	* app/sample-editor.c: Better fiddling with sounds in sample editor.
+	* app/keys.c, app/track-editor.c: The keyboard control for channels'
+	muting/unmuting is made simplier, some more default keybindings are
+	added.
 
 2018-06-28  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/file-operations.c, app/instrument-editor.c, app/module-info.c,
