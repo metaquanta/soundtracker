@@ -1530,14 +1530,6 @@ sample_editor_load_wav_main (const int mode, FILE *f, struct wl *wavload)
 	if(sbuf != tmp)
 		free(tmp);
   errnobuf:
-    if(wavload->through_library) {
-#if USE_SNDFILE
-	sf_close(wavload->file);
-#else
-	afCloseFile(wavload->file);
-#endif
-	wavload->file = NULL;
-    }
     return FALSE;
 }
 
@@ -1787,16 +1779,14 @@ sample_editor_load_wav (const gchar *fn)
 	static GtkWidget *dialog = NULL;
 
 	gui_error_dialog(&dialog, N_("Can only handle 8 and 16 bit samples with up to 2 channels"), FALSE);
-	goto errwrongformat;
-    }
-
-    if(wavload.channelCount == 1) {
-	sample_editor_load_wav_main(MODE_MONO, NULL, &wavload);
     } else {
-	sample_editor_open_stereowav_dialog(NULL, &wavload);
+	if(wavload.channelCount == 1) {
+		sample_editor_load_wav_main(MODE_MONO, NULL, &wavload);
+	} else {
+		sample_editor_open_stereowav_dialog(NULL, &wavload);
+	}
     }
 
-  errwrongformat:
 #if USE_SNDFILE
     sf_close(wavload.file);
 #else

@@ -2,7 +2,8 @@
 	* app/audio.c, app/audioconfig.c, app/gui.c, app/main.c,
 	app/menubar.c, app/sample-editor.c, app/drivers/file-output.c,
 	configure.in: The version of the audiofile library is now being
-	determined in the compilation time without runtime hacks.
+	determined in the compilation time without runtime hacks;
+	* app/sample-editor.c: Bugfix (double file closing).
 
 2018-06-29  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/sample-editor.c: Better fiddling with sounds in sample editor.
