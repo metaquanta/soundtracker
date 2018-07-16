@@ -420,7 +420,7 @@ gui_save_current (void)
 		fileops_open_dialog(NULL, (gpointer)1);
 }
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 static void
 save_wav (gchar *fn)
 {
@@ -1944,7 +1944,7 @@ gui_final (int argc,
 	static const gchar **mod_formats[] = {xm_f, mod_f, NULL};
 	static const gchar *save_mod_f[] = {N_("FastTracker modules (*.xm)"), "*.[xX][mM]", NULL};
 	static const gchar **save_mod_formats[] = {save_mod_f, NULL};
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 	static const gchar *wav_f[] = {N_("Microsoft RIFF (*.wav)"), "*.[wW][aA][vV]", NULL};
 	static const gchar **wav_formats[] = {wav_f, NULL};
 #endif
@@ -1983,7 +1983,7 @@ gui_final (int argc,
 
 	file_selection_create(DIALOG_LOAD_MOD, _("Load Module"), gui_settings.loadmod_path, load_xm, 0, TRUE, FALSE, mod_formats, N_("Load the selected module into the tracker"));
 	file_selection_create(DIALOG_SAVE_MOD, _("Save Module"), gui_settings.savemod_path, save_song, 1, FALSE, TRUE, save_mod_formats, N_("Save the current module"));
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 	file_selection_create(DIALOG_SAVE_MOD_AS_WAV, _("Render WAV"), gui_settings.savemodaswav_path, save_wav, 2, FALSE, TRUE, wav_formats, N_("Render the current module as WAV file"));
 #endif
 	file_selection_create(DIALOG_SAVE_SONG_AS_XM, _("Save XM without samples..."), gui_settings.savesongasxm_path, save_xm, -1, FALSE, TRUE, save_mod_formats, NULL);

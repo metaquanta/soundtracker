@@ -86,7 +86,7 @@ main (int argc,
 #ifdef DRIVER_SDL
 	driver_out_sdl,
 #endif
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 //	driver_out_file,
 #endif
 #if 0
@@ -209,7 +209,7 @@ main (int argc,
 					   &driver_out_sdl);
 #endif
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 /*    drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
 					   &driver_out_file);
 

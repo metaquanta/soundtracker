@@ -3,6 +3,9 @@
 /* Define if building universal (internal helper macro) */
 #undef AC_APPLE_UNIVERSAL_BUILD
 
+/* Audiofile minor version for use in headers */
+#undef AUDIOFILE_VERSION
+
 /* Data directory */
 #undef DATADIR
 
@@ -105,9 +108,6 @@
 
 /* Set if no assembler support is wanted */
 #undef NO_ASM
-
-/* Set if not libaudiofile installed */
-#undef NO_AUDIOFILE
 
 /* Set to 1 if libgdkpixbuf is not present. */
 #undef NO_GDK_PIXBUF

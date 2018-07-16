@@ -7296,27 +7296,27 @@ $as_echo "no" >&6; }
                 { $as_echo "$as_me:${as_lineno-$LINENO}: result: * No sample I/O library found, disabling sample loader (ignore error above)." >&5
 $as_echo "* No sample I/O library found, disabling sample loader (ignore error above)." >&6; }
 
-$as_echo "#define NO_AUDIOFILE 1" >>confdefs.h
-
-
-
 elif test $pkg_failed = untried; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: * No sample I/O library found, disabling sample loader (ignore error above)." >&5
 $as_echo "* No sample I/O library found, disabling sample loader (ignore error above)." >&6; }
-
-$as_echo "#define NO_AUDIOFILE 1" >>confdefs.h
-
-
 
 else
 	AUDIOFILE_CFLAGS=$pkg_cv_AUDIOFILE_CFLAGS
 	AUDIOFILE_LIBS=$pkg_cv_AUDIOFILE_LIBS
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	CFLAGS="$CFLAGS $AUDIOFILE_CFLAGS"
-      		 LIBS="$LIBS $AUDIOFILE_LIBS"
-
+	ac_cv_audiofile=1
 fi
+	if test x$ac_cv_audiofile = x1; then
+		CFLAGS="$CFLAGS $AUDIOFILE_CFLAGS"
+		LIBS="$LIBS $AUDIOFILE_LIBS"
+		AF_VERSION=$(pkg-config --modversion audiofile | sed "s/^[0-9]*\.//;s/\..*$//")
+
+cat >>confdefs.h <<_ACEOF
+#define AUDIOFILE_VERSION ${AF_VERSION}
+_ACEOF
+
+	fi
 fi
 
 

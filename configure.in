@@ -170,14 +170,17 @@ dnl Test for audiofile library (if libsndfile is not found or disabled)
 dnl -----------------------------------------------------------------------
 
 if test x$ac_cv_sndfile != x1 ; then
-	PKG_CHECK_MODULES(AUDIOFILE, audiofile > 0.1.5,
-		[CFLAGS="$CFLAGS $AUDIOFILE_CFLAGS"
-      		 LIBS="$LIBS $AUDIOFILE_LIBS"
-		],
-		[AC_MSG_RESULT([* No sample I/O library found, disabling sample loader (ignore error above).])
-		 AC_DEFINE([NO_AUDIOFILE], 1, [Set if not libaudiofile installed])
-		]
+	PKG_CHECK_MODULES(AUDIOFILE, audiofile > 0.1.5, ac_cv_audiofile=1,
+		[AC_MSG_RESULT([* No sample I/O library found, disabling sample loader (ignore error above).])]
 	)
+	if test x$ac_cv_audiofile = x1; then
+		CFLAGS="$CFLAGS $AUDIOFILE_CFLAGS"
+		LIBS="$LIBS $AUDIOFILE_LIBS"
+		AF_VERSION=$(pkg-config --modversion audiofile | sed "s/^[[0-9]]*\.//;s/\..*$//")
+		AC_DEFINE_UNQUOTED([AUDIOFILE_VERSION],
+		          ${AF_VERSION},
+		          [Audiofile minor version for use in headers])
+	fi
 fi
 
 dnl -----------------------------------------------------------------------

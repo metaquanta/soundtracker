@@ -160,7 +160,7 @@ audio_raise_priority (void)
 #endif
 }
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 static void
 audio_restore_priority (void)
 {
@@ -231,7 +231,7 @@ audio_ctlpipe_render_song_to_file (gchar *filename)
     g_assert(xm != NULL);
     g_assert(!playing);
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
     *((gchar**)file_driver_object) = filename;
 
     if(driver_out_file.open(file_driver_object)) {
@@ -249,7 +249,7 @@ audio_ctlpipe_render_song_to_file (gchar *filename)
 		fprintf(stderr, "\n\n*** audio_thread: write incomplete\n\n\n");
 }
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 GtkWidget*
 audio_file_output_getwidget (void)
 {

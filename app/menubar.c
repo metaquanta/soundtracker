@@ -271,7 +271,7 @@ menubar_init_prefs ()
 #if ! defined(DRIVER_ALSA_09x)
 	GtkWidget *settings_midi = gui_get_widget("settings_midi");
 #endif
-#if USE_SNDFILE == 0 && defined (NO_AUDIOFILE)
+#if USE_SNDFILE == 0 && !defined (AUDIOFILE_VERSION)
 	GtkWidget *savewav = gui_get_widget("file_save_wav");
 #endif
 #if !defined(USE_GTKHTML)
@@ -289,7 +289,7 @@ menubar_init_prefs ()
 
     gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(record_keyreleases), TRUE); // Record aftertouch
 
-#if USE_SNDFILE == 0 && defined (NO_AUDIOFILE)
+#if USE_SNDFILE == 0 && !defined (AUDIOFILE_VERSION)
     gtk_widget_set_sensitive(savewav, FALSE);
 #endif
 #if ! defined(DRIVER_ALSA_09x)

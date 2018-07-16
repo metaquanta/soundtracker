@@ -28,12 +28,11 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
-#include <dlfcn.h>
 #include <math.h>
 
 #if USE_SNDFILE
 #include <sndfile.h>
-#elif !defined (NO_AUDIOFILE)
+#elif AUDIOFILE_VERSION
 #include <audiofile.h>
 #endif
 
@@ -101,7 +100,7 @@ enum {
     MODE_STEREO_2
 };
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 static GtkWidget *wavload_dialog;
 
 struct wl {
@@ -125,8 +124,6 @@ static GtkWidget *wavload_raw_resolution_w[2];
 static GtkWidget *wavload_raw_channels_w[2];
 static GtkWidget *wavload_raw_signed_w[2];
 static GtkWidget *wavload_raw_endian_w[2];
-
-static gboolean libaf2 = TRUE;
 #endif
 
 // = Sampler variables
@@ -188,7 +185,7 @@ static void sample_editor_copy_clicked(void);
 void sample_editor_paste_clicked(void);
 static void sample_editor_zoom_to_selection_clicked(void);
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 static void sample_editor_load_wav(const gchar *name);
 static void sample_editor_save_wav(const gchar *name);
 static void sample_editor_save_region_wav(const gchar *name);
@@ -235,7 +232,7 @@ sample_editor_page_create (GtkNotebook *nb)
 	NULL
     };
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 	static const gchar *aiff_f[] = {N_("Apple/SGI audio (*aif, *.aiff, *.aifc)"), "*.[aA][iI][fF]", "*.[aA][iI][fF][fFcC]", NULL};
 	static const gchar *au_f[] = {N_("SUN/NeXT audio (*.au, *.snd)"), "*.[aA][uU]", "*.[sS][nN][dD]", NULL};
 	static const gchar *avr_f[] = {N_("Audio Visual Research files (*.avr)"), "*.[aA][vV][rR]", NULL};
@@ -267,7 +264,7 @@ sample_editor_page_create (GtkNotebook *nb)
 	                               voc_f, w64_f, wavex_f, flac_f, wve_f, ogg_f, rf64_f, NULL};
 #endif
 
-#if !USE_SNDFILE && !defined (NO_AUDIOFILE)
+#if !USE_SNDFILE && AUDIOFILE_VERSION
 	static const gchar *smp_f[] = {N_("Sample Vision files (*.smp)"), "*.[sS][mM][pP]", NULL};
 
 	static const gchar **in_f[] = {aiff_f, au_f, avr_f, caf_f, iff_f, sf_f, voc_f, wavex_f, smp_f, rf64_f, ogg_f,
@@ -403,7 +400,7 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_widget_show(vbox);
     gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
     file_selection_create(DIALOG_LOAD_SAMPLE, _("Load Sample"), gui_settings.loadsmpl_path, sample_editor_load_wav, 3, TRUE, FALSE, in_f, N_("Load sample into the current sample slot"));
     file_selection_create(DIALOG_SAVE_SAMPLE, _("Save Sample"), gui_settings.savesmpl_path, sample_editor_save_wav, 4, FALSE, TRUE, out_f, N_("Save the current sample"));
     file_selection_create(DIALOG_SAVE_RGN_SAMPLE, _("Save region as WAV..."), gui_settings.savesmpl_path, sample_editor_save_region_wav, -1, FALSE, TRUE, out_f, NULL);
@@ -414,7 +411,7 @@ sample_editor_page_create (GtkNotebook *nb)
 		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_LOAD_SAMPLE);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
-#if USE_SNDFILE == 0 && defined (NO_AUDIOFILE)
+#if USE_SNDFILE == 0 && !defined (AUDIOFILE_VERSION)
     gtk_widget_set_sensitive(thing, 0);
 #endif
 
@@ -424,7 +421,7 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     savebutton = thing;
-#if USE_SNDFILE == 0 && defined (NO_AUDIOFILE)
+#if USE_SNDFILE == 0 && !defined (AUDIOFILE_VERSION)
     gtk_widget_set_sensitive(thing, 0);
 #endif
 
@@ -434,7 +431,7 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     savebutton_rgn = thing;
-#if USE_SNDFILE == 0 && defined (NO_AUDIOFILE)
+#if USE_SNDFILE == 0 && !defined (AUDIOFILE_VERSION)
       gtk_widget_set_sensitive(thing, 0);
 #endif
 
@@ -531,22 +528,6 @@ sample_editor_page_create (GtkNotebook *nb)
 		       G_CALLBACK(sample_editor_crop_clicked), NULL);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
-
-#if (USE_SNDFILE || !defined (NO_AUDIOFILE)) && HAVE_DLFCN_H
-    { // hack, hack
-	void *handle, *function;
-#ifdef DL_LAZY
-	handle = dlopen(NULL, DL_LAZY);
-#else
-	handle = dlopen(NULL, RTLD_NOW);
-#endif
-	function = dlsym(handle, "afSetVirtualPCMMapping");
-	if(function == NULL) {
-	    libaf2 = FALSE;
-	}
-    }
-#endif
-
 }
 
 static void
@@ -681,7 +662,7 @@ sample_editor_update (void)
 	gtk_widget_set_sensitive(se->vertical_boxes[1], TRUE);
 	gtk_widget_set_sensitive(se->vertical_boxes[2], TRUE);
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 	gtk_widget_set_sensitive(savebutton, 1);
 	gtk_widget_set_sensitive(savebutton_rgn, 1);
 #endif
@@ -1342,7 +1323,7 @@ sample_editor_open_stereo_dialog (GtkWidget **window, GtkWidget **buttons, const
 		gtk_window_present(GTK_WINDOW(*window));
 }
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 
 static gboolean
 sample_editor_load_wav_main (const int mode, FILE *f, struct wl *wavload)
@@ -1862,13 +1843,13 @@ sample_editor_save_wav_main (const gchar *fn,
     afInitFileFormat(outfilesetup, AF_FILE_WAVE);
     afInitChannels(outfilesetup, AF_DEFAULT_TRACK, 1);
     if(current_sample->treat_as_8bit) {
-	if(!libaf2) {
-	    // for audiofile-0.1.x
-	    afInitSampleFormat(outfilesetup, AF_DEFAULT_TRACK, AF_SAMPFMT_TWOSCOMP, 8);
-	} else {
-	    // for audiofile-0.2.x
-	    afInitSampleFormat(outfilesetup, AF_DEFAULT_TRACK, AF_SAMPFMT_UNSIGNED, 8);
-	}
+#if AUDIOFILE_VERSION == 1
+    // for audiofile-0.1.x
+    afInitSampleFormat(outfilesetup, AF_DEFAULT_TRACK, AF_SAMPFMT_TWOSCOMP, 8);
+#else
+    // for audiofile-0.2.x and 0.3.x
+    afInitSampleFormat(outfilesetup, AF_DEFAULT_TRACK, AF_SAMPFMT_UNSIGNED, 8);
+#endif
     } else {
 	afInitSampleFormat(outfilesetup, AF_DEFAULT_TRACK, AF_SAMPFMT_TWOSCOMP, 16);
     }
@@ -1945,7 +1926,7 @@ sample_editor_save_region_wav (const gchar *fn)
 	sample_editor_save_wav_main(fn, rss, rse - rss);
 }
 
-#endif /* USE_SNDFILE || !defined (NO_AUDIOFILE) */
+#endif /* USE_SNDFILE || AUDIOFILE_VERSION */
 
 /* ============================ Sampling functions coming up -------- */
 

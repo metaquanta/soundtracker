@@ -21,7 +21,7 @@
 
 #include <config.h>
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 
 #include <stdio.h>
 #include <stdlib.h>

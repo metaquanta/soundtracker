@@ -226,7 +226,7 @@ void
 audioconfig_dialog (void)
 {
     GtkWidget *mainbox, *thing, *nbook, *box2, *frame;
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
     GtkWidget *label, *alignment;
 #endif
     static gchar *listtitles2[2];
@@ -257,7 +257,7 @@ audioconfig_dialog (void)
 	audioconfig_notebook_add_page(GTK_NOTEBOOK(nbook), i);
     }
 
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
 	/* File output driver at a separate page */
     thing = audio_file_output_getwidget();
     label = gtk_label_new(_("File output"));
@@ -336,7 +336,7 @@ audioconfig_load_config (void)
 		if(d->activate)
 			d->activate(audio_driver_objects[i][n[i]]);
     }
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
     audio_file_output_load_config();
 #endif
 }
@@ -390,7 +390,7 @@ audioconfig_save_config (void)
 	}
 
 	prefs_put_string("mixer", "mixer", audioconfig_current_mixer->id);
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
     audio_file_output_save_config();
 #endif
 }
@@ -416,7 +416,7 @@ audioconfig_shutdown (void)
 	    driver->destroy(audio_driver_objects[i][j]);
 	}
     }
-#if USE_SNDFILE || !defined (NO_AUDIOFILE)
+#if USE_SNDFILE || AUDIOFILE_VERSION
     audio_file_output_shutdown();
 #endif
 }
