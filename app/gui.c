@@ -81,7 +81,7 @@ static GtkWidget *gui_splash_logo_area;
 static GtkWidget *gui_splash_label;
 static GtkWidget *gui_splash_close_button;
 
-static gint pipetag = -1;
+static gint pipetag = -1, snch_id, inch_id;
 static gchar *current_filename = NULL;
 static GtkWidget *mainwindow_upper_hbox, *mainwindow_second_hbox;
 static GtkWidget *notebook;
@@ -647,16 +647,15 @@ static void
 current_instrument_name_changed (void)
 {
 	gchar *term;
-    STInstrument *i = &xm->instruments[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
+	gint curins;
 
-	if(i->no_cb) /* Instrument name is not modified, only current instrument is changed */
-		return;
+    STInstrument *i = &xm->instruments[curins = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
 
     g_utf8_strncpy(i->utf_name, gtk_entry_get_text(GTK_ENTRY(gui_curins_name)), 22);
     term = g_utf8_offset_to_pointer(i->utf_name, 23);
     term[0] = 0;
     i->needs_conversion = TRUE;
-    modinfo_update_instrument(gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1);
+    modinfo_update_instrument(curins);
     xm_set_modified(1);
 }
 
@@ -669,7 +668,6 @@ current_sample_changed (GtkSpinButton *spin)
     STInstrument *i = &xm->instruments[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
     STSample *s = &i->samples[smpl = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
 
-    gtk_entry_set_text(GTK_ENTRY(gui_cursmpl_name), s->utf_name);
     sample_editor_set_sample(s);
     modinfo_set_current_sample(smpl);
     xm_set_modified(m);
@@ -679,17 +677,15 @@ static void
 current_sample_name_changed (void)
 {
 	gchar *term;
+	gint cursmpl;
     STInstrument *i = &xm->instruments[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
-    STSample *s = &i->samples[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
-
-	if(s->no_cb) /* The sample name is not modified; only current sample is changed */
-		return;
+    STSample *s = &i->samples[cursmpl = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
 
     g_utf8_strncpy(s->utf_name, gtk_entry_get_text(GTK_ENTRY(gui_cursmpl_name)), 22);
     term = g_utf8_offset_to_pointer(i->utf_name, 23);
     term[0] = 0;
     s->needs_conversion = TRUE;
-    modinfo_update_sample(gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin)));
+    modinfo_update_sample(cursmpl);
     xm_set_modified(1);
 }
 
@@ -1506,6 +1502,20 @@ offset_current_pattern (int offset)
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_editpat), nv);
 }
 
+inline void
+gui_block_smplname_entry (gboolean block)
+{
+	block ? g_signal_handler_block(G_OBJECT(gui_cursmpl_name), snch_id)
+	      : g_signal_handler_unblock(G_OBJECT(gui_cursmpl_name), snch_id);
+}
+
+inline void
+gui_block_instrname_entry (gboolean block)
+{
+	block ? g_signal_handler_block(G_OBJECT(gui_curins_name), inch_id)
+	      : g_signal_handler_unblock(G_OBJECT(gui_curins_name), inch_id);
+}
+
 void
 gui_set_current_instrument (int n)
 {
@@ -1636,7 +1646,7 @@ gui_add_free_pattern_and_copy (GtkWidget *w, Playlist *p)
     }
 }
 
-void
+gint
 gui_get_text_entry (int length,
 		    void(*changedfunc)(),
 		    GtkWidget **widget)
@@ -1646,10 +1656,9 @@ gui_get_text_entry (int length,
     thing = gtk_entry_new();
     gtk_entry_set_max_length(GTK_ENTRY(thing), length);
 
-    g_signal_connect(thing, "changed",
-                     G_CALLBACK(changedfunc), NULL);
-
     *widget = thing;
+    return g_signal_connect(thing, "changed",
+                            G_CALLBACK(changedfunc), NULL);
 }
 
 void
@@ -2327,7 +2336,7 @@ gui_final (int argc,
     g_signal_connect(curins_spin, "value-changed",
 			G_CALLBACK(current_instrument_changed), NULL);
 
-    gui_get_text_entry(22, current_instrument_name_changed, &gui_curins_name);
+    inch_id = gui_get_text_entry(22, current_instrument_name_changed, &gui_curins_name);
     gtk_box_pack_start(GTK_BOX(hbox), gui_curins_name, TRUE, TRUE, 0);
     gtk_widget_show(gui_curins_name);
     gtk_widget_set_size_request(gui_curins_name, 100, -1);
@@ -2343,7 +2352,7 @@ gui_final (int argc,
     g_signal_connect(cursmpl_spin, "value-changed",
 			G_CALLBACK(current_sample_changed), NULL);
 
-    gui_get_text_entry(22, current_sample_name_changed, &gui_cursmpl_name);
+    snch_id = gui_get_text_entry(22, current_sample_name_changed, &gui_cursmpl_name);
     gtk_box_pack_start(GTK_BOX(hbox), gui_cursmpl_name, TRUE, TRUE, 0);
     gtk_widget_show(gui_cursmpl_name);
     gtk_widget_set_size_request(gui_cursmpl_name, 100, -1);

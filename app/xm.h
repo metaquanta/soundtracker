@@ -63,7 +63,7 @@ typedef struct STSample {
     st_mixer_sample_info sample;
 
     gchar name[23], utf_name[89];
-    gboolean needs_conversion, no_cb;
+    gboolean needs_conversion;
 
     guint8 volume;               /* eigenvolume (0..64) */
     gint8 finetune;              /* finetune (-128 ... 127) */
@@ -98,7 +98,7 @@ typedef struct STEnvelope {
 
 typedef struct STInstrument {
     gchar name[24], utf_name[93];
-    gboolean needs_conversion, no_cb;
+    gboolean needs_conversion;
 
     STEnvelope vol_env;
     STEnvelope pan_env;

@@ -351,7 +351,6 @@ xm_load_xm_samples (STSample samples[],
 		string_seal(s->utf_name, 22);
 		seal_ascii(s->name, 22);
 		s->needs_conversion = FALSE;
-		s->no_cb = FALSE;
 	}
 
     for(i = 0; i < num_samples; i++) {
@@ -541,7 +540,6 @@ xm_load_xm_instrument (STInstrument *instr,
     string_seal(instr->utf_name, 22);
     seal_ascii(instr->name, 22); /* For any case... */
     instr->needs_conversion = FALSE;
-    instr->no_cb = FALSE;
 
     if(iheader_size <= 29) {
 	return 1;
@@ -678,7 +676,6 @@ xm_load_xi (STInstrument *instr,
     string_seal(instr->utf_name, 22);
     seal_ascii(instr->name, 22);
     instr->needs_conversion = FALSE;
-    instr->no_cb = FALSE;
 
 	if(fread(a, 1, 23, f) != 23) {
 		static GtkWidget *dialog = NULL;

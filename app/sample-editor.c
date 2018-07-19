@@ -628,9 +628,9 @@ sample_editor_update (void)
 	return;
     }
 
-	sts->no_cb = TRUE; /* To prevent the callback */
+	gui_block_smplname_entry(TRUE); /* To prevent the callback */
     gtk_entry_set_text(GTK_ENTRY(gui_cursmpl_name), sts->utf_name);
-	sts->no_cb = FALSE;
+	gui_block_smplname_entry(FALSE);
 
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_volume), sts->volume);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_panning), sts->panning - 128);

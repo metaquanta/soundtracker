@@ -1,3 +1,8 @@
+2018-07-19  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui.[ch], app/instrument-editor.c, app/sample-editor.c,
+	app/drivers/file-output.c, app/st-subs.c, app/xm.[ch]: fixed double
+	sample name setting + code optimization.
+
 2018-07-16  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/audio.c, app/audioconfig.c, app/gui.c, app/main.c,
 	app/menubar.c, app/sample-editor.c, app/drivers/file-output.c,

@@ -459,9 +459,9 @@ instrument_editor_update (gboolean full)
     }
 
     if(current_instrument){
-	current_instrument->no_cb = TRUE; /* Preventing callback when changing instrument name entry */
+	gui_block_instrname_entry(TRUE); /* Preventing callback when changing instrument name entry */
 	gtk_entry_set_text(GTK_ENTRY(gui_curins_name), current_instrument->utf_name);
-	current_instrument->no_cb = FALSE;
+	gui_block_instrname_entry(FALSE);
 	}
 
     if(!o) {

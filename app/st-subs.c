@@ -370,7 +370,6 @@ st_clean_instrument (STInstrument *instr,
     instr->vol_env.points[0].val = 64;
     instr->pan_env.num_points = 1;
     instr->pan_env.points[0].val = 32;
-    instr->no_cb = FALSE;
 }
 
 void
@@ -391,7 +390,6 @@ st_clean_sample (STSample *s,
 	} else
 		s->needs_conversion = FALSE;
     s->sample.loopend = 1;
-    s->no_cb = FALSE;
     if(lock)
 	s->sample.lock = lock;
     else
