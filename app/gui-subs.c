@@ -560,7 +560,7 @@ GtkBuilder
 			GtkWidget *w = GTK_WIDGET(gtk_builder_get_object(builder, cb[i].widget_name));
 
 			if(w)
-				g_signal_connect(w, "activate", G_CALLBACK(cb[i].fn), cb[i].data);
+				g_signal_connect_swapped(w, "activate", G_CALLBACK(cb[i].fn), cb[i].data);
 		}
 
 	return builder;
@@ -675,3 +675,20 @@ gui_combo_box_prepend_text_or_set_active (GtkComboBox *combobox, const gchar *te
 			gtk_combo_box_set_active(combobox, 0);
 	}
 }
+
+gint
+gui_get_text_entry (int length,
+                    void(*changedfunc)(),
+                    GtkWidget **widget)
+{
+	GtkWidget *thing;
+
+	thing = gtk_entry_new();
+	gtk_entry_set_max_length(GTK_ENTRY(thing), length);
+
+	*widget = thing;
+
+	return g_signal_connect(thing, "changed",
+	                        G_CALLBACK(changedfunc), NULL);
+}
+

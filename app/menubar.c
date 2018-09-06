@@ -84,8 +84,7 @@ menubar_clear (gboolean all)
 }
 
 void
-menubar_clear_clicked (GtkWidget *w,
-		       gpointer b)
+menubar_clear_clicked (gpointer b)
 {
 	if(xm_get_modified()) {
 		if(gui_ok_cancel_modal((mainwindow),
@@ -145,7 +144,7 @@ menubar_save_settings_now (void)
 }
 
 void
-menubar_handle_cutcopypaste (GtkWidget *p, gpointer a)
+menubar_handle_cutcopypaste (gpointer a)
 {
 	static const gchar *signals[] = {"cut-clipboard", "copy-clipboard", "paste-clipboard"};
 
@@ -215,8 +214,7 @@ menubar_handle_cutcopypaste (GtkWidget *p, gpointer a)
 }
 
 void
-menubar_handle_edit_menu (GtkWidget *p,
-			  gpointer a)
+menubar_handle_edit_menu (gpointer a)
 {
     Tracker *t = tracker;
 
@@ -257,7 +255,7 @@ menubar_settings_tracker_prev_font (void)
 }
 
 void
-menubar_toggle_perm_wrapper (GtkWidget *w, gpointer all)
+menubar_toggle_perm_wrapper (gpointer all)
 {
     track_editor_toggle_permanentness(tracker, GPOINTER_TO_INT(all));
 }

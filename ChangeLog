@@ -1,3 +1,13 @@
+2018-09-06  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/file-operations.[ch]: File interface was rewritten almost
+	from scratch because the previous one was too buggy. Now single
+	click navigation works correctly, also keyboard usage is improved
+	a little bit;
+	* app/envelope-box.c, app/gui.[ch], app/instrument-editor.c,
+	app/menubar.[ch], app/sample-editor.c: files were modified mainly
+	to be consistend with the above changes;
+	* app/gui-subs.[ch]: one function is moved here from gui.[ch].
+
 2018-07-19  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.[ch], app/instrument-editor.c, app/sample-editor.c,
 	app/drivers/file-output.c, app/st-subs.c, app/xm.[ch]: fixed double

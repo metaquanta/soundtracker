@@ -33,14 +33,14 @@ void
 menubar_block_mode_set              (gboolean state);
 
 void
-menubar_clear_clicked               (GtkWidget *w, gpointer b);
+menubar_clear_clicked               (gpointer b);
 
 void
-menubar_handle_cutcopypaste         (GtkWidget *p, gpointer a);
+menubar_handle_cutcopypaste         (gpointer a);
 
 void
-menubar_handle_edit_menu            (GtkWidget *p, gpointer a);
+menubar_handle_edit_menu            (gpointer a);
 
 void
-menubar_toggle_perm_wrapper         (GtkWidget *w, gpointer all);
+menubar_toggle_perm_wrapper         (gpointer all);
 #endif /* ST_MENUBAR_H */

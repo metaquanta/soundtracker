@@ -186,9 +186,9 @@ void sample_editor_paste_clicked(void);
 static void sample_editor_zoom_to_selection_clicked(void);
 
 #if USE_SNDFILE || AUDIOFILE_VERSION
-static void sample_editor_load_wav(const gchar *name);
-static void sample_editor_save_wav(const gchar *name);
-static void sample_editor_save_region_wav(const gchar *name);
+static void sample_editor_load_wav(const gchar *name, const gchar *localname);
+static void sample_editor_save_wav(const gchar *name, const gchar *localname);
+static void sample_editor_save_region_wav(const gchar *name, const gchar *localname);
 #endif
 
 static void sample_editor_open_volume_ramp_dialog(void);
@@ -401,13 +401,13 @@ sample_editor_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
 
 #if USE_SNDFILE || AUDIOFILE_VERSION
-    file_selection_create(DIALOG_LOAD_SAMPLE, _("Load Sample"), gui_settings.loadsmpl_path, sample_editor_load_wav, 3, TRUE, FALSE, in_f, N_("Load sample into the current sample slot"));
-    file_selection_create(DIALOG_SAVE_SAMPLE, _("Save Sample"), gui_settings.savesmpl_path, sample_editor_save_wav, 4, FALSE, TRUE, out_f, N_("Save the current sample"));
-    file_selection_create(DIALOG_SAVE_RGN_SAMPLE, _("Save region as WAV..."), gui_settings.savesmpl_path, sample_editor_save_region_wav, -1, FALSE, TRUE, out_f, NULL);
+    fileops_dialog_create(DIALOG_LOAD_SAMPLE, _("Load Sample"), gui_settings.loadsmpl_path, sample_editor_load_wav, TRUE, FALSE, in_f, N_("Load sample into the current sample slot"));
+    fileops_dialog_create(DIALOG_SAVE_SAMPLE, _("Save Sample"), gui_settings.savesmpl_path, sample_editor_save_wav, TRUE, TRUE, out_f, N_("Save the current sample"));
+    fileops_dialog_create(DIALOG_SAVE_RGN_SAMPLE, _("Save region as WAV..."), gui_settings.savesmpl_path, sample_editor_save_region_wav, FALSE, TRUE, out_f, NULL);
 #endif
 
     thing = gtk_button_new_with_label(_("Load Sample"));
-    g_signal_connect(thing, "clicked",
+    g_signal_connect_swapped(thing, "clicked",
 		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_LOAD_SAMPLE);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
@@ -416,7 +416,7 @@ sample_editor_page_create (GtkNotebook *nb)
 #endif
 
     thing = gtk_button_new_with_label(_("Save WAV"));
-    g_signal_connect(thing, "clicked",
+    g_signal_connect_swapped(thing, "clicked",
 		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_SAVE_SAMPLE);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
@@ -426,7 +426,7 @@ sample_editor_page_create (GtkNotebook *nb)
 #endif
 
     thing = gtk_button_new_with_label(_("Save Region"));
-    g_signal_connect(thing, "clicked",
+    g_signal_connect_swapped(thing, "clicked",
 		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_SAVE_RGN_SAMPLE);
     gtk_box_pack_start(GTK_BOX(vbox), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
@@ -646,9 +646,10 @@ sample_editor_update (void)
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(loopradio[s->looptype]), TRUE);
     gtk_spin_button_set_range(GTK_SPIN_BUTTON(spin_loopstart), 0, s->length - 1);
     gtk_spin_button_set_range(GTK_SPIN_BUTTON(spin_loopend), 1, s->length);
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_loopstart), (s->loopstart));
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_loopend), (s->loopend));
     sample_editor_block_loop_spins(0);
-    sample_editor_blocked_set_loop_spins(s->loopstart, s->loopend);
-    
+
     sample_editor_set_selection_label(-1, 0);
 
     if(s->data) {
@@ -1697,18 +1698,14 @@ sample_editor_open_raw_sample_dialog (FILE *f, struct wl *wavload)
 }
 
 static void
-sample_editor_load_wav (const gchar *fn)
+sample_editor_load_wav (const gchar *fn, const gchar *localname)
 {
 	struct wl wavload;
 
 #if USE_SNDFILE != 1
     int sampleFormat;
 #endif
-	gchar *localname = gui_filename_from_utf8(fn);
-
     g_return_if_fail(current_sample != NULL);
-    if(!localname)
-		return;
 
     file_selection_save_path(fn, &gui_settings.loadsmpl_path);
 
@@ -1726,7 +1723,6 @@ sample_editor_load_wav (const gchar *fn)
 #endif
     if(!wavload.file) {
 	FILE *f = fopen(localname, "r");
-	g_free(localname);
 	if(f) {
 	    fseek(f, 0, SEEK_END);
 	    wavload.frameCount = ftell(f);
@@ -1741,7 +1737,6 @@ sample_editor_load_wav (const gchar *fn)
 	}
 	return;
     }
-    g_free(localname);
 
     wavload.through_library = TRUE;
 
@@ -1798,8 +1793,9 @@ sample_editor_load_wav (const gchar *fn)
 
 static void
 sample_editor_save_wav_main (const gchar *fn,
-			     guint32 offset,
-			     guint32 length)
+                             const gchar *localname,
+                             guint32 offset,
+                             guint32 length)
 {
 #if USE_SNDFILE
     SNDFILE *outfile;
@@ -1810,10 +1806,6 @@ sample_editor_save_wav_main (const gchar *fn,
     AFfilesetup outfilesetup;
     double rate = 44100.0;
 #endif
-	gchar *localname = gui_filename_from_utf8(fn);
-
-	if(!localname)
-		return;
 
     statusbar_update(STATUS_SAVING_SAMPLE, TRUE);
 
@@ -1847,7 +1839,6 @@ sample_editor_save_wav_main (const gchar *fn,
     outfile = afOpenFile(localname, "w", outfilesetup);
     afFreeFileSetup(outfilesetup);
 #endif
-	g_free(localname);
 
     if(!outfile) {
 	static GtkWidget *dialog = NULL;
@@ -1889,17 +1880,17 @@ sample_editor_save_wav_main (const gchar *fn,
 }
 
 static void
-sample_editor_save_wav (const gchar *fn)
+sample_editor_save_wav (const gchar *fn, const gchar *localname)
 {
     g_return_if_fail(current_sample != NULL);
     if(current_sample->sample.data == NULL) {
 	return;
     }
-	sample_editor_save_wav_main(fn, 0, current_sample->sample.length);
+	sample_editor_save_wav_main(fn, localname, 0, current_sample->sample.length);
 }
 
 static void
-sample_editor_save_region_wav (const gchar *fn)
+sample_editor_save_region_wav (const gchar *fn, const gchar *localname)
 {
     int rss = sampledisplay->sel_start, rse = sampledisplay->sel_end;
 
@@ -1913,7 +1904,7 @@ sample_editor_save_region_wav (const gchar *fn)
         gui_error_dialog(&dialog, N_("Please select region first."), FALSE);
 	return;
     }
-	sample_editor_save_wav_main(fn, rss, rse - rss);
+	sample_editor_save_wav_main(fn, localname, rss, rse - rss);
 }
 
 #endif /* USE_SNDFILE || AUDIOFILE_VERSION */

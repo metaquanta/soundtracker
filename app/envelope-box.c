@@ -873,7 +873,7 @@ envelope_box_canvas_event_button_release (GooCanvas *canvas,
 }
 
 void
-zoom_in (GtkWidget *w, gpointer data)
+zoom_in (gpointer data)
 {
 	EnvelopeBox *e = ENVELOPE_BOX(data);
 
@@ -884,7 +884,7 @@ zoom_in (GtkWidget *w, gpointer data)
 }
 
 void
-zoom_out (GtkWidget *w, gpointer data)
+zoom_out (gpointer data)
 {
 	EnvelopeBox *e = ENVELOPE_BOX(data);
 
@@ -906,7 +906,7 @@ envelope_box_canvas_event_scroll (GooCanvas *canvas,
 			gtk_adjustment_set_value(e->hadj, gtk_adjustment_get_value(e->hadj) - gtk_adjustment_get_step_increment(e->hadj));
 			return TRUE;
 		} else if(event->state & GDK_CONTROL_MASK) { /* Zooming */
-			zoom_in(NULL, e);
+			zoom_in(e);
 			return TRUE;
 		}
 	} else if(event->direction == GDK_SCROLL_DOWN) {
@@ -920,7 +920,7 @@ envelope_box_canvas_event_scroll (GooCanvas *canvas,
 
 			return TRUE;
 		} else if(event->state & GDK_CONTROL_MASK) { /* Zooming */
-			zoom_out(NULL, e);
+			zoom_out(e);
 			return TRUE;
 		}
 	}
@@ -1203,7 +1203,7 @@ delete_clicked (GtkWidget *w,
 
 #ifdef USE_CANVAS
 void
-zoom_normal (GtkWidget *w, gpointer data)
+zoom_normal (gpointer data)
 {
 	EnvelopeBox *e = ENVELOPE_BOX(data);
 

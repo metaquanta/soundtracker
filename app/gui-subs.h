@@ -49,7 +49,7 @@ enum {
 struct menu_callback
 {
 	const gchar *widget_name;
-	void (*fn)(GtkWidget*, gpointer);
+	void (*fn)(gpointer);
 	gpointer data;
 };
 
@@ -213,4 +213,7 @@ GtkBuilder           *gui_builder_from_file           (const gchar *name, const 
 
 gboolean             gui_delete_noop                  (void);
 void                 gui_set_escape_close             (GtkWidget *window);
+gint                 gui_get_text_entry               (int length,
+                                                       void(*changedfunc)(),
+                                                       GtkWidget **widget);
 #endif /* _GUI_SUBS_H */

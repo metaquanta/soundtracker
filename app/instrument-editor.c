@@ -142,15 +142,12 @@ instrument_editor_clavierkey_leave_event (GtkWidget *widget,
 }
 
 static void
-instrument_editor_load_instrument (gchar *fn)
+instrument_editor_load_instrument (const gchar *fn, const gchar *localname)
 {
-	gchar *localname = gui_filename_from_utf8(fn);
     STInstrument *instr = current_instrument;
     FILE *f;
 
     g_assert(instr != NULL);
-    if(!localname)
-		return;
 
 	file_selection_save_path(fn, &gui_settings.loadinstr_path);
     // Instead of locking the instrument and samples, we simply stop playing.
@@ -173,15 +170,12 @@ instrument_editor_load_instrument (gchar *fn)
 }
 
 static void
-instrument_editor_save_instrument (gchar *fn)
+instrument_editor_save_instrument (const gchar *fn, gchar *localname)
 {
-	gchar *localname = gui_filename_from_utf8(fn);
     STInstrument *instr = current_instrument;
     FILE *f;
 
     g_assert(instr != NULL);
-    if(!localname)
-		return;
 
 	file_selection_save_path(fn, &gui_settings.saveinstr_path);
     f = fopen(localname, "wb");
@@ -259,23 +253,23 @@ instrument_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(box), box2, TRUE, TRUE, 0);
     gtk_widget_show(box2);
 
-    file_selection_create(DIALOG_LOAD_INSTRUMENT, _("Load Instrument"), gui_settings.loadinstr_path,
-                          instrument_editor_load_instrument, 5, TRUE, FALSE, formats,
+    fileops_dialog_create(DIALOG_LOAD_INSTRUMENT, _("Load Instrument"), gui_settings.loadinstr_path,
+                          instrument_editor_load_instrument, TRUE, FALSE, formats,
                           N_("Load instrument in the current instrument slot"));
-    file_selection_create(DIALOG_SAVE_INSTRUMENT, _("Save Instrument"), gui_settings.saveinstr_path,
-                          instrument_editor_save_instrument, 6, FALSE, TRUE, formats,
+    fileops_dialog_create(DIALOG_SAVE_INSTRUMENT, _("Save Instrument"), gui_settings.saveinstr_path,
+                          instrument_editor_save_instrument, TRUE, TRUE, formats,
                           N_("Save the current instrument"));
 
     thing = gtk_button_new_with_label(_("Load XI"));
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
-    g_signal_connect(thing, "clicked",
+    g_signal_connect_swapped(thing, "clicked",
 		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_LOAD_INSTRUMENT);
 
     disableboxes[3] = thing = gtk_button_new_with_label(_("Save XI"));
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
-    g_signal_connect(thing, "clicked",
+    g_signal_connect_swapped(thing, "clicked",
 		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_SAVE_INSTRUMENT);
 
     thing = gtk_vseparator_new();

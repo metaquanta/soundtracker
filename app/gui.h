@@ -78,10 +78,6 @@ void                 gui_play_stop                    (void);
 void                 gui_start_sampling               (void);
 void                 gui_stop_sampling                (void);
 
-gint                 gui_get_text_entry               (int length,
-						       void(*changedfunc)(),
-						       GtkWidget **widget);
-
 void                 gui_go_to_fileops_page           (void);
 void                 gui_go_to_page                   (gint page);
 

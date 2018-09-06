@@ -25,11 +25,11 @@
 #include <gtk/gtk.h>
 
 /* When adding new dialogs, add them in the "not included in the File
-   tab" section first, or create appropriate labels in
-   file-operations.c. */
+   tab" section if they are standalone. But in principle embedded
+   dialogs can be shuffled with standalone ones... */
 
 enum {
-    DIALOG_LOAD_MOD = 0,
+    DIALOG_LOAD_MOD = 0,    /* Dialogs of the "File" tab */
     DIALOG_SAVE_MOD,
     DIALOG_SAVE_MOD_AS_WAV,
     DIALOG_SAVE_SONG_AS_XM,
@@ -38,21 +38,18 @@ enum {
     DIALOG_LOAD_INSTRUMENT,
     DIALOG_SAVE_INSTRUMENT,
 
-    DIALOG_SAVE_RGN_SAMPLE, // is not included in the "File" tab
+    DIALOG_SAVE_RGN_SAMPLE, /* are not included in the "File" tab */
     DIALOG_LOAD_PATTERN,
     DIALOG_SAVE_PATTERN,
     DIALOG_LAST
 };
 
-#define MIN_ALLOC 1024
-
 void            fileops_page_create                (GtkNotebook *nb);
 
 void            fileops_page_post_create           (void);
 
-void            file_selection_create              (guint index, const gchar *title, const gchar *path,
-                                                    void(*clickfunc)(), gint order,
-                                                    gboolean is_single_click, gboolean is_save,
+void            fileops_dialog_create              (const guint index, const gchar *title, const gchar *path,
+                                                    void(*callback)(), const gboolean is_embedded, const gboolean is_save,
                                                     const gchar **formats[], const gchar *tip);
 
 gboolean        fileops_page_handle_keys           (int shift,
@@ -61,7 +58,7 @@ gboolean        fileops_page_handle_keys           (int shift,
 						    guint32 keyval,
 						    gboolean pressed);
 
-void            fileops_open_dialog                (GtkWidget *w, gpointer index);
+void            fileops_open_dialog                (gpointer index);
 
 void		fileops_refresh_list 		   (GtkFileSelection *fs,
 						    gboolean grab);
@@ -70,5 +67,5 @@ void		fileops_tmpclean                   (void);
 
 void            fileops_restore_subpage            (void);
 
-void            fileops_focus_entry                (void);
+void            fileops_enter_pressed              (void);
 #endif /* _FILE_OPERATIONS_H */
