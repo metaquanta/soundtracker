@@ -184,12 +184,12 @@ gui_list_get_iter (guint n, GtkListStore *tree_model, GtkTreeIter *iter)
     return result;
 }
 
-inline void          gui_string_list_set_text        (GtkWidget *list,
+void                 gui_string_list_set_text        (GtkWidget *list,
                                                       guint row,
                                                       guint col,
                                                       const gchar *string);
 
-inline void          gui_list_select                  (GtkWidget *list,
+void                 gui_list_select                  (GtkWidget *list,
                                                        guint row,
                                                        gboolean use_align,
                                                        gfloat align);

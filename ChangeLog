@@ -7,6 +7,7 @@
 	app/menubar.[ch], app/sample-editor.c: files were modified mainly
 	to be consistend with the above changes;
 	* app/gui-subs.[ch]: One function is moved here from gui.[ch];
+	also some functions incorrectly marked as inline are fixed;
 	* app/tracer.c: Possible memory violation is fixed;
 	* app/track-editor.c: Possible buffer overflow is fixed.
 

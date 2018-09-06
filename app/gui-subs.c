@@ -406,7 +406,7 @@ gui_list_handle_selection (GtkWidget *list, GCallback handler, gpointer data)
     g_signal_connect_after(sel, "changed", handler, data);
 }
 
-inline void
+void
 gui_string_list_set_text (GtkWidget *list, guint row, guint col, const gchar *string)
 {
     GtkTreeIter iter;
@@ -416,7 +416,7 @@ gui_string_list_set_text (GtkWidget *list, guint row, guint col, const gchar *st
 	gtk_list_store_set(list_store, &iter, col, string, -1);
 }
 
-inline void
+void
 gui_list_select (GtkWidget *list, guint row, gboolean use_align, gfloat align)
 {
     gchar *path_string;
