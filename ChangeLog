@@ -9,7 +9,9 @@
 	* app/gui-subs.[ch]: One function is moved here from gui.[ch];
 	also some functions incorrectly marked as inline are fixed;
 	* app/tracer.c: Possible memory violation is fixed;
-	* app/track-editor.c: Possible buffer overflow is fixed.
+	* app/track-editor.c: Possible buffer overflow is fixed;
+	* app/drivers/sun-input.c, app/drivers/sun-output.c: sources are
+	now consistent with the new drivers' interface (not testes though).
 
 2018-07-19  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.[ch], app/instrument-editor.c, app/sample-editor.c,

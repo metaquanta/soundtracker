@@ -565,19 +565,21 @@ sun_savesettings (void *dp,
 }
 
 st_io_driver driver_out_sun = {
-    { "Sun Output",
+	"Sun Output",
 
-      sun_new,
-      sun_destroy,
+	sun_new,
+	sun_destroy,
 
-      sun_open,
-      sun_release,
+	sun_open,
+	sun_release,
 
-      sun_getwidget,
-      sun_loadsettings,
-      sun_savesettings,
-    },
+	sun_getwidget,
+	sun_loadsettings,
+	sun_savesettings,
 
-    sun_get_play_time,
-    sun_get_play_rate
+	NULL,
+	NULL,
+
+	sun_get_play_time,
+	sun_get_play_rate
 };

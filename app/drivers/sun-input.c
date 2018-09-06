@@ -71,13 +71,14 @@ sun_poll_ready_sampling (gpointer data,
 			 gint source,
 			 GdkInputCondition condition)
 {
-    sun_driver * const d = data;
+	sun_driver * const d = data;
 
-    printf("sampling...\n");
+	errno = 0;
+	if(read(d->soundfd, d->sndbuf, d->bufsize) != d->bufsize)
+		perror("Sun input: read()");
 
-    read(d->soundfd, d->sndbuf, d->bufsize);
-
-    sample_editor_sampled(d->sndbuf, d->bufsize, d->playrate, d->mf);
+	if(sample_editor_sampled(d->sndbuf, d->bufsize, d->playrate, d->mf))
+		d->sndbuf = calloc(d->bufsize);
 }
 
 static void
@@ -366,17 +367,20 @@ sun_savesettings (void *dp,
 }
 
 st_io_driver driver_in_sun = {
-    { "Sun Sampling",
+	"Sun Sampling",
 
-      sun_new,
-      sun_destroy,
+	sun_new,
+	sun_destroy,
 
-      sun_open,
-      sun_release,
+	sun_open,
+	sun_release,
 
-      sun_getwidget,
-      sun_loadsettings,
-      sun_savesettings,
-    },
-    NULL
+	sun_getwidget,
+	sun_loadsettings,
+	sun_savesettings,
+
+	NULL,
+	NULL,
+	NULL,
+	NULL
 };
