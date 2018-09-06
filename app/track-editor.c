@@ -200,7 +200,7 @@ show_editmode_status(void)
         break;
     default:
         if(note->volume>0xf) {
-            g_sprintf(tmp_buf,"%s", _(vol_fx_commands[((note->volume&0xf0)-0x60)>>4]));
+            g_snprintf(tmp_buf, sizeof(tmp_buf), "%s", _(vol_fx_commands[((note->volume&0xf0)-0x60)>>4]));
             strcat(track_editor_editmode_status_ed_buf, tmp_buf);
         } else
             strcat(track_editor_editmode_status_ed_buf, _("None"));
@@ -209,14 +209,13 @@ show_editmode_status(void)
 
     if(note->volume&0xf0) {
         if(note->volume>=0x10 && note->volume<=0x50)
-            g_sprintf(tmp_buf, " => %02d ] ", note->volume-0x10);
+            g_snprintf(tmp_buf, sizeof(tmp_buf), " => %02d ] ", note->volume-0x10);
         else
-            g_sprintf(tmp_buf, " => %02d ] ", note->volume&0xf);
+            g_snprintf(tmp_buf, sizeof(tmp_buf), " => %02d ] ", note->volume&0xf);
     } else
-         g_sprintf(tmp_buf, " ] ");
+         g_snprintf(tmp_buf, sizeof(tmp_buf), " ] ");
     strcat(track_editor_editmode_status_ed_buf, tmp_buf);
-        
-    memset(tmp_buf, 0, strlen(tmp_buf));
+
     strcat(track_editor_editmode_status_ed_buf, "[Cmd: ");
 
     /* enum values maybe for fx numbers ? */
@@ -224,18 +223,18 @@ show_editmode_status(void)
     {
     case 0:
         if(note->fxparam)
-            g_sprintf(tmp_buf, "%s", _(fx_commands[note->fxtype]));
+            g_snprintf(tmp_buf, sizeof(tmp_buf), "%s", _(fx_commands[note->fxtype]));
         else
-            g_sprintf(tmp_buf, _("None ]"));
+            g_snprintf(tmp_buf, sizeof(tmp_buf), _("None ]"));
         break;
     case 14:
         switch((note->fxparam&0xf0)>>4)
         {
         case 0: case 8: case 15:
-            g_sprintf(tmp_buf, _("None ]"));
+            g_snprintf(tmp_buf, sizeof(tmp_buf), _("None ]"));
             break;
         default:
-            g_sprintf(tmp_buf, "%s", _(e_fx_commands[(note->fxparam&0xf0)>>4]));
+            g_snprintf(tmp_buf, sizeof(tmp_buf), "%s", _(e_fx_commands[(note->fxparam&0xf0)>>4]));
             break;
         }
         break;
@@ -243,28 +242,26 @@ show_editmode_status(void)
         switch((note->fxparam&0xf0)>>4)
         {
         case 1:
-            g_sprintf(tmp_buf, "Extra fine porta up");
+            g_snprintf(tmp_buf, sizeof(tmp_buf), "Extra fine porta up");
             break;
         case 2:
-            g_sprintf(tmp_buf, "Extra fine porta down");
+            g_snprintf(tmp_buf, sizeof(tmp_buf), "Extra fine porta down");
             break;
         default:
-            g_sprintf(tmp_buf, _("None ]"));
+            g_snprintf(tmp_buf, sizeof(tmp_buf), _("None ]"));
             break;
         }
         break;
     case 18: case 19: case 22: case 23: case 24:
     case 28: case 30: case 31: case 32: case 34:
-        g_sprintf(tmp_buf, _("None ]"));
+        g_snprintf(tmp_buf, sizeof(tmp_buf), _("None ]"));
         break;
 
     default:
-        g_sprintf(tmp_buf, "%s", _(fx_commands[note->fxtype]));
+        g_snprintf(tmp_buf, sizeof(tmp_buf), "%s", _(fx_commands[note->fxtype]));
         break;
     }
     strcat(track_editor_editmode_status_ed_buf, tmp_buf);
-
-    memset(tmp_buf, 0, strlen(tmp_buf));
 
     cmd_p1 = (note->fxparam&0xf0)>>4;
     cmd_p2 = note->fxparam&0xf;
@@ -274,39 +271,39 @@ show_editmode_status(void)
     {
     case 0:
         if(note->fxparam)
-            g_sprintf(tmp_buf, " => %02d %02d ]", cmd_p1, cmd_p2);
+            g_snprintf(tmp_buf, sizeof(tmp_buf), " => %02d %02d ]", cmd_p1, cmd_p2);
         break;
     case 4:  case 7: case 10: case 17: case 25: case 27: case 29:
-        g_sprintf(tmp_buf, " => %02d %02d ]", cmd_p1, cmd_p2);
+        g_snprintf(tmp_buf, sizeof(tmp_buf), " => %02d %02d ]", cmd_p1, cmd_p2);
         break;
     case 1: case 2: case 3: case 5: case 6: case 8: case 9:
     case 11: case 12: case 13: case 15: case 16: case 21: case 26: case 35:
 
         if(note->fxtype==15)
             if (note->fxparam<32)
-                g_sprintf(tmp_buf, " => tempo: %02d ]", note->fxparam);
+                g_snprintf(tmp_buf, sizeof(tmp_buf), " => tempo: %02d ]", note->fxparam);
             else
-                g_sprintf(tmp_buf, " => BPM: %03d ]", note->fxparam);
+                g_snprintf(tmp_buf, sizeof(tmp_buf), " => BPM: %03d ]", note->fxparam);
         else if(note->fxtype==9)
-                g_sprintf(tmp_buf, " => offset: %d ]", note->fxparam<<8);
+                g_snprintf(tmp_buf, sizeof(tmp_buf), " => offset: %d ]", note->fxparam<<8);
              else
-                g_sprintf(tmp_buf, " => %03d ]", note->fxparam);
+                g_snprintf(tmp_buf, sizeof(tmp_buf), " => %03d ]", note->fxparam);
 
         break;
     case 14:
         if(cmd_p1!=0 && cmd_p1!=8 && cmd_p1!=15) {
             if((cmd_p1==4 || cmd_p1==7) && (cmd_p2<3))
-                g_sprintf(tmp_buf, " => %02d (%s) ]", cmd_p2, e47_fx_forms[cmd_p2]);
+                g_snprintf(tmp_buf, sizeof(tmp_buf), " => %02d (%s) ]", cmd_p2, e47_fx_forms[cmd_p2]);
             else
-                g_sprintf(tmp_buf, " => %02d ]", cmd_p2);
+                g_snprintf(tmp_buf, sizeof(tmp_buf), " => %02d ]", cmd_p2);
         }
         break;
     case 33:
         if (cmd_p1==1 || cmd_p1==2)
-            g_sprintf(tmp_buf, " => %02d ]", cmd_p2);
+            g_snprintf(tmp_buf, sizeof(tmp_buf), " => %02d ]", cmd_p2);
         break;
     default:
-        g_sprintf(tmp_buf, "]");
+        g_snprintf(tmp_buf, sizeof(tmp_buf), "]");
         break;
     }
     strcat(track_editor_editmode_status_ed_buf, tmp_buf);
