@@ -6,7 +6,8 @@
 	* app/envelope-box.c, app/gui.[ch], app/instrument-editor.c,
 	app/menubar.[ch], app/sample-editor.c: files were modified mainly
 	to be consistend with the above changes;
-	* app/gui-subs.[ch]: one function is moved here from gui.[ch].
+	* app/gui-subs.[ch]: One function is moved here from gui.[ch];
+	* app/tracer.c: Possible memory violation is fixed.
 
 2018-07-19  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.[ch], app/instrument-editor.c, app/sample-editor.c,

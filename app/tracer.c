@@ -51,7 +51,7 @@ tracer_updatesample (st_mixer_sample_info *si)
     int i;
     tracer_channel *c;
 
-    for(i = 0; i < 2 * 32; i++) {
+    for(i = 0; i < 32; i++) {
 	c = &channels[i];
 
 	if(c->sample != si || !(c->flags & TR_FLAG_SAMPLE_RUNNING)) {
