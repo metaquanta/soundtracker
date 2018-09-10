@@ -172,7 +172,7 @@ tips_show_next (GtkWidget *widget,
       if (tips_dialog_last_tip >= TIPS_COUNT)
 	tips_dialog_last_tip = 0;
     }
-  gtk_label_set (GTK_LABEL (tips_label), _(tips_array[tips_dialog_last_tip]));
+  gtk_label_set_text(GTK_LABEL(tips_label), _(tips_array[tips_dialog_last_tip]));
   return FALSE;
 }
 

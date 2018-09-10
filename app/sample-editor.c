@@ -559,8 +559,8 @@ sample_editor_blocked_set_loop_spins (int start,
 static gint
 sample_editor_idle_draw_function (struct SampleEditor *se)
 {
-    gtk_label_set(GTK_LABEL(se->label_selection), se->label_selection_new_text);
-    gtk_label_set(GTK_LABEL(se->label_length), se->label_length_new_text);
+    gtk_label_set_text(GTK_LABEL(se->label_selection), se->label_selection_new_text);
+    gtk_label_set_text(GTK_LABEL(se->label_length), se->label_length_new_text);
     gtk_idle_remove(se->idle_handler);
     se->idle_handler = 0;
     return TRUE;
@@ -640,7 +640,7 @@ sample_editor_update (void)
     s = &sts->sample;
 
     g_sprintf(buf, ("%d"), s->length);
-    gtk_label_set(GTK_LABEL(se->label_length), buf);
+    gtk_label_set_text(GTK_LABEL(se->label_length), buf);
 
     sample_editor_block_loop_spins(1);
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(loopradio[s->looptype]), TRUE);

@@ -1,6 +1,8 @@
 2018-09-10  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c: Loading files with non-ASCII names from the command
-	line is fixed.
+	line is fixed;
+	* app/sample-editor.c, app/sample-dialog.c: deprecated
+	gtk_label_st is replaced by gtk_label_set_text.
 
 2018-09-06  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/file-operations.[ch]: File interface was rewritten almost
