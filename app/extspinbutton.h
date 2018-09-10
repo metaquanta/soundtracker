@@ -36,6 +36,7 @@ struct _ExtSpinButton
     GtkSpinButton spin;
 
     gboolean size_hack;
+    gint width;
 };
 
 struct _ExtSpinButtonClass

@@ -45,6 +45,23 @@ extspinbutton_find_display_digits (GtkAdjustment *adjustment)
 }
 
 static void
+extspinbutton_style_set (GtkWidget *w)
+{
+	gint height;
+
+	ExtSpinButton *s = EXTSPINBUTTON(w);
+	PangoContext *context = gtk_widget_create_pango_context(w);
+	PangoLayout *layout = pango_layout_new(context);
+
+	pango_layout_set_font_description(layout, w->style->font_desc);
+	pango_layout_set_text(layout, "X", -1);
+	pango_layout_get_pixel_size(layout, &s->width, &height);
+
+	g_object_unref(layout);
+	g_object_unref(context);
+}
+
+static void
 extspinbutton_size_request (GtkWidget      *widget,
 			    GtkRequisition *requisition)
 {
@@ -55,11 +72,12 @@ extspinbutton_size_request (GtkWidget      *widget,
     GTK_WIDGET_CLASS (parent_class)->size_request (widget, requisition);
 
     if(EXTSPINBUTTON(widget)->size_hack) {
-	requisition->width = MAX (MIN_SPIN_BUTTON_WIDTH,
-				  extspinbutton_find_display_digits(GTK_SPIN_BUTTON(widget)->adjustment)
-				  * gdk_string_width(gdk_font_from_description(widget->style->font_desc), "X"))
-	    + ARROW_SIZE
-	    + 2 * widget->style->xthickness;
+	if(EXTSPINBUTTON(widget)->width == -1)
+		extspinbutton_style_set(widget);
+	requisition->width = MAX(MIN_SPIN_BUTTON_WIDTH,
+                             extspinbutton_find_display_digits(GTK_SPIN_BUTTON(widget)->adjustment)
+                             * EXTSPINBUTTON(widget)->width)
+	    + ARROW_SIZE + 2 * widget->style->xthickness;
     } else {
 	// This is the normal size_request() from gtk+-1.2.8
 	requisition->width = MIN_SPIN_BUTTON_WIDTH + ARROW_SIZE 
@@ -84,8 +102,11 @@ extspinbutton_new (GtkAdjustment *adjustment,
 
     s = g_object_new(extspinbutton_get_type(), NULL);
     s->size_hack = TRUE;
+    s->width = -1;
     gtk_spin_button_configure(GTK_SPIN_BUTTON(s), adjustment, climb_rate, digits);
 
+	g_signal_connect(s, "style-set",
+	                 G_CALLBACK(extspinbutton_style_set), NULL);
 	if(in_mainwindow)
 		g_signal_connect(s, "value-changed",
 		                 G_CALLBACK(extspinbutton_value_changed), NULL);
