@@ -2423,7 +2423,11 @@ gui_final (int argc,
 	}
 
     if(argc == 2) {
-	gui_load_xm(argv[1], NULL);
+	gchar *utfname = gui_filename_to_utf8(argv[1]);
+	if(utfname) {
+		gui_load_xm(utfname, argv[1]);
+		g_free(utfname);
+	}
     } else {
 	gui_new_xm();
     }
