@@ -98,10 +98,11 @@ int main(int argc,
         mixer_kbfloat,
         mixer_integer32;
 
-    g_thread_init(NULL);
+    // TODO: update this
+    //g_thread_init(NULL);
 
     if (pipe(pipea) || pipe(pipeb)) {
-        fprintf(stderr, "Cränk. Can't pipe().\n");
+        fprintf(stderr, "Crï¿½nk. Can't pipe().\n");
         return 1;
     }
 
