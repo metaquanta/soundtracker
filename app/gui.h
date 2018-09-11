@@ -81,8 +81,8 @@ void gui_stop_sampling(void);
 void gui_go_to_fileops_page(void);
 void gui_go_to_page(gint page);
 
-inline void gui_block_smplname_entry(gboolean block);
-inline void gui_block_instrname_entry(gboolean block);
+void gui_block_smplname_entry(gboolean block);
+void gui_block_instrname_entry(gboolean block);
 
 void gui_set_current_instrument(int);
 void gui_set_current_sample(int);
