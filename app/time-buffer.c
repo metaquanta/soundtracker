@@ -27,7 +27,7 @@
    suboptimal... */
 
 struct time_buffer {
-    GMutex* mutex;
+    GMutex mutex;
     GList* list;
 };
 
@@ -42,7 +42,7 @@ time_buffer_new(double maxtimedelta)
     time_buffer* t = g_new(time_buffer, 1);
 
     if (t) {
-        t->mutex = g_mutex_new();
+        g_mutex_init(&t->mutex);
         t->list = NULL;
     }
 
@@ -53,7 +53,7 @@ void time_buffer_destroy(time_buffer* t)
 {
     if (t) {
         g_list_free(t->list);
-        g_mutex_free(t->mutex);
+        g_mutex_clear(&t->mutex);
         g_free(t);
     }
 }
@@ -73,10 +73,10 @@ time_buffer_add(time_buffer* t,
 {
     time_buffer_item* a = item;
 
-    g_mutex_lock(t->mutex);
+    g_mutex_lock(&t->mutex);
     a->time = time;
     t->list = g_list_append(t->list, a);
-    g_mutex_unlock(t->mutex);
+    g_mutex_unlock(&t->mutex);
 
     return TRUE;
 }
@@ -88,11 +88,11 @@ void* time_buffer_get(time_buffer* t,
     void* result = NULL;
     GList* list;
 
-    g_mutex_lock(t->mutex);
+    g_mutex_lock(&t->mutex);
     l = g_list_length(t->list);
 
     if (l == 0) {
-        g_mutex_unlock(t->mutex);
+        g_mutex_unlock(&t->mutex);
         return NULL;
     }
 
@@ -111,7 +111,7 @@ void* time_buffer_get(time_buffer* t,
 
     result = t->list->data;
 
-    g_mutex_unlock(t->mutex);
+    g_mutex_unlock(&t->mutex);
 
     return result;
 }

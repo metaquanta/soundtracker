@@ -305,8 +305,8 @@ tracer_mix(void* dest, guint32 count, gint16* scopebufs[], int scopebufs_offset)
         if (!((ch->flags & TR_FLAG_SAMPLE_RUNNING) && (gui_settings.permanent_channels & (1 << chnr))))
             continue;
 
-        g_assert(ch->sample->lock);
-        g_mutex_lock(ch->sample->lock);
+        g_assert(&ch->sample->lock);
+        g_mutex_lock(&ch->sample->lock);
 
         while (num_samples_left && (ch->flags & TR_FLAG_SAMPLE_RUNNING)) {
             int num_samples = 0;
@@ -316,7 +316,7 @@ tracer_mix(void* dest, guint32 count, gint16* scopebufs[], int scopebufs_offset)
             num_samples_left -= num_samples;
         }
 
-        g_mutex_unlock(ch->sample->lock);
+        g_mutex_unlock(&ch->sample->lock);
     }
     return NULL;
 }

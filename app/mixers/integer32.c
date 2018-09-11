@@ -278,8 +278,8 @@ integer32_mix(void* dest,
             continue;
         }
 
-        g_assert(c->sample->lock);
-        g_mutex_lock(c->sample->lock);
+        g_assert(&c->sample->lock);
+        g_mutex_lock(&c->sample->lock);
 
         while (t) {
             /* Check how much of the sample we can fill in one run */
@@ -416,7 +416,7 @@ integer32_mix(void* dest,
             c->current = j;
         }
 
-        g_mutex_unlock(c->sample->lock);
+        g_mutex_unlock(&c->sample->lock);
     }
 
     /* modules with many channels get additional amplification here */

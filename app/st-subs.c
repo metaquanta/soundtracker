@@ -315,19 +315,16 @@ void st_copy_instrument(STInstrument* src, STInstrument* dest)
 {
     int i;
     guint32 length;
-    GMutex* lock[128]; /* Be careful with hardcoded arrays' lengths! */
 
     st_clean_instrument(dest, NULL);
 
-    for (i = 0; i < sizeof(dest->samples) / sizeof(dest->samples[0]); i++)
-        lock[i] = dest->samples[i].sample.lock; // Preserve pointers to GMutex'es from modification
     memcpy(dest, src, sizeof(STInstrument));
     for (i = 0; i < sizeof(src->samples) / sizeof(src->samples[0]); i++) {
         if ((length = dest->samples[i].sample.length * sizeof(dest->samples[i].sample.data[0]))) {
             dest->samples[i].sample.data = malloc(length);
             memcpy(dest->samples[i].sample.data, src->samples[i].sample.data, length);
         }
-        dest->samples[i].sample.lock = lock[i];
+        g_mutex_init(&dest->samples[i].sample.lock);
     }
 }
 
@@ -359,7 +356,7 @@ void st_clean_instrument(STInstrument* instr,
 void st_clean_sample(STSample* s,
     const char* utf_name, const char* name)
 {
-    GMutex* lock = s->sample.lock;
+    g_mutex_clear(&s->sample.lock);
     free(s->sample.data);
     memset(s, 0, sizeof(STSample));
     if (utf_name) {
@@ -373,10 +370,7 @@ void st_clean_sample(STSample* s,
     } else
         s->needs_conversion = FALSE;
     s->sample.loopend = 1;
-    if (lock)
-        s->sample.lock = lock;
-    else
-        s->sample.lock = g_mutex_new();
+    g_mutex_init(&s->sample.lock);
 }
 
 void st_clean_song(XM* xm)

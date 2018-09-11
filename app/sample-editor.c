@@ -203,7 +203,7 @@ static void sample_editor_delete(STSample* sample, int start, int end);
 static void
 sample_editor_lock_sample(void)
 {
-    g_mutex_lock(current_sample->sample.lock);
+    g_mutex_lock(&current_sample->sample.lock);
 }
 
 static void
@@ -212,7 +212,7 @@ sample_editor_unlock_sample(void)
     if (gui_playing_mode) {
         mixer->updatesample(&current_sample->sample);
     }
-    g_mutex_unlock(current_sample->sample.lock);
+    g_mutex_unlock(&current_sample->sample.lock);
 }
 
 void sample_editor_page_create(GtkNotebook* nb)
@@ -1451,7 +1451,7 @@ sample_editor_load_wav_main(const int mode, FILE* f, struct wl* wavload)
             goto errnodata;
         }
 
-        g_mutex_lock(next->sample.lock);
+        g_mutex_lock(&next->sample.lock);
         sample_editor_init_sample_full(next, wavload->samplename);
         next->sample.data = sbuf2;
         next->treat_as_8bit = (wavload->sampleWidth == 8);
@@ -1500,7 +1500,7 @@ sample_editor_load_wav_main(const int mode, FILE* f, struct wl* wavload)
         if (gui_playing_mode) {
             mixer->updatesample(&next->sample);
         }
-        g_mutex_unlock(next->sample.lock);
+        g_mutex_unlock(&next->sample.lock);
     }
     sample_editor_unlock_sample();
 
@@ -2218,7 +2218,7 @@ sample_editor_ok_clicked(void)
 
     if (mode == MODE_STEREO_2) {
 
-        g_mutex_lock(next->sample.lock);
+        g_mutex_lock(&next->sample.lock);
         st_clean_sample(next, samplename, NULL);
         next->sample.data = sbuf2;
         next->treat_as_8bit = !multiply;
@@ -2403,7 +2403,7 @@ sample_editor_ok_clicked(void)
         if (gui_playing_mode) {
             mixer->updatesample(&next->sample);
         }
-        g_mutex_unlock(next->sample.lock);
+        g_mutex_unlock(&next->sample.lock);
     }
 
     instrument_editor_update(TRUE);

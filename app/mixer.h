@@ -30,7 +30,7 @@ typedef struct st_mixer_sample_info {
     guint32 loopstart; /* offset in samples, not in bytes */
     guint32 loopend; /* offset to first sample not being played */
     gint16* data; /* pointer to sample data */
-    GMutex* lock;
+    GMutex lock;
 } st_mixer_sample_info;
 
 /* values for st_mixer_sample_info.looptype */

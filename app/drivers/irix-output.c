@@ -113,7 +113,7 @@ irix_new(void)
 {
     irix_driver* d = g_new(irix_driver, 1);
 
-    d->configmutex = g_mutex_new();
+    g_mutex_init(&d->configmutex);
 
     d->sgi_fragsize = DEFAULT_SGI_FRAGSIZE;
     d->audiobuffer = NULL;

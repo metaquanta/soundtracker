@@ -958,7 +958,7 @@ xm_init_locks(XM* xm)
     for (i = 0; i < sizeof(xm->instruments) / sizeof(xm->instruments[0]); i++) {
         STInstrument* ins = &xm->instruments[i];
         for (j = 0; j < sizeof(ins->samples) / sizeof(ins->samples[0]); j++) {
-            ins->samples[j].sample.lock = g_mutex_new();
+            g_mutex_init(&ins->samples[j].sample.lock);
         }
     }
 }
@@ -1341,7 +1341,7 @@ void XM_Free(XM* xm)
             STInstrument* ins = &xm->instruments[i];
             st_clean_instrument(ins, NULL);
             for (j = 0; j < sizeof(ins->samples) / sizeof(ins->samples[0]); j++) {
-                g_mutex_free(ins->samples[j].sample.lock);
+                g_mutex_clear(&ins->samples[j].sample.lock);
             }
         }
 

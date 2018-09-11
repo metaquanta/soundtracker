@@ -739,8 +739,8 @@ kb_x86_mix(void* dest,
             ch->flags &= ~KB_FLAG_JUST_STARTED;
         }
 
-        g_assert(ch->sample->lock);
-        g_mutex_lock(ch->sample->lock);
+        g_assert(&ch->sample->lock);
+        g_mutex_lock(&ch->sample->lock);
 
         while (num_samples_left && (ch->flags & KB_FLAG_SAMPLE_RUNNING)) {
             int num_samples = 0;
@@ -771,7 +771,7 @@ kb_x86_mix(void* dest,
             }
         }
 
-        g_mutex_unlock(ch->sample->lock);
+        g_mutex_unlock(&ch->sample->lock);
     }
 
     clipflag = kbasm_post_mixing(kb_x86_tempbuf, (gint16*)dest, count, kb_x86_amplification);
