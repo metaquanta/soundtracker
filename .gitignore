@@ -1,0 +1,16 @@
+*.o
+# These are autotools generated
+configure
+autom4te.cache
+config.log
+config.h
+stamp-h1
+Makefile
+.deps
+po/Makefile.in
+po/POTFILES
+config.status
+# Eclipse project files
+.cproject
+.settings
+.project
