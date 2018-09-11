@@ -1,4 +1,3 @@
-*.o
 # These are autotools generated
 configure
 autom4te.cache
@@ -14,3 +13,7 @@ config.status
 .cproject
 .settings
 .project
+# Build artifacts
+app/drivers/libdrivers.a
+app/mixers/libmixers.a
+*.o
