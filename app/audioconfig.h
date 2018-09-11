@@ -23,6 +23,7 @@
 #define _ST_AUDIOCONFIG_H
 
 #include <glib.h>
+#include <gtk/gtk.h>
 
 void audioconfig_dialog(void);
 
