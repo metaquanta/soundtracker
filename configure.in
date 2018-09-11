@@ -234,7 +234,7 @@ if test x$alsa_support != xno; then
   AC_CHECK_LIB(asound,snd_pcm_plug_open,
     [alsa_support=new
      AC_DEFINE([DRIVER_ALSA_09x], 1, [Set if new (v0.9) ALSA driver wanted])
-     LIBS="$LIBS -lasound"
+     LIBS="$LIBS -lasound -lm"
     ],
   )
 fi
