@@ -23,28 +23,26 @@
 
 #include "endian-conv.h"
 
-void
-le_16_array_to_host_order (gint16 *data,
-			   int count)
+void le_16_array_to_host_order(gint16* data,
+    int count)
 {
 #ifdef WORDS_BIGENDIAN
-    for(; count; count--, data++) {
-	gint8 *p = (gint8*)data;
-	gint8 a = p[0];
-	p[0] = p[1];
-	p[1] = a;
+    for (; count; count--, data++) {
+        gint8* p = (gint8*)data;
+        gint8 a = p[0];
+        p[0] = p[1];
+        p[1] = a;
     }
 #endif
 }
 
-void
-byteswap_16_array (gint16 *data,
-		   int count)
+void byteswap_16_array(gint16* data,
+    int count)
 {
-    for(; count; count--, data++) {
-	gint8 *p = (gint8*)data;
-	gint8 a = p[0];
-	p[0] = p[1];
-	p[1] = a;
+    for (; count; count--, data++) {
+        gint8* p = (gint8*)data;
+        gint8 a = p[0];
+        p[0] = p[1];
+        p[1] = a;
     }
 }

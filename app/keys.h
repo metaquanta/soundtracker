@@ -24,32 +24,29 @@
 
 #include <gdk/gdktypes.h>
 
-int
-keys_init (void);
+int keys_init(void);
 
 guint32
-keys_get_key_meaning (guint32 keysym,
-		      int modifier); // modifier is 1 shift, 2 ctrl, 4 meta
+keys_get_key_meaning(guint32 keysym,
+    int modifier); // modifier is 1 shift, 2 ctrl, 4 meta
 
 #define KEYS_MEANING_TYPE(x) (x >> 16)
 #define KEYS_MEANING_TYPE_MAKE(x) (x << 16)
 #define KEYS_MEANING_VALUE(x) (x & 0xFFFF)
 
-#define KEYS_MEANING_NOTE   0
+#define KEYS_MEANING_NOTE 0
 #define KEYS_MEANING_KEYOFF 1
-#define KEYS_MEANING_FUNC   2
-#define KEYS_MEANING_CH     3
+#define KEYS_MEANING_FUNC 2
+#define KEYS_MEANING_CH 3
 
 #define ENCODE_MODIFIERS(shift, ctrl, alt) (1 * (shift != 0) + 2 * (ctrl != 0) + 4 * (alt != 0))
 
-void
-keys_dialog (void);
+void keys_dialog(void);
 
-void
-keys_save_config (void);
+void keys_save_config(void);
 
 gboolean
-keys_is_key_pressed (guint32 keysym,
-		     int modifiers);
+keys_is_key_pressed(guint32 keysym,
+    int modifiers);
 
 #endif /* _NOTEKEYS_H */

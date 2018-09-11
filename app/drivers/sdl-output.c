@@ -26,21 +26,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <glib.h>
-#include <gtk/gtk.h>
-#include <glib/gi18n.h>
 #include <SDL.h>
+#include <glib.h>
+#include <glib/gi18n.h>
+#include <gtk/gtk.h>
 
 #include "driver-inout.h"
-#include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
+#include "mixer.h"
 #include "preferences.h"
 
 #define SDL_BUFSIZE 1024
 
 typedef struct sdl_driver {
-    GtkWidget *configwidget;
+    GtkWidget* configwidget;
 
     int out_bits, out_channels, out_rate;
     int played;
@@ -50,46 +50,46 @@ typedef struct sdl_driver {
     gpointer polltag;
 } sdl_driver;
 
-void sdl_callback(void *udata, Uint8 *stream, int len)
+void sdl_callback(void* udata, Uint8* stream, int len)
 {
-    sdl_driver * const d = udata;
+    sdl_driver* const d = udata;
 
-    audio_mix(stream, len/4, d->out_rate, d->mf);
-    d->played+=len/4;
+    audio_mix(stream, len / 4, d->out_rate, d->mf);
+    d->played += len / 4;
 }
 
 static void
-sdl_poll_ready_playing (gpointer data,
-			gint source,
-			GdkInputCondition condition)
+sdl_poll_ready_playing(gpointer data,
+    gint source,
+    GdkInputCondition condition)
 {
     SDL_Delay(10);
 }
 
 static void
-sdl_make_config_widgets (sdl_driver *d)
+sdl_make_config_widgets(sdl_driver* d)
 {
     GtkWidget *thing, *mainbox;
 
     d->configwidget = mainbox = gtk_vbox_new(FALSE, 2);
-   
+
     thing = gtk_label_new(_("Experimental SDL support."));
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
 }
 
-static GtkWidget *
-sdl_getwidget (void *dp)
+static GtkWidget*
+sdl_getwidget(void* dp)
 {
-    sdl_driver * const d = dp;
+    sdl_driver* const d = dp;
 
     return d->configwidget;
 }
 
-static void *
-sdl_new (void)
+static void*
+sdl_new(void)
 {
-    sdl_driver *d = g_new(sdl_driver, 1);
+    sdl_driver* d = g_new(sdl_driver, 1);
 
     d->out_bits = AUDIO_S16SYS;
     d->out_rate = 44100;
@@ -101,9 +101,9 @@ sdl_new (void)
 }
 
 static void
-sdl_destroy (void *dp)
+sdl_destroy(void* dp)
 {
-    sdl_driver * const d = dp;
+    sdl_driver* const d = dp;
 
     gtk_widget_destroy(d->configwidget);
 
@@ -111,9 +111,9 @@ sdl_destroy (void *dp)
 }
 
 static void
-sdl_release (void *dp)
+sdl_release(void* dp)
 {
-    sdl_driver * const d = dp;
+    sdl_driver* const d = dp;
 
     audio_poll_remove(d->polltag);
     d->polltag = NULL;
@@ -123,18 +123,18 @@ sdl_release (void *dp)
 }
 
 static gboolean
-sdl_open (void *dp)
+sdl_open(void* dp)
 {
-    sdl_driver * const d = dp;
+    sdl_driver* const d = dp;
 
     SDL_Init(SDL_INIT_AUDIO);
-    d->spec.freq=44100;
-    d->spec.format=AUDIO_S16SYS;
-    d->spec.channels=2;
-    d->spec.samples=SDL_BUFSIZE;
-    d->spec.callback=sdl_callback;
-    d->spec.userdata=dp;
-    SDL_OpenAudio(&d->spec,NULL);
+    d->spec.freq = 44100;
+    d->spec.format = AUDIO_S16SYS;
+    d->spec.channels = 2;
+    d->spec.samples = SDL_BUFSIZE;
+    d->spec.callback = sdl_callback;
+    d->spec.userdata = dp;
+    SDL_OpenAudio(&d->spec, NULL);
     SDL_PauseAudio(0);
 
 #ifdef WORDS_BIGENDIAN
@@ -153,31 +153,31 @@ sdl_open (void *dp)
 }
 
 static double
-sdl_get_play_time (void *dp)
+sdl_get_play_time(void* dp)
 {
-    sdl_driver * const d = dp;
+    sdl_driver* const d = dp;
 
-    return((double)d->played/44100.0);
+    return ((double)d->played / 44100.0);
 }
 
 static int
-sdl_get_play_rate (void *dp)
+sdl_get_play_rate(void* dp)
 {
-    sdl_driver * const d = dp;
+    sdl_driver* const d = dp;
 
     return d->out_rate;
 }
 
 static gboolean
-sdl_loadsettings (void *dp,
-		  const gchar *f)
+sdl_loadsettings(void* dp,
+    const gchar* f)
 {
     return TRUE;
 }
 
 static gboolean
-sdl_savesettings (void *dp,
-		  const gchar *f)
+sdl_savesettings(void* dp,
+    const gchar* f)
 {
     return TRUE;
 }

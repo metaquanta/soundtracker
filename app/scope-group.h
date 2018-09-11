@@ -30,22 +30,21 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #endif
 
-#define SCOPE_GROUP(obj)          GTK_CHECK_CAST (obj, scope_group_get_type (), ScopeGroup)
-#define SCOPE_GROUP_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, scope_group_get_type (), ScopeGroupClass)
-#define IS_SCOPE_GROUP(obj)       GTK_CHECK_TYPE (obj, scope_group_get_type ())
+#define SCOPE_GROUP(obj) GTK_CHECK_CAST(obj, scope_group_get_type(), ScopeGroup)
+#define SCOPE_GROUP_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, scope_group_get_type(), ScopeGroupClass)
+#define IS_SCOPE_GROUP(obj) GTK_CHECK_TYPE(obj, scope_group_get_type())
 
-typedef struct _ScopeGroup       ScopeGroup;
-typedef struct _ScopeGroupClass  ScopeGroupClass;
+typedef struct _ScopeGroup ScopeGroup;
+typedef struct _ScopeGroupClass ScopeGroupClass;
 
-struct _ScopeGroup
-{
+struct _ScopeGroup {
     GtkHBox hbox;
 
-    GtkWidget *table;
-    SampleDisplay *scopes[32];
-    GtkWidget *scopebuttons[32];
+    GtkWidget* table;
+    SampleDisplay* scopes[32];
+    GtkWidget* scopebuttons[32];
 #ifndef NO_GDK_PIXBUF
-    GtkWidget *mutedpic[32];
+    GtkWidget* mutedpic[32];
 #endif
     int numchan;
     int scopes_on;
@@ -54,35 +53,28 @@ struct _ScopeGroup
     gint32 on_mask;
 };
 
-struct _ScopeGroupClass
-{
+struct _ScopeGroupClass {
     GtkHBoxClass parent_class;
 };
 
-guint
-scope_group_get_type (void);
+guint scope_group_get_type(void);
 
 #ifndef NO_GDK_PIXBUF
-GtkWidget *
-scope_group_new (GdkPixbuf *mutedpic);
+GtkWidget*
+scope_group_new(GdkPixbuf* mutedpic);
 #else
-GtkWidget *
-scope_group_new (void);
+GtkWidget*
+scope_group_new(void);
 #endif
 
-void
-scope_group_set_num_channels (ScopeGroup *s, int num_channels);
+void scope_group_set_num_channels(ScopeGroup* s, int num_channels);
 
-void
-scope_group_enable_scopes (ScopeGroup *s, int enable);
+void scope_group_enable_scopes(ScopeGroup* s, int enable);
 
-void
-scope_group_start_updating (ScopeGroup *s);
+void scope_group_start_updating(ScopeGroup* s);
 
-void
-scope_group_stop_updating (ScopeGroup *s);
+void scope_group_stop_updating(ScopeGroup* s);
 
-void
-scope_group_set_update_freq (ScopeGroup *s, int freq);
+void scope_group_set_update_freq(ScopeGroup* s, int freq);
 
 #endif /* _SCOPE_GROUP_H */

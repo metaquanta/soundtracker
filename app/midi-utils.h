@@ -25,12 +25,12 @@
 #if defined(DRIVER_ALSA_09x)
 
 #include <alsa/version.h>
-#if SND_LIB_MAJOR==1
-# define ALSA_PCM_OLD_HW_PARAMS_API
+#if SND_LIB_MAJOR == 1
+#define ALSA_PCM_OLD_HW_PARAMS_API
 #endif
 #include <alsa/asoundlib.h>
 
-void midi_print_event(snd_seq_event_t *ev);
+void midi_print_event(snd_seq_event_t* ev);
 
 #endif
 #endif /* _MIDI_UTILS_H */

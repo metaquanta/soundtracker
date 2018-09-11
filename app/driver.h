@@ -27,41 +27,40 @@
 #include "preferences.h"
 
 typedef struct st_driver {
-    const char *name;
+    const char* name;
 
     // create new instance of this driver class
-    void *      (*new)           (void);
+    void* (*new)(void);
 
     // destroy instance of this driver class
-    void        (*destroy)       (void *d);
+    void (*destroy)(void* d);
 
     // open the driver
-    gboolean    (*open)          (void *d);
+    gboolean (*open)(void* d);
 
     // close the driver, release audio device
-    void        (*release)       (void *d);
+    void (*release)(void* d);
 
     // get pointer to configuration widget
-    GtkWidget * (*getwidget)     (void *d);
+    GtkWidget* (*getwidget)(void* d);
 
     // load configuration from provided preferences section
     // can use get/put the functions from preferences.h
-    gboolean    (*loadsettings)  (void *d, const gchar *section);
+    gboolean (*loadsettings)(void* d, const gchar* section);
 
     // save configuration to specified preferences section
     // can use get/put the functions from preferences.h
-    gboolean    (*savesettings)  (void *d, const gchar *section);
+    gboolean (*savesettings)(void* d, const gchar* section);
 
     // activate the driver when it becomes the current one
-    void        (*activate)      (void *d);
+    void (*activate)(void* d);
 
     // deactivate the driver
-    void        (*deactivate)    (void *d);
+    void (*deactivate)(void* d);
 
     // get time offset since first sound output
-    double   (*get_play_time) (void *d);
-    int      (*get_play_rate) (void *d);
+    double (*get_play_time)(void* d);
+    int (*get_play_rate)(void* d);
 } st_driver;
 
 #endif /* _ST_DRIVER_H */
-

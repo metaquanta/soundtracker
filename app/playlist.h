@@ -26,21 +26,20 @@
 #include <gdk/gdk.h>
 #include <gtk/gtkvbox.h>
 
-#define PLAYLIST(obj)          GTK_CHECK_CAST (obj, playlist_get_type (), Playlist)
-#define PLAYLIST_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, playlist_get_type (), PlaylistClass)
-#define IS_PLAYLIST(obj)       GTK_CHECK_TYPE (obj, playlist_get_type ())
+#define PLAYLIST(obj) GTK_CHECK_CAST(obj, playlist_get_type(), Playlist)
+#define PLAYLIST_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, playlist_get_type(), PlaylistClass)
+#define IS_PLAYLIST(obj) GTK_CHECK_TYPE(obj, playlist_get_type())
 
-typedef struct _Playlist       Playlist;
-typedef struct _PlaylistClass  PlaylistClass;
+typedef struct _Playlist Playlist;
+typedef struct _PlaylistClass PlaylistClass;
 
-struct _Playlist
-{
+struct _Playlist {
     GtkVBox widget;
 
-    GtkObject *adj_songpos;
+    GtkObject* adj_songpos;
     GtkWidget *spin_songlength, *spin_songpat, *spin_restartpos;
     GtkWidget *ibutton, *icbutton, *ifbutton, *dbutton;
-    
+
     GtkWidget *numlabels[5], *patlabels[5];
 
     int max_length;
@@ -49,7 +48,7 @@ struct _Playlist
 
     int length;
     int alloc_length;
-    int *patterns;
+    int* patterns;
 
     int current_position;
     int restart_position;
@@ -57,38 +56,37 @@ struct _Playlist
     int frozen;
 };
 
-struct _PlaylistClass
-{
+struct _PlaylistClass {
     GtkVBoxClass parent_class;
 
-    void (*current_position_changed) (Playlist *p, int pos);
-    void (*restart_position_changed) (Playlist *p, int pos);
-    void (*song_length_changed) (Playlist *p, int length);
-    void (*entry_changed) (Playlist *p, int pos, int pat);
+    void (*current_position_changed)(Playlist* p, int pos);
+    void (*restart_position_changed)(Playlist* p, int pos);
+    void (*song_length_changed)(Playlist* p, int length);
+    void (*entry_changed)(Playlist* p, int pos, int pat);
 };
 
-guint          playlist_get_type               (void);
-GtkWidget *    playlist_new                    (void);
+guint playlist_get_type(void);
+GtkWidget* playlist_new(void);
 
-void           playlist_freeze                 (Playlist *p);
-void           playlist_thaw                   (Playlist *p);
-void           playlist_enable                 (Playlist *p, gboolean enable);
+void playlist_freeze(Playlist* p);
+void playlist_thaw(Playlist* p);
+void playlist_enable(Playlist* p, gboolean enable);
 
-void           playlist_freeze_signals         (Playlist *p);
-void           playlist_thaw_signals           (Playlist *p);
+void playlist_freeze_signals(Playlist* p);
+void playlist_thaw_signals(Playlist* p);
 
-void           playlist_set_length             (Playlist *p, int length);
-int            playlist_get_length             (Playlist *p);
+void playlist_set_length(Playlist* p, int length);
+int playlist_get_length(Playlist* p);
 
-void           playlist_set_nth_pattern        (Playlist *p, int pos, int pat);
-int            playlist_get_nth_pattern        (Playlist *p, int pos);
+void playlist_set_nth_pattern(Playlist* p, int pos, int pat);
+int playlist_get_nth_pattern(Playlist* p, int pos);
 
-void           playlist_set_position           (Playlist *p, int pos);
-int            playlist_get_position           (Playlist *p);
+void playlist_set_position(Playlist* p, int pos);
+int playlist_get_position(Playlist* p);
 
-void           playlist_set_restart_position   (Playlist *p, int pos);
-int            playlist_get_restart_position   (Playlist *p);
+void playlist_set_restart_position(Playlist* p, int pos);
+int playlist_get_restart_position(Playlist* p);
 
-void	       playlist_insert_pattern	       (Playlist *p, int pos, int pat);
+void playlist_insert_pattern(Playlist* p, int pos, int pat);
 
 #endif /* _PLAYLIST_H */

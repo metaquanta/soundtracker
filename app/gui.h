@@ -22,9 +22,9 @@
 #ifndef _GUI_H
 #define _GUI_H
 
-#include <gtk/gtk.h>
-#include "gui-subs.h"
 #include "audio.h"
+#include "gui-subs.h"
+#include <gtk/gtk.h>
 
 struct STSample;
 
@@ -32,7 +32,7 @@ struct STSample;
 enum {
     PLAYING_SONG = 1,
     PLAYING_PATTERN,
-    PLAYING_NOTE,     /* is overridden by PLAYING_SONG / PLAYING_PATTERN */
+    PLAYING_NOTE, /* is overridden by PLAYING_SONG / PLAYING_PATTERN */
 };
 
 extern int gui_playing_mode; /* one of the above or 0 */
@@ -53,73 +53,73 @@ extern int notebook_current_page; /* one of the above */
 #define GUI_ENABLED (gui_playing_mode != PLAYING_SONG && gui_playing_mode != PLAYING_PATTERN)
 #define GUI_EDITING (GTK_TOGGLE_BUTTON(editing_toggle)->active)
 
-extern GtkWidget *editing_toggle;
+extern GtkWidget* editing_toggle;
 extern GtkWidget *gui_curins_name, *gui_cursmpl_name;
-extern GtkWidget *mainwindow;
+extern GtkWidget* mainwindow;
 
-extern void show_editmode_status (void);
+extern void show_editmode_status(void);
 
-int                  gui_splash                       (void);
-int                  gui_final                        (int argc, char *argv[]);
+int gui_splash(void);
+int gui_final(int argc, char* argv[]);
 
-void                 gui_playlist_initialize          (void);
+void gui_playlist_initialize(void);
 
-void                 gui_play_note                    (int channel,
-						       int note,
-						       gboolean all);
-void                 gui_play_note_full               (unsigned channel,
-						       unsigned note,
-						       struct STSample *sample,
-						       guint32 offset,
-						       guint32 count);
-void                 gui_play_note_keyoff             (int channel);
+void gui_play_note(int channel,
+    int note,
+    gboolean all);
+void gui_play_note_full(unsigned channel,
+    unsigned note,
+    struct STSample* sample,
+    guint32 offset,
+    guint32 count);
+void gui_play_note_keyoff(int channel);
 
-void                 gui_play_stop                    (void);
-void                 gui_start_sampling               (void);
-void                 gui_stop_sampling                (void);
+void gui_play_stop(void);
+void gui_start_sampling(void);
+void gui_stop_sampling(void);
 
-void                 gui_go_to_fileops_page           (void);
-void                 gui_go_to_page                   (gint page);
+void gui_go_to_fileops_page(void);
+void gui_go_to_page(gint page);
 
-inline void          gui_block_smplname_entry         (gboolean block);
-inline void          gui_block_instrname_entry        (gboolean block);
+inline void gui_block_smplname_entry(gboolean block);
+inline void gui_block_instrname_entry(gboolean block);
 
-void                 gui_set_current_instrument       (int);
-void                 gui_set_current_sample           (int);
-void                 gui_set_current_pattern          (int, gboolean);
-void                 gui_update_pattern_data          (void);
+void gui_set_current_instrument(int);
+void gui_set_current_sample(int);
+void gui_set_current_pattern(int, gboolean);
+void gui_update_pattern_data(void);
 
-int                  gui_get_current_instrument       (void);
-int                  gui_get_current_sample           (void);
-int                  gui_get_current_pattern          (void);
+int gui_get_current_instrument(void);
+int gui_get_current_sample(void);
+int gui_get_current_pattern(void);
 
-int                  gui_get_current_jump_value       (void);
-int                  gui_get_current_octave_value     (void);
-void                 gui_set_jump_value               (int value);
+int gui_get_current_jump_value(void);
+int gui_get_current_octave_value(void);
+void gui_set_jump_value(int value);
 
-void                 gui_update_player_pos            (const audio_player_pos *p);
-void                 gui_clipping_indicator_update    (double songtime);
+void gui_update_player_pos(const audio_player_pos* p);
+void gui_clipping_indicator_update(double songtime);
 
-void                 gui_init_xm                      (int new_xm, gboolean updatechspin);
-void                 gui_free_xm                      (void);
-void                 gui_new_xm                       (void);
+void gui_init_xm(int new_xm, gboolean updatechspin);
+void gui_free_xm(void);
+void gui_new_xm(void);
 
-void                 gui_direction_clicked            (GtkWidget *widget,
-                                                       gpointer data);
-void                 gui_accidentals_clicked          (GtkWidget *widget,
-                                                       gpointer data);
+void gui_direction_clicked(GtkWidget* widget,
+    gpointer data);
+void gui_accidentals_clicked(GtkWidget* widget,
+    gpointer data);
 
-void                 gui_shrink_pattern               (void);
-void                 gui_expand_pattern               (void);
-void                 play_song                        (void);
+void gui_shrink_pattern(void);
+void gui_expand_pattern(void);
+void play_song(void);
 
-void                 gui_save_current                 (void);
-GtkStyle*            gui_get_style                    (void);
+void gui_save_current(void);
+GtkStyle* gui_get_style(void);
 
-GtkWidget*           gui_get_widget                   (const gchar *name);
-void                 gui_popup_menu_attach            (GtkWidget *menu, GtkWidget *widget, gpointer *user_data);
+GtkWidget* gui_get_widget(const gchar* name);
+void gui_popup_menu_attach(GtkWidget* menu, GtkWidget* widget, gpointer* user_data);
 
-void                 gui_update_title                 (const gchar *filename);
-void                 gui_offset_current_instrument    (int offset);
-void                 gui_offset_current_sample        (int offset);
+void gui_update_title(const gchar* filename);
+void gui_offset_current_instrument(int offset);
+void gui_offset_current_sample(int offset);
 #endif /* _GUI_H */

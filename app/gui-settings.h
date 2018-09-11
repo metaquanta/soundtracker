@@ -26,8 +26,8 @@
 #include <gtk/gtk.h>
 
 typedef struct gui_prefs {
-    gchar *tracker_line_format;
-    gchar *tracker_font;
+    gchar* tracker_line_format;
+    gchar* tracker_font;
     gboolean tracker_hexmode;
     gboolean tracker_upcase;
     gboolean highlight_rows;
@@ -59,39 +59,39 @@ typedef struct gui_prefs {
     int st_window_y;
     int st_window_w;
     int st_window_h;
-    
+
     gboolean store_perm;
     guint32 permanent_channels;
 
-    gchar *loadmod_path;
-    gchar *savemod_path;
-    gchar *savemodaswav_path;
-    gchar *savesongasxm_path;
-    gchar *loadsmpl_path;
-    gchar *savesmpl_path;
-    gchar *loadinstr_path;
-    gchar *saveinstr_path;
-    gchar *loadpat_path;
-    gchar *savepat_path;
+    gchar* loadmod_path;
+    gchar* savemod_path;
+    gchar* savemodaswav_path;
+    gchar* savesongasxm_path;
+    gchar* loadsmpl_path;
+    gchar* savesmpl_path;
+    gchar* loadinstr_path;
+    gchar* saveinstr_path;
+    gchar* loadpat_path;
+    gchar* savepat_path;
 
-    gchar *rm_path;
-    gchar *unzip_path;
-    gchar *lha_path;
-    gchar *gz_path;
-    gchar *bz2_path;
+    gchar* rm_path;
+    gchar* unzip_path;
+    gchar* lha_path;
+    gchar* gz_path;
+    gchar* bz2_path;
 
 } gui_prefs;
 
 extern gui_prefs gui_settings;
 
-void        gui_settings_dialog                   (void);
+void gui_settings_dialog(void);
 
-void        gui_settings_load_config              (void);
-void        gui_settings_save_config              (void);
-void        gui_settings_save_config_always       (void);
+void gui_settings_load_config(void);
+void gui_settings_save_config(void);
+void gui_settings_save_config_always(void);
 
-void	    gui_settings_highlight_rows_changed       (GtkSpinButton *spin);
-void	    gui_settings_highlight_rows_minor_changed (GtkSpinButton *spin);
+void gui_settings_highlight_rows_changed(GtkSpinButton* spin);
+void gui_settings_highlight_rows_minor_changed(GtkSpinButton* spin);
 #define ASYNCEDIT (gui_settings.asynchronous_editing)
 
 #endif /* _ST_GUI_SETTINGS_H */

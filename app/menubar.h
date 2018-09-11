@@ -26,21 +26,15 @@
 
 #include <gtk/gtk.h>
 
-void
-menubar_init_prefs                  ();
+void menubar_init_prefs();
 
-void
-menubar_block_mode_set              (gboolean state);
+void menubar_block_mode_set(gboolean state);
 
-void
-menubar_clear_clicked               (gpointer b);
+void menubar_clear_clicked(gpointer b);
 
-void
-menubar_handle_cutcopypaste         (gpointer a);
+void menubar_handle_cutcopypaste(gpointer a);
 
-void
-menubar_handle_edit_menu            (gpointer a);
+void menubar_handle_edit_menu(gpointer a);
 
-void
-menubar_toggle_perm_wrapper         (gpointer all);
+void menubar_toggle_perm_wrapper(gpointer all);
 #endif /* ST_MENUBAR_H */

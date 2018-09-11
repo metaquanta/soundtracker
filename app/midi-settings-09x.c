@@ -30,21 +30,20 @@
  * See menubar_create() in menubar.c.
  */
 
-void
-midi_settings_dialog (void)
+void midi_settings_dialog(void)
 {
-  g_warning("MIDI Settings dialog not allowed\n");
+    g_warning("MIDI Settings dialog not allowed\n");
 }
 
 #else
 
 #include <glib/gi18n.h>
 
-#include "gui.h"
-#include "preferences.h"
 #include "gui-subs.h"
+#include "gui.h"
 #include "midi-settings.h"
 #include "midi.h"
+#include "preferences.h"
 
 /* Define value for notebook pages border width */
 
@@ -64,10 +63,10 @@ midi_prefs midi_settings;
 /* See create_midi_notebook(). */
 
 enum MidiSettingsPage {
-  MIDI_SETTINGS_INPUT_PAGE = 0,
-//  MIDI_SETTINGS_OUTPUT_PAGE, /* future plan... */
-  MIDI_SETTINGS_MISC_PAGE,
-  MIDI_SETTINGS_COUNT_OF_PAGES
+    MIDI_SETTINGS_INPUT_PAGE = 0,
+    //  MIDI_SETTINGS_OUTPUT_PAGE, /* future plan... */
+    MIDI_SETTINGS_MISC_PAGE,
+    MIDI_SETTINGS_COUNT_OF_PAGES
 };
 
 /****************************************************/
@@ -79,9 +78,9 @@ enum MidiSettingsPage {
   Variables with prefix "mm" are related to MIDI Misc settings.
 */
 
-static GtkWidget *mi_spin_client = NULL;
-static GtkWidget *mi_spin_port = NULL;
-static GtkWidget *mm_spin_debug = NULL;
+static GtkWidget* mi_spin_client = NULL;
+static GtkWidget* mi_spin_port = NULL;
+static GtkWidget* mm_spin_debug = NULL;
 
 /* For each, keep a flag to know if the page has changed.
    Will be queried when the dialog is close. */
@@ -113,47 +112,45 @@ static void reset_page_changed_flags(void);
 
 #define SECTION "midi"
 
-void
-midi_load_config (void)
+void midi_load_config(void)
 {
-	midi_settings.misc.debug_level = prefs_get_int(SECTION, "debug-level", MIDI_DEBUG_OFF);
-	/* Validate debug level */
-	if ( midi_settings.misc.debug_level < 0) {
-		midi_settings.misc.debug_level = MIDI_DEBUG_OFF;
-	} else if (midi_settings.misc.debug_level > MIDI_DEBUG_HIGHEST) {
-		midi_settings.misc.debug_level = MIDI_DEBUG_HIGHEST;
-	}
+    midi_settings.misc.debug_level = prefs_get_int(SECTION, "debug-level", MIDI_DEBUG_OFF);
+    /* Validate debug level */
+    if (midi_settings.misc.debug_level < 0) {
+        midi_settings.misc.debug_level = MIDI_DEBUG_OFF;
+    } else if (midi_settings.misc.debug_level > MIDI_DEBUG_HIGHEST) {
+        midi_settings.misc.debug_level = MIDI_DEBUG_HIGHEST;
+    }
 
-	midi_settings.input.auto_connect = prefs_get_bool(SECTION, "input-auto-connect", TRUE);
-	midi_settings.input.client = prefs_get_int(SECTION, "input-client", 0);
-	midi_settings.input.port = prefs_get_int(SECTION, "input-port", 0);
-	midi_settings.input.channel_enabled = prefs_get_int(SECTION, "input-channel-enabled", 0);
-	midi_settings.input.volume_enabled = prefs_get_int(SECTION, "input-volume-enabled", 0);
-	midi_settings.output.client = prefs_get_int(SECTION, "output-client", 0);
-	midi_settings.output.port = prefs_get_int(SECTION, "output-port", 0);
+    midi_settings.input.auto_connect = prefs_get_bool(SECTION, "input-auto-connect", TRUE);
+    midi_settings.input.client = prefs_get_int(SECTION, "input-client", 0);
+    midi_settings.input.port = prefs_get_int(SECTION, "input-port", 0);
+    midi_settings.input.channel_enabled = prefs_get_int(SECTION, "input-channel-enabled", 0);
+    midi_settings.input.volume_enabled = prefs_get_int(SECTION, "input-volume-enabled", 0);
+    midi_settings.output.client = prefs_get_int(SECTION, "output-client", 0);
+    midi_settings.output.port = prefs_get_int(SECTION, "output-port", 0);
 } /* midi_load_config() */
 
 /*****************************************************
  * Save MIDI configuration parameters.
  */
 
-void
-midi_save_config (void)
+void midi_save_config(void)
 {
-  if (IS_MIDI_DEBUG_ON) {
-    g_print( "MIDI settings saved to file\n");
-  }
+    if (IS_MIDI_DEBUG_ON) {
+        g_print("MIDI settings saved to file\n");
+    }
 
-  prefs_put_int(SECTION, "debug-level", midi_settings.misc.debug_level);
+    prefs_put_int(SECTION, "debug-level", midi_settings.misc.debug_level);
 
-  prefs_put_bool(SECTION, "input-auto-connect", midi_settings.input.auto_connect);
-  prefs_put_int(SECTION, "input-client", midi_settings.input.client);
-  prefs_put_int(SECTION, "input-port", midi_settings.input.port);
-  prefs_put_int(SECTION, "input-channel-enabled", midi_settings.input.channel_enabled);
-  prefs_put_int(SECTION, "input-volume-enabled", midi_settings.input.volume_enabled);
+    prefs_put_bool(SECTION, "input-auto-connect", midi_settings.input.auto_connect);
+    prefs_put_int(SECTION, "input-client", midi_settings.input.client);
+    prefs_put_int(SECTION, "input-port", midi_settings.input.port);
+    prefs_put_int(SECTION, "input-channel-enabled", midi_settings.input.channel_enabled);
+    prefs_put_int(SECTION, "input-volume-enabled", midi_settings.input.volume_enabled);
 
-  prefs_put_int(SECTION, "output-client", midi_settings.output.client);
-  prefs_put_int(SECTION, "output-port", midi_settings.output.port);
+    prefs_put_int(SECTION, "output-client", midi_settings.output.client);
+    prefs_put_int(SECTION, "output-port", midi_settings.output.port);
 } /* midi_save_config() */
 
 /***************************************************************************
@@ -165,78 +162,78 @@ midi_save_config (void)
  */
 
 static void
-dialog_response(GtkWidget *dialog, gint response, GtkWidget *midi_notebook)
+dialog_response(GtkWidget* dialog, gint response, GtkWidget* midi_notebook)
 {
-	int page_num;
+    int page_num;
 
-	switch(response) {
-	case GTK_RESPONSE_APPLY:
-		page_num = gtk_notebook_get_current_page(GTK_NOTEBOOK(midi_notebook));
+    switch (response) {
+    case GTK_RESPONSE_APPLY:
+        page_num = gtk_notebook_get_current_page(GTK_NOTEBOOK(midi_notebook));
 
-		if ( midi_settings_changed[page_num] == FALSE ) {
-			if (IS_MIDI_DEBUG_ON) {
-				g_print("No changes to apply for page #%d\n", page_num);
-			}
+        if (midi_settings_changed[page_num] == FALSE) {
+            if (IS_MIDI_DEBUG_ON) {
+                g_print("No changes to apply for page #%d\n", page_num);
+            }
 
-			return;
-		}
-		dialog_apply(page_num);
-		break;
-	case GTK_RESPONSE_OK:
-		/*
+            return;
+        }
+        dialog_apply(page_num);
+        break;
+    case GTK_RESPONSE_OK:
+        /*
 		* For each page, set the notebook page to it and then call
 		* the Apply callback.
 		*/
 
-		for (page_num = 0; page_num < MIDI_SETTINGS_COUNT_OF_PAGES; page_num++ ) {
-			if (IS_MIDI_DEBUG_ON) {
-				g_print("MIDI page %d changed: %d\n",
-				        page_num, midi_settings_changed[page_num]);
-			}
+        for (page_num = 0; page_num < MIDI_SETTINGS_COUNT_OF_PAGES; page_num++) {
+            if (IS_MIDI_DEBUG_ON) {
+                g_print("MIDI page %d changed: %d\n",
+                    page_num, midi_settings_changed[page_num]);
+            }
 
-			dialog_apply(page_num);
-		}
-	default:
-		gtk_widget_hide(dialog);
-	}
+            dialog_apply(page_num);
+        }
+    default:
+        gtk_widget_hide(dialog);
+    }
 }
 
 static void
 dialog_apply(gint page_num)
 {
-	gboolean reinit_midi = FALSE;
+    gboolean reinit_midi = FALSE;
 
-	switch (page_num){
-	case MIDI_SETTINGS_INPUT_PAGE:
+    switch (page_num) {
+    case MIDI_SETTINGS_INPUT_PAGE:
 
-		if (IS_MIDI_DEBUG_ON) {
-			g_print("new input settings: volume %d channel %d client %d port %d\n",
-			        new_midi_settings.input.volume_enabled,
-			        new_midi_settings.input.channel_enabled,
-			        new_midi_settings.input.client,
-			        new_midi_settings.input.port);
-		}
+        if (IS_MIDI_DEBUG_ON) {
+            g_print("new input settings: volume %d channel %d client %d port %d\n",
+                new_midi_settings.input.volume_enabled,
+                new_midi_settings.input.channel_enabled,
+                new_midi_settings.input.client,
+                new_midi_settings.input.port);
+        }
 
-		/*
+        /*
 		  If the user changed the input client or port,
 		  we need to reinitialize the MIDI channel.
 		  The auto_connect feature does not need to reinit. the MIDI channel.
 		*/
 
-		if (new_midi_settings.input.client != midi_settings.input.client
-		    || new_midi_settings.input.port != midi_settings.input.port) {
-			reinit_midi = TRUE;
-		}
+        if (new_midi_settings.input.client != midi_settings.input.client
+            || new_midi_settings.input.port != midi_settings.input.port) {
+            reinit_midi = TRUE;
+        }
 
-		/* Copy the new settings into the settings structure. */
+        /* Copy the new settings into the settings structure. */
 
-		midi_settings.input = new_midi_settings.input;
+        midi_settings.input = new_midi_settings.input;
 
-		if ( reinit_midi ) {
-			midi_init();
-		}
+        if (reinit_midi) {
+            midi_init();
+        }
 
-		break;
+        break;
 
 #if 0
 	case MIDI_SETTINGS_OUTPUT_PAGE:
@@ -249,25 +246,25 @@ dialog_apply(gint page_num)
 		break;
 #endif
 
-	case MIDI_SETTINGS_MISC_PAGE:
+    case MIDI_SETTINGS_MISC_PAGE:
 
-		if (IS_MIDI_DEBUG_ON) {
-			g_print("new misc settings: debug %d\n",
-			        new_midi_settings.misc.debug_level);
-		}
+        if (IS_MIDI_DEBUG_ON) {
+            g_print("new misc settings: debug %d\n",
+                new_midi_settings.misc.debug_level);
+        }
 
-		/* Copy the new settings into the settings structure. */
+        /* Copy the new settings into the settings structure. */
 
-		midi_settings.misc = new_midi_settings.misc;
+        midi_settings.misc = new_midi_settings.misc;
 
-		break;
+        break;
 
-	default:
-		g_warning("MIDI Settings: unknown page\n");
-	}
+    default:
+        g_warning("MIDI Settings: unknown page\n");
+    }
 
-	/* Prepare for next call. */
-	midi_settings_changed[page_num] = FALSE;
+    /* Prepare for next call. */
+    midi_settings_changed[page_num] = FALSE;
 } /* dialog_apply() */
 
 /************************************************************************
@@ -275,76 +272,71 @@ dialog_apply(gint page_num)
  */
 
 static void
-input_auto_connect_toggled( GtkWidget *window)
+input_auto_connect_toggled(GtkWidget* window)
 {
-  /* If auto-connect is disabled,
+    /* If auto-connect is disabled,
      make "client" and "port" inactive.
   */
 
-  if ( new_midi_settings.input.auto_connect ) {
-    new_midi_settings.input.auto_connect = 0;
-    gtk_widget_set_sensitive( mi_spin_client, FALSE);
-    gtk_widget_set_sensitive( mi_spin_port, FALSE);
-  } else {
-    /* If auto-connect is enabled,
+    if (new_midi_settings.input.auto_connect) {
+        new_midi_settings.input.auto_connect = 0;
+        gtk_widget_set_sensitive(mi_spin_client, FALSE);
+        gtk_widget_set_sensitive(mi_spin_port, FALSE);
+    } else {
+        /* If auto-connect is enabled,
        make "client" and "port" active.
     */
 
-    new_midi_settings.input.auto_connect = 1;
-    gtk_widget_set_sensitive( mi_spin_client, TRUE);
-    gtk_widget_set_sensitive( mi_spin_port, TRUE);
-  }
+        new_midi_settings.input.auto_connect = 1;
+        gtk_widget_set_sensitive(mi_spin_client, TRUE);
+        gtk_widget_set_sensitive(mi_spin_port, TRUE);
+    }
 
-  midi_settings_changed[MIDI_SETTINGS_INPUT_PAGE] = TRUE;
-
+    midi_settings_changed[MIDI_SETTINGS_INPUT_PAGE] = TRUE;
 }
 
 static void
-input_volume_toggled( GtkWidget *window)
+input_volume_toggled(GtkWidget* window)
 {
-  if ( new_midi_settings.input.volume_enabled ) {
-    new_midi_settings.input.volume_enabled = 0;
-  } else {
-    new_midi_settings.input.volume_enabled = 1;
-  }
+    if (new_midi_settings.input.volume_enabled) {
+        new_midi_settings.input.volume_enabled = 0;
+    } else {
+        new_midi_settings.input.volume_enabled = 1;
+    }
 
-  midi_settings_changed[MIDI_SETTINGS_INPUT_PAGE] = TRUE;
-
+    midi_settings_changed[MIDI_SETTINGS_INPUT_PAGE] = TRUE;
 }
 
 static void
-input_channel_toggled( GtkWidget *window)
+input_channel_toggled(GtkWidget* window)
 {
-  if ( new_midi_settings.input.channel_enabled ) {
-    new_midi_settings.input.channel_enabled = 0;
-  } else {
-    new_midi_settings.input.channel_enabled = 1;
-  }
+    if (new_midi_settings.input.channel_enabled) {
+        new_midi_settings.input.channel_enabled = 0;
+    } else {
+        new_midi_settings.input.channel_enabled = 1;
+    }
 
-  midi_settings_changed[MIDI_SETTINGS_INPUT_PAGE] = TRUE;
-
+    midi_settings_changed[MIDI_SETTINGS_INPUT_PAGE] = TRUE;
 }
 
 static void
-input_client_changed( GtkWidget *widget, GtkSpinButton **pspin)
+input_client_changed(GtkWidget* widget, GtkSpinButton** pspin)
 {
-  new_midi_settings.input.client = gtk_spin_button_get_value_as_int(*pspin);
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(*pspin),
-                             new_midi_settings.input.client);
+    new_midi_settings.input.client = gtk_spin_button_get_value_as_int(*pspin);
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(*pspin),
+        new_midi_settings.input.client);
 
-  midi_settings_changed[MIDI_SETTINGS_INPUT_PAGE] = TRUE;
-
+    midi_settings_changed[MIDI_SETTINGS_INPUT_PAGE] = TRUE;
 }
 
 static void
-input_port_changed( GtkWidget *widget, GtkSpinButton **pspin)
+input_port_changed(GtkWidget* widget, GtkSpinButton** pspin)
 {
-  new_midi_settings.input.port = gtk_spin_button_get_value_as_int(*pspin);
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(*pspin),
-                             new_midi_settings.input.port);
+    new_midi_settings.input.port = gtk_spin_button_get_value_as_int(*pspin);
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(*pspin),
+        new_midi_settings.input.port);
 
-  midi_settings_changed[MIDI_SETTINGS_INPUT_PAGE] = TRUE;
-
+    midi_settings_changed[MIDI_SETTINGS_INPUT_PAGE] = TRUE;
 }
 
 /************************************************************************
@@ -352,14 +344,13 @@ input_port_changed( GtkWidget *widget, GtkSpinButton **pspin)
  */
 
 static void
-misc_debug_changed( GtkWidget *widget, GtkSpinButton **pspin)
+misc_debug_changed(GtkWidget* widget, GtkSpinButton** pspin)
 {
-  new_midi_settings.misc.debug_level =gtk_spin_button_get_value_as_int(*pspin);
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(*pspin),
-                             new_midi_settings.misc.debug_level);
+    new_midi_settings.misc.debug_level = gtk_spin_button_get_value_as_int(*pspin);
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(*pspin),
+        new_midi_settings.misc.debug_level);
 
-  midi_settings_changed[MIDI_SETTINGS_MISC_PAGE] = TRUE;
-
+    midi_settings_changed[MIDI_SETTINGS_MISC_PAGE] = TRUE;
 }
 
 /**********************************************************************
@@ -377,11 +368,11 @@ misc_debug_changed( GtkWidget *widget, GtkSpinButton **pspin)
 
 static void reset_page_changed_flags(void)
 {
-  int i;
+    int i;
 
-  for ( i = 0; i < MIDI_SETTINGS_COUNT_OF_PAGES; i++) {
-    midi_settings_changed[i] = FALSE;
-  }
+    for (i = 0; i < MIDI_SETTINGS_COUNT_OF_PAGES; i++) {
+        midi_settings_changed[i] = FALSE;
+    }
 }
 
 /***********************************************************************
@@ -393,74 +384,73 @@ static void reset_page_changed_flags(void)
 static GtkWidget*
 create_midi_notebook(midi_prefs settings)
 {
-  GtkWidget *notebook;
-  GtkWidget *page;
-  GtkWidget *thing;
+    GtkWidget* notebook;
+    GtkWidget* page;
+    GtkWidget* thing;
 
+    notebook = gtk_notebook_new();
 
-  notebook = gtk_notebook_new();
+    /*****************************************************************/
+    /* Create the Input page */
 
-  /*****************************************************************/
-  /* Create the Input page */
+    page = gtk_vbox_new(FALSE, 2);
+    gtk_container_border_width(GTK_CONTAINER(page), PAGE_BORDER_WIDTH);
 
-  page = gtk_vbox_new(FALSE, 2);
-  gtk_container_border_width(GTK_CONTAINER(page), PAGE_BORDER_WIDTH);
+    thing = gtk_check_button_new_with_label(_("Auto connect"));
+    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),
+        settings.input.auto_connect);
+    gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
+    g_signal_connect(thing, "toggled",
+        G_CALLBACK(input_auto_connect_toggled), NULL);
 
-  thing = gtk_check_button_new_with_label(_("Auto connect"));
-  gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),
-                              settings.input.auto_connect);
-  gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
-  g_signal_connect(thing, "toggled",
-                     G_CALLBACK(input_auto_connect_toggled), NULL);
+    thing = gtk_check_button_new_with_label(_("Volume"));
+    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),
+        settings.input.volume_enabled);
+    gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
 
-  thing = gtk_check_button_new_with_label(_("Volume"));
-  gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),
-                              settings.input.volume_enabled);
-  gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
+    g_signal_connect(thing, "toggled",
+        G_CALLBACK(input_volume_toggled), NULL);
 
-  g_signal_connect(thing, "toggled",
-                     G_CALLBACK(input_volume_toggled), NULL);
+    thing = gtk_check_button_new_with_label(_("Channel"));
+    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),
+        settings.input.channel_enabled);
+    gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
+    g_signal_connect(thing, "toggled",
+        G_CALLBACK(input_channel_toggled), NULL);
 
-  thing = gtk_check_button_new_with_label(_("Channel"));
-  gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),
-                              settings.input.channel_enabled);
-  gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
-  g_signal_connect(thing, "toggled",
-                     G_CALLBACK(input_channel_toggled), NULL);
+    /* Create the spin button for the input client number. */
 
-  /* Create the spin button for the input client number. */
-
-  gui_put_labelled_spin_button(page, _("Client number"), 0, 255,
-                               &mi_spin_client, input_client_changed, 
-                               &mi_spin_client,
-                               FALSE);
-  /* Calling the next function sets the CHANGED flag
+    gui_put_labelled_spin_button(page, _("Client number"), 0, 255,
+        &mi_spin_client, input_client_changed,
+        &mi_spin_client,
+        FALSE);
+    /* Calling the next function sets the CHANGED flag
      for the input page.  Needs to be reset before leaving this call. */
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(mi_spin_client),
-                             settings.input.client);
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(mi_spin_client),
+        settings.input.client);
 
-  /* Create the spin button for the input port number. */
+    /* Create the spin button for the input port number. */
 
-  gui_put_labelled_spin_button(page,	 _("Port number"), 0, 255,
-                               &mi_spin_port, input_port_changed, 
-                               &mi_spin_port,
-                               FALSE);
-  /* Calling the next function sets the CHANGED flag
+    gui_put_labelled_spin_button(page, _("Port number"), 0, 255,
+        &mi_spin_port, input_port_changed,
+        &mi_spin_port,
+        FALSE);
+    /* Calling the next function sets the CHANGED flag
      for the input page.  Needs to be reset before leaving this call. */
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(mi_spin_port),
-                             settings.input.port);
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(mi_spin_port),
+        settings.input.port);
 
-  /* If auto-connect is disabled, "client" and "port" must be inactive. */
+    /* If auto-connect is disabled, "client" and "port" must be inactive. */
 
-  if (settings.input.auto_connect == 0) {
-    gtk_widget_set_sensitive( mi_spin_client, FALSE);
-    gtk_widget_set_sensitive( mi_spin_port, FALSE);
-  }
+    if (settings.input.auto_connect == 0) {
+        gtk_widget_set_sensitive(mi_spin_client, FALSE);
+        gtk_widget_set_sensitive(mi_spin_port, FALSE);
+    }
 
-  /* Add the MIDI Input settings page to the notebook.*/
+    /* Add the MIDI Input settings page to the notebook.*/
 
-  gtk_notebook_append_page(GTK_NOTEBOOK(notebook),
-                           page, gtk_label_new(_("Input")));
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook),
+        page, gtk_label_new(_("Input")));
 
 #if 0 /* mkrause 20020516 */
   /*****************************************************************/
@@ -478,39 +468,39 @@ create_midi_notebook(midi_prefs settings)
                            page, gtk_label_new(_("Output")));
 #endif
 
-  /*****************************************************************/
-  /* Create the Misc page */
+    /*****************************************************************/
+    /* Create the Misc page */
 
-  page = gtk_vbox_new(FALSE, 2);
-  gtk_container_border_width(GTK_CONTAINER(page), PAGE_BORDER_WIDTH);
+    page = gtk_vbox_new(FALSE, 2);
+    gtk_container_border_width(GTK_CONTAINER(page), PAGE_BORDER_WIDTH);
 
-  /* Create the spin button for the debug level. */
+    /* Create the spin button for the debug level. */
 
-  gui_put_labelled_spin_button(page, _("Debug level"), MIDI_DEBUG_OFF,
-                               MIDI_DEBUG_HIGHEST - 1,
-                               &mm_spin_debug, misc_debug_changed, 
-                               &mm_spin_debug,
-                               FALSE);
-  /* Calling the next function sets the CHANGED flag
+    gui_put_labelled_spin_button(page, _("Debug level"), MIDI_DEBUG_OFF,
+        MIDI_DEBUG_HIGHEST - 1,
+        &mm_spin_debug, misc_debug_changed,
+        &mm_spin_debug,
+        FALSE);
+    /* Calling the next function sets the CHANGED flag
      for the misc. page.  Needs to be reset before leaving this call. */
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(mm_spin_debug),
-                             settings.misc.debug_level);
+    gtk_spin_button_set_value(GTK_SPIN_BUTTON(mm_spin_debug),
+        settings.misc.debug_level);
 
-  /* Add the MIDI Misc settings page to the notebook.*/
+    /* Add the MIDI Misc settings page to the notebook.*/
 
-  gtk_notebook_append_page(GTK_NOTEBOOK(notebook),
-                           page, gtk_label_new(_("Misc")));
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook),
+        page, gtk_label_new(_("Misc")));
 
-  /* For all the pages, set the "changed" flag to FALSE.
+    /* For all the pages, set the "changed" flag to FALSE.
      This is done here because setting some fields in pages
      to their default values will have flagged the pages
      as being "changed". */
 
-  reset_page_changed_flags();
+    reset_page_changed_flags();
 
-  /* That's it */
+    /* That's it */
 
-  return notebook;
+    return notebook;
 
 } /* create_midi_notebook() */
 
@@ -520,46 +510,45 @@ create_midi_notebook(midi_prefs settings)
  * and page #2 is for output settings (for future enhancements).
  */
 
-void
-midi_settings_dialog (void)
+void midi_settings_dialog(void)
 {
-static GtkWidget *midi_dialog = NULL, *midi_notebook;
+    static GtkWidget *midi_dialog = NULL, *midi_notebook;
 
-  /* If dialog already created, just raise it. */
+    /* If dialog already created, just raise it. */
 
-  if ( midi_dialog != NULL) {
-    gtk_window_present(GTK_WINDOW(midi_dialog));
-    return;
-  }
+    if (midi_dialog != NULL) {
+        gtk_window_present(GTK_WINDOW(midi_dialog));
+        return;
+    }
 
-  /* Begins with current MIDI settings. */
+    /* Begins with current MIDI settings. */
 
-  new_midi_settings = midi_settings;
+    new_midi_settings = midi_settings;
 
-  /* Create the dialog box.
+    /* Create the dialog box.
      The action area will contain 3 buttons: Ok, Apply and Cancel.
      The top area will contain a notebook. */
 
-  midi_dialog = gtk_dialog_new_with_buttons(_("MIDI Configuration"), GTK_WINDOW(mainwindow), 0,
-                                            GTK_STOCK_OK, GTK_RESPONSE_OK,
-                                            GTK_STOCK_APPLY, GTK_RESPONSE_APPLY,
-                                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
+    midi_dialog = gtk_dialog_new_with_buttons(_("MIDI Configuration"), GTK_WINDOW(mainwindow), 0,
+        GTK_STOCK_OK, GTK_RESPONSE_OK,
+        GTK_STOCK_APPLY, GTK_RESPONSE_APPLY,
+        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
 
-	gui_dialog_adjust(midi_dialog, GTK_RESPONSE_OK);
-  /* Create the notebook (if necessary). */
-  midi_notebook = create_midi_notebook(new_midi_settings);
+    gui_dialog_adjust(midi_dialog, GTK_RESPONSE_OK);
+    /* Create the notebook (if necessary). */
+    midi_notebook = create_midi_notebook(new_midi_settings);
 
-  /* Connect dialog/notebook callbacks. */
-  g_signal_connect(midi_dialog, "response",
-                   G_CALLBACK(dialog_response), midi_notebook);
-  g_signal_connect(midi_dialog, "delete-event",
-                   G_CALLBACK(gui_delete_noop), NULL);
+    /* Connect dialog/notebook callbacks. */
+    g_signal_connect(midi_dialog, "response",
+        G_CALLBACK(dialog_response), midi_notebook);
+    g_signal_connect(midi_dialog, "delete-event",
+        G_CALLBACK(gui_delete_noop), NULL);
 
-  /* Add the notebook to the upper part of the dialog box. */
-  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(midi_dialog))),
-                     midi_notebook, FALSE, TRUE, 0);
+    /* Add the notebook to the upper part of the dialog box. */
+    gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(midi_dialog))),
+        midi_notebook, FALSE, TRUE, 0);
 
-  gtk_widget_show_all (midi_dialog);
+    gtk_widget_show_all(midi_dialog);
 
 } /* midi_settings_dialog() */
 

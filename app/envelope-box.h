@@ -32,36 +32,35 @@
 
 #include "xm.h"
 
-#define ENVELOPE_BOX(obj)          GTK_CHECK_CAST (obj, envelope_box_get_type (), EnvelopeBox)
-#define ENVELOPE_BOX_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, envelope_box_get_type (), EnvelopeBoxClass)
-#define IS_ENVELOPE_BOX(obj)       GTK_CHECK_TYPE (obj, envelope_box_get_type ())
+#define ENVELOPE_BOX(obj) GTK_CHECK_CAST(obj, envelope_box_get_type(), EnvelopeBox)
+#define ENVELOPE_BOX_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, envelope_box_get_type(), EnvelopeBoxClass)
+#define IS_ENVELOPE_BOX(obj) GTK_CHECK_TYPE(obj, envelope_box_get_type())
 
-typedef struct _EnvelopeBox       EnvelopeBox;
-typedef struct _EnvelopeBoxClass  EnvelopeBoxClass;
+typedef struct _EnvelopeBox EnvelopeBox;
+typedef struct _EnvelopeBoxClass EnvelopeBoxClass;
 
-struct _EnvelopeBox
-{
+struct _EnvelopeBox {
     GtkVBox vbox;
 
-    STEnvelope *current;
+    STEnvelope* current;
 
-    GtkSpinButton *spin_length;
-    GtkSpinButton *spin_pos;
-    GtkSpinButton *spin_offset;
-    GtkSpinButton *spin_value;
-    GtkSpinButton *spin_sustain;
-    GtkSpinButton *spin_loop_start;
-    GtkSpinButton *spin_loop_end;
+    GtkSpinButton* spin_length;
+    GtkSpinButton* spin_pos;
+    GtkSpinButton* spin_offset;
+    GtkSpinButton* spin_value;
+    GtkSpinButton* spin_sustain;
+    GtkSpinButton* spin_loop_start;
+    GtkSpinButton* spin_loop_end;
 
-    GtkToggleButton *enable;
-    GtkToggleButton *sustain;
-    GtkToggleButton *loop;
+    GtkToggleButton* enable;
+    GtkToggleButton* sustain;
+    GtkToggleButton* loop;
 
     gboolean length_set_modified;
 
 #ifdef USE_CANVAS
-    GooCanvas *canvas;
-    GooCanvasItem *group;
+    GooCanvas* canvas;
+    GooCanvasItem* group;
     GooCanvasItem *points[ST_MAX_ENVELOPE_POINTS], *cur_point;
     GooCanvasItem *lines[ST_MAX_ENVELOPE_POINTS - 1], *sustain_line, *loop_start_line, *loop_end_line;
     GtkAdjustment *hadj, *vadj;
@@ -70,8 +69,8 @@ struct _EnvelopeBox
     gdouble zoomfactor_base;
     gdouble zoomfactor_mult;
 
-    gdouble dragging_item_from_x, dragging_item_from_y;     /* world coordinates */
-    gdouble dragfromx, dragfromy;                        /* screen pixel coordinates */
+    gdouble dragging_item_from_x, dragging_item_from_y; /* world coordinates */
+    gdouble dragfromx, dragfromy; /* screen pixel coordinates */
     gdouble zooming_canvas_from_val;
 
     int dragpoint;
@@ -81,14 +80,13 @@ struct _EnvelopeBox
 #endif
 };
 
-struct _EnvelopeBoxClass
-{
+struct _EnvelopeBoxClass {
     GtkVBoxClass parent_class;
 };
 
-guint          envelope_box_get_type           (void);
-GtkWidget*     envelope_box_new                (const gchar *label);
+guint envelope_box_get_type(void);
+GtkWidget* envelope_box_new(const gchar* label);
 
-void           envelope_box_set_envelope       (EnvelopeBox *e, STEnvelope *env);
+void envelope_box_set_envelope(EnvelopeBox* e, STEnvelope* env);
 
 #endif /* _ENVELOPE_BOX_H */

@@ -24,42 +24,35 @@
 
 #include <gtk/gtk.h>
 
-void            modinfo_page_create                (GtkNotebook *nb);
+void modinfo_page_create(GtkNotebook* nb);
 
-gboolean        modinfo_page_handle_keys           (int shift,
-						    int ctrl,
-						    int alt,
-						    guint32 keyval,
-						    gboolean pressed);
+gboolean modinfo_page_handle_keys(int shift,
+    int ctrl,
+    int alt,
+    guint32 keyval,
+    gboolean pressed);
 
-void            modinfo_update_instrument          (int instr);
-void            modinfo_update_sample              (int sample);
-void            modinfo_update_all                 (void);
+void modinfo_update_instrument(int instr);
+void modinfo_update_sample(int sample);
+void modinfo_update_all(void);
 
-void            modinfo_set_current_instrument     (int);
-void            modinfo_set_current_sample         (int);
+void modinfo_set_current_instrument(int);
+void modinfo_set_current_sample(int);
 
-gint            modinfo_get_current_sample         (void);
+gint modinfo_get_current_sample(void);
 
-void
-modinfo_delete_unused_instruments (void);
+void modinfo_delete_unused_instruments(void);
 
-void
-modinfo_find_unused_pattern (void);
+void modinfo_find_unused_pattern(void);
 
-void
-modinfo_copy_to_unused_pattern (void);
+void modinfo_copy_to_unused_pattern(void);
 
-void
-modinfo_pack_patterns (void);
+void modinfo_pack_patterns(void);
 
-void
-modinfo_reorder_patterns (void);
+void modinfo_reorder_patterns(void);
 
-void
-modinfo_clear_unused_patterns (void);
+void modinfo_clear_unused_patterns(void);
 
-void
-modinfo_optimize_module (void);
+void modinfo_optimize_module(void);
 
 #endif /* _MODULE_INFO_H */

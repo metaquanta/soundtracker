@@ -29,36 +29,36 @@
    32-bit machines: */
 
 typedef struct kb_x86_mixer_data {
-    float volleft;              // left volume (1.0=normal)            0
-    float volright;             // right volume (1.0=normal)           4
-    float volrampl;             // left volramp (dvol/sample)          8
-    float volrampr;             // right volramp (dvol/sample)         12
-    gint16 *positioni;          // pointer to sample data              16
-    guint32 positionf;          // fractional part of pointer          20
-    gint32 freqi;               // integer part of delta               24
-    guint32 freqf;              // fractional part of delta            28
-    float *mixbuffer;           // pointer to destination buffer       32
-    guint32 numsamples;         // number of samples to render         36
-    float lastl;                // declick value                       40
-    float ffreq;                // filter frequency (0<=x<=1)          44
-    float freso;                // filter resonance (0<=x<1)           48
-    float fl1;                  // filter lp buffer                    52
-    float fb1;                  // filter bp buffer                    56
-    gint16 *scopebuf;           //                                     60
-    guint32 flags;              // which mixer to use                  64
+    float volleft; // left volume (1.0=normal)            0
+    float volright; // right volume (1.0=normal)           4
+    float volrampl; // left volramp (dvol/sample)          8
+    float volrampr; // right volramp (dvol/sample)         12
+    gint16* positioni; // pointer to sample data              16
+    guint32 positionf; // fractional part of pointer          20
+    gint32 freqi; // integer part of delta               24
+    guint32 freqf; // fractional part of delta            28
+    float* mixbuffer; // pointer to destination buffer       32
+    guint32 numsamples; // number of samples to render         36
+    float lastl; // declick value                       40
+    float ffreq; // filter frequency (0<=x<=1)          44
+    float freso; // filter resonance (0<=x<1)           48
+    float fl1; // filter lp buffer                    52
+    float fb1; // filter bp buffer                    56
+    gint16* scopebuf; //                                     60
+    guint32 flags; // which mixer to use                  64
 } kb_x86_mixer_data;
 
-#define KB_X86_MIXER_FLAGS_BACKWARD  (1 << 2)
-#define KB_X86_MIXER_FLAGS_FILTERED  (1 << 3)
-#define KB_X86_MIXER_FLAGS_SCOPES    (1 << 4)
-#define KB_X86_MIXER_FLAGS_VOLRAMP   (1 << 5)
+#define KB_X86_MIXER_FLAGS_BACKWARD (1 << 2)
+#define KB_X86_MIXER_FLAGS_FILTERED (1 << 3)
+#define KB_X86_MIXER_FLAGS_SCOPES (1 << 4)
+#define KB_X86_MIXER_FLAGS_VOLRAMP (1 << 5)
 
-void      kbasm_mix          (kb_x86_mixer_data *data);
+void kbasm_mix(kb_x86_mixer_data* data);
 
-gboolean  kbasm_post_mixing  (float *mixbuffer,
-			      gint16 *outbuffer,
-			      unsigned numsamples,
-			      float amplification);
+gboolean kbasm_post_mixing(float* mixbuffer,
+    gint16* outbuffer,
+    unsigned numsamples,
+    float amplification);
 
 extern float kb_x86_ct0[256];
 extern float kb_x86_ct1[256];

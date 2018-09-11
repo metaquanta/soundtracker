@@ -20,226 +20,222 @@
  * created 1998-04-18 Simon Kågedal
  */
 
-#include <stdio.h>
-#include <gtk/gtkobject.h> //patch by F.Haferkorn 2006-06-29
-#include <gtk/gtkmain.h>
-#include <gtk/gtksignal.h>
-#include <gdk/gdkkeysyms.h>
 #include "clavier.h"
+#include <gdk/gdkkeysyms.h>
+#include <gtk/gtkmain.h>
+#include <gtk/gtkobject.h> //patch by F.Haferkorn 2006-06-29
+#include <gtk/gtksignal.h>
+#include <stdio.h>
 
 #define XFONTNAME "Fixed 8"
 
 static const int default_colors[] = {
-    255, 0, 0,
-    255, 255, 0,
+    255,
+    0,
+    0,
+    255,
+    255,
+    0,
 };
 
-static void init_colors(GtkWidget *widget)
+static void init_colors(GtkWidget* widget)
 {
     int n;
-    const int *p;
-    GdkColor *c;
+    const int* p;
+    GdkColor* c;
 
     for (n = 0, p = default_colors, c = CLAVIER(widget)->colors; n < CLAVIERCOL_LAST; n++, c++) {
-	c->red = *p++ * 65535 / 255;
-	c->green = *p++ * 65535 / 255;
-	c->blue = *p++ * 65535 / 255;
-        c->pixel = (gulong)((c->red & 0xff00)*256 + (c->green & 0xff00) + (c->blue & 0xff00)/256);
+        c->red = *p++ * 65535 / 255;
+        c->green = *p++ * 65535 / 255;
+        c->blue = *p++ * 65535 / 255;
+        c->pixel = (gulong)((c->red & 0xff00) * 256 + (c->green & 0xff00) + (c->blue & 0xff00) / 256);
         gdk_color_alloc(gtk_widget_get_colormap(widget), c);
     }
 }
 
-static GtkDrawingAreaClass *parent_class = NULL;
+static GtkDrawingAreaClass* parent_class = NULL;
 
 /* Signals */
-enum
-{
-  CLAVIERKEY_PRESS,
-  CLAVIERKEY_RELEASE,
-  CLAVIERKEY_ENTER,
-  CLAVIERKEY_LEAVE,
-  LAST_SIGNAL
+enum {
+    CLAVIERKEY_PRESS,
+    CLAVIERKEY_RELEASE,
+    CLAVIERKEY_ENTER,
+    CLAVIERKEY_LEAVE,
+    LAST_SIGNAL
 };
 
-static guint clavier_signals[LAST_SIGNAL] = {0};
+static guint clavier_signals[LAST_SIGNAL] = { 0 };
 
-typedef void (*ClavierSignal1) (GtkObject *object,
-				gint arg1,
-				gpointer data);
+typedef void (*ClavierSignal1)(GtkObject* object,
+    gint arg1,
+    gpointer data);
 
 /* Clavier Methods */
-static void clavier_class_init (ClavierClass *class);
-static void clavier_init (Clavier *clavier);
+static void clavier_class_init(ClavierClass* class);
+static void clavier_init(Clavier* clavier);
 
 /* GtkObject Methods */
-static void clavier_destroy (GtkObject *object);
+static void clavier_destroy(GtkObject* object);
 
 /* GtkWidget Methods */
-static void clavier_realize (GtkWidget *widget);
-static gint clavier_expose (GtkWidget *widget, GdkEventExpose *event);
-static gint clavier_button_press (GtkWidget *widget, GdkEventButton *event);
-static gint clavier_button_release (GtkWidget *widget, GdkEventButton *event);
-static gint clavier_motion_notify (GtkWidget *widget, GdkEventMotion *event);
-static gint clavier_leave_notify (GtkWidget *widget, GdkEventCrossing *event);
+static void clavier_realize(GtkWidget* widget);
+static gint clavier_expose(GtkWidget* widget, GdkEventExpose* event);
+static gint clavier_button_press(GtkWidget* widget, GdkEventButton* event);
+static gint clavier_button_release(GtkWidget* widget, GdkEventButton* event);
+static gint clavier_motion_notify(GtkWidget* widget, GdkEventMotion* event);
+static gint clavier_leave_notify(GtkWidget* widget, GdkEventCrossing* event);
 
 /* Helpers */
-static void draw_key_hint (Clavier *, gint, GdkGC *);
+static void draw_key_hint(Clavier*, gint, GdkGC*);
 
 GtkType
-clavier_get_type (void)
+clavier_get_type(void)
 {
-  static GtkType clavier_type = 0;
+    static GtkType clavier_type = 0;
 
-  if (!clavier_type)
-    {
-      GTypeInfo clavier_info = {
-	sizeof (ClavierClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) clavier_class_init,
-	(GClassFinalizeFunc) NULL,
-	NULL,
-	sizeof (Clavier),
-	0,
-	(GInstanceInitFunc) clavier_init,	
-      };
+    if (!clavier_type) {
+        GTypeInfo clavier_info = {
+            sizeof(ClavierClass),
+            (GBaseInitFunc)NULL,
+            (GBaseFinalizeFunc)NULL,
+            (GClassInitFunc)clavier_class_init,
+            (GClassFinalizeFunc)NULL,
+            NULL,
+            sizeof(Clavier),
+            0,
+            (GInstanceInitFunc)clavier_init,
+        };
 
-      clavier_type = g_type_register_static(gtk_drawing_area_get_type (), 
-			 "Clavier", &clavier_info, (GTypeFlags)0);
+        clavier_type = g_type_register_static(gtk_drawing_area_get_type(),
+            "Clavier", &clavier_info, (GTypeFlags)0);
     }
 
-  return clavier_type;
+    return clavier_type;
 }
 
 static void
-clavier_class_init (ClavierClass *class)
+clavier_class_init(ClavierClass* class)
 {
-  GObjectClass *object_class;
-  GtkObjectClass *gtkobject_class;
-  GtkWidgetClass *widget_class;
+    GObjectClass* object_class;
+    GtkObjectClass* gtkobject_class;
+    GtkWidgetClass* widget_class;
 
-  object_class = (GObjectClass *) class;
-  gtkobject_class = (GtkObjectClass *) class;
-  widget_class = (GtkWidgetClass *) class;
+    object_class = (GObjectClass*)class;
+    gtkobject_class = (GtkObjectClass*)class;
+    widget_class = (GtkWidgetClass*)class;
 
-  parent_class = gtk_type_class (gtk_drawing_area_get_type ());
+    parent_class = gtk_type_class(gtk_drawing_area_get_type());
 
-  clavier_signals[CLAVIERKEY_PRESS] = 
-    g_signal_new ("clavierkey_press", G_TYPE_FROM_CLASS (object_class),
-		   (GSignalFlags) G_SIGNAL_RUN_FIRST,
-		    G_STRUCT_OFFSET (ClavierClass, clavierkey_press),
-		    NULL, NULL,
-		    gtk_marshal_NONE__INT, G_TYPE_NONE, 1, 
-		    G_TYPE_INT);
+    clavier_signals[CLAVIERKEY_PRESS] = g_signal_new("clavierkey_press", G_TYPE_FROM_CLASS(object_class),
+        (GSignalFlags)G_SIGNAL_RUN_FIRST,
+        G_STRUCT_OFFSET(ClavierClass, clavierkey_press),
+        NULL, NULL,
+        gtk_marshal_NONE__INT, G_TYPE_NONE, 1,
+        G_TYPE_INT);
 
-  clavier_signals[CLAVIERKEY_RELEASE] = 
-    g_signal_new ("clavierkey_release", G_TYPE_FROM_CLASS (object_class),
-		   (GSignalFlags) G_SIGNAL_RUN_FIRST,
-		    G_STRUCT_OFFSET (ClavierClass, clavierkey_release),
-		    NULL, NULL,
-		    gtk_marshal_NONE__INT, G_TYPE_NONE, 1,
-		    G_TYPE_INT);
+    clavier_signals[CLAVIERKEY_RELEASE] = g_signal_new("clavierkey_release", G_TYPE_FROM_CLASS(object_class),
+        (GSignalFlags)G_SIGNAL_RUN_FIRST,
+        G_STRUCT_OFFSET(ClavierClass, clavierkey_release),
+        NULL, NULL,
+        gtk_marshal_NONE__INT, G_TYPE_NONE, 1,
+        G_TYPE_INT);
 
-  clavier_signals[CLAVIERKEY_ENTER] = 
-    g_signal_new ("clavierkey_enter", G_TYPE_FROM_CLASS (object_class),
-		   (GSignalFlags) G_SIGNAL_RUN_FIRST,
-		    G_STRUCT_OFFSET (ClavierClass, clavierkey_enter),
-		    NULL, NULL,
-		    gtk_marshal_NONE__INT, G_TYPE_NONE, 1,
-		    G_TYPE_INT);
+    clavier_signals[CLAVIERKEY_ENTER] = g_signal_new("clavierkey_enter", G_TYPE_FROM_CLASS(object_class),
+        (GSignalFlags)G_SIGNAL_RUN_FIRST,
+        G_STRUCT_OFFSET(ClavierClass, clavierkey_enter),
+        NULL, NULL,
+        gtk_marshal_NONE__INT, G_TYPE_NONE, 1,
+        G_TYPE_INT);
 
-  clavier_signals[CLAVIERKEY_LEAVE] = 
-    g_signal_new ("clavierkey_leave", G_TYPE_FROM_CLASS (object_class),
-		   (GSignalFlags) G_SIGNAL_RUN_FIRST,
-		    G_STRUCT_OFFSET (ClavierClass, clavierkey_leave),
-		    NULL, NULL,
-		    gtk_marshal_NONE__INT, G_TYPE_NONE, 1,
-		    G_TYPE_INT);
+    clavier_signals[CLAVIERKEY_LEAVE] = g_signal_new("clavierkey_leave", G_TYPE_FROM_CLASS(object_class),
+        (GSignalFlags)G_SIGNAL_RUN_FIRST,
+        G_STRUCT_OFFSET(ClavierClass, clavierkey_leave),
+        NULL, NULL,
+        gtk_marshal_NONE__INT, G_TYPE_NONE, 1,
+        G_TYPE_INT);
 
-  gtkobject_class->destroy = clavier_destroy;
+    gtkobject_class->destroy = clavier_destroy;
 
-  widget_class->realize = clavier_realize;
-  widget_class->expose_event = clavier_expose;
+    widget_class->realize = clavier_realize;
+    widget_class->expose_event = clavier_expose;
 
-  widget_class->button_press_event = clavier_button_press;
-  widget_class->button_release_event = clavier_button_release;
-  widget_class->motion_notify_event = clavier_motion_notify;
-  widget_class->leave_notify_event = clavier_leave_notify;
+    widget_class->button_press_event = clavier_button_press;
+    widget_class->button_release_event = clavier_button_release;
+    widget_class->motion_notify_event = clavier_motion_notify;
+    widget_class->leave_notify_event = clavier_leave_notify;
 }
 
 static void
-clavier_init (Clavier *clavier)
+clavier_init(Clavier* clavier)
 {
-	PangoFontDescription *desc;
+    PangoFontDescription* desc;
 
-	clavier->context = gtk_widget_create_pango_context(GTK_WIDGET(clavier));
-	clavier->layout = pango_layout_new(clavier->context);
-	clavier->layout2 = pango_layout_new(clavier->context);
-	desc = pango_font_description_from_string("Fixed 8");
-	g_assert(desc != NULL);
-	pango_layout_set_font_description(clavier->layout, desc);
-	pango_layout_set_font_description(clavier->layout2, desc);
-	pango_font_description_free(desc);
+    clavier->context = gtk_widget_create_pango_context(GTK_WIDGET(clavier));
+    clavier->layout = pango_layout_new(clavier->context);
+    clavier->layout2 = pango_layout_new(clavier->context);
+    desc = pango_font_description_from_string("Fixed 8");
+    g_assert(desc != NULL);
+    pango_layout_set_font_description(clavier->layout, desc);
+    pango_layout_set_font_description(clavier->layout2, desc);
+    pango_font_description_free(desc);
 
-	pango_layout_set_text(clavier->layout, "0", -1); /* let's just hope this is a non-proportional font */
-	pango_layout_get_pixel_size(clavier->layout, &clavier->fontw, &clavier->fonth);
-  clavier->keylabels = NULL;
+    pango_layout_set_text(clavier->layout, "0", -1); /* let's just hope this is a non-proportional font */
+    pango_layout_get_pixel_size(clavier->layout, &clavier->fontw, &clavier->fonth);
+    clavier->keylabels = NULL;
 
-  clavier->type = CLAVIER_TYPE_SEQUENCER;
-  clavier->dir = CLAVIER_DIR_HORIZONTAL;
-  clavier->key_start = 36;
-  clavier->key_end = 96;
-  clavier->black_key_height = 0.6;
-  clavier->black_key_width = 0.54;
+    clavier->type = CLAVIER_TYPE_SEQUENCER;
+    clavier->dir = CLAVIER_DIR_HORIZONTAL;
+    clavier->key_start = 36;
+    clavier->key_end = 96;
+    clavier->black_key_height = 0.6;
+    clavier->black_key_width = 0.54;
 
-  clavier->is_pressed = FALSE;
-  clavier->key_pressed = 0;
+    clavier->is_pressed = FALSE;
+    clavier->key_pressed = 0;
 
-  clavier->key_info = NULL;
-  clavier->key_info_size = 0;
+    clavier->key_info = NULL;
+    clavier->key_info_size = 0;
 
-  clavier->show_middle_c = TRUE;
+    clavier->show_middle_c = TRUE;
 }
 
 static void
-clavier_destroy (GtkObject *object)
+clavier_destroy(GtkObject* object)
 {
-  Clavier *clavier;
+    Clavier* clavier;
 
-  g_return_if_fail (object != NULL);
-  g_return_if_fail (IS_CLAVIER (object));
+    g_return_if_fail(object != NULL);
+    g_return_if_fail(IS_CLAVIER(object));
 
-  clavier = CLAVIER (object);
+    clavier = CLAVIER(object);
 
-  /* eventually free memory allocated for key info
+    /* eventually free memory allocated for key info
    */
 
-  if (clavier->key_info)
-    {
-      g_free (clavier->key_info);
+    if (clavier->key_info) {
+        g_free(clavier->key_info);
     }
 
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+    if (GTK_OBJECT_CLASS(parent_class)->destroy)
+        (*GTK_OBJECT_CLASS(parent_class)->destroy)(object);
 }
 
 /* checks if the given key is a black one
  */
 
 static gboolean
-is_black_key (gint key)
+is_black_key(gint key)
 {
-  switch (key % 12)
-    {
+    switch (key % 12) {
     case 1:
     case 3:
     case 6:
     case 8:
     case 10:
-      return (TRUE);
+        return (TRUE);
 
     default:
-      return (FALSE);
+        return (FALSE);
     }
 }
 
@@ -248,22 +244,20 @@ is_black_key (gint key)
  */
 
 static void
-calc_keys (gint start, gint end, gint *whites, gint *blacks)
+calc_keys(gint start, gint end, gint* whites, gint* blacks)
 {
-  gint i;
+    gint i;
 
-  *blacks = 0;
-  *whites = 0;
+    *blacks = 0;
+    *whites = 0;
 
-  if (end >= start)
-    {
-      for (i=start; i<=end; i++)
-	{
-	  if (is_black_key(i))
-	    (*blacks)++;
-	}
-      
-      *whites = end - start + 1 - *blacks;
+    if (end >= start) {
+        for (i = start; i <= end; i++) {
+            if (is_black_key(i))
+                (*blacks)++;
+        }
+
+        *whites = end - start + 1 - *blacks;
     }
 }
 
@@ -271,14 +265,13 @@ calc_keys (gint start, gint end, gint *whites, gint *blacks)
  */
 
 static void
-dir_swap (Clavier *clavier, gint *x1, gint *y1)
+dir_swap(Clavier* clavier, gint* x1, gint* y1)
 {
-  if (clavier->dir == CLAVIER_DIR_VERTICAL)
-    {
-      gint x;
-      x = *x1;
-      *x1 = *y1;
-      *y1 = x;
+    if (clavier->dir == CLAVIER_DIR_VERTICAL) {
+        gint x;
+        x = *x1;
+        *x1 = *y1;
+        *y1 = x;
     }
 }
 
@@ -286,14 +279,13 @@ dir_swap (Clavier *clavier, gint *x1, gint *y1)
  */
 
 static void
-dir_swap_point (Clavier *clavier, gint *x1, gint *y1)
+dir_swap_point(Clavier* clavier, gint* x1, gint* y1)
 {
-  if (clavier->dir == CLAVIER_DIR_VERTICAL)
-    {
-      gint x;
-      x = *x1;
-      *x1 = *y1;
-      *y1 = GTK_WIDGET(clavier)->allocation.height - x - 1;
+    if (clavier->dir == CLAVIER_DIR_VERTICAL) {
+        gint x;
+        x = *x1;
+        *x1 = *y1;
+        *y1 = GTK_WIDGET(clavier)->allocation.height - x - 1;
     }
 }
 
@@ -301,14 +293,13 @@ dir_swap_point (Clavier *clavier, gint *x1, gint *y1)
  */
 
 static void
-dir_swap_point_reverse (Clavier *clavier, gint *x1, gint *y1)
+dir_swap_point_reverse(Clavier* clavier, gint* x1, gint* y1)
 {
-  if (clavier->dir == CLAVIER_DIR_VERTICAL)
-    {
-      gint y;
-      y = *y1;
-      *y1 = *x1;
-      *x1 = GTK_WIDGET(clavier)->allocation.height - y;
+    if (clavier->dir == CLAVIER_DIR_VERTICAL) {
+        gint y;
+        y = *y1;
+        *y1 = *x1;
+        *x1 = GTK_WIDGET(clavier)->allocation.height - y;
     }
 }
 
@@ -316,19 +307,18 @@ dir_swap_point_reverse (Clavier *clavier, gint *x1, gint *y1)
  */
 
 static void
-dir_swap_rectangle (Clavier *clavier, gint *x1, gint *y1, 
-		    gint *width, gint *height)
+dir_swap_rectangle(Clavier* clavier, gint* x1, gint* y1,
+    gint* width, gint* height)
 {
-  if (clavier->dir == CLAVIER_DIR_VERTICAL)
-    {
-      gint x;
-      x = *x1;
-      *x1 = *y1;
-      *y1 = GTK_WIDGET(clavier)->allocation.height - x - *width;
-      
-      x = *width;
-      *width = *height;
-      *height = x;
+    if (clavier->dir == CLAVIER_DIR_VERTICAL) {
+        gint x;
+        x = *x1;
+        *x1 = *y1;
+        *y1 = GTK_WIDGET(clavier)->allocation.height - x - *width;
+
+        x = *width;
+        *width = *height;
+        *height = x;
     }
 }
 
@@ -337,61 +327,61 @@ dir_swap_rectangle (Clavier *clavier, gint *x1, gint *y1,
  */
 
 static void
-calc_key_sequencer (Clavier *clavier, gint key, ClavierKeyInfo *key_info)
+calc_key_sequencer(Clavier* clavier, gint key, ClavierKeyInfo* key_info)
 {
-  GtkWidget *widget;
-  gint width, height;
+    GtkWidget* widget;
+    gint width, height;
 
-  widget = GTK_WIDGET (clavier);
+    widget = GTK_WIDGET(clavier);
 
-  width = widget->allocation.width;
-  height = widget->allocation.height;
+    width = widget->allocation.width;
+    height = widget->allocation.height;
 
-  dir_swap (clavier, &width, &height);
+    dir_swap(clavier, &width, &height);
 
-  switch (key % 12)
-    {
-    case 1: case 3: case 6: case 8: case 10:
+    switch (key % 12) {
+    case 1:
+    case 3:
+    case 6:
+    case 8:
+    case 10:
 
-      /* black key */
+        /* black key */
 
-      key_info->is_black = TRUE;
-      key_info->upper_right_x = 
-	(key - clavier->key_start + 1) * clavier->keywidth;
+        key_info->is_black = TRUE;
+        key_info->upper_right_x = (key - clavier->key_start + 1) * clavier->keywidth;
 
-      break;
+        break;
 
-    case 0: case 2: case 5: case 7: case 9:
+    case 0:
+    case 2:
+    case 5:
+    case 7:
+    case 9:
 
-      /* short right side */
+        /* short right side */
 
-      key_info->is_black = FALSE;
-      key_info->upper_right_x =
-	((gfloat)(key - clavier->key_start) + 1) * clavier->keywidth;
-      key_info->lower_right_x =
-	((gfloat)(key - clavier->key_start) + 1.5) * clavier->keywidth;
+        key_info->is_black = FALSE;
+        key_info->upper_right_x = ((gfloat)(key - clavier->key_start) + 1) * clavier->keywidth;
+        key_info->lower_right_x = ((gfloat)(key - clavier->key_start) + 1.5) * clavier->keywidth;
 
-      break;
+        break;
 
-    case 4: case 11:
+    case 4:
+    case 11:
 
-      /* long right side */
+        /* long right side */
 
-      key_info->is_black = FALSE;
-      key_info->upper_right_x =
-	key_info->lower_right_x =
-	(key - clavier->key_start + 1) * clavier->keywidth;
+        key_info->is_black = FALSE;
+        key_info->upper_right_x = key_info->lower_right_x = (key - clavier->key_start + 1) * clavier->keywidth;
 
-      break;
+        break;
     }
 
-  /* we need to do some fixing for the rightmost key */
+    /* we need to do some fixing for the rightmost key */
 
-  if (key == clavier->key_end)
-    {
-      key_info->upper_right_x =
-	key_info->lower_right_x =
-	width - 1;
+    if (key == clavier->key_end) {
+        key_info->upper_right_x = key_info->lower_right_x = width - 1;
     }
 }
 
@@ -400,348 +390,321 @@ calc_key_sequencer (Clavier *clavier, gint key, ClavierKeyInfo *key_info)
  */
 
 static void
-calc_key_normal (Clavier *clavier, gint key, ClavierKeyInfo *key_info)
+calc_key_normal(Clavier* clavier, gint key, ClavierKeyInfo* key_info)
 {
-  GtkWidget *widget;
-  gint blacks, whites, width, height;
+    GtkWidget* widget;
+    gint blacks, whites, width, height;
 
-  widget = GTK_WIDGET (clavier);
+    widget = GTK_WIDGET(clavier);
 
-  width = widget->allocation.width;
-  height = widget->allocation.height;
+    width = widget->allocation.width;
+    height = widget->allocation.height;
 
-  dir_swap (clavier, &width, &height);
+    dir_swap(clavier, &width, &height);
 
-  calc_keys (clavier->key_start, key-1, &whites, &blacks);
+    calc_keys(clavier->key_start, key - 1, &whites, &blacks);
 
-  switch (key % 12)
-    {
-    case 1: case 3: case 6: case 8: case 10:
+    switch (key % 12) {
+    case 1:
+    case 3:
+    case 6:
+    case 8:
+    case 10:
 
-      /* black key */
+        /* black key */
 
-      key_info->is_black = TRUE;
-      key_info->upper_right_x = 
-	((gfloat)whites + 
-	 (clavier->black_key_width * 0.5)) * clavier->keywidth;
+        key_info->is_black = TRUE;
+        key_info->upper_right_x = ((gfloat)whites + (clavier->black_key_width * 0.5)) * clavier->keywidth;
 
-      break;
+        break;
 
-    case 0: case 2: case 5: case 7: case 9:
+    case 0:
+    case 2:
+    case 5:
+    case 7:
+    case 9:
 
-      /* the (whites):th white key from left or bottom, with short
+        /* the (whites):th white key from left or bottom, with short
        * right side
        */
 
-      key_info->is_black = FALSE;
-      key_info->upper_right_x =
-	(whites + 1) * clavier->keywidth -
-	(clavier->black_key_width * 0.5 * clavier->keywidth);
-      key_info->lower_right_x = (whites + 1) * clavier->keywidth;
+        key_info->is_black = FALSE;
+        key_info->upper_right_x = (whites + 1) * clavier->keywidth - (clavier->black_key_width * 0.5 * clavier->keywidth);
+        key_info->lower_right_x = (whites + 1) * clavier->keywidth;
 
-      break;
+        break;
 
-    case 4: case 11:
+    case 4:
+    case 11:
 
-      /* the (whites):th white key from left or bottom, with long
+        /* the (whites):th white key from left or bottom, with long
        * right side
        */
 
-      key_info->is_black = FALSE;
-      key_info->upper_right_x =
-	key_info->lower_right_x =
-	(whites + 1) * clavier->keywidth;
+        key_info->is_black = FALSE;
+        key_info->upper_right_x = key_info->lower_right_x = (whites + 1) * clavier->keywidth;
 
-      break;
-
+        break;
     }
 
-  /* we need to do some fixing for the rightmost key */
+    /* we need to do some fixing for the rightmost key */
 
-  if (key == clavier->key_end)
-    {
-      key_info->upper_right_x =
-	key_info->lower_right_x =
-	width - 1;
+    if (key == clavier->key_end) {
+        key_info->upper_right_x = key_info->lower_right_x = width - 1;
     }
 }
 
 static void
-calc_key_info (Clavier *clavier)
+calc_key_info(Clavier* clavier)
 {
-  gint keys = clavier->key_end - clavier->key_start + 1;
-  gint i;
+    gint keys = clavier->key_end - clavier->key_start + 1;
+    gint i;
 
-  if (!clavier->key_info)
-    {
-      clavier->key_info = g_malloc (sizeof (ClavierKeyInfo) * keys);
-    }
-  else if (clavier->key_info_size != keys)
-    {
-      clavier->key_info = 
-	g_realloc (clavier->key_info, sizeof (ClavierKeyInfo) * keys);
+    if (!clavier->key_info) {
+        clavier->key_info = g_malloc(sizeof(ClavierKeyInfo) * keys);
+    } else if (clavier->key_info_size != keys) {
+        clavier->key_info = g_realloc(clavier->key_info, sizeof(ClavierKeyInfo) * keys);
     }
 
-  for (i=0; i<keys; i++)
-    {
-      if (clavier->type == CLAVIER_TYPE_NORMAL)
-	{
-	  calc_key_normal (clavier, 
-			   clavier->key_start + i, &clavier->key_info[i]);
-	}
-      else
-	{
-	  calc_key_sequencer (clavier, 
-			      clavier->key_start + i, &clavier->key_info[i]);
-	}
+    for (i = 0; i < keys; i++) {
+        if (clavier->type == CLAVIER_TYPE_NORMAL) {
+            calc_key_normal(clavier,
+                clavier->key_start + i, &clavier->key_info[i]);
+        } else {
+            calc_key_sequencer(clavier,
+                clavier->key_start + i, &clavier->key_info[i]);
+        }
 
-      /* fix so draw_key draws lower rectangle correctly */
+        /* fix so draw_key draws lower rectangle correctly */
 
-      if (i > 0 &&
-	  (clavier->key_info[i].is_black))
-	{
-	  clavier->key_info[i].lower_right_x = 
-	    clavier->key_info[i - 1].lower_right_x;
-	}
+        if (i > 0 && (clavier->key_info[i].is_black)) {
+            clavier->key_info[i].lower_right_x = clavier->key_info[i - 1].lower_right_x;
+        }
     }
 }
 
 static void
-clavier_draw_label (Clavier *clavier,
-		    int keynum)
+clavier_draw_label(Clavier* clavier,
+    int keynum)
 {
-	static gint8 prev_label = -1;
+    static gint8 prev_label = -1;
 
-    ClavierKeyInfo *this = &(clavier->key_info[keynum]);
-    GtkWidget *widget = GTK_WIDGET(clavier);
+    ClavierKeyInfo* this = &(clavier->key_info[keynum]);
+    GtkWidget* widget = GTK_WIDGET(clavier);
     gchar string[4] = "";
 
-	if(clavier->keylabels) {
-		gint8 label = clavier->keylabels[keynum];
+    if (clavier->keylabels) {
+        gint8 label = clavier->keylabels[keynum];
 
-		if(label != prev_label) {
-			sprintf(string, "%x", label & 0xf);
-			pango_layout_set_text(clavier->layout, string, -1);
-			if(label > 0xf) {
-				sprintf(string, "%x", label >> 4);
-				pango_layout_set_text(clavier->layout2, string, -1);
-			}
-			prev_label = label;
-		}
+        if (label != prev_label) {
+            sprintf(string, "%x", label & 0xf);
+            pango_layout_set_text(clavier->layout, string, -1);
+            if (label > 0xf) {
+                sprintf(string, "%x", label >> 4);
+                pango_layout_set_text(clavier->layout2, string, -1);
+            }
+            prev_label = label;
+        }
 
-		if(label > 0xf) {
-			if(clavier->key_info[keynum].is_black) {
-				gdk_draw_layout(widget->window, clavier->fontbgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 10, clavier->layout2);
-			} else {
-				gdk_draw_layout(widget->window, clavier->fontwgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 20, clavier->layout2);
-			}
-		}
-		if(clavier->key_info[keynum].is_black) {
-			gdk_draw_layout(widget->window, clavier->fontbgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 10 + clavier->fonth, clavier->layout);
-		} else {
-			gdk_draw_layout(widget->window, clavier->fontwgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 20 + clavier->fonth, clavier->layout);
-		}
-	}
+        if (label > 0xf) {
+            if (clavier->key_info[keynum].is_black) {
+                gdk_draw_layout(widget->window, clavier->fontbgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 10, clavier->layout2);
+            } else {
+                gdk_draw_layout(widget->window, clavier->fontwgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 20, clavier->layout2);
+            }
+        }
+        if (clavier->key_info[keynum].is_black) {
+            gdk_draw_layout(widget->window, clavier->fontbgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 10 + clavier->fonth, clavier->layout);
+        } else {
+            gdk_draw_layout(widget->window, clavier->fontwgc, this->upper_right_x - 6 - (clavier->fontw >> 1), 20 + clavier->fonth, clavier->layout);
+        }
+    }
 }
 
 /* main drawing function
  */
 
 static gint
-clavier_expose (GtkWidget *widget, GdkEventExpose *event)
+clavier_expose(GtkWidget* widget, GdkEventExpose* event)
 {
-  Clavier *clavier;
-  int i;
-  gint keys, whitekeys, blackkeys;
-  gint width, height;
-  ClavierKeyInfo first = {0, 0}, *prev;
-  static gint last_transpose = -1;
+    Clavier* clavier;
+    int i;
+    gint keys, whitekeys, blackkeys;
+    gint width, height;
+    ClavierKeyInfo first = { 0, 0 }, *prev;
+    static gint last_transpose = -1;
 
-  g_return_val_if_fail (widget != NULL, FALSE);
-  g_return_val_if_fail (IS_CLAVIER (widget), FALSE);
-  g_return_val_if_fail (event != NULL, FALSE);
+    g_return_val_if_fail(widget != NULL, FALSE);
+    g_return_val_if_fail(IS_CLAVIER(widget), FALSE);
+    g_return_val_if_fail(event != NULL, FALSE);
 
-  clavier = CLAVIER(widget);
+    clavier = CLAVIER(widget);
 
-  width = widget->allocation.width;
-  height = widget->allocation.height;
+    width = widget->allocation.width;
+    height = widget->allocation.height;
 
-  dir_swap (clavier, &width, &height);
+    dir_swap(clavier, &width, &height);
 
-  keys = clavier->key_end - clavier->key_start + 1;
+    keys = clavier->key_end - clavier->key_start + 1;
 
-  gdk_draw_rectangle(widget->window, widget->style->bg_gc[0], TRUE,
-		     event->area.x, event->area.y, event->area.width, event->area.height);
+    gdk_draw_rectangle(widget->window, widget->style->bg_gc[0], TRUE,
+        event->area.x, event->area.y, event->area.width, event->area.height);
 
-  calc_keys (clavier->key_start, clavier->key_end, &whitekeys, &blackkeys);
-  
-  switch (clavier->type)
-    {
+    calc_keys(clavier->key_start, clavier->key_end, &whitekeys, &blackkeys);
+
+    switch (clavier->type) {
     case CLAVIER_TYPE_SEQUENCER:
-      clavier->keywidth = (gfloat)width / (gfloat)(keys);
-      break;
+        clavier->keywidth = (gfloat)width / (gfloat)(keys);
+        break;
 
     case CLAVIER_TYPE_NORMAL:
-      clavier->keywidth = (gfloat)width / (gfloat)whitekeys;
-      break;
+        clavier->keywidth = (gfloat)width / (gfloat)whitekeys;
+        break;
     }
 
-  calc_key_info (clavier);
+    calc_key_info(clavier);
 
-  /*  first.upper_right_x = first.lower_right_x = 0;
+    /*  first.upper_right_x = first.lower_right_x = 0;
    */
-  prev = &first;
+    prev = &first;
 
-  for (i=0; i<keys; i++)
-    {
-      gint x1, y1, x2, y2;
+    for (i = 0; i < keys; i++) {
+        gint x1, y1, x2, y2;
 
-      if (clavier->key_info[i].is_black)
-	{
-	  x1 = prev->upper_right_x + 1;
-	  y1 = 1;
+        if (clavier->key_info[i].is_black) {
+            x1 = prev->upper_right_x + 1;
+            y1 = 1;
 
-	  x2 = clavier->key_info[i].upper_right_x - prev->upper_right_x - 1;
-	  y2 = height * clavier->black_key_height;
+            x2 = clavier->key_info[i].upper_right_x - prev->upper_right_x - 1;
+            y2 = height * clavier->black_key_height;
 
-	  dir_swap_rectangle (clavier, &x1, &y1, &x2, &y2);
+            dir_swap_rectangle(clavier, &x1, &y1, &x2, &y2);
 
-	  gdk_draw_rectangle (widget->window,
-			      widget->style->black_gc,
-			      TRUE,
-			      x1, y1, x2, y2);
-	}
-      else
-	{
-	  if (i != (keys-1))
-	    {
-	      x1 = clavier->key_info[i].lower_right_x;
-	      y1 = 1;
-	      x2 = x1;
-	      y2 = height;
-	      
-	      dir_swap_point(clavier, &x1, &y1);
-	      dir_swap_point(clavier, &x2, &y2);
+            gdk_draw_rectangle(widget->window,
+                widget->style->black_gc,
+                TRUE,
+                x1, y1, x2, y2);
+        } else {
+            if (i != (keys - 1)) {
+                x1 = clavier->key_info[i].lower_right_x;
+                y1 = 1;
+                x2 = x1;
+                y2 = height;
 
-	      gdk_draw_line (widget->window,
-			     widget->style->black_gc,
-			     x1, y1, x2, y2);
-	    }
-	}
+                dir_swap_point(clavier, &x1, &y1);
+                dir_swap_point(clavier, &x2, &y2);
 
-      prev = &clavier->key_info[i];
+                gdk_draw_line(widget->window,
+                    widget->style->black_gc,
+                    x1, y1, x2, y2);
+            }
+        }
 
-      clavier_draw_label(clavier, i);
+        prev = &clavier->key_info[i];
+
+        clavier_draw_label(clavier, i);
     }
 
-  /* show middle C */
+    /* show middle C */
 
-  if (clavier->show_middle_c)
-    {
-      draw_key_hint (clavier, 60, 
-		     widget->style->black_gc);
+    if (clavier->show_middle_c) {
+        draw_key_hint(clavier, 60,
+            widget->style->black_gc);
     }
 
-  /* show transpose base */
-  if (clavier->show_transpose)
-    {
-      gint new_transpose= CLAVIER (clavier)->transpose_base;
+    /* show transpose base */
+    if (clavier->show_transpose) {
+        gint new_transpose = CLAVIER(clavier)->transpose_base;
 
-      /* delete old */
-      if (last_transpose != -1 && new_transpose != last_transpose)
-	{
-	  draw_key_hint (clavier, last_transpose,
-			 last_transpose == 60 
-			 ? widget->style->black_gc
-			 : widget->style->bg_gc[0]);
-	}
+        /* delete old */
+        if (last_transpose != -1 && new_transpose != last_transpose) {
+            draw_key_hint(clavier, last_transpose,
+                last_transpose == 60
+                    ? widget->style->black_gc
+                    : widget->style->bg_gc[0]);
+        }
 
-      draw_key_hint (clavier, new_transpose,
-		     widget->style->light_gc[3]);
+        draw_key_hint(clavier, new_transpose,
+            widget->style->light_gc[3]);
 
-      last_transpose = new_transpose;
+        last_transpose = new_transpose;
     }
 
-  return FALSE;
+    return FALSE;
 }
 
 /* Draw a key pressed or unpressed
  */
 
 static void
-draw_key (Clavier *clavier, gint key, gboolean pressed)
+draw_key(Clavier* clavier, gint key, gboolean pressed)
 {
-  ClavierKeyInfo first = {0, 0}, *prev, *this;
-  gint keynum;
-  gint x1, y1, x2, y2, width, height;
-  GtkWidget *widget;
-  GdkGC *gc;
+    ClavierKeyInfo first = { 0, 0 }, *prev, *this;
+    gint keynum;
+    gint x1, y1, x2, y2, width, height;
+    GtkWidget* widget;
+    GdkGC* gc;
 
-  widget = GTK_WIDGET (clavier);
+    widget = GTK_WIDGET(clavier);
 
-  width = widget->allocation.width;
-  height = widget->allocation.height;
+    width = widget->allocation.width;
+    height = widget->allocation.height;
 
-  dir_swap (clavier, &width, &height);
+    dir_swap(clavier, &width, &height);
 
-  keynum = key - clavier->key_start;
+    keynum = key - clavier->key_start;
 
-  this = &(clavier->key_info[keynum]);
-  prev = (keynum > 0) ? &(clavier->key_info[keynum-1]) : &first;
+    this = &(clavier->key_info[keynum]);
+    prev = (keynum > 0) ? &(clavier->key_info[keynum - 1]) : &first;
 
-  if (pressed)
-    {
-      /* if anyone could teach me how colours in gdk actually work
+    if (pressed) {
+        /* if anyone could teach me how colours in gdk actually work
        * i'd be oh so happy :) 
        */
 
-      gc = this->is_black ?
-	/*	widget->style->fg_gc[4] :*/
-	/*	widget->style->bg_gc[1];*/
-	widget->style->light_gc[3] :
-	widget->style->fg_gc[3];
-	/*	widget->style->bg_gc[3] : 
+        gc = this->is_black ?
+                            /*	widget->style->fg_gc[4] :*/
+            /*	widget->style->bg_gc[1];*/
+            widget->style->light_gc[3]
+                            : widget->style->fg_gc[3];
+        /*	widget->style->bg_gc[3] : 
 	 *	widget->style->fg_gc[4];
 	 */
-    }
-  else
-    {
-      gc = this->is_black ? widget->style->black_gc :
-	widget->style->bg_gc[0];
+    } else {
+        gc = this->is_black ? widget->style->black_gc : widget->style->bg_gc[0];
     }
 
-  /* draw upper part */
+    /* draw upper part */
 
-  x1 = prev->upper_right_x + 1;
-  y1 = 1;
-  x2 = this->upper_right_x - prev->upper_right_x - 1;
-  y2 = height * clavier->black_key_height;
+    x1 = prev->upper_right_x + 1;
+    y1 = 1;
+    x2 = this->upper_right_x - prev->upper_right_x - 1;
+    y2 = height * clavier->black_key_height;
 
-  dir_swap_rectangle (clavier, &x1, &y1, &x2, &y2);
+    dir_swap_rectangle(clavier, &x1, &y1, &x2, &y2);
 
-  gdk_draw_rectangle (widget->window,
-		      gc,
-		      TRUE,
-		      x1, y1, x2, y2);
+    gdk_draw_rectangle(widget->window,
+        gc,
+        TRUE,
+        x1, y1, x2, y2);
 
-  if (! clavier->key_info[keynum].is_black)
-    {
-      /* draw lower part */
+    if (!clavier->key_info[keynum].is_black) {
+        /* draw lower part */
 
-      x1 = prev->lower_right_x + 1;
-      y1 = height * clavier->black_key_height + 1;
-      x2 = this->lower_right_x - prev->lower_right_x - 1;
-      y2 = height * (1.0 - clavier->black_key_height) - 1;
+        x1 = prev->lower_right_x + 1;
+        y1 = height * clavier->black_key_height + 1;
+        x2 = this->lower_right_x - prev->lower_right_x - 1;
+        y2 = height * (1.0 - clavier->black_key_height) - 1;
 
-      dir_swap_rectangle (clavier, &x1, &y1, &x2, &y2);
-      
-      gdk_draw_rectangle (widget->window,
-			  gc,
-			  TRUE,
-			  x1, y1, x2, y2);
+        dir_swap_rectangle(clavier, &x1, &y1, &x2, &y2);
+
+        gdk_draw_rectangle(widget->window,
+            gc,
+            TRUE,
+            x1, y1, x2, y2);
     }
 
-  clavier_draw_label(clavier, keynum);
+    clavier_draw_label(clavier, keynum);
 }
 
 /* Draw a key "hint" (a little line above the `key') with the 
@@ -749,348 +712,327 @@ draw_key (Clavier *clavier, gint key, gboolean pressed)
  */
 
 static void
-draw_key_hint (Clavier *clavier, gint key, GdkGC *gc)
+draw_key_hint(Clavier* clavier, gint key, GdkGC* gc)
 {
-  ClavierKeyInfo first = {0, 0}, *prev, *this;
-  gint keynum;
-  gint x1, y1, x2, y2;
-  GtkWidget *widget;
+    ClavierKeyInfo first = { 0, 0 }, *prev, *this;
+    gint keynum;
+    gint x1, y1, x2, y2;
+    GtkWidget* widget;
 
-  widget = GTK_WIDGET (clavier);
+    widget = GTK_WIDGET(clavier);
 
-  if (key < clavier->key_start || key > clavier->key_end)
-    return;
+    if (key < clavier->key_start || key > clavier->key_end)
+        return;
 
-  keynum = key - clavier->key_start;
+    keynum = key - clavier->key_start;
 
-  this = &(clavier->key_info[keynum]);
-  prev = (keynum > 0) ? &(clavier->key_info[keynum-1]) : &first;
+    this = &(clavier->key_info[keynum]);
+    prev = (keynum > 0) ? &(clavier->key_info[keynum - 1]) : &first;
 
-  x1 = prev->upper_right_x + 1;
-  y1 = 0;
-  x2 = this->upper_right_x;
-  y2 = y1;
+    x1 = prev->upper_right_x + 1;
+    y1 = 0;
+    x2 = this->upper_right_x;
+    y2 = y1;
 
-  dir_swap_point (clavier, &x1, &y1);
-  dir_swap_point (clavier, &x2, &y2);
+    dir_swap_point(clavier, &x1, &y1);
+    dir_swap_point(clavier, &x2, &y2);
 
-  gdk_draw_line (widget->window,
-		 gc,
-		 x1, y1, x2, y2);
+    gdk_draw_line(widget->window,
+        gc,
+        x1, y1, x2, y2);
 }
 
 /* See which key is drawn at x, y
  */
 
 static gint
-which_key (Clavier *clavier, gint x, gint y)
+which_key(Clavier* clavier, gint x, gint y)
 {
-  gint i, keys, width, height;
+    gint i, keys, width, height;
 
-  width = GTK_WIDGET(clavier)->allocation.width;
-  height = GTK_WIDGET(clavier)->allocation.height;
+    width = GTK_WIDGET(clavier)->allocation.width;
+    height = GTK_WIDGET(clavier)->allocation.height;
 
-  dir_swap_point_reverse (clavier, &x, &y);
-  /*  dir_swap (clavier, &x, &y);*/
+    dir_swap_point_reverse(clavier, &x, &y);
+    /*  dir_swap (clavier, &x, &y);*/
 
-  dir_swap (clavier, &width, &height);
+    dir_swap(clavier, &width, &height);
 
-  keys = clavier->key_end - clavier->key_start + 1;
+    keys = clavier->key_end - clavier->key_start + 1;
 
-  if (y > (height * clavier->black_key_height))
-    {
-      /* check lower part */
+    if (y > (height * clavier->black_key_height)) {
+        /* check lower part */
 
-      for (i=0; i<keys; i++)
-	{
-	  if (x < clavier->key_info[i].lower_right_x)
-	    {
-	      return clavier->key_start + i;
-	    }
-	}
-    }
-  else
-    {
-      /* check upper part */
+        for (i = 0; i < keys; i++) {
+            if (x < clavier->key_info[i].lower_right_x) {
+                return clavier->key_start + i;
+            }
+        }
+    } else {
+        /* check upper part */
 
-      for (i=0; i<keys; i++)
-	{
-	  if (x < clavier->key_info[i].upper_right_x)
-	    {
-	      return (clavier->key_start + i);
-	    }
-	}
+        for (i = 0; i < keys; i++) {
+            if (x < clavier->key_info[i].upper_right_x) {
+                return (clavier->key_start + i);
+            }
+        }
     }
 
-  /* so it must be the rightmost key */
+    /* so it must be the rightmost key */
 
-  return (clavier->key_end);
+    return (clavier->key_end);
 }
 
 static void
-press_key (Clavier *clavier, gint key)
+press_key(Clavier* clavier, gint key)
 {
-  clavier->is_pressed = TRUE;
-  clavier->key_pressed = key;
+    clavier->is_pressed = TRUE;
+    clavier->key_pressed = key;
 
-  g_signal_emit(G_OBJECT(clavier), clavier_signals[CLAVIERKEY_PRESS], 0, key);
+    g_signal_emit(G_OBJECT(clavier), clavier_signals[CLAVIERKEY_PRESS], 0, key);
 
-  /*  printf("press: %i\n", key); */
+    /*  printf("press: %i\n", key); */
 }
 
 static void
-release_key (Clavier *clavier)
+release_key(Clavier* clavier)
 {
-  clavier->is_pressed = FALSE;
+    clavier->is_pressed = FALSE;
 
-  g_signal_emit(G_OBJECT(clavier), clavier_signals[CLAVIERKEY_RELEASE], 0,
-		   clavier->key_pressed);
+    g_signal_emit(G_OBJECT(clavier), clavier_signals[CLAVIERKEY_RELEASE], 0,
+        clavier->key_pressed);
 
-  /*  printf ("release: %i\n", clavier->key_pressed); */
+    /*  printf ("release: %i\n", clavier->key_pressed); */
 }
 
 /* events
  */
 
 static gint
-clavier_button_press (GtkWidget *widget, GdkEventButton *event)
+clavier_button_press(GtkWidget* widget, GdkEventButton* event)
 {
-  Clavier *clavier;
-  gint key;
+    Clavier* clavier;
+    gint key;
 
-  g_return_val_if_fail (widget != NULL, FALSE);
-  g_return_val_if_fail (IS_CLAVIER (widget), FALSE);
-  g_return_val_if_fail (event != NULL, FALSE);
+    g_return_val_if_fail(widget != NULL, FALSE);
+    g_return_val_if_fail(IS_CLAVIER(widget), FALSE);
+    g_return_val_if_fail(event != NULL, FALSE);
 
-  clavier = CLAVIER(widget);
+    clavier = CLAVIER(widget);
 
-  key = which_key (clavier, (gint)event->x, (gint)event->y);
+    key = which_key(clavier, (gint)event->x, (gint)event->y);
 
-  press_key (clavier, key);
+    press_key(clavier, key);
 
-  /* add pointer grab - hmm, doesn't seem to work the way i'd like :( */
+    /* add pointer grab - hmm, doesn't seem to work the way i'd like :( */
 
-  gtk_grab_add (widget);
-  /*  gdk_pointer_grab (widget->window, TRUE,
+    gtk_grab_add(widget);
+    /*  gdk_pointer_grab (widget->window, TRUE,
 		    GDK_BUTTON_PRESS_MASK |
 		    GDK_BUTTON_RELEASE_MASK |
 		    GDK_BUTTON_MOTION_MASK |
 		    GDK_POINTER_MOTION_HINT_MASK,
 		    NULL, NULL, 0);*/
 
-  return FALSE;
+    return FALSE;
 }
 
 static gint
-clavier_button_release (GtkWidget *widget, GdkEventButton *event)
+clavier_button_release(GtkWidget* widget, GdkEventButton* event)
 {
-  gint key;
-  Clavier *clavier;
+    gint key;
+    Clavier* clavier;
 
-  g_return_val_if_fail (widget != NULL, FALSE);
-  g_return_val_if_fail (IS_CLAVIER (widget), FALSE);
-  g_return_val_if_fail (event != NULL, FALSE);
+    g_return_val_if_fail(widget != NULL, FALSE);
+    g_return_val_if_fail(IS_CLAVIER(widget), FALSE);
+    g_return_val_if_fail(event != NULL, FALSE);
 
-  clavier = CLAVIER (widget);
+    clavier = CLAVIER(widget);
 
-  key = which_key (clavier, (gint)event->x, (gint)event->y);
+    key = which_key(clavier, (gint)event->x, (gint)event->y);
 
-  release_key (clavier);
+    release_key(clavier);
 
-  gtk_grab_remove (widget);
-  /*  gdk_pointer_ungrab (0);*/
+    gtk_grab_remove(widget);
+    /*  gdk_pointer_ungrab (0);*/
 
-  return FALSE;
+    return FALSE;
 }
 
 static gint
-clavier_motion_notify (GtkWidget *widget, GdkEventMotion *event)
+clavier_motion_notify(GtkWidget* widget, GdkEventMotion* event)
 {
-    Clavier *clavier;
+    Clavier* clavier;
     gint key;
 
-    g_return_val_if_fail (widget != NULL, FALSE);
-    g_return_val_if_fail (IS_CLAVIER (widget), FALSE);
-    g_return_val_if_fail (event != NULL, FALSE);
+    g_return_val_if_fail(widget != NULL, FALSE);
+    g_return_val_if_fail(IS_CLAVIER(widget), FALSE);
+    g_return_val_if_fail(event != NULL, FALSE);
 
-    clavier = CLAVIER (widget);
+    clavier = CLAVIER(widget);
 
-    key = which_key (clavier, (gint)event->x, (gint)event->y);
+    key = which_key(clavier, (gint)event->x, (gint)event->y);
 
-    if(key != clavier->key_entered) {
-	if(clavier->key_entered != -1) {
-	    g_signal_emit(G_OBJECT(clavier), 
-			     clavier_signals[CLAVIERKEY_LEAVE], 0, clavier->key_entered);
-	}
-	clavier->key_entered = key;
-	g_signal_emit(G_OBJECT(clavier), 
-			 clavier_signals[CLAVIERKEY_ENTER], 0, key);
+    if (key != clavier->key_entered) {
+        if (clavier->key_entered != -1) {
+            g_signal_emit(G_OBJECT(clavier),
+                clavier_signals[CLAVIERKEY_LEAVE], 0, clavier->key_entered);
+        }
+        clavier->key_entered = key;
+        g_signal_emit(G_OBJECT(clavier),
+            clavier_signals[CLAVIERKEY_ENTER], 0, key);
     }
 
     if (clavier->is_pressed) {
-	if (key != clavier->key_pressed) {
-	    release_key (clavier);
-	    press_key (clavier, key);
-	}
+        if (key != clavier->key_pressed) {
+            release_key(clavier);
+            press_key(clavier, key);
+        }
     }
 
     return FALSE;
 }
 
 static gint
-clavier_leave_notify (GtkWidget *widget,
-		      GdkEventCrossing *event)
+clavier_leave_notify(GtkWidget* widget,
+    GdkEventCrossing* event)
 {
-    Clavier *clavier = CLAVIER (widget);
+    Clavier* clavier = CLAVIER(widget);
 
-    if(clavier->key_entered != -1) {
-	g_signal_emit(G_OBJECT(clavier),
-			 clavier_signals[CLAVIERKEY_LEAVE], 0, clavier->key_entered);
-	clavier->key_entered = -1;
+    if (clavier->key_entered != -1) {
+        g_signal_emit(G_OBJECT(clavier),
+            clavier_signals[CLAVIERKEY_LEAVE], 0, clavier->key_entered);
+        clavier->key_entered = -1;
     }
-    
+
     return FALSE;
 }
 
 GtkWidget*
-clavier_new (void)
+clavier_new(void)
 {
-  Clavier *clavier;
+    Clavier* clavier;
 
-  clavier = g_object_new (clavier_get_type (), NULL);
+    clavier = g_object_new(clavier_get_type(), NULL);
 
-  /*  old_mask = gtk_widget_get_events (GTK_WIDGET (clavier)); */
-  /*  gtk_widget_set_events (GTK_WIDGET (clavier), old_mask |  */
+    /*  old_mask = gtk_widget_get_events (GTK_WIDGET (clavier)); */
+    /*  gtk_widget_set_events (GTK_WIDGET (clavier), old_mask |  */
 
-  return GTK_WIDGET (clavier);
+    return GTK_WIDGET(clavier);
 }
 
 static void
-clavier_realize (GtkWidget *widget)
+clavier_realize(GtkWidget* widget)
 {
-  GdkWindowAttr attributes;
-  Clavier *clavier;
-  gint attributes_mask;
+    GdkWindowAttr attributes;
+    Clavier* clavier;
+    gint attributes_mask;
 
-  g_return_if_fail (widget != NULL);
-  g_return_if_fail (IS_CLAVIER (widget));
+    g_return_if_fail(widget != NULL);
+    g_return_if_fail(IS_CLAVIER(widget));
 
-  clavier = CLAVIER (widget);
-  GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+    clavier = CLAVIER(widget);
+    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
 
-  attributes.window_type = GDK_WINDOW_CHILD;
-  attributes.x = widget->allocation.x;
-  attributes.y = widget->allocation.y;
-  attributes.width = widget->allocation.width;
-  attributes.height = widget->allocation.height;
-  attributes.wclass = GDK_INPUT_OUTPUT;
-  attributes.visual = gtk_widget_get_visual (widget);
-  attributes.colormap = gtk_widget_get_colormap (widget);
-  attributes.event_mask = gtk_widget_get_events (widget) |
-    GDK_EXPOSURE_MASK | 
-    GDK_BUTTON_PRESS_MASK |
-    GDK_BUTTON_RELEASE_MASK | 
-    GDK_POINTER_MOTION_MASK |
-    GDK_LEAVE_NOTIFY_MASK;
-  /*    GDK_POINTER_MOTION_HINT_MASK*/
+    attributes.window_type = GDK_WINDOW_CHILD;
+    attributes.x = widget->allocation.x;
+    attributes.y = widget->allocation.y;
+    attributes.width = widget->allocation.width;
+    attributes.height = widget->allocation.height;
+    attributes.wclass = GDK_INPUT_OUTPUT;
+    attributes.visual = gtk_widget_get_visual(widget);
+    attributes.colormap = gtk_widget_get_colormap(widget);
+    attributes.event_mask = gtk_widget_get_events(widget) | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_LEAVE_NOTIFY_MASK;
+    /*    GDK_POINTER_MOTION_HINT_MASK*/
 
-  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+    attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
 
-  widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), 
-				   &attributes, attributes_mask);
-  gdk_window_set_user_data (widget->window, clavier);
+    widget->window = gdk_window_new(gtk_widget_get_parent_window(widget),
+        &attributes, attributes_mask);
+    gdk_window_set_user_data(widget->window, clavier);
 
-  init_colors(widget);
+    init_colors(widget);
 
-  clavier->fontwgc = gdk_gc_new(widget->window);
-  clavier->fontbgc = gdk_gc_new(widget->window);
-  gdk_gc_set_foreground(clavier->fontwgc, &clavier->colors[CLAVIERCOL_FONT_ON_WHITE]);
-  gdk_gc_set_foreground(clavier->fontbgc, &clavier->colors[CLAVIERCOL_FONT_ON_BLACK]); 
+    clavier->fontwgc = gdk_gc_new(widget->window);
+    clavier->fontbgc = gdk_gc_new(widget->window);
+    gdk_gc_set_foreground(clavier->fontwgc, &clavier->colors[CLAVIERCOL_FONT_ON_WHITE]);
+    gdk_gc_set_foreground(clavier->fontbgc, &clavier->colors[CLAVIERCOL_FONT_ON_BLACK]);
 
-  widget->style = gtk_style_attach (widget->style, widget->window);
-  gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
+    widget->style = gtk_style_attach(widget->style, widget->window);
+    gtk_style_set_background(widget->style, widget->window, GTK_STATE_NORMAL);
 }
 
 /* these routines should most often be mapped to the press and release
  * signals, but not all applications would want it that way
  */
 
-void
-clavier_press (Clavier *clavier, gint key)
+void clavier_press(Clavier* clavier, gint key)
 {
-  /* TODO: should keep track of what keys are pressed so that the
+    /* TODO: should keep track of what keys are pressed so that the
    * whole widget can be correctly redrawn
    */
 
-  if (key < clavier->key_start || key > clavier->key_end)
-    return;
+    if (key < clavier->key_start || key > clavier->key_end)
+        return;
 
-  draw_key (clavier, key, TRUE);
+    draw_key(clavier, key, TRUE);
 }
 
-void 
-clavier_release (Clavier *clavier, gint key)
+void clavier_release(Clavier* clavier, gint key)
 {
-  if (key < clavier->key_start || key > clavier->key_end)
-    return;
+    if (key < clavier->key_start || key > clavier->key_end)
+        return;
 
-  draw_key (clavier, key, FALSE);
+    draw_key(clavier, key, FALSE);
 }
 
 /* attribute setting 
  */
 
-void
-clavier_set_range (Clavier *clavier, gint start, gint end)
+void clavier_set_range(Clavier* clavier, gint start, gint end)
 {
-  g_return_if_fail (start >= 0 && start <= 127);
-  g_return_if_fail (start >= 0 && start <= 127);
-  g_return_if_fail (end >= start);
+    g_return_if_fail(start >= 0 && start <= 127);
+    g_return_if_fail(start >= 0 && start <= 127);
+    g_return_if_fail(end >= start);
 
-  clavier->key_start = start;
-  clavier->key_end = end;
+    clavier->key_start = start;
+    clavier->key_end = end;
 }
 
-void
-clavier_set_clavier_type (Clavier *clavier, ClavierType type)
+void clavier_set_clavier_type(Clavier* clavier, ClavierType type)
 {
-  clavier->type = type;
-  /* should redraw here? */
+    clavier->type = type;
+    /* should redraw here? */
 }
 
-void
-clavier_set_clavier_dir (Clavier *clavier, ClavierDir dir)
+void clavier_set_clavier_dir(Clavier* clavier, ClavierDir dir)
 {
-  clavier->dir = dir;
-  /* should redraw here? */
+    clavier->dir = dir;
+    /* should redraw here? */
 }
 
-void
-clavier_set_show_middle_c (Clavier *clavier, gboolean b)
+void clavier_set_show_middle_c(Clavier* clavier, gboolean b)
 {
-  clavier->show_middle_c = b;
-  /* should redraw here? */
+    clavier->show_middle_c = b;
+    /* should redraw here? */
 }
 
-void
-clavier_set_show_transpose (Clavier *clavier, gboolean b)
+void clavier_set_show_transpose(Clavier* clavier, gboolean b)
 {
-  clavier->show_transpose = b;
-  /* should redraw here? */
+    clavier->show_transpose = b;
+    /* should redraw here? */
 }
 
-void
-clavier_set_transpose_base (Clavier *clavier, gint key)
+void clavier_set_transpose_base(Clavier* clavier, gint key)
 {
-  clavier->transpose_base = key;
+    clavier->transpose_base = key;
 
-  if (GTK_WIDGET_DRAWABLE (clavier))
-    gtk_widget_queue_draw (GTK_WIDGET (clavier));
+    if (GTK_WIDGET_DRAWABLE(clavier))
+        gtk_widget_queue_draw(GTK_WIDGET(clavier));
 }
 
-void
-clavier_set_key_labels (Clavier *clavier,
-			gint8 *labels)
+void clavier_set_key_labels(Clavier* clavier,
+    gint8* labels)
 {
     clavier->keylabels = labels;
     gtk_widget_queue_draw(GTK_WIDGET(clavier));

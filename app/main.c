@@ -24,67 +24,67 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <glib/gi18n.h>
+#include <signal.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <signal.h>
-#include <glib/gi18n.h>
 
-#include "gui.h"
-#include "xm.h"
 #include "audio.h"
-#include "keys.h"
-#include "gui-settings.h"
 #include "audioconfig.h"
+#include "file-operations.h"
+#include "gui-settings.h"
+#include "gui.h"
+#include "keys.h"
+#include "midi-settings.h"
+#include "midi.h"
 #include "tips-dialog.h"
 #include "track-editor.h"
-#include "midi.h"
-#include "midi-settings.h"
-#include "file-operations.h"
+#include "xm.h"
 
 #include <glib.h>
 #include <gtk/gtk.h>
 
-XM *xm = NULL;
+XM* xm = NULL;
 int pipea[2], pipeb[2];
 
 static void
-sigsegv_handler (int parameter)
+sigsegv_handler(int parameter)
 {
     signal(SIGSEGV, SIG_DFL);
 
-    if(xm != NULL) {
-	gboolean is_error = XM_Save(xm, "crash-save.xm", FALSE);
-	printf("*** SIGSEGV caught.\n*** Saved current XM to 'crash-save.xm' in current directory.\n    (%s)\n", is_error ? "failed" : "succeed");
-	exit(1);
+    if (xm != NULL) {
+        gboolean is_error = XM_Save(xm, "crash-save.xm", FALSE);
+        printf("*** SIGSEGV caught.\n*** Saved current XM to 'crash-save.xm' in current directory.\n    (%s)\n", is_error ? "failed" : "succeed");
+        exit(1);
     }
 }
 
-int
-main (int argc,
-      char *argv[])
+int main(int argc,
+    char* argv[])
 {
     extern void
-	driver_out_dummy, driver_in_dummy,
+        driver_out_dummy,
+        driver_in_dummy,
 #ifdef DRIVER_OSS
-	driver_out_oss, driver_in_oss,
+        driver_out_oss, driver_in_oss,
 #endif
 #ifdef DRIVER_ALSA_09x
-	driver_out_alsa1x, driver_in_alsa1x,
+        driver_out_alsa1x, driver_in_alsa1x,
 #endif
 #ifdef DRIVER_ESD
-	driver_out_esd,
+        driver_out_esd,
 #endif
 #ifdef DRIVER_SGI
-	driver_out_irix,
+        driver_out_irix,
 #endif
 #ifdef DRIVER_JACK
-	driver_out_jack,
+        driver_out_jack,
 #endif
 #ifdef DRIVER_SUN
-	driver_out_sun, driver_in_sun,
+        driver_out_sun, driver_in_sun,
 #endif
 #ifdef DRIVER_SDL
-	driver_out_sdl,
+        driver_out_sdl,
 #endif
 #if USE_SNDFILE || AUDIOFILE_VERSION
 //	driver_out_file,
@@ -93,21 +93,21 @@ main (int argc,
 	driver_out_test,
 #endif
 #if defined(_WIN32)
-	driver_out_dsound,
+        driver_out_dsound,
 #endif
-	mixer_kbfloat,
-	mixer_integer32;
+        mixer_kbfloat,
+        mixer_integer32;
 
     g_thread_init(NULL);
 
-    if(pipe(pipea) || pipe(pipeb)) {
-	fprintf(stderr, "Cränk. Can't pipe().\n");
-	return 1;
+    if (pipe(pipea) || pipe(pipeb)) {
+        fprintf(stderr, "Cränk. Can't pipe().\n");
+        return 1;
     }
 
-    if(!audio_init(pipea[0], pipeb[1])) {
-	fprintf(stderr, "Can't init audio thread.\n");
-	return 1;
+    if (!audio_init(pipea[0], pipeb[1])) {
+        fprintf(stderr, "Can't init audio thread.\n");
+        return 1;
     }
 
     /* In case we run setuid root, the main thread must not have root
@@ -117,10 +117,10 @@ main (int argc,
     /* These aren't in the header files, so we prototype them here.
      */
     {
-	int setresuid(uid_t ruid, uid_t euid, uid_t suid);
-	int setresgid(gid_t rgid, gid_t egid, gid_t sgid);
-	setresuid(getuid(), getuid(), getuid());
-	setresgid(getgid(), getgid(), getgid());
+        int setresuid(uid_t ruid, uid_t euid, uid_t suid);
+        int setresgid(gid_t rgid, gid_t egid, gid_t sgid);
+        setresuid(getuid(), getuid(), getuid());
+        setresgid(getgid(), getgid(), getgid());
     }
 #else
     seteuid(getuid());
@@ -130,23 +130,23 @@ main (int argc,
 #if ENABLE_NLS
     gtk_set_locale();
     bindtextdomain(PACKAGE, LOCALEDIR);
-    bind_textdomain_codeset(PACKAGE,"UTF-8");
+    bind_textdomain_codeset(PACKAGE, "UTF-8");
     textdomain(PACKAGE);
 #endif
 
-	gtk_init(&argc, &argv);
-	prefs_init();
+    gtk_init(&argc, &argv);
+    prefs_init();
     tips_dialog_load_settings();
 
-    if(!gui_splash()) {
-	fprintf(stderr, "GUI Initialization failed.\n");
-	return 1;
+    if (!gui_splash()) {
+        fprintf(stderr, "GUI Initialization failed.\n");
+        return 1;
     }
 
     /* To decrease distance between list rows */
     gtk_rc_parse_string("style \"compact\" { GtkTreeView::vertical-separator = 0 }\n"
                         "class \"GtkTreeView\" style \"compact\"\n"
-    /* To cause keycodes to be displayed as list */
+                        /* To cause keycodes to be displayed as list */
                         "style \"list\" {GtkComboBox::appears-as-list = 1}\n"
                         "widget \"*.keyconfig_combo\" style \"list\"");
 
@@ -154,9 +154,9 @@ main (int argc,
     audio_backpipe = pipeb[0];
 
     mixers = g_list_append(mixers,
-			   &mixer_kbfloat);
+        &mixer_kbfloat);
     mixers = g_list_append(mixers,
-			   &mixer_integer32);
+        &mixer_integer32);
 
 #if 0
     drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
@@ -165,48 +165,48 @@ main (int argc,
 
 #ifdef DRIVER_OSS
     drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
-					   &driver_out_oss);
+        &driver_out_oss);
     drivers[DRIVER_INPUT] = g_list_append(drivers[DRIVER_INPUT],
-					  &driver_in_oss);
+        &driver_in_oss);
 #endif
 
 #ifdef DRIVER_SGI
     drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
-					   &driver_out_irix);
+        &driver_out_irix);
 #endif
 
 #ifdef DRIVER_JACK
     drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
-					   &driver_out_jack);
+        &driver_out_jack);
 #endif
 
 #ifdef DRIVER_SUN
     drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
-					   &driver_out_sun);
+        &driver_out_sun);
     drivers[DRIVER_INPUT] = g_list_append(drivers[DRIVER_INPUT],
-					  &driver_in_sun);
+        &driver_in_sun);
 #endif
 
 #ifdef _WIN32
     drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
-					   &driver_out_dsound);
+        &driver_out_dsound);
 #endif
 
 #ifdef DRIVER_ALSA_09x
     drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
-					   &driver_out_alsa1x);
+        &driver_out_alsa1x);
     drivers[DRIVER_INPUT] = g_list_append(drivers[DRIVER_INPUT],
-					   &driver_in_alsa1x);
+        &driver_in_alsa1x);
 #endif
 
 #ifdef DRIVER_ESD
     drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
-					   &driver_out_esd);
+        &driver_out_esd);
 #endif
 
 #ifdef DRIVER_SDL
     drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
-					   &driver_out_sdl);
+        &driver_out_sdl);
 #endif
 
 #if USE_SNDFILE || AUDIOFILE_VERSION
@@ -219,13 +219,13 @@ main (int argc,
 */
 #endif
 
-    if(g_list_length(drivers[DRIVER_OUTPUT]) == 0) {
-	drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
-					       &driver_out_dummy);
+    if (g_list_length(drivers[DRIVER_OUTPUT]) == 0) {
+        drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
+            &driver_out_dummy);
     }
-    if(g_list_length(drivers[DRIVER_INPUT]) == 0) {
-	drivers[DRIVER_INPUT] = g_list_append(drivers[DRIVER_INPUT],
-					      &driver_in_dummy);
+    if (g_list_length(drivers[DRIVER_INPUT]) == 0) {
+        drivers[DRIVER_INPUT] = g_list_append(drivers[DRIVER_INPUT],
+            &driver_in_dummy);
     }
 
     g_assert(g_list_length(mixers) >= 1);
@@ -234,40 +234,40 @@ main (int argc,
     gui_settings_load_config();
     audioconfig_load_mixer_config(); // in case gui_init already loads a module
 
-    if(gui_final(argc, argv)) {
-	audioconfig_load_config();
-	track_editor_load_config();
+    if (gui_final(argc, argv)) {
+        audioconfig_load_config();
+        track_editor_load_config();
 #if defined(DRIVER_ALSA_09x)
-	midi_load_config();
-	midi_init();
+        midi_load_config();
+        midi_init();
 #endif
 
-	signal(SIGSEGV, sigsegv_handler);
+        signal(SIGSEGV, sigsegv_handler);
 
-	gtk_main();
+        gtk_main();
 
-	gui_play_stop(); /* so that audio driver is shut down correctly. */
+        gui_play_stop(); /* so that audio driver is shut down correctly. */
 
-	if(gui_settings.save_settings_on_exit) {
-	    keys_save_config();
-	    gui_settings_save_config();
-	    audioconfig_save_config();
-	}
-	gui_settings_save_config_always();
-	tips_dialog_save_settings();
-	track_editor_save_config();
+        if (gui_settings.save_settings_on_exit) {
+            keys_save_config();
+            gui_settings_save_config();
+            audioconfig_save_config();
+        }
+        gui_settings_save_config_always();
+        tips_dialog_save_settings();
+        track_editor_save_config();
 #if defined(DRIVER_ALSA_09x)
-	midi_save_config();
-	midi_fini();
+        midi_save_config();
+        midi_fini();
 #endif
-	prefs_save();
-	prefs_close();
+        prefs_save();
+        prefs_close();
 
-	fileops_tmpclean();
-	audioconfig_shutdown();/* Closing all opened drivers */
-	return 0;
+        fileops_tmpclean();
+        audioconfig_shutdown(); /* Closing all opened drivers */
+        return 0;
     } else {
-	fprintf(stderr, "GUI Initialization failed.\n");
-	return 1;
+        fprintf(stderr, "GUI Initialization failed.\n");
+        return 1;
     }
 }

@@ -24,53 +24,53 @@
 #include <glib/gi18n.h>
 #include <stdlib.h>
 
-#include "instrument-editor.h"
-#include "envelope-box.h"
-#include "xm.h"
-#include "st-subs.h"
-#include "gui.h"
-#include "gui-subs.h"
-#include "keys.h"
-#include "track-editor.h"
 #include "clavier.h"
+#include "envelope-box.h"
 #include "errors.h"
-#include "sample-editor.h"
-#include "tracker.h"
-#include "gui-settings.h"
-#include "module-info.h"
 #include "file-operations.h"
+#include "gui-settings.h"
+#include "gui-subs.h"
+#include "gui.h"
+#include "instrument-editor.h"
+#include "keys.h"
+#include "module-info.h"
+#include "sample-editor.h"
+#include "st-subs.h"
+#include "track-editor.h"
+#include "tracker.h"
+#include "xm.h"
 
 static GtkWidget *volenv, *panenv, *disableboxes[4];
-static GtkWidget *instrument_editor_vibtype_w[4];
-static GtkWidget *clavier;
-static GtkWidget *curnote_label;
+static GtkWidget* instrument_editor_vibtype_w[4];
+static GtkWidget* clavier;
+static GtkWidget* curnote_label;
 
 static STInstrument *current_instrument, *tmp_instrument = NULL;
 static gint current_instrument_number = 0;
 
 static void
-instrument_page_volfade_changed (int value)
+instrument_page_volfade_changed(int value)
 {
     current_instrument->volfade = value;
     xm_set_modified(1);
 }
 
 static void
-instrument_page_vibspeed_changed (int value)
+instrument_page_vibspeed_changed(int value)
 {
     current_instrument->vibrate = value;
     xm_set_modified(1);
 }
 
 static void
-instrument_page_vibdepth_changed (int value)
+instrument_page_vibdepth_changed(int value)
 {
     current_instrument->vibdepth = value;
     xm_set_modified(1);
 }
 
 static void
-instrument_page_vibsweep_changed (int value)
+instrument_page_vibsweep_changed(int value)
 {
     current_instrument->vibsweep = value;
     xm_set_modified(1);
@@ -84,16 +84,16 @@ static gui_subs_slider instrument_page_sliders[] = {
 };
 
 static void
-instrument_editor_vibtype_changed (void)
+instrument_editor_vibtype_changed(void)
 {
     current_instrument->vibtype = find_current_toggle(instrument_editor_vibtype_w, 4);
     xm_set_modified(1);
 }
 
 static gint
-instrument_editor_clavierkey_press_event (GtkWidget *widget,
-					  gint key,
-					  gpointer data)
+instrument_editor_clavierkey_press_event(GtkWidget* widget,
+    gint key,
+    gpointer data)
 {
     current_instrument->samplemap[key] = gui_get_current_sample();
     clavier_press(CLAVIER(clavier), key);
@@ -101,31 +101,31 @@ instrument_editor_clavierkey_press_event (GtkWidget *widget,
 }
 
 static void
-instrument_editor_init_samplemap (void)
+instrument_editor_init_samplemap(void)
 {
     int key;
     int sample = gui_get_current_sample();
 
-    for(key = 0; key < sizeof(current_instrument->samplemap) / sizeof(current_instrument->samplemap[0]); key++) {
-	current_instrument->samplemap[key] = sample;
+    for (key = 0; key < sizeof(current_instrument->samplemap) / sizeof(current_instrument->samplemap[0]); key++) {
+        current_instrument->samplemap[key] = sample;
     }
 
     clavier_set_key_labels(CLAVIER(clavier), current_instrument->samplemap);
 }
 
 static gint
-instrument_editor_clavierkey_release_event (GtkWidget *widget,
-					    gint key,
-					    gpointer data)
+instrument_editor_clavierkey_release_event(GtkWidget* widget,
+    gint key,
+    gpointer data)
 {
     clavier_release(CLAVIER(clavier), key);
     return FALSE;
 }
 
 static gint
-instrument_editor_clavierkey_enter_event (GtkWidget *widget,
-					  gint key,
-					  gpointer data)
+instrument_editor_clavierkey_enter_event(GtkWidget* widget,
+    gint key,
+    gpointer data)
 {
     int index = (gui_settings.sharp ? 0 : 1) + (gui_settings.bh ? 2 : 0);
     gtk_label_set_text(GTK_LABEL(curnote_label), notenames[index][key]);
@@ -133,71 +133,70 @@ instrument_editor_clavierkey_enter_event (GtkWidget *widget,
 }
 
 static gint
-instrument_editor_clavierkey_leave_event (GtkWidget *widget,
-					  gint key,
-					  gpointer data)
+instrument_editor_clavierkey_leave_event(GtkWidget* widget,
+    gint key,
+    gpointer data)
 {
     gtk_label_set_text(GTK_LABEL(curnote_label), NULL);
     return FALSE;
 }
 
 static void
-instrument_editor_load_instrument (const gchar *fn, const gchar *localname)
+instrument_editor_load_instrument(const gchar* fn, const gchar* localname)
 {
-    STInstrument *instr = current_instrument;
-    FILE *f;
+    STInstrument* instr = current_instrument;
+    FILE* f;
 
     g_assert(instr != NULL);
 
-	file_selection_save_path(fn, &gui_settings.loadinstr_path);
+    file_selection_save_path(fn, &gui_settings.loadinstr_path);
     // Instead of locking the instrument and samples, we simply stop playing.
     gui_play_stop();
 
     f = fopen(localname, "rb");
-    if(f) {
+    if (f) {
         statusbar_update(STATUS_LOADING_INSTRUMENT, TRUE);
         xm_load_xi(instr, f);
-       statusbar_update(STATUS_INSTRUMENT_LOADED, FALSE);
-	fclose(f);
+        statusbar_update(STATUS_INSTRUMENT_LOADED, FALSE);
+        fclose(f);
     } else {
-	static GtkWidget *dialog = NULL;
-	gui_error_dialog(&dialog, N_("Can't open file."), FALSE);
+        static GtkWidget* dialog = NULL;
+        gui_error_dialog(&dialog, N_("Can't open file."), FALSE);
     }
 
-	instrument_editor_update(TRUE);
+    instrument_editor_update(TRUE);
     sample_editor_set_sample(&instr->samples[0]);
     xm_set_modified(1);
 }
 
 static void
-instrument_editor_save_instrument (const gchar *fn, gchar *localname)
+instrument_editor_save_instrument(const gchar* fn, gchar* localname)
 {
-    STInstrument *instr = current_instrument;
-    FILE *f;
+    STInstrument* instr = current_instrument;
+    FILE* f;
 
     g_assert(instr != NULL);
 
-	file_selection_save_path(fn, &gui_settings.saveinstr_path);
+    file_selection_save_path(fn, &gui_settings.saveinstr_path);
     f = fopen(localname, "wb");
     g_free(localname);
-	if(f) {
-		statusbar_update(STATUS_SAVING_INSTRUMENT, TRUE);
-		if(xm_save_xi(instr, f)) {
-			static GtkWidget *dialog = NULL;
+    if (f) {
+        statusbar_update(STATUS_SAVING_INSTRUMENT, TRUE);
+        if (xm_save_xi(instr, f)) {
+            static GtkWidget* dialog = NULL;
 
-			gui_error_dialog(&dialog, N_("Saving instrument failed."), FALSE);
-			statusbar_update(STATUS_IDLE, FALSE);
-		} else
-			statusbar_update(STATUS_INSTRUMENT_SAVED, FALSE);
-		fclose(f);
-	} else {
-		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Can't open file."), FALSE);
-	}
+            gui_error_dialog(&dialog, N_("Saving instrument failed."), FALSE);
+            statusbar_update(STATUS_IDLE, FALSE);
+        } else
+            statusbar_update(STATUS_INSTRUMENT_SAVED, FALSE);
+        fclose(f);
+    } else {
+        static GtkWidget* dialog = NULL;
+        gui_error_dialog(&dialog, N_("Can't open file."), FALSE);
+    }
 }
 
-void
-instrument_editor_clear_current_instrument (void)
+void instrument_editor_clear_current_instrument(void)
 {
     gui_play_stop();
 
@@ -208,14 +207,13 @@ instrument_editor_clear_current_instrument (void)
     xm_set_modified(TRUE);
 }
 
-void
-instrument_page_create (GtkNotebook *nb)
+void instrument_page_create(GtkNotebook* nb)
 {
     GtkWidget *mainbox, *vbox, *thing, *box, *box2, *box3, *box4, *frame;
-    static const char *vibtypelabels[] = { N_("Sine"), N_("Square"), N_("Saw Down"), N_("Saw Up"), NULL };
+    static const char* vibtypelabels[] = { N_("Sine"), N_("Square"), N_("Saw Down"), N_("Saw Up"), NULL };
 
-	static const gchar *xi_f[] = {N_("FastTracker instrumets (*.xi)"), "*.[xX][iI]", NULL};
-	static const gchar **formats[] = {xi_f, NULL};
+    static const gchar* xi_f[] = { N_("FastTracker instrumets (*.xi)"), "*.[xX][iI]", NULL };
+    static const gchar** formats[] = { xi_f, NULL };
 
     mainbox = gtk_vbox_new(FALSE, 4);
     gtk_container_border_width(GTK_CONTAINER(mainbox), 10);
@@ -244,7 +242,6 @@ instrument_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
 
-
     box = gtk_hbox_new(FALSE, 4);
     gtk_box_pack_start(GTK_BOX(mainbox), box, FALSE, TRUE, 0);
     gtk_widget_show(box);
@@ -254,23 +251,23 @@ instrument_page_create (GtkNotebook *nb)
     gtk_widget_show(box2);
 
     fileops_dialog_create(DIALOG_LOAD_INSTRUMENT, _("Load Instrument"), gui_settings.loadinstr_path,
-                          instrument_editor_load_instrument, TRUE, FALSE, formats,
-                          N_("Load instrument in the current instrument slot"));
+        instrument_editor_load_instrument, TRUE, FALSE, formats,
+        N_("Load instrument in the current instrument slot"));
     fileops_dialog_create(DIALOG_SAVE_INSTRUMENT, _("Save Instrument"), gui_settings.saveinstr_path,
-                          instrument_editor_save_instrument, TRUE, TRUE, formats,
-                          N_("Save the current instrument"));
+        instrument_editor_save_instrument, TRUE, TRUE, formats,
+        N_("Save the current instrument"));
 
     thing = gtk_button_new_with_label(_("Load XI"));
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect_swapped(thing, "clicked",
-		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_LOAD_INSTRUMENT);
+        G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_LOAD_INSTRUMENT);
 
     disableboxes[3] = thing = gtk_button_new_with_label(_("Save XI"));
     gtk_box_pack_start(GTK_BOX(box2), thing, TRUE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect_swapped(thing, "clicked",
-		       G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_SAVE_INSTRUMENT);
+        G_CALLBACK(fileops_open_dialog), (gpointer)DIALOG_SAVE_INSTRUMENT);
 
     thing = gtk_vseparator_new();
     gtk_box_pack_start(GTK_BOX(box), thing, FALSE, TRUE, 0);
@@ -331,7 +328,7 @@ instrument_page_create (GtkNotebook *nb)
     gtk_widget_show(clavier);
     gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(box), clavier);
 
-    gtk_drawing_area_size (GTK_DRAWING_AREA (clavier), 96 * 7, 50);
+    gtk_drawing_area_size(GTK_DRAWING_AREA(clavier), 96 * 7, 50);
 
     clavier_set_clavier_type(CLAVIER(clavier), CLAVIER_TYPE_SEQUENCER);
     clavier_set_range(CLAVIER(clavier), 0, 95);
@@ -339,17 +336,17 @@ instrument_page_create (GtkNotebook *nb)
     clavier_set_show_transpose(CLAVIER(clavier), FALSE);
 
     g_signal_connect(clavier, "clavierkey_press",
-			G_CALLBACK(instrument_editor_clavierkey_press_event),
-			NULL);
+        G_CALLBACK(instrument_editor_clavierkey_press_event),
+        NULL);
     g_signal_connect(clavier, "clavierkey_release",
-			G_CALLBACK(instrument_editor_clavierkey_release_event),
-			NULL);
+        G_CALLBACK(instrument_editor_clavierkey_release_event),
+        NULL);
     g_signal_connect(clavier, "clavierkey_enter",
-			G_CALLBACK(instrument_editor_clavierkey_enter_event),
-			NULL);
+        G_CALLBACK(instrument_editor_clavierkey_enter_event),
+        NULL);
     g_signal_connect(clavier, "clavierkey_leave",
-			G_CALLBACK(instrument_editor_clavierkey_leave_event),
-			NULL);
+        G_CALLBACK(instrument_editor_clavierkey_leave_event),
+        NULL);
 
     box3 = gtk_vbox_new(FALSE, 2);
     gtk_box_pack_start(GTK_BOX(box2), box3, FALSE, TRUE, 0);
@@ -362,13 +359,13 @@ instrument_page_create (GtkNotebook *nb)
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
 
     frame = gtk_frame_new(NULL);
-    gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+    gtk_frame_set_shadow_type(GTK_FRAME(frame), GTK_SHADOW_IN);
     gtk_box_pack_start(GTK_BOX(box3), frame, FALSE, TRUE, 0);
     gtk_widget_show(frame);
 
     box4 = gtk_vbox_new(FALSE, 2);
     gtk_widget_show(box4);
-    gtk_container_add (GTK_CONTAINER(frame), box4);
+    gtk_container_add(GTK_CONTAINER(frame), box4);
     gtk_container_border_width(GTK_CONTAINER(box4), 4);
 
     curnote_label = thing = gtk_label_new("");
@@ -379,38 +376,34 @@ instrument_page_create (GtkNotebook *nb)
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "clicked",
-			G_CALLBACK(instrument_editor_init_samplemap), NULL);
+        G_CALLBACK(instrument_editor_init_samplemap), NULL);
 
     add_empty_vbox(box3);
 
     add_empty_vbox(mainbox);
 }
 
-void
-instrument_editor_copy_instrument (STInstrument *instr)
+void instrument_editor_copy_instrument(STInstrument* instr)
 {
     if (tmp_instrument == NULL)
-	tmp_instrument = calloc(1, sizeof(STInstrument));
+        tmp_instrument = calloc(1, sizeof(STInstrument));
     st_copy_instrument(instr, tmp_instrument);
 }
 
-void
-instrument_editor_cut_instrument (STInstrument *instr)
+void instrument_editor_cut_instrument(STInstrument* instr)
 {
     instrument_editor_copy_instrument(instr);
     st_clean_instrument(instr, NULL);
 }
 
-void
-instrument_editor_paste_instrument (STInstrument *instr)
+void instrument_editor_paste_instrument(STInstrument* instr)
 {
     if (tmp_instrument == NULL)
-	return;
+        return;
     st_copy_instrument(tmp_instrument, instr);
 }
 
-void
-instrument_editor_set_instrument (STInstrument *i, const gint ins)
+void instrument_editor_set_instrument(STInstrument* i, const gint ins)
 {
     current_instrument = i;
     current_instrument_number = ins;
@@ -419,65 +412,64 @@ instrument_editor_set_instrument (STInstrument *i, const gint ins)
 }
 
 STInstrument*
-instrument_editor_get_instrument (void)
+instrument_editor_get_instrument(void)
 {
     return current_instrument;
 }
 
 gboolean
-instrument_editor_handle_keys (int shift,
-			       int ctrl,
-			       int alt,
-			       guint32 keyval,
-			       gboolean pressed)
+instrument_editor_handle_keys(int shift,
+    int ctrl,
+    int alt,
+    guint32 keyval,
+    gboolean pressed)
 {
     int i;
 
     i = keys_get_key_meaning(keyval, ENCODE_MODIFIERS(shift, ctrl, alt));
-    if(i != -1 && KEYS_MEANING_TYPE(i) == KEYS_MEANING_NOTE) {
-	track_editor_do_the_note_key(i, pressed, keyval, ENCODE_MODIFIERS(shift, ctrl, alt), TRUE);
-	return TRUE;
+    if (i != -1 && KEYS_MEANING_TYPE(i) == KEYS_MEANING_NOTE) {
+        track_editor_do_the_note_key(i, pressed, keyval, ENCODE_MODIFIERS(shift, ctrl, alt), TRUE);
+        return TRUE;
     }
 
     return FALSE;
 }
 
-void
-instrument_editor_update (gboolean full)
+void instrument_editor_update(gboolean full)
 {
     int o, n, m = xm_get_modified();
 
     o = current_instrument != NULL && st_instrument_num_samples(current_instrument) > 0;
-    for(n = 0; n < 4; n++) {
-	gtk_widget_set_sensitive(disableboxes[n], o);
+    for (n = 0; n < 4; n++) {
+        gtk_widget_set_sensitive(disableboxes[n], o);
     }
 
-    if(current_instrument){
-	gui_block_instrname_entry(TRUE); /* Preventing callback when changing instrument name entry */
-	gtk_entry_set_text(GTK_ENTRY(gui_curins_name), current_instrument->utf_name);
-	gui_block_instrname_entry(FALSE);
-	}
+    if (current_instrument) {
+        gui_block_instrname_entry(TRUE); /* Preventing callback when changing instrument name entry */
+        gtk_entry_set_text(GTK_ENTRY(gui_curins_name), current_instrument->utf_name);
+        gui_block_instrname_entry(FALSE);
+    }
 
-    if(!o) {
-	envelope_box_set_envelope(ENVELOPE_BOX(volenv), NULL);
-	envelope_box_set_envelope(ENVELOPE_BOX(panenv), NULL);
-	clavier_set_key_labels(CLAVIER(clavier), NULL);
+    if (!o) {
+        envelope_box_set_envelope(ENVELOPE_BOX(volenv), NULL);
+        envelope_box_set_envelope(ENVELOPE_BOX(panenv), NULL);
+        clavier_set_key_labels(CLAVIER(clavier), NULL);
     } else {
 
-	envelope_box_set_envelope(ENVELOPE_BOX(volenv), &current_instrument->vol_env);
-	envelope_box_set_envelope(ENVELOPE_BOX(panenv), &current_instrument->pan_env);
+        envelope_box_set_envelope(ENVELOPE_BOX(volenv), &current_instrument->vol_env);
+        envelope_box_set_envelope(ENVELOPE_BOX(panenv), &current_instrument->pan_env);
 
-	gui_subs_set_slider_value(&instrument_page_sliders[0], current_instrument->volfade);
-	gui_subs_set_slider_value(&instrument_page_sliders[1], current_instrument->vibrate);
-	gui_subs_set_slider_value(&instrument_page_sliders[2], current_instrument->vibdepth);
-	gui_subs_set_slider_value(&instrument_page_sliders[3], current_instrument->vibsweep);
-	gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(instrument_editor_vibtype_w[current_instrument->vibtype]), TRUE);
+        gui_subs_set_slider_value(&instrument_page_sliders[0], current_instrument->volfade);
+        gui_subs_set_slider_value(&instrument_page_sliders[1], current_instrument->vibrate);
+        gui_subs_set_slider_value(&instrument_page_sliders[2], current_instrument->vibdepth);
+        gui_subs_set_slider_value(&instrument_page_sliders[3], current_instrument->vibsweep);
+        gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(instrument_editor_vibtype_w[current_instrument->vibtype]), TRUE);
 
-	clavier_set_key_labels(CLAVIER(clavier), current_instrument->samplemap);
+        clavier_set_key_labels(CLAVIER(clavier), current_instrument->samplemap);
 
-	xm_set_modified(m);
+        xm_set_modified(m);
     }
 
-    if(full)
-	modinfo_update_instrument(current_instrument_number);
+    if (full)
+        modinfo_update_instrument(current_instrument_number);
 }

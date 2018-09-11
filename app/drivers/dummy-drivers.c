@@ -21,39 +21,39 @@
 
 #include <config.h>
 
-#include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <gtk/gtk.h>
 
 #include "driver-inout.h"
 
 typedef struct dummy_driver {
-    GtkWidget *configwidget;
+    GtkWidget* configwidget;
 } dummy_driver;
 
 static void
-dummy_make_config_widgets (dummy_driver *d)
+dummy_make_config_widgets(dummy_driver* d)
 {
     GtkWidget *thing, *mainbox;
 
     d->configwidget = mainbox = gtk_vbox_new(FALSE, 2);
-   
+
     thing = gtk_label_new(_("No driver available for your system."));
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
 }
 
-static GtkWidget *
-dummy_getwidget (void *dp)
+static GtkWidget*
+dummy_getwidget(void* dp)
 {
-    dummy_driver * const d = dp;
+    dummy_driver* const d = dp;
 
     return d->configwidget;
 }
 
-static void *
-dummy_new (void)
+static void*
+dummy_new(void)
 {
-    dummy_driver *d = g_new(dummy_driver, 1);
+    dummy_driver* d = g_new(dummy_driver, 1);
 
     dummy_make_config_widgets(d);
 
@@ -61,21 +61,21 @@ dummy_new (void)
 }
 
 static void
-dummy_destroy (void *dp)
+dummy_destroy(void* dp)
 {
-    dummy_driver * const d = dp;
+    dummy_driver* const d = dp;
 
     gtk_widget_destroy(d->configwidget);
     g_free(dp);
 }
 
 static void
-dummy_release (void *dp)
+dummy_release(void* dp)
 {
 }
 
 static gboolean
-dummy_open (void *dp)
+dummy_open(void* dp)
 {
     return FALSE;
 }
@@ -121,4 +121,3 @@ st_driver driver_in_dummy = {
     NULL,
     NULL,
 };
-

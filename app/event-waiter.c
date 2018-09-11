@@ -24,35 +24,33 @@
 #include <glib.h>
 
 struct event_waiter {
-    GMutex *mutex;
+    GMutex* mutex;
     int counter;
     double time;
 };
 
-event_waiter *
-event_waiter_new (void)
+event_waiter*
+event_waiter_new(void)
 {
-    event_waiter *e = g_new(event_waiter, 1);
+    event_waiter* e = g_new(event_waiter, 1);
 
-    if(e) {
-	e->mutex = g_mutex_new();
-	event_waiter_reset(e);
+    if (e) {
+        e->mutex = g_mutex_new();
+        event_waiter_reset(e);
     }
 
     return e;
 }
 
-void
-event_waiter_destroy (event_waiter *e)
+void event_waiter_destroy(event_waiter* e)
 {
-    if(e) {
-	g_mutex_free(e->mutex);
-	g_free(e);
+    if (e) {
+        g_mutex_free(e->mutex);
+        g_free(e);
     }
 }
 
-void
-event_waiter_reset (event_waiter *e)
+void event_waiter_reset(event_waiter* e)
 {
     g_assert(e);
 
@@ -62,8 +60,7 @@ event_waiter_reset (event_waiter *e)
     g_mutex_unlock(e->mutex);
 }
 
-void
-event_waiter_start (event_waiter *e)
+void event_waiter_start(event_waiter* e)
 {
     g_assert(e);
 
@@ -72,31 +69,30 @@ event_waiter_start (event_waiter *e)
     g_mutex_unlock(e->mutex);
 }
 
-void
-event_waiter_confirm (event_waiter *e,
-		      double readytime)
+void event_waiter_confirm(event_waiter* e,
+    double readytime)
 {
     g_assert(e);
 
     g_mutex_lock(e->mutex);
-    if(e->counter > 0) {
-	e->counter--;
+    if (e->counter > 0) {
+        e->counter--;
     }
-    if(readytime >= e->time) {
-	e->time = readytime;
+    if (readytime >= e->time) {
+        e->time = readytime;
     }
     g_mutex_unlock(e->mutex);
 }
 
 gboolean
-event_waiter_ready (event_waiter *e,
-		    double currenttime)
+event_waiter_ready(event_waiter* e,
+    double currenttime)
 {
     gboolean result;
 
     g_assert(e);
 
-    g_mutex_lock(e->mutex);    
+    g_mutex_lock(e->mutex);
     result = (e->counter == 0 && currenttime >= e->time);
     g_mutex_unlock(e->mutex);
 

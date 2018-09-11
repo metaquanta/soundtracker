@@ -29,7 +29,7 @@
 
 #include <glib.h>
 
-gboolean   recode_from_utf                       (const gchar *from, gchar *to, guint len);
-void       recode_to_utf                         (const gchar *from, gchar *to, guint len);
+gboolean recode_from_utf(const gchar* from, gchar* to, guint len);
+void recode_to_utf(const gchar* from, gchar* to, guint len);
 
 #endif /* _RECODE_H */

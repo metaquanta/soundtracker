@@ -26,20 +26,20 @@
 
 #include "xm.h"
 
-void            instrument_page_create              (GtkNotebook *nb);
-gboolean        instrument_editor_handle_keys       (int shift,
-						     int ctrl,
-						     int alt,
-						     guint32 keyval,
-						     gboolean pressed);
+void instrument_page_create(GtkNotebook* nb);
+gboolean instrument_editor_handle_keys(int shift,
+    int ctrl,
+    int alt,
+    guint32 keyval,
+    gboolean pressed);
 
-void            instrument_editor_set_instrument    (STInstrument *, const gint ins);
-STInstrument*   instrument_editor_get_instrument    (void);
-void            instrument_editor_update            (gboolean full); /* instrument data has changed, redraw */
-void            instrument_editor_clear_current_instrument (void);
+void instrument_editor_set_instrument(STInstrument*, const gint ins);
+STInstrument* instrument_editor_get_instrument(void);
+void instrument_editor_update(gboolean full); /* instrument data has changed, redraw */
+void instrument_editor_clear_current_instrument(void);
 
-void		instrument_editor_cut_instrument    (STInstrument *instr);
-void		instrument_editor_copy_instrument   (STInstrument *instr);
-void		instrument_editor_paste_instrument  (STInstrument *instr);
+void instrument_editor_cut_instrument(STInstrument* instr);
+void instrument_editor_copy_instrument(STInstrument* instr);
+void instrument_editor_paste_instrument(STInstrument* instr);
 
 #endif /* _INSTRUMENT_EDITOR_H */

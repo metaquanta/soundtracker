@@ -29,35 +29,35 @@
 #if defined(NO_ASM) || !defined(__i386__)
 
 gboolean
-kbasm_post_mixing (float *tempbuf,
-		   gint16 *outbuf,
-		   unsigned n,
-		   float amp)
+kbasm_post_mixing(float* tempbuf,
+    gint16* outbuf,
+    unsigned n,
+    float amp)
 {
     gboolean clipped = FALSE;
 
     n *= 2;
 
-    while(n--) {
-	float a = *tempbuf++ * amp;
-	if(a < -32768.0) {
-	    a = -32768.0;
-	    clipped = TRUE;
-	}
-	if(a > 32767.0) {
-	    a = 32767.0;
-	    clipped = TRUE;
-	}
-	*outbuf ++= (gint16)a;
+    while (n--) {
+        float a = *tempbuf++ * amp;
+        if (a < -32768.0) {
+            a = -32768.0;
+            clipped = TRUE;
+        }
+        if (a > 32767.0) {
+            a = 32767.0;
+            clipped = TRUE;
+        }
+        *outbuf++ = (gint16)a;
     }
 
     return clipped;
 }
 
-#define CUBICMIXER_COMMON_HEAD \
-    gint16 *positioni = data->positioni; \
+#define CUBICMIXER_COMMON_HEAD           \
+    gint16* positioni = data->positioni; \
     guint32 positionf = data->positionf; \
-    float *mixbuffer = data->mixbuffer;  \
+    float* mixbuffer = data->mixbuffer;  \
     float fl1 = data->fl1;               \
     float fb1 = data->fb1;               \
     float voll = data->volleft;          \
@@ -65,152 +65,148 @@ kbasm_post_mixing (float *tempbuf,
     unsigned n = data->numsamples;
 
 #define CUBICMIXER_COMMON_LOOP_START \
-    while(n--) { \
-        float s0; \
+    while (n--) {                    \
+        float s0;                    \
         guint32 positionf_new;
 
-#define CUBICMIXER_LOOP_FORWARD \
-        s0 = positioni[0] * kb_x86_ct0[positionf >> 24]; \
-	s0 += positioni[1] * kb_x86_ct1[positionf >> 24]; \
-	s0 += positioni[2] * kb_x86_ct2[positionf >> 24]; \
-	s0 += positioni[3] * kb_x86_ct3[positionf >> 24];
-        
-#define CUBICMIXER_LOOP_BACKWARD \
-        s0 = positioni[0] * kb_x86_ct0[-positionf >> 24]; \
-	s0 += positioni[-1] * kb_x86_ct1[-positionf >> 24]; \
-	s0 += positioni[-2] * kb_x86_ct2[-positionf >> 24]; \
-	s0 += positioni[-3] * kb_x86_ct3[-positionf >> 24];
+#define CUBICMIXER_LOOP_FORWARD                       \
+    s0 = positioni[0] * kb_x86_ct0[positionf >> 24];  \
+    s0 += positioni[1] * kb_x86_ct1[positionf >> 24]; \
+    s0 += positioni[2] * kb_x86_ct2[positionf >> 24]; \
+    s0 += positioni[3] * kb_x86_ct3[positionf >> 24];
 
-#define CUBICMIXER_ADVANCE_POINTER \
-	positionf_new = positionf + data->freqf; \
-	if(positionf_new < positionf) { \
-	    positioni++; \
-	} \
-	positionf = positionf_new; \
-	positioni += data->freqi;
+#define CUBICMIXER_LOOP_BACKWARD                        \
+    s0 = positioni[0] * kb_x86_ct0[-positionf >> 24];   \
+    s0 += positioni[-1] * kb_x86_ct1[-positionf >> 24]; \
+    s0 += positioni[-2] * kb_x86_ct2[-positionf >> 24]; \
+    s0 += positioni[-3] * kb_x86_ct3[-positionf >> 24];
 
-#define CUBICMIXER_FILTER \
-        fb1 = data->freso * fb1 + data->ffreq * (s0 - fl1); \
-        fl1 += data->ffreq * fb1; \
-        s0 = fl1; 
+#define CUBICMIXER_ADVANCE_POINTER           \
+    positionf_new = positionf + data->freqf; \
+    if (positionf_new < positionf) {         \
+        positioni++;                         \
+    }                                        \
+    positionf = positionf_new;               \
+    positioni += data->freqi;
+
+#define CUBICMIXER_FILTER                               \
+    fb1 = data->freso * fb1 + data->ffreq * (s0 - fl1); \
+    fl1 += data->ffreq * fb1;                           \
+    s0 = fl1;
 
 #define CUBICMIXER_SCOPES \
-        *scopebuf++ = (gint16)(s0 * (voll + volr));
+    *scopebuf++ = (gint16)(s0 * (voll + volr));
 
-#define CUBICMIXER_WRITE_OUT \
-	*mixbuffer++ += s0 * voll; \
-	*mixbuffer++ += s0 * volr;
+#define CUBICMIXER_WRITE_OUT   \
+    *mixbuffer++ += s0 * voll; \
+    *mixbuffer++ += s0 * volr;
 
-#define CUBICMIXER_VOLRAMP \
-        voll += data->volrampl; \
-        volr += data->volrampr;
-        
-#define CUBICMIXER_COMMON_FOOT \
-    data->volleft = voll;                \
-    data->volright = volr;               \
-    data->positioni = positioni;         \
-    data->positionf = positionf;         \
-    data->mixbuffer = mixbuffer;         \
-    data->fl1 = fl1;                     \
+#define CUBICMIXER_VOLRAMP  \
+    voll += data->volrampl; \
+    volr += data->volrampr;
+
+#define CUBICMIXER_COMMON_FOOT   \
+    data->volleft = voll;        \
+    data->volright = volr;       \
+    data->positioni = positioni; \
+    data->positionf = positionf; \
+    data->mixbuffer = mixbuffer; \
+    data->fl1 = fl1;             \
     data->fb1 = fb1;
 
 /* --- 0 --- */
 static void
-kbfloat_mix_cubic_noscopes_unfiltered_forward_noramp (kb_x86_mixer_data *data)
-{
+kbfloat_mix_cubic_noscopes_unfiltered_forward_noramp(kb_x86_mixer_data* data) {
     CUBICMIXER_COMMON_HEAD
 
-    CUBICMIXER_COMMON_LOOP_START
-    CUBICMIXER_LOOP_FORWARD
-    CUBICMIXER_ADVANCE_POINTER
-    CUBICMIXER_WRITE_OUT
-    }
+        CUBICMIXER_COMMON_LOOP_START
+            CUBICMIXER_LOOP_FORWARD
+                CUBICMIXER_ADVANCE_POINTER
+                    CUBICMIXER_WRITE_OUT
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 static void
-kbfloat_mix_cubic_noscopes_unfiltered_backward_noramp (kb_x86_mixer_data *data)
-{
+kbfloat_mix_cubic_noscopes_unfiltered_backward_noramp(kb_x86_mixer_data* data) {
     CUBICMIXER_COMMON_HEAD
 
-    CUBICMIXER_COMMON_LOOP_START
-    CUBICMIXER_LOOP_BACKWARD
-    CUBICMIXER_ADVANCE_POINTER
-    CUBICMIXER_WRITE_OUT
-    }
+        CUBICMIXER_COMMON_LOOP_START
+            CUBICMIXER_LOOP_BACKWARD
+                CUBICMIXER_ADVANCE_POINTER
+                    CUBICMIXER_WRITE_OUT
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 static void
-kbfloat_mix_cubic_noscopes_filtered_forward_noramp (kb_x86_mixer_data *data)
-{
+kbfloat_mix_cubic_noscopes_filtered_forward_noramp(kb_x86_mixer_data* data) {
     CUBICMIXER_COMMON_HEAD
 
-    CUBICMIXER_COMMON_LOOP_START
-    CUBICMIXER_LOOP_FORWARD
-    CUBICMIXER_ADVANCE_POINTER
-    CUBICMIXER_FILTER
-    CUBICMIXER_WRITE_OUT
-    }
+        CUBICMIXER_COMMON_LOOP_START
+            CUBICMIXER_LOOP_FORWARD
+                CUBICMIXER_ADVANCE_POINTER
+                    CUBICMIXER_FILTER
+                        CUBICMIXER_WRITE_OUT
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 static void
-kbfloat_mix_cubic_noscopes_filtered_backward_noramp (kb_x86_mixer_data *data)
-{
+kbfloat_mix_cubic_noscopes_filtered_backward_noramp(kb_x86_mixer_data* data) {
     CUBICMIXER_COMMON_HEAD
 
-    CUBICMIXER_COMMON_LOOP_START
-    CUBICMIXER_LOOP_BACKWARD
-    CUBICMIXER_ADVANCE_POINTER
-    CUBICMIXER_FILTER
-    CUBICMIXER_WRITE_OUT
-    }
+        CUBICMIXER_COMMON_LOOP_START
+            CUBICMIXER_LOOP_BACKWARD
+                CUBICMIXER_ADVANCE_POINTER
+                    CUBICMIXER_FILTER
+                        CUBICMIXER_WRITE_OUT
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 /* --- 4 --- */
 static void
-kbfloat_mix_cubic_scopes_unfiltered_forward_noramp (kb_x86_mixer_data *data)
+kbfloat_mix_cubic_scopes_unfiltered_forward_noramp(kb_x86_mixer_data* data)
 {
     CUBICMIXER_COMMON_HEAD
-    gint16 *scopebuf = data->scopebuf;
+    gint16* scopebuf = data->scopebuf;
 
     CUBICMIXER_COMMON_LOOP_START
     CUBICMIXER_LOOP_FORWARD
     CUBICMIXER_ADVANCE_POINTER
     CUBICMIXER_SCOPES
     CUBICMIXER_WRITE_OUT
-    }
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 static void
-kbfloat_mix_cubic_scopes_unfiltered_backward_noramp (kb_x86_mixer_data *data)
+kbfloat_mix_cubic_scopes_unfiltered_backward_noramp(kb_x86_mixer_data* data)
 {
     CUBICMIXER_COMMON_HEAD
-    gint16 *scopebuf = data->scopebuf;
+    gint16* scopebuf = data->scopebuf;
 
     CUBICMIXER_COMMON_LOOP_START
     CUBICMIXER_LOOP_BACKWARD
     CUBICMIXER_ADVANCE_POINTER
     CUBICMIXER_SCOPES
     CUBICMIXER_WRITE_OUT
-    }
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 static void
-kbfloat_mix_cubic_scopes_filtered_forward_noramp (kb_x86_mixer_data *data)
+kbfloat_mix_cubic_scopes_filtered_forward_noramp(kb_x86_mixer_data* data)
 {
     CUBICMIXER_COMMON_HEAD
-    gint16 *scopebuf = data->scopebuf;
+    gint16* scopebuf = data->scopebuf;
 
     CUBICMIXER_COMMON_LOOP_START
     CUBICMIXER_LOOP_FORWARD
@@ -218,16 +214,16 @@ kbfloat_mix_cubic_scopes_filtered_forward_noramp (kb_x86_mixer_data *data)
     CUBICMIXER_FILTER
     CUBICMIXER_SCOPES
     CUBICMIXER_WRITE_OUT
-    }
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 static void
-kbfloat_mix_cubic_scopes_filtered_backward_noramp (kb_x86_mixer_data *data)
+kbfloat_mix_cubic_scopes_filtered_backward_noramp(kb_x86_mixer_data* data)
 {
     CUBICMIXER_COMMON_HEAD
-    gint16 *scopebuf = data->scopebuf;
+    gint16* scopebuf = data->scopebuf;
 
     CUBICMIXER_COMMON_LOOP_START
     CUBICMIXER_LOOP_BACKWARD
@@ -235,80 +231,76 @@ kbfloat_mix_cubic_scopes_filtered_backward_noramp (kb_x86_mixer_data *data)
     CUBICMIXER_FILTER
     CUBICMIXER_SCOPES
     CUBICMIXER_WRITE_OUT
-    }
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 /* --- 8 --- */
 static void
-kbfloat_mix_cubic_noscopes_unfiltered_forward (kb_x86_mixer_data *data)
-{
+kbfloat_mix_cubic_noscopes_unfiltered_forward(kb_x86_mixer_data* data) {
     CUBICMIXER_COMMON_HEAD
 
-    CUBICMIXER_COMMON_LOOP_START
-    CUBICMIXER_LOOP_FORWARD
-    CUBICMIXER_ADVANCE_POINTER
-    CUBICMIXER_WRITE_OUT
-    CUBICMIXER_VOLRAMP
-    }
+        CUBICMIXER_COMMON_LOOP_START
+            CUBICMIXER_LOOP_FORWARD
+                CUBICMIXER_ADVANCE_POINTER
+                    CUBICMIXER_WRITE_OUT
+                        CUBICMIXER_VOLRAMP
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 static void
-kbfloat_mix_cubic_noscopes_unfiltered_backward (kb_x86_mixer_data *data)
-{
+kbfloat_mix_cubic_noscopes_unfiltered_backward(kb_x86_mixer_data* data) {
     CUBICMIXER_COMMON_HEAD
 
-    CUBICMIXER_COMMON_LOOP_START
-    CUBICMIXER_LOOP_BACKWARD
-    CUBICMIXER_ADVANCE_POINTER
-    CUBICMIXER_WRITE_OUT
-    CUBICMIXER_VOLRAMP
-    }
+        CUBICMIXER_COMMON_LOOP_START
+            CUBICMIXER_LOOP_BACKWARD
+                CUBICMIXER_ADVANCE_POINTER
+                    CUBICMIXER_WRITE_OUT
+                        CUBICMIXER_VOLRAMP
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 static void
-kbfloat_mix_cubic_noscopes_filtered_forward (kb_x86_mixer_data *data)
-{
+kbfloat_mix_cubic_noscopes_filtered_forward(kb_x86_mixer_data* data) {
     CUBICMIXER_COMMON_HEAD
 
-    CUBICMIXER_COMMON_LOOP_START
-    CUBICMIXER_LOOP_FORWARD
-    CUBICMIXER_ADVANCE_POINTER
-    CUBICMIXER_FILTER
-    CUBICMIXER_WRITE_OUT
-    CUBICMIXER_VOLRAMP
-    }
+        CUBICMIXER_COMMON_LOOP_START
+            CUBICMIXER_LOOP_FORWARD
+                CUBICMIXER_ADVANCE_POINTER
+                    CUBICMIXER_FILTER
+                        CUBICMIXER_WRITE_OUT
+                            CUBICMIXER_VOLRAMP
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 static void
-kbfloat_mix_cubic_noscopes_filtered_backward (kb_x86_mixer_data *data)
-{
+kbfloat_mix_cubic_noscopes_filtered_backward(kb_x86_mixer_data* data) {
     CUBICMIXER_COMMON_HEAD
 
-    CUBICMIXER_COMMON_LOOP_START
-    CUBICMIXER_LOOP_BACKWARD
-    CUBICMIXER_ADVANCE_POINTER
-    CUBICMIXER_FILTER
-    CUBICMIXER_WRITE_OUT
-    CUBICMIXER_VOLRAMP
-    }
+        CUBICMIXER_COMMON_LOOP_START
+            CUBICMIXER_LOOP_BACKWARD
+                CUBICMIXER_ADVANCE_POINTER
+                    CUBICMIXER_FILTER
+                        CUBICMIXER_WRITE_OUT
+                            CUBICMIXER_VOLRAMP
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 /* --- 12 --- */
 static void
-kbfloat_mix_cubic_scopes_unfiltered_forward (kb_x86_mixer_data *data)
+kbfloat_mix_cubic_scopes_unfiltered_forward(kb_x86_mixer_data* data)
 {
     CUBICMIXER_COMMON_HEAD
-    gint16 *scopebuf = data->scopebuf;
+    gint16* scopebuf = data->scopebuf;
 
     CUBICMIXER_COMMON_LOOP_START
     CUBICMIXER_LOOP_FORWARD
@@ -316,16 +308,16 @@ kbfloat_mix_cubic_scopes_unfiltered_forward (kb_x86_mixer_data *data)
     CUBICMIXER_SCOPES
     CUBICMIXER_WRITE_OUT
     CUBICMIXER_VOLRAMP
-    }
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 static void
-kbfloat_mix_cubic_scopes_unfiltered_backward (kb_x86_mixer_data *data)
+kbfloat_mix_cubic_scopes_unfiltered_backward(kb_x86_mixer_data* data)
 {
     CUBICMIXER_COMMON_HEAD
-    gint16 *scopebuf = data->scopebuf;
+    gint16* scopebuf = data->scopebuf;
 
     CUBICMIXER_COMMON_LOOP_START
     CUBICMIXER_LOOP_BACKWARD
@@ -333,16 +325,16 @@ kbfloat_mix_cubic_scopes_unfiltered_backward (kb_x86_mixer_data *data)
     CUBICMIXER_SCOPES
     CUBICMIXER_WRITE_OUT
     CUBICMIXER_VOLRAMP
-    }
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 static void
-kbfloat_mix_cubic_scopes_filtered_forward (kb_x86_mixer_data *data)
+kbfloat_mix_cubic_scopes_filtered_forward(kb_x86_mixer_data* data)
 {
     CUBICMIXER_COMMON_HEAD
-    gint16 *scopebuf = data->scopebuf;
+    gint16* scopebuf = data->scopebuf;
 
     CUBICMIXER_COMMON_LOOP_START
     CUBICMIXER_LOOP_FORWARD
@@ -351,16 +343,16 @@ kbfloat_mix_cubic_scopes_filtered_forward (kb_x86_mixer_data *data)
     CUBICMIXER_SCOPES
     CUBICMIXER_WRITE_OUT
     CUBICMIXER_VOLRAMP
-    }
+}
 
-    CUBICMIXER_COMMON_FOOT
+CUBICMIXER_COMMON_FOOT
 }
 
 static void
-kbfloat_mix_cubic_scopes_filtered_backward (kb_x86_mixer_data *data)
+kbfloat_mix_cubic_scopes_filtered_backward(kb_x86_mixer_data* data)
 {
     CUBICMIXER_COMMON_HEAD
-    gint16 *scopebuf = data->scopebuf;
+    gint16* scopebuf = data->scopebuf;
 
     CUBICMIXER_COMMON_LOOP_START
     CUBICMIXER_LOOP_BACKWARD
@@ -369,12 +361,12 @@ kbfloat_mix_cubic_scopes_filtered_backward (kb_x86_mixer_data *data)
     CUBICMIXER_SCOPES
     CUBICMIXER_WRITE_OUT
     CUBICMIXER_VOLRAMP
-    }
-
-    CUBICMIXER_COMMON_FOOT
 }
 
-static void (*kbfloat_mixers[16])(kb_x86_mixer_data *) = {
+CUBICMIXER_COMMON_FOOT
+}
+
+static void (*kbfloat_mixers[16])(kb_x86_mixer_data*) = {
     kbfloat_mix_cubic_noscopes_unfiltered_forward_noramp,
     kbfloat_mix_cubic_noscopes_unfiltered_backward_noramp,
     kbfloat_mix_cubic_noscopes_filtered_forward_noramp,
@@ -393,8 +385,7 @@ static void (*kbfloat_mixers[16])(kb_x86_mixer_data *) = {
     kbfloat_mix_cubic_scopes_filtered_backward
 };
 
-void
-kbasm_mix (kb_x86_mixer_data *data)
+void kbasm_mix(kb_x86_mixer_data* data)
 {
     kbfloat_mixers[data->flags >> 2](data);
 }

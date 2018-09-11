@@ -27,7 +27,7 @@
    read_mixer_pipe(). More complicated dialogs (OK/Cancel questions
    etc.) have to be hacked up manually. */
 
-void              error_error                        (const char *text);
-void              error_warning                      (const char *text);
+void error_error(const char* text);
+void error_warning(const char* text);
 
 #endif /* _ERRORS_H */

@@ -19,56 +19,55 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <glib.h>
-#include <glib/gprintf.h>
-#include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
+#include <glib.h>
+#include <glib/gi18n.h>
+#include <glib/gprintf.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include "module-info.h"
-#include "gui.h"
 #include "gui-subs.h"
-#include "xm.h"
-#include "st-subs.h"
-#include "main.h"
-#include "sample-editor.h"
+#include "gui.h"
 #include "instrument-editor.h"
 #include "keys.h"
+#include "main.h"
+#include "module-info.h"
+#include "sample-editor.h"
+#include "st-subs.h"
 #include "track-editor.h"
+#include "xm.h"
 
 static GtkWidget *ilist, *slist, *songname;
 static GtkWidget *freqmode_w[2], *ptmode_toggle;
 static int curi = 0, curs = 0;
 
 static void
-ptmode_changed (GtkWidget *widget)
+ptmode_changed(GtkWidget* widget)
 {
     int m = GTK_TOGGLE_BUTTON(widget)->active;
-    if(xm) {
-	xm->flags &= ~XM_FLAGS_IS_MOD;
-	xm->flags |= m * XM_FLAGS_IS_MOD;
+    if (xm) {
+        xm->flags &= ~XM_FLAGS_IS_MOD;
+        xm->flags |= m * XM_FLAGS_IS_MOD;
     }
     xm_set_modified(1);
 }
 
 static void
-freqmode_changed (void)
+freqmode_changed(void)
 {
     int m = find_current_toggle(freqmode_w, 2);
-    if(xm) {
-	xm->flags &= ~XM_FLAGS_AMIGA_FREQ;
-	xm->flags |= m * XM_FLAGS_AMIGA_FREQ;
+    if (xm) {
+        xm->flags &= ~XM_FLAGS_AMIGA_FREQ;
+        xm->flags |= m * XM_FLAGS_AMIGA_FREQ;
     }
     xm_set_modified(1);
-
 }
 
 static void
-songname_changed (GtkEntry *entry)
+songname_changed(GtkEntry* entry)
 {
-	gchar *term;
+    gchar* term;
 
     g_utf8_strncpy(xm->utf_name, gtk_entry_get_text(entry), 20);
     term = g_utf8_offset_to_pointer(xm->utf_name, 21);
@@ -78,57 +77,56 @@ songname_changed (GtkEntry *entry)
 }
 
 static void
-ilist_select (GtkTreeSelection *sel)
+ilist_select(GtkTreeSelection* sel)
 {
-    GtkTreeModel *mdl;
+    GtkTreeModel* mdl;
     GtkTreeIter iter;
-    gchar *str;
+    gchar* str;
     gint row;
-    
-    if(gtk_tree_selection_get_selected(sel, &mdl, &iter)) {
-	row = atoi(str = gtk_tree_model_get_string_from_iter(mdl, &iter));
-	g_free(str);
-	if(row == curi)
-	    return;
-	curi = row;
-	gui_set_current_instrument(row + 1);
+
+    if (gtk_tree_selection_get_selected(sel, &mdl, &iter)) {
+        row = atoi(str = gtk_tree_model_get_string_from_iter(mdl, &iter));
+        g_free(str);
+        if (row == curi)
+            return;
+        curi = row;
+        gui_set_current_instrument(row + 1);
     }
 }
 
 static void
-slist_select (GtkTreeSelection *sel)
+slist_select(GtkTreeSelection* sel)
 {
-    GtkTreeModel *mdl;
+    GtkTreeModel* mdl;
     GtkTreeIter iter;
-    gchar *str;
+    gchar* str;
     gint row;
-    
-    if(gtk_tree_selection_get_selected(sel, &mdl, &iter)) {
-	row = atoi(str = gtk_tree_model_get_string_from_iter(mdl, &iter));
-	g_free(str);
-	if(row == curs)
-	    return;
-	curs = row;
-	gui_set_current_sample(row);
+
+    if (gtk_tree_selection_get_selected(sel, &mdl, &iter)) {
+        row = atoi(str = gtk_tree_model_get_string_from_iter(mdl, &iter));
+        g_free(str);
+        if (row == curs)
+            return;
+        curs = row;
+        gui_set_current_sample(row);
     }
 }
 
-void
-modinfo_page_create (GtkNotebook *nb)
+void modinfo_page_create(GtkNotebook* nb)
 {
     GtkWidget *hbox, *thing, *vbox;
-    GtkListStore *list_store;
+    GtkListStore* list_store;
     GtkTreeIter iter;
-    GtkTreeModel *model;
-    gchar *ititles[3] = { "n", N_("Instrument Name"), N_("#smpl") };
-    gchar *stitles[2] = { "n", N_("Sample Name") };
-    GType itypes[3] = {G_TYPE_INT, G_TYPE_STRING, G_TYPE_INT};
-    GType stypes[2] = {G_TYPE_INT, G_TYPE_STRING};
-    gfloat ialignments[3] = {0.5, 0.0, 0.5};
-    gfloat salignments[2] = {0.5, 0.0};
-    gboolean iexpands[3] = {FALSE, TRUE, FALSE};
-    gboolean sexpands[3] = {FALSE, TRUE};
-    static const char *freqlabels[] = { N_("Linear"), N_("Amiga"), NULL };
+    GtkTreeModel* model;
+    gchar* ititles[3] = { "n", N_("Instrument Name"), N_("#smpl") };
+    gchar* stitles[2] = { "n", N_("Sample Name") };
+    GType itypes[3] = { G_TYPE_INT, G_TYPE_STRING, G_TYPE_INT };
+    GType stypes[2] = { G_TYPE_INT, G_TYPE_STRING };
+    gfloat ialignments[3] = { 0.5, 0.0, 0.5 };
+    gfloat salignments[2] = { 0.5, 0.0 };
+    gboolean iexpands[3] = { FALSE, TRUE, FALSE };
+    gboolean sexpands[3] = { FALSE, TRUE };
+    static const char* freqlabels[] = { N_("Linear"), N_("Amiga"), NULL };
     int i;
 
     hbox = gtk_hbox_new(TRUE, 10);
@@ -137,12 +135,12 @@ modinfo_page_create (GtkNotebook *nb)
     gtk_widget_show(hbox);
 
     ilist = gui_list_in_scrolled_window(3, ititles, hbox, itypes, ialignments,
-					iexpands, GTK_SELECTION_BROWSE, TRUE, TRUE);
+        iexpands, GTK_SELECTION_BROWSE, TRUE, TRUE);
     list_store = GUI_GET_LIST_STORE(ilist);
     model = gui_list_freeze(ilist);
-    for(i = 1; i <= 128; i++) {
-	gtk_list_store_append(list_store, &iter);
-	gtk_list_store_set(list_store, &iter, 0, i, 1, "", 2, 0, -1);
+    for (i = 1; i <= 128; i++) {
+        gtk_list_store_append(list_store, &iter);
+        gtk_list_store_set(list_store, &iter, 0, i, 1, "", 2, 0, -1);
     }
     gui_list_thaw(ilist, model);
 
@@ -153,12 +151,12 @@ modinfo_page_create (GtkNotebook *nb)
     gtk_widget_show(vbox);
 
     slist = gui_list_in_scrolled_window(2, stitles, vbox, stypes, salignments,
-					sexpands, GTK_SELECTION_BROWSE, TRUE, TRUE);
+        sexpands, GTK_SELECTION_BROWSE, TRUE, TRUE);
     list_store = GUI_GET_LIST_STORE(slist);
     model = gui_list_freeze(slist);
-    for(i = 1; i <= 128; i++) {
-	gtk_list_store_append(list_store, &iter);
-	gtk_list_store_set(list_store, &iter, 0, i, 1, "", -1);
+    for (i = 1; i <= 128; i++) {
+        gtk_list_store_append(list_store, &iter);
+        gtk_list_store_set(list_store, &iter, 0, i, 1, "", -1);
     }
     gui_list_thaw(slist, model);
     gui_list_handle_selection(slist, G_CALLBACK(slist_select), NULL);
@@ -184,26 +182,25 @@ modinfo_page_create (GtkNotebook *nb)
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
     add_empty_hbox(hbox);
-    
+
     ptmode_toggle = gtk_check_button_new_with_label(_("ProTracker Mode"));
     gtk_box_pack_start(GTK_BOX(hbox), ptmode_toggle, FALSE, TRUE, 0);
     gtk_widget_show(ptmode_toggle);
     g_signal_connect(ptmode_toggle, "toggled",
-			G_CALLBACK(ptmode_changed), NULL);
+        G_CALLBACK(ptmode_changed), NULL);
 
     add_empty_hbox(hbox);
 }
 
-void
-modinfo_delete_unused_instruments (void)
+void modinfo_delete_unused_instruments(void)
 {
     int i;
 
-    for(i = 0; i < sizeof(xm->instruments) / sizeof(xm->instruments[0]); i++) {
-	if(!st_instrument_used_in_song(xm, i + 1)) {
-	    st_clean_instrument(&xm->instruments[i], NULL);
-	    xm_set_modified(1);
-	}
+    for (i = 0; i < sizeof(xm->instruments) / sizeof(xm->instruments[0]); i++) {
+        if (!st_instrument_used_in_song(xm, i + 1)) {
+            st_clean_instrument(&xm->instruments[i], NULL);
+            xm_set_modified(1);
+        }
     }
 
     sample_editor_update();
@@ -212,89 +209,86 @@ modinfo_delete_unused_instruments (void)
 }
 
 gboolean
-modinfo_page_handle_keys (int shift,
-			  int ctrl,
-			  int alt,
-			  guint32 keyval,
-			  gboolean pressed)
+modinfo_page_handle_keys(int shift,
+    int ctrl,
+    int alt,
+    guint32 keyval,
+    gboolean pressed)
 {
     int i;
     gboolean handled = FALSE, samples_focused;
 
     i = keys_get_key_meaning(keyval, ENCODE_MODIFIERS(shift, ctrl, alt));
-    if(i != -1 && KEYS_MEANING_TYPE(i) == KEYS_MEANING_NOTE) {
-	track_editor_do_the_note_key(i, pressed, keyval, ENCODE_MODIFIERS(shift, ctrl, alt), TRUE);
-	return TRUE;
+    if (i != -1 && KEYS_MEANING_TYPE(i) == KEYS_MEANING_NOTE) {
+        track_editor_do_the_note_key(i, pressed, keyval, ENCODE_MODIFIERS(shift, ctrl, alt), TRUE);
+        return TRUE;
     }
 
-	if(!pressed)
-		return FALSE;
+    if (!pressed)
+        return FALSE;
 
-	samples_focused = (GTK_WINDOW(mainwindow)->focus_widget == slist);
-	switch(keyval) {
-	case GDK_Tab:
-	case GDK_ISO_Left_Tab:
-		gtk_window_set_focus(GTK_WINDOW(mainwindow), samples_focused ? ilist : slist);
-		handled = TRUE;
-		break;
-	case GDK_Up:
-		if(samples_focused)
-			gui_offset_current_sample(shift ? -4 : -1);
-		else
-			gui_offset_current_instrument(shift ? -5 : -1);
-		handled = TRUE;
-		break;
-	case GDK_Down:
-		if(samples_focused)
-			gui_offset_current_sample(shift ? 4 : 1);
-		else
-			gui_offset_current_instrument(shift ? 5 : 1);
-		handled = TRUE;
-		break;
-	default:
-		break;
-	}
+    samples_focused = (GTK_WINDOW(mainwindow)->focus_widget == slist);
+    switch (keyval) {
+    case GDK_Tab:
+    case GDK_ISO_Left_Tab:
+        gtk_window_set_focus(GTK_WINDOW(mainwindow), samples_focused ? ilist : slist);
+        handled = TRUE;
+        break;
+    case GDK_Up:
+        if (samples_focused)
+            gui_offset_current_sample(shift ? -4 : -1);
+        else
+            gui_offset_current_instrument(shift ? -5 : -1);
+        handled = TRUE;
+        break;
+    case GDK_Down:
+        if (samples_focused)
+            gui_offset_current_sample(shift ? 4 : 1);
+        else
+            gui_offset_current_instrument(shift ? 5 : 1);
+        handled = TRUE;
+        break;
+    default:
+        break;
+    }
     return handled;
 }
 
-void
-modinfo_update_instrument (int n)
+void modinfo_update_instrument(int n)
 {
     int i;
     GtkTreeIter iter;
-    GtkListStore *list_store = GUI_GET_LIST_STORE(ilist);
+    GtkListStore* list_store = GUI_GET_LIST_STORE(ilist);
 
-    if(!gui_list_get_iter(n, list_store, &iter))
-       return; /* Some bullshit happens :-/ */
+    if (!gui_list_get_iter(n, list_store, &iter))
+        return; /* Some bullshit happens :-/ */
     gtk_list_store_set(list_store, &iter, 1, xm->instruments[n].utf_name,
-		       2, st_instrument_num_samples(&xm->instruments[n]), -1);
+        2, st_instrument_num_samples(&xm->instruments[n]), -1);
 
-    if(n == curi) {
-	for(i = 0; i < 128; i++)
-	    modinfo_update_sample(i);
+    if (n == curi) {
+        for (i = 0; i < 128; i++)
+            modinfo_update_sample(i);
     }
 }
 
-void
-modinfo_update_sample (int n)
+void modinfo_update_sample(int n)
 {
     GtkTreeIter iter;
-    GtkListStore *list_store = GUI_GET_LIST_STORE(slist);
+    GtkListStore* list_store = GUI_GET_LIST_STORE(slist);
 
-    if(!gui_list_get_iter(n, list_store, &iter))
-       return; /* Some bullshit happens :-/ */
+    if (!gui_list_get_iter(n, list_store, &iter))
+        return; /* Some bullshit happens :-/ */
     gtk_list_store_set(list_store, &iter, 1,
-		       xm->instruments[curi].samples[n].utf_name, -1);
+        xm->instruments[curi].samples[n].utf_name, -1);
 }
 
-void
-modinfo_update_all (void)
+void modinfo_update_all(void)
 {
     int i;
     int m = xm_get_modified();
 
-    for(i = 0; i < 128; i++)
-	modinfo_update_instrument(i);
+    for (i = 0; i < 128; i++)
+        modinfo_update_instrument(i);
 
     gtk_entry_set_text(GTK_ENTRY(songname), xm->utf_name);
 
@@ -303,8 +297,7 @@ modinfo_update_all (void)
     xm_set_modified(m);
 }
 
-void
-modinfo_set_current_instrument (int n)
+void modinfo_set_current_instrument(int n)
 {
     int i;
 
@@ -312,71 +305,66 @@ modinfo_set_current_instrument (int n)
     curi = n;
     gui_list_select(ilist, n, FALSE, 0.0);
 
-    for(i = 0; i < 128; i++)
-	modinfo_update_sample(i);
+    for (i = 0; i < 128; i++)
+        modinfo_update_sample(i);
 }
 
-void
-modinfo_set_current_sample (int n)
+void modinfo_set_current_sample(int n)
 {
     g_return_if_fail(n >= 0 && n <= 127);
     curs = n;
     gui_list_select(slist, n, FALSE, 0.0);
 }
 
-gint
-modinfo_get_current_sample (void)
+gint modinfo_get_current_sample(void)
 {
     return curs;
 }
 
-void
-modinfo_find_unused_pattern (void)
+void modinfo_find_unused_pattern(void)
 {
     int n = st_find_first_unused_and_empty_pattern(xm);
 
     printf("%d\n", n);
 
-    if(n != -1)
-	gui_set_current_pattern(n, TRUE);
+    if (n != -1)
+        gui_set_current_pattern(n, TRUE);
 }
 
-void
-modinfo_copy_to_unused_pattern (void)
+void modinfo_copy_to_unused_pattern(void)
 {
     int n = st_find_first_unused_and_empty_pattern(xm);
     int c = gui_get_current_pattern();
 
-    if(n != -1 && !st_is_empty_pattern(&xm->patterns[c])) {
-	gui_play_stop();
-	st_copy_pattern(&xm->patterns[n], &xm->patterns[c]);
-	xm_set_modified(1);
-	gui_set_current_pattern(n, TRUE);
+    if (n != -1 && !st_is_empty_pattern(&xm->patterns[c])) {
+        gui_play_stop();
+        st_copy_pattern(&xm->patterns[n], &xm->patterns[c]);
+        xm_set_modified(1);
+        gui_set_current_pattern(n, TRUE);
     }
 }
 
 // Move unused patterns to the end of the pattern space
-void
-modinfo_pack_patterns (void)
+void modinfo_pack_patterns(void)
 {
     int i, j, last, used;
 
     // Get number of last used pattern and number of used patterns
-    for(i = 0, last = 0, used = 0; i < sizeof(xm->patterns) / sizeof(xm->patterns[0]); i++) {
-	if(st_is_pattern_used_in_song(xm, i)) {
-	    last = i;
-	    used++;
-	}
+    for (i = 0, last = 0, used = 0; i < sizeof(xm->patterns) / sizeof(xm->patterns[0]); i++) {
+        if (st_is_pattern_used_in_song(xm, i)) {
+            last = i;
+            used++;
+        }
     }
 
     // Put unused patterns to the end
-    for(i = 0; i < used; ) {
-	if(!st_is_pattern_used_in_song(xm, i)) {
-	    for(j = i; j < last; j++) 
-		st_exchange_patterns(xm, j, j + 1);
-	} else {
-	    i++;
-	}
+    for (i = 0; i < used;) {
+        if (!st_is_pattern_used_in_song(xm, i)) {
+            for (j = i; j < last; j++)
+                st_exchange_patterns(xm, j, j + 1);
+        } else {
+            i++;
+        }
     }
 
     gui_playlist_initialize();
@@ -384,22 +372,20 @@ modinfo_pack_patterns (void)
 }
 
 // Put patterns in playback order, move unused patterns to the end of the pattern space
-void
-modinfo_reorder_patterns (void)
+void modinfo_reorder_patterns(void)
 {
     modinfo_pack_patterns();
     xm_set_modified(1);
 }
 
 // Clear patterns which are not in the playlist
-void
-modinfo_clear_unused_patterns (void)
+void modinfo_clear_unused_patterns(void)
 {
     int i;
-    
-    for(i = 0; i < sizeof(xm->patterns) / sizeof(xm->patterns[0]); i++)
-	if(!st_is_pattern_used_in_song(xm, i))
-	    st_clear_pattern(&xm->patterns[i]);
+
+    for (i = 0; i < sizeof(xm->patterns) / sizeof(xm->patterns[0]); i++)
+        if (!st_is_pattern_used_in_song(xm, i))
+            st_clear_pattern(&xm->patterns[i]);
 
     tracker_redraw(tracker);
     xm_set_modified(1);
@@ -407,29 +393,29 @@ modinfo_clear_unused_patterns (void)
 
 // Optimize -- clear everything unused
 
-void
-modinfo_optimize_module (void)
+void modinfo_optimize_module(void)
 {
     char infbuf[512];
     int a, b, c, d, e;
 
     d = sizeof(xm->patterns) / sizeof(xm->patterns[0]);
     e = sizeof(xm->instruments) / sizeof(xm->instruments[0]);
-    for(a = 0, b = 0, c = 0; a < d; a++) {
-	if(!st_is_pattern_used_in_song(xm, a))
-	    b++;
-	
-        if(a<e)
-	    if(!st_instrument_used_in_song(xm, a + 1)) c++;
+    for (a = 0, b = 0, c = 0; a < d; a++) {
+        if (!st_is_pattern_used_in_song(xm, a))
+            b++;
+
+        if (a < e)
+            if (!st_instrument_used_in_song(xm, a + 1))
+                c++;
     }
 
     g_sprintf(infbuf, _("Unused patterns: %d (used: %d)\nUnused instruments: %d (used: %d)\n\nClear unused and reorder playlist?\n"),
-					b, d-b, c, e-c);
+        b, d - b, c, e - c);
 
-	if(gui_ok_cancel_modal(mainwindow, infbuf)) {
-		modinfo_clear_unused_patterns();
-		modinfo_delete_unused_instruments();
-		modinfo_reorder_patterns();
-		xm_set_modified(1);
-	}
+    if (gui_ok_cancel_modal(mainwindow, infbuf)) {
+        modinfo_clear_unused_patterns();
+        modinfo_delete_unused_instruments();
+        modinfo_reorder_patterns();
+        xm_set_modified(1);
+    }
 }

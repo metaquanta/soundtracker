@@ -26,32 +26,31 @@
 #include <gtk/gtk.h>
 #include <sys/time.h>
 
-
-#define CLOCK_TYPE				(clock_get_type ())
-#define CLOCK(obj)				(G_TYPE_CHECK_INSTANCE_CAST((obj), CLOCK_TYPE, Clock))
+#define CLOCK_TYPE (clock_get_type())
+#define CLOCK(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj), CLOCK_TYPE, Clock))
 
 typedef struct _Clock Clock;
 typedef struct _ClockClass ClockClass;
 
 struct _Clock {
-	GtkLabel widget;
-	gint timer_id;
-	gint update_interval;
-	time_t seconds;
-	time_t stopped;
-	gchar *fmt;
-	struct tm *tm;
+    GtkLabel widget;
+    gint timer_id;
+    gint update_interval;
+    time_t seconds;
+    time_t stopped;
+    gchar* fmt;
+    struct tm* tm;
 };
 
 struct _ClockClass {
-	GtkLabelClass parent_class;
+    GtkLabelClass parent_class;
 };
 
 guint clock_get_type(void);
-GtkWidget *clock_new(void);
-void clock_set_format(Clock *clock, const gchar *fmt);
-void clock_set_seconds(Clock *clock, time_t seconds);
-void clock_start(Clock *clock);
-void clock_stop(Clock *clock);
+GtkWidget* clock_new(void);
+void clock_set_format(Clock* clock, const gchar* fmt);
+void clock_set_seconds(Clock* clock, time_t seconds);
+void clock_start(Clock* clock);
+void clock_stop(Clock* clock);
 
 #endif /* _CLOCK_H */
