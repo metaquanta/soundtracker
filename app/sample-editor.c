@@ -198,7 +198,6 @@ static void sample_editor_reverse_clicked(void);
 
 static void sample_editor_trim_dialog(void);
 static void sample_editor_trim(gboolean beg, gboolean end, gfloat threshold);
-static void sample_editor_crop(void);
 static void sample_editor_delete(STSample *sample,int start, int end);
     
 static void
@@ -1004,7 +1003,20 @@ sample_editor_clear_clicked (void)
 static void
 sample_editor_crop_clicked (void)
 {
-    sample_editor_crop();
+	int start = sampledisplay->sel_start, end = sampledisplay->sel_end;
+
+	if(current_sample == NULL || start == -1)
+		return;
+
+	int l = current_sample->sample.length;
+
+	sample_editor_lock_sample();
+	sample_editor_delete(current_sample, 0, start);
+	sample_editor_delete(current_sample, end - start, l - start);
+	sample_editor_unlock_sample();
+
+	sample_editor_set_sample(current_sample);
+	xm_set_modified(1);
 }
 
 static void
@@ -2749,26 +2761,6 @@ sample_editor_trim(gboolean trbeg, gboolean trend, gfloat thrshld)
     
     if (reselect == 1 && off > on) 
 	sample_display_set_selection(sampledisplay, start, start + off - on);
-}
-
-static void 
-sample_editor_crop()
-{
-    int start = sampledisplay->sel_start, end = sampledisplay->sel_end;
-
-    if(current_sample == NULL || start == -1) 
-    return;
-
-    int l = current_sample->sample.length;
-    
-    sample_editor_lock_sample();
-    sample_editor_delete(current_sample, 0, start);
-    sample_editor_delete(current_sample, end - start, l - start);
-    sample_editor_unlock_sample();
-    
-    sample_editor_set_sample(current_sample);
-    xm_set_modified(1);
-    
 }
 
 /* deletes the portion of *sample data from start to end-1 */
