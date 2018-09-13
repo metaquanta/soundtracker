@@ -62,7 +62,7 @@ typedef struct oss_driver {
     int playrate;
     int stereo;
     int bits;
-    int fragsize;
+    int fragsize, size;
     int numfrags;
     int mf;
     gboolean realtimecaps;
@@ -95,13 +95,11 @@ oss_poll_ready_playing (gpointer data,
 {
     oss_driver * const d = data;
     int w;
-    int size;
     struct timeval tv;
 
     if(!d->firstpoll) {
-	size = (d->stereo + 1) * (d->bits / 8) * d->fragsize;
 
-	if((w = write(d->soundfd, d->sndbuf, size) != size)) {
+	if((w = write(d->soundfd, d->sndbuf, d->size) != d->size)) {
 	    if(w == -1) {
 		fprintf(stderr, "driver_oss: write() returned -1.\n");
 	    } else {
@@ -127,13 +125,13 @@ oss_poll_ready_sampling (gpointer data,
                          GdkInputCondition condition)
 {
 	oss_driver * const d = data;
-	int size = (d->stereo + 1) * (d->bits / 8) * d->fragsize;
 
-	if(read(d->soundfd, d->sndbuf, size) != size)
+	errno = 0;
+	if(read(d->soundfd, d->sndbuf, d->size) != d->size)
 		perror("OSS input: read()");
 
-	if(sample_editor_sampled(d->sndbuf, size, d->playrate, d->mf))
-		d->sndbuf = calloc(1, size);
+	if(sample_editor_sampled(d->sndbuf, d->size, d->playrate, d->mf))
+		d->sndbuf = malloc(d->size);
 }
 
 static void
@@ -499,7 +497,9 @@ oss_open (void *dp)
 		d->realtimecaps = i & DSP_CAP_REALTIME;
 	}
 
-    d->sndbuf = calloc(1, (d->stereo + 1) * (d->bits / 8) * d->fragsize);
+	d->size = (d->stereo + 1) * (d->bits / 8) * d->fragsize;
+//    d->sndbuf = calloc(1, (d->stereo + 1) * (d->bits / 8) * d->fragsize);
+    d->sndbuf = malloc(d->size);
 
 	if(d->sampling) {
 		if(d->stereo == 1) {

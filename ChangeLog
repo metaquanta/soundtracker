@@ -1,3 +1,6 @@
+2018-09-13  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/drivers/oss.c: Some optimization.
+
 2018-09-10  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c: Loading files with non-ASCII names from the command
 	line is fixed;
