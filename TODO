@@ -13,15 +13,6 @@ manche distros das eventuell abschalten!!
 
 send archive to translation project
 
-> From: Martin Andersson <t3tr1s@yahoo.com>
-> theres a bug in sample_editor_zoom_[in|out]_clicked in
-> soundtracker-0.6.7-pre3. you can only zoom in to
-> minimal of 2 samples. With zoom to selection you can
-> zoom in to 1 sample, but then you cant zoom out again
-> :-) A quick source fix was to double the values of the
-> variables ns,ne,l and divide ns and ne by 2 in the
-> call to sample_display_set_window.
-
 aktuelles pattern während des playbacks ändern?
 Thu Oct  8 22:22:50 1998  Michael Krause  <m.krause@tu-harburg.de>
 	* gui.c (change_current_pattern): Call mixer_set_pattern even when
@@ -129,6 +120,8 @@ Find a workaround for the d->realtimecaps = i & DSP_CAP_REALTIME;
 > 4096 bytes (I use OSS driver) the scopes showes only zero line, and
 > everything is Ok with buffer size <= 4096 bytes. I write this 'cause it
 > may help the diagnostics of the scopes bug.
+Explore this issue and probably
+exclude manual scope buffer size setting. Or remain it for after time?
 
 [ live recording ]
 > Ein fr%/1€Œiso8859-15üherer Freund, hat damals den

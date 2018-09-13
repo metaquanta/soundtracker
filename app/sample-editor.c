@@ -1076,9 +1076,27 @@ sample_editor_zoom_out_clicked (void)
 static void
 sample_editor_zoom_to_selection_clicked (void)
 {
-    if(current_sample == NULL || current_sample->sample.data == NULL || sampledisplay->sel_start == -1)
-	return;
-    sample_display_set_window(sampledisplay, sampledisplay->sel_start, sampledisplay->sel_end);
+	gint ss, se, sl;
+
+	if(current_sample == NULL || current_sample->sample.data == NULL || sampledisplay->sel_start == -1)
+		return;
+
+	sl = current_sample->sample.length;
+	if(sl <= 2)
+		return;
+
+	ss = sampledisplay->sel_start;
+	se = sampledisplay->sel_end;
+	/* There's no sence in zooming to one sample, but this causes some problems.
+	   In order to avoid this we restrict the minimal zoom size to 2 samples */
+	if(se <= ss + 1)
+		se = ss + 2;
+	if(se >= sl) {
+		ss -= (se - sl);
+		se = sl;
+	}
+
+	sample_display_set_window(sampledisplay, ss, se);
 }
 
 void
