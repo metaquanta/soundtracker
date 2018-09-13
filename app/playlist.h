@@ -65,7 +65,7 @@ struct _PlaylistClass {
     void (*entry_changed)(Playlist* p, int pos, int pat);
 };
 
-guint playlist_get_type(void);
+GType playlist_get_type(void);
 GtkWidget* playlist_new(void);
 
 void playlist_freeze(Playlist* p);

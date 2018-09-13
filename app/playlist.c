@@ -356,7 +356,7 @@ void playlist_insert_pattern(Playlist* p,
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(p->spin_songlength), p->length + 1);
     playlist_thaw_signals(p);
 
-    memmove(&p->patterns[pos + 1], &p->patterns[pos], (p->length - 1 - pos) * sizeof(int));
+    memmove(&p->patterns[pos + 1], &p->patterns[pos], (p->length - 1 - pos) * sizeof(gpointer));
     p->patterns[pos] = pat;
     if (pos == current_songpos) {
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(p->spin_songpat), p->patterns[pos]);
@@ -402,7 +402,7 @@ playlist_delete_clicked(GtkWidget* w,
         return;
 
     pos = rint(GTK_ADJUSTMENT(p->adj_songpos)->value);
-    memmove(&p->patterns[pos], &p->patterns[pos + 1], (p->length - pos - 1) * sizeof(int));
+    memmove(&p->patterns[pos], &p->patterns[pos + 1], (p->length - pos - 1) * sizeof(gpointer));
 
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(p->spin_songlength), p->length - 1);
 
@@ -672,7 +672,7 @@ playlist_init(Playlist* p)
     p->frozen = FALSE;
 }
 
-guint playlist_get_type()
+GType playlist_get_type()
 {
     static guint playlist_type = 0;
 
