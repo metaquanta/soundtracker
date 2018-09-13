@@ -42,7 +42,7 @@ struct _ExtSpinButtonClass {
     GtkSpinButtonClass parent_class;
 };
 
-guint extspinbutton_get_type(void);
+GType extspinbutton_get_type(void);
 GtkWidget* extspinbutton_new(GtkAdjustment* adjustment,
     gfloat climb_rate,
     guint digits,

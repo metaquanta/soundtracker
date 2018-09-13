@@ -33,9 +33,9 @@ static gint scalable_pic_event(GtkWidget* widget, GdkEvent* event);
 static void scalable_pic_size_request(GtkWidget* widget, GtkRequisition* requisition);
 static void scalable_pic_destroy(GtkObject* object);
 
-guint scalable_pic_get_type(void)
+GType scalable_pic_get_type(void)
 {
-    static guint scalable_pic_type = 0;
+    static GType scalable_pic_type = 0;
 
     if (!scalable_pic_type) {
         static const GtkTypeInfo scalable_pic_info = {

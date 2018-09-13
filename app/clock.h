@@ -46,7 +46,7 @@ struct _ClockClass {
     GtkLabelClass parent_class;
 };
 
-guint clock_get_type(void);
+GType clock_get_type(void);
 GtkWidget* clock_new(void);
 void clock_set_format(Clock* clock, const gchar* fmt);
 void clock_set_seconds(Clock* clock, time_t seconds);

@@ -1406,9 +1406,9 @@ GtkWidget* envelope_box_new(const gchar* label)
     return GTK_WIDGET(e);
 }
 
-guint envelope_box_get_type()
+GType envelope_box_get_type()
 {
-    static guint envelope_box_type = 0;
+    static GType envelope_box_type = 0;
 
     if (!envelope_box_type) {
         GTypeInfo envelope_box_info = {

@@ -31,7 +31,7 @@ static void clock_init(Clock* clock);
 
 static GtkLabelClass* parent_class = NULL;
 
-guint clock_get_type(void)
+GType clock_get_type(void)
 {
     static GType clock_type = 0;
     if (!clock_type) {

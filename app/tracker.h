@@ -99,7 +99,7 @@ extern const char* const notenames[4][96];
 
 extern const gchar* color_meanings[];
 
-guint tracker_get_type(void);
+GType tracker_get_type(void);
 GtkWidget* tracker_new(void);
 
 void tracker_set_num_channels(Tracker* t, int);

@@ -674,7 +674,7 @@ playlist_init(Playlist* p)
 
 GType playlist_get_type()
 {
-    static guint playlist_type = 0;
+    static GType playlist_type = 0;
 
     if (!playlist_type) {
         GTypeInfo playlist_info = {

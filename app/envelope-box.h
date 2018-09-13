@@ -84,7 +84,7 @@ struct _EnvelopeBoxClass {
     GtkVBoxClass parent_class;
 };
 
-guint envelope_box_get_type(void);
+GType envelope_box_get_type(void);
 GtkWidget* envelope_box_new(const gchar* label);
 
 void envelope_box_set_envelope(EnvelopeBox* e, STEnvelope* env);

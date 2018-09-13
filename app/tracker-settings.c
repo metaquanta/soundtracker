@@ -372,9 +372,9 @@ trackersettings_class_init(TrackerSettingsClass* class)
     trackersettings_read_fontlist();
 }
 
-guint trackersettings_get_type(void)
+GType trackersettings_get_type(void)
 {
-    static guint trackersettings_type = 0;
+    static GType trackersettings_type = 0;
 
     if (!trackersettings_type) {
         GTypeInfo trackersettings_info = {

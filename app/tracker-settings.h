@@ -51,7 +51,7 @@ struct _TrackerSettingsClass {
     GtkVBoxClass parent_class;
 };
 
-guint trackersettings_get_type(void);
+GType trackersettings_get_type(void);
 GtkWidget* trackersettings_new(void);
 void trackersettings_write_settings(void);
 void trackersettings_set_tracker_widget(TrackerSettings* ts, Tracker* t);

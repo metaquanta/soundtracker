@@ -51,7 +51,7 @@ typedef struct _ScalablePicClass {
 
 /* create a widget containing GdkPixbuf image */
 GtkWidget* scalable_pic_new(GdkPixbuf* pic);
-guint scalable_pic_get_type(void);
+GType scalable_pic_get_type(void);
 
 #ifdef __cplusplus
 }
