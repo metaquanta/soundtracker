@@ -49,7 +49,7 @@ struct file_op_tmp {
 };
 
 //static gboolean skip_selection = FALSE; /* Some single-click magick to avoid artifacts when directory changes */
-static gint current_subpage = 0, stored_subpage = 0;
+static intptr_t current_subpage = 0, stored_subpage = 0;
 static gint current_page = 0;
 static gboolean need_return = FALSE, nostore_subpage = FALSE;
 
@@ -73,7 +73,7 @@ static void
 typeradio_changed(GtkToggleButton* w, gpointer data)
 {
     if (gtk_toggle_button_get_active(w)) {
-        current_subpage = (gint)data;
+        current_subpage = (intptr_t)data;
         if (!nostore_subpage)
             stored_subpage = current_subpage;
         gtk_notebook_set_current_page(GTK_NOTEBOOK(rightnb), current_subpage);
@@ -261,7 +261,8 @@ save_clicked(struct file_op* fop)
 
 void fileops_page_post_create(void)
 {
-    guint i, num = 0;
+    intptr_t num = 0;
+    guint i;
 
     for (i = 0; i < DIALOG_LAST; i++)
         /* Title cannot be NULL, so we can use it as non-empty element detector */
@@ -389,7 +390,7 @@ fileops_page_handle_keys(int shift,
    rather than user's selection of the file tab */
 void fileops_open_dialog(gpointer index)
 {
-    int n = GPOINTER_TO_INT(index);
+    intptr_t n = (intptr_t)index;
 
     g_assert(fileops[n].dialog != NULL);
 

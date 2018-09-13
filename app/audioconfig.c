@@ -153,7 +153,7 @@ audioconfig_initialize_mixer_list(void)
 }
 
 static void
-audioconfig_notebook_add_page(GtkNotebook* nbook, guint n)
+audioconfig_notebook_add_page(GtkNotebook* nbook, intptr_t n)
 {
     GtkWidget *label, *box1, *list, *widget, *dnbook, *alignment;
     GList* l;

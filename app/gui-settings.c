@@ -313,7 +313,7 @@ gui_settings_tracker_colors_dialog(GtkWindow* window)
 {
     static GtkWidget* dialog = NULL;
     GtkWidget *thing, *table, *radio = NULL, *hbox, *vbox;
-    guint i;
+    intptr_t i;
 
     if (dialog) {
         gtk_window_present(GTK_WINDOW(dialog));

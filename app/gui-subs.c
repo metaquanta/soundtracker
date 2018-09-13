@@ -329,7 +329,7 @@ void gui_list_thaw(GtkWidget* list, GtkTreeModel* model)
 
 static gboolean hover_changed(GtkTreeView* widget, GdkEvent* event, gpointer data)
 {
-    gboolean is_hover = (gboolean)data;
+    intptr_t is_hover = (intptr_t)data;
     gtk_tree_view_set_hover_selection(widget, is_hover);
     return FALSE;
 }

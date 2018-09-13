@@ -278,7 +278,7 @@ static void
 measure_changed(GtkWidget* widget, gpointer data)
 {
     gint measure_chosen;
-    guint maxmeasure = GPOINTER_TO_INT(data);
+    intptr_t maxmeasure = (intptr_t)data;
 
     if ((measure_chosen = gtk_combo_box_get_active(GTK_COMBO_BOX(widget))) <= (maxmeasure - 1)) {
         if (measurewindow && gtk_widget_get_visible(measurewindow))
@@ -299,7 +299,7 @@ static void
 popwin_hide(GtkWidget* widget, GParamSpec* ps, gpointer data)
 {
     gboolean shown;
-    guint maxmeasure = GPOINTER_TO_INT(data);
+    intptr_t maxmeasure = (intptr_t)data;
 
     g_object_get(G_OBJECT(widget), "popup-shown", &shown, NULL);
     if (!shown && gtk_combo_box_get_active(GTK_COMBO_BOX(widget)) == maxmeasure + 1) /* Popup is hidden by clicking on "Other..." */
@@ -809,7 +809,7 @@ keyevent(GtkWidget* widget,
         sample_editor_handle_keys,
         modinfo_page_handle_keys,
     };
-    gboolean pressed = (gboolean)GPOINTER_TO_INT(data);
+    intptr_t pressed = (intptr_t)data;
     gboolean handled = FALSE;
     gboolean entry_focus = GTK_IS_ENTRY(GTK_WINDOW(mainwindow)->focus_widget);
 
@@ -1842,7 +1842,7 @@ static gboolean
 is_sep(GtkTreeModel* model, GtkTreeIter* iter, gpointer data)
 {
     GtkTreePath* path = gtk_tree_model_get_path(model, iter);
-    gint index = GPOINTER_TO_INT(data);
+    intptr_t index = (intptr_t)data;
     gint* indices = gtk_tree_path_get_indices(path);
     gint curindex = indices[0];
 
@@ -1856,7 +1856,7 @@ int gui_final(int argc,
     GtkWidget *thing, *mainvbox, *table, *hbox, *frame, *mainvbox0, *pmw, *vbox;
     GdkColormap* colormap;
     GtkStyle* style;
-    gint i, selected;
+    intptr_t i, selected;
     GError* error = NULL;
     GtkListStore* ls;
     GtkTreeIter iter;
