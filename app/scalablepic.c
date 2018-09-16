@@ -134,7 +134,7 @@ static void scalable_pic_destroy(GtkObject* object)
 
     sp = SCALABLE_PIC(object);
     if (sp->copy != NULL)
-        gdk_pixbuf_unref(sp->copy);
+        g_object_unref(sp->copy);
 
     klass = gtk_type_class(gtk_widget_get_type());
     if (GTK_OBJECT_CLASS(klass)->destroy)
@@ -167,7 +167,7 @@ static void scalable_pic_draw(GtkWidget* widget, GdkRectangle* area)
 
         if (need_resize || (sp->copy == NULL)) {
             if (sp->copy)
-                gdk_pixbuf_unref(sp->copy);
+                g_object_unref(sp->copy);
             sp->copy = gdk_pixbuf_new(gdk_pixbuf_get_colorspace(sp->pic),
                 gdk_pixbuf_get_has_alpha(sp->pic),
                 gdk_pixbuf_get_bits_per_sample(sp->pic),
