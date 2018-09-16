@@ -1,5 +1,5 @@
 /* clavier.c - GTK+ "Clavier" Widget -- based on clavier-0.1.3
- * Copyright (C) 1998 Simon Kågedal
+ * Copyright (C) 1998 Simon Kï¿½gedal
  * Copyright (C) 1999-2001 Michael Krause
  * Copytight (C) 2006 Yury Aliaev (Gtk+-2 porting)
  *
@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * created 1998-04-18 Simon Kågedal
+ * created 1998-04-18 Simon Kï¿½gedal
  */
 
 #include "clavier.h"
@@ -240,7 +240,7 @@ is_black_key(gint key)
 }
 
 /* calculates how many white and black keys there are in a certain
- * interval on the keyboard 
+ * interval on the keyboard
  */
 
 static void
@@ -659,7 +659,7 @@ draw_key(Clavier* clavier, gint key, gboolean pressed)
 
     if (pressed) {
         /* if anyone could teach me how colours in gdk actually work
-       * i'd be oh so happy :) 
+       * i'd be oh so happy :)
        */
 
         gc = this->is_black ?
@@ -667,7 +667,7 @@ draw_key(Clavier* clavier, gint key, gboolean pressed)
             /*	widget->style->bg_gc[1];*/
             widget->style->light_gc[3]
                             : widget->style->fg_gc[3];
-        /*	widget->style->bg_gc[3] : 
+        /*	widget->style->bg_gc[3] :
 	 *	widget->style->fg_gc[4];
 	 */
     } else {
@@ -707,8 +707,8 @@ draw_key(Clavier* clavier, gint key, gboolean pressed)
     clavier_draw_label(clavier, keynum);
 }
 
-/* Draw a key "hint" (a little line above the `key') with the 
- * `gc'. 
+/* Draw a key "hint" (a little line above the `key') with the
+ * `gc'.
  */
 
 static void
@@ -840,7 +840,6 @@ clavier_button_press(GtkWidget* widget, GdkEventButton* event)
 static gint
 clavier_button_release(GtkWidget* widget, GdkEventButton* event)
 {
-    gint key;
     Clavier* clavier;
 
     g_return_val_if_fail(widget != NULL, FALSE);
@@ -849,7 +848,7 @@ clavier_button_release(GtkWidget* widget, GdkEventButton* event)
 
     clavier = CLAVIER(widget);
 
-    key = which_key(clavier, (gint)event->x, (gint)event->y);
+    which_key(clavier, (gint)event->x, (gint)event->y);
 
     release_key(clavier);
 
@@ -986,7 +985,7 @@ void clavier_release(Clavier* clavier, gint key)
     draw_key(clavier, key, FALSE);
 }
 
-/* attribute setting 
+/* attribute setting
  */
 
 void clavier_set_range(Clavier* clavier, gint start, gint end)

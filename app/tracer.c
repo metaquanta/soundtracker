@@ -321,11 +321,6 @@ tracer_mix(void* dest, guint32 count, gint16* scopebufs[], int scopebufs_offset)
     return NULL;
 }
 
-static void
-tracer_dumpall(void)
-{
-}
-
 static st_mixer mixer_tracer = {
     "tracer",
     "Pseudo-mixer for channel settings tracing", /* It will NEVER be used and hence translated */

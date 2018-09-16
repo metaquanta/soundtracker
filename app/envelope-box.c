@@ -781,12 +781,11 @@ static gboolean
 scrolled_window_motion(GtkScrolledWindow* widget, GdkEventMotion* event, gpointer data)
 {
     EnvelopeBox* e = ENVELOPE_BOX(data);
-    gdouble lower, upper, delta, new, step;
+    gdouble lower, upper, new, step;
 
     if (e->dragging_canvas) {
         lower = gtk_adjustment_get_lower(e->hadj);
         upper = gtk_adjustment_get_upper(e->hadj) - gtk_adjustment_get_page_size(e->hadj);
-        delta = event->x;
         step = event->x - e->dragfromx;
         new = gtk_adjustment_get_value(e->hadj) - step;
 
@@ -800,7 +799,6 @@ scrolled_window_motion(GtkScrolledWindow* widget, GdkEventMotion* event, gpointe
 
         lower = gtk_adjustment_get_lower(e->vadj);
         upper = gtk_adjustment_get_upper(e->vadj) - gtk_adjustment_get_page_size(e->vadj);
-        delta = event->y;
         step = event->y - e->dragfromy;
         new = gtk_adjustment_get_value(e->vadj) - step;
 
