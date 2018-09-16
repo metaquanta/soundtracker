@@ -161,23 +161,24 @@ menubar_handle_cutcopypaste (gpointer a)
 
     switch(i){
     case 0:		//Cut
-	switch(notebook_current_page) {
-	case NOTEBOOK_PAGE_TRACKER:
-	    track_editor_cut_selection(NULL, t);
-	    break;
-	case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
-	case NOTEBOOK_PAGE_MODULE_INFO:
-	    instrument_editor_cut_instrument(curins);
-	    xm_set_modified(1);
-	    instrument_editor_update(TRUE);
-	    sample_editor_update();
-	    break;
-	case NOTEBOOK_PAGE_SAMPLE_EDITOR:
-	    sample_editor_copy_cut_common(TRUE, TRUE);
-	    xm_set_modified(1);
-	    break;
-	}
-	break;
+		if(GUI_EDITING)
+			switch(notebook_current_page) {
+			case NOTEBOOK_PAGE_TRACKER:
+				track_editor_cut_selection(NULL, t);
+				break;
+			case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
+			case NOTEBOOK_PAGE_MODULE_INFO:
+				instrument_editor_cut_instrument(curins);
+				xm_set_modified(1);
+				instrument_editor_update(TRUE);
+				sample_editor_update();
+				break;
+			case NOTEBOOK_PAGE_SAMPLE_EDITOR:
+				sample_editor_copy_cut_common(TRUE, TRUE);
+				xm_set_modified(1);
+				break;
+			}
+		break;
     case 1:		//Copy
 	switch(notebook_current_page){
 	case NOTEBOOK_PAGE_TRACKER:
@@ -193,22 +194,23 @@ menubar_handle_cutcopypaste (gpointer a)
 	}
 	break;
     case 2:		//Paste
-	switch(notebook_current_page){
-	case NOTEBOOK_PAGE_TRACKER:
-	    track_editor_paste_selection(NULL, t);
-	    break;
-	case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
-	case NOTEBOOK_PAGE_MODULE_INFO:
-	    instrument_editor_paste_instrument(curins);
-	    xm_set_modified(1);
-	    instrument_editor_update(TRUE);
-	    sample_editor_update();
-	    break;
-	case NOTEBOOK_PAGE_SAMPLE_EDITOR:
-	    sample_editor_paste_clicked();
-	    xm_set_modified(1);
-	    break;
-	}
+		if(GUI_EDITING)
+			switch(notebook_current_page){
+			case NOTEBOOK_PAGE_TRACKER:
+				track_editor_paste_selection(NULL, t);
+				break;
+			case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
+			case NOTEBOOK_PAGE_MODULE_INFO:
+				instrument_editor_paste_instrument(curins);
+				xm_set_modified(1);
+				instrument_editor_update(TRUE);
+				sample_editor_update();
+				break;
+			case NOTEBOOK_PAGE_SAMPLE_EDITOR:
+				sample_editor_paste_clicked();
+				xm_set_modified(1);
+				break;
+			}
 	break;
     }
 }
@@ -216,30 +218,32 @@ menubar_handle_cutcopypaste (gpointer a)
 void
 menubar_handle_edit_menu (gpointer a)
 {
-    Tracker *t = tracker;
+	if(GUI_EDITING) {
+		Tracker *t = tracker;
 
-    switch(GPOINTER_TO_INT(a)) {
-    case 0:
-        track_editor_cmd_mvalue(t, TRUE);   /* increment CMD value */
-        break;
-    case 1:
-        track_editor_cmd_mvalue(t, FALSE);  /* decrement CMD value */
-        break;
-    case 2:
-	transposition_transpose_selection(t, +1);
-	break;
-    case 3:
-	transposition_transpose_selection(t, -1);
-	break;
-    case 4:
-	transposition_transpose_selection(t, +12);
-	break;
-    case 5:
-	transposition_transpose_selection(t, -12);
-	break;
-    default:
-        break;
-    }
+		switch(GPOINTER_TO_INT(a)) {
+		case 0:
+			track_editor_cmd_mvalue(t, TRUE);   /* increment CMD value */
+			break;
+		case 1:
+			track_editor_cmd_mvalue(t, FALSE);  /* decrement CMD value */
+			break;
+		case 2:
+			transposition_transpose_selection(t, +1);
+			break;
+		case 3:
+			transposition_transpose_selection(t, -1);
+			break;
+		case 4:
+			transposition_transpose_selection(t, +12);
+			break;
+		case 5:
+			transposition_transpose_selection(t, -12);
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void

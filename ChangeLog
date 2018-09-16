@@ -1,5 +1,8 @@
 2018-09-13  Yury Aliaev  <mutab0r@rambler.ru>
-	* app/gui-subs.h: gui_info_dialog() is defined.
+	* app/gui-subs.h: gui_info_dialog() is defined;
+	* app/menubar.c, app/track-editor.c, app/transposition.c: the
+	check for editmode is added for some module modifing actions
+	like track/patter pasting, killing notes, transposition etc.
 
 2018-09-13  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/drivers/oss.c: Some optimization;

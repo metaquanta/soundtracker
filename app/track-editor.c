@@ -899,39 +899,43 @@ track_editor_copy_pattern (GtkWidget *w, Tracker *t)
 void
 track_editor_cut_pattern (GtkWidget *w, Tracker *t)
 {
-    XMPattern *p = t->curpattern;
+	if(GUI_EDITING) {
+		XMPattern *p = t->curpattern;
 
-    if(pattern_buffer) {
-	st_free_pattern_channels(pattern_buffer);
-	free(pattern_buffer);
-    }
-    pattern_buffer = st_dup_pattern(p);
-    st_clear_pattern(p);
-    xm_set_modified(1);
-    tracker_redraw(t);
+		if(pattern_buffer) {
+			st_free_pattern_channels(pattern_buffer);
+			free(pattern_buffer);
+		}
+		pattern_buffer = st_dup_pattern(p);
+		st_clear_pattern(p);
+		xm_set_modified(1);
+		tracker_redraw(t);
+	}
 }
 
 void
 track_editor_paste_pattern (GtkWidget *w, Tracker *t)
 {
-    XMPattern *p = t->curpattern;
-    int i;
+	if(GUI_EDITING) {
+		XMPattern *p = t->curpattern;
+		int i;
 
-    if(!pattern_buffer)
-	return;
-    for(i = 0; i < 32; i++) {
-	free(p->channels[i]);
-	p->channels[i] = st_dup_track(pattern_buffer->channels[i], pattern_buffer->length);
-    }
-    p->alloc_length = pattern_buffer->length;
-    if(p->length != pattern_buffer->length) {
-	p->length = pattern_buffer->length;
-	gui_update_pattern_data();
-	tracker_reset(t);
-    } else {
-	tracker_redraw(t);
-    }
-    xm_set_modified(1);
+		if(!pattern_buffer)
+			return;
+		for(i = 0; i < 32; i++) {
+			free(p->channels[i]);
+			p->channels[i] = st_dup_track(pattern_buffer->channels[i], pattern_buffer->length);
+		}
+		p->alloc_length = pattern_buffer->length;
+		if(p->length != pattern_buffer->length) {
+			p->length = pattern_buffer->length;
+			gui_update_pattern_data();
+			tracker_reset(t);
+		} else {
+			tracker_redraw(t);
+		}
+		xm_set_modified(1);
+	}
 }
 
 void
@@ -951,70 +955,80 @@ track_editor_copy_track (GtkWidget *w, Tracker *t)
 void
 track_editor_cut_track (GtkWidget *w, Tracker *t)
 {
-    int l = t->curpattern->length;
-    XMNote *n = t->curpattern->channels[t->cursor_ch];
+	if(GUI_EDITING) {
+		int l = t->curpattern->length;
+		XMNote *n = t->curpattern->channels[t->cursor_ch];
 
-    if(track_buffer) {
-	free(track_buffer);
-    }
-    track_buffer_length = l;
-    track_buffer = st_dup_track(n, l);
-    st_clear_track(n, l);
-    xm_set_modified(1);
-    tracker_redraw(t);
+		if(track_buffer) {
+			free(track_buffer);
+		}
+		track_buffer_length = l;
+		track_buffer = st_dup_track(n, l);
+		st_clear_track(n, l);
+		xm_set_modified(1);
+		tracker_redraw(t);
+	}
 }
 
 void
 track_editor_paste_track (GtkWidget *w, Tracker *t)
 {
-    int l = t->curpattern->length;
-    XMNote *n = t->curpattern->channels[t->cursor_ch];
-    int i;
+	if(GUI_EDITING) {
+		int l = t->curpattern->length;
+		XMNote *n = t->curpattern->channels[t->cursor_ch];
+		int i;
 
-    if(!track_buffer)
-	return;
-    i = track_buffer_length;
-    if(l < i)
-	i = l;
-    while(i--)
-	n[i] = track_buffer[i];
-    xm_set_modified(1);
-    tracker_redraw(t);
+		if(!track_buffer)
+			return;
+		i = track_buffer_length;
+		if(l < i)
+		i = l;
+		while(i--)
+			n[i] = track_buffer[i];
+		xm_set_modified(1);
+		tracker_redraw(t);
+	}
 }
 
 void
 track_editor_delete_track (GtkWidget *w, Tracker *t)
 {
-    st_pattern_delete_track(t->curpattern, t->cursor_ch);
-    xm_set_modified(1);
-    tracker_redraw(t);
+	if(GUI_EDITING) {
+		st_pattern_delete_track(t->curpattern, t->cursor_ch);
+		xm_set_modified(1);
+		tracker_redraw(t);
+	}
 }
 
 void
 track_editor_insert_track (GtkWidget *w, Tracker *t)
 {
-    st_pattern_insert_track(t->curpattern, t->cursor_ch);
-    xm_set_modified(1);
-    tracker_redraw(t);
+	if(GUI_EDITING) {
+		st_pattern_insert_track(t->curpattern, t->cursor_ch);
+		xm_set_modified(1);
+		tracker_redraw(t);
+	}
 }
 
 void
 track_editor_kill_notes_track (GtkWidget *w, Tracker *t)
 {
-    int i;
-    XMNote *note;
+	if(GUI_EDITING) {
+		int i;
+		XMNote *note;
 
-    for(i = t->patpos; i<t->curpattern->length; i++) {
-       note = &t->curpattern->channels[t->cursor_ch][i];
-       note->note = 0;
-       note->instrument = 0;
-       note->volume = 0;
-       note->fxtype = 0;
-       note->fxparam = 0;
-    }
+		for(i = t->patpos; i<t->curpattern->length; i++) {
+			note = &t->curpattern->channels[t->cursor_ch][i];
+			note->note = 0;
+			note->instrument = 0;
+			note->volume = 0;
+			note->fxtype = 0;
+			note->fxparam = 0;
+		}
 
-    xm_set_modified(1);
-    tracker_redraw(t);
+		xm_set_modified(1);
+		tracker_redraw(t);
+	}
 }
 
 void
@@ -1123,132 +1137,138 @@ track_editor_copy_selection (GtkWidget *w, Tracker *t)
 void
 track_editor_cut_selection (GtkWidget *w, Tracker *t)
 {
-    track_editor_copy_cut_selection_common(t, TRUE);
-    menubar_block_mode_set(FALSE);
-    xm_set_modified(1);
-    tracker_redraw(t);
+	if(GUI_EDITING) {
+		track_editor_copy_cut_selection_common(t, TRUE);
+		menubar_block_mode_set(FALSE);
+		xm_set_modified(1);
+		tracker_redraw(t);
+	}
 }
 
 void
 track_editor_paste_selection (GtkWidget *w, Tracker *t)
 {
-    int i;
+	if(GUI_EDITING) {
+		int i;
 
-    if(block_buffer.length > t->curpattern->length)
-		return;
+		if(block_buffer.length > t->curpattern->length)
+			return;
 
-    for(i = 0; i < 32; i++) {
-		st_paste_track_into_track_wrap(block_buffer.channels[i],
-				       t->curpattern->channels[(t->cursor_ch + i) % xm->num_channels],
-				       t->curpattern->length,
-				       t->patpos,
-				       block_buffer.length);
-    }
+		for(i = 0; i < 32; i++) {
+			st_paste_track_into_track_wrap(block_buffer.channels[i],
+			                               t->curpattern->channels[(t->cursor_ch + i) % xm->num_channels],
+			                               t->curpattern->length,
+			                               t->patpos,
+			                               block_buffer.length);
+		}
 
-    xm_set_modified(1);
- 	/* I'm not sure if it's a good idea (Olivier GLORIEUX) */
-    tracker_set_patpos(t, (t->patpos + block_buffer.length) % t->curpattern->length);
-    tracker_redraw(t);
+		xm_set_modified(1);
+		/* I'm not sure if it's a good idea (Olivier GLORIEUX) */
+		tracker_set_patpos(t, (t->patpos + block_buffer.length) % t->curpattern->length);
+		tracker_redraw(t);
+	}
 }
 
 void
 track_editor_interpolate_fx (GtkWidget *w, Tracker *t)
 {
-    int height, width, chStart, rowStart;
-    int xmnote_offset;
-    guint8 xmnote_mask;
-    XMNote *note_start, *note_end;
-    int i;
-    int dy;
-    int start_value, start_char;
+	if(GUI_EDITING) {
+		int height, width, chStart, rowStart;
+		int xmnote_offset;
+		guint8 xmnote_mask;
+		XMNote *note_start, *note_end;
+		int i;
+		int dy;
+		int start_value, start_char;
 
-    if(!tracker_is_valid_selection(t))
-	return;
+		if(!tracker_is_valid_selection(t))
+			return;
 
-    tracker_get_selection_rect(t, &chStart, &rowStart, &width, &height);
-    if(width != 1 || t->cursor_ch != chStart)
-	return;
+		tracker_get_selection_rect(t, &chStart, &rowStart, &width, &height);
+		if(width != 1 || t->cursor_ch != chStart)
+			return;
 
-    note_start = &t->curpattern->channels[t->cursor_ch][rowStart];
-    note_end = &t->curpattern->channels[t->cursor_ch][rowStart + height - 1];
+		note_start = &t->curpattern->channels[t->cursor_ch][rowStart];
+		note_end = &t->curpattern->channels[t->cursor_ch][rowStart + height - 1];
 
-    if(t->cursor_item == 3 || t->cursor_item == 4) {
-	// Interpolate volume column
-	xmnote_offset = (void*)(&note_start->volume) - (void*)note_start;
+		if(t->cursor_item == 3 || t->cursor_item == 4) {
+			// Interpolate volume column
+			xmnote_offset = (void*)(&note_start->volume) - (void*)note_start;
 
-	switch(note_start->volume & 0xf0) {
-	case 0x10: case 0x20: case 0x30: case 0x40: case 0x50:
-	    if((note_end->volume & 0xf0) < 0x10 || (note_end->volume & 0xf0) > 0x50)
-		return;
-	    xmnote_mask = 0xff;
-	    break;
+			switch(note_start->volume & 0xf0) {
+			case 0x10: case 0x20: case 0x30: case 0x40: case 0x50:
+				if((note_end->volume & 0xf0) < 0x10 || (note_end->volume & 0xf0) > 0x50)
+					return;
+				xmnote_mask = 0xff;
+				break;
 //	case 0xc0:
 //	    if((note_end->volume & 0xf0) != 0xc0)
 //		return;
 //	    xmnote_mask = 0x0f;
 //	    break;
-	default:
-	    if((note_end->volume & 0xf0) != (note_start->volume & 0xf0))
-		return;
-	    /* let's do at least _some_thing */
-	    xmnote_mask = 0x0f;
-	    break;
-	}
+			default:
+				if((note_end->volume & 0xf0) != (note_start->volume & 0xf0))
+					return;
+				/* let's do at least _some_thing */
+				xmnote_mask = 0x0f;
+				break;
+			}
 
-    } else if(t->cursor_item >= 5) {
-	// Interpolate effects column
-	xmnote_offset = (void*)&note_start->fxparam - (void*)note_start;
+		} else if(t->cursor_item >= 5) {
+			// Interpolate effects column
+			xmnote_offset = (void*)&note_start->fxparam - (void*)note_start;
 
-	if(note_start->fxtype != note_end->fxtype)
-	    return;
+			if(note_start->fxtype != note_end->fxtype)
+				return;
 
-	switch(note_start->fxtype) {
+			switch(note_start->fxtype) {
 	    // The Axx for example needs special treatment here
 //	case 0xc: case 'Z'-'A'+10:
 //	    xmnote_mask = 0xff;
 //	    break;
-	default:
-	    /* let's do at least _some_thing */
-	    xmnote_mask = 0xff;
-	    break;
+			default:
+				/* let's do at least _some_thing */
+				xmnote_mask = 0xff;
+				break;
+			}
+
+			for(i = 1; i < height - 1; i++) {
+				// Skip lines that allready have effect on them
+				if((note_start + i)->fxtype)
+					continue;
+
+				// Copy the effect type into all rows in between
+				(note_start + i)->fxtype = note_start->fxtype;
+			}
+
+		} else {
+			return;
+		}
+
+		/* Bit-fiddling coming up... */
+
+		dy = *((guint8*)(note_end) + xmnote_offset);
+		dy &= xmnote_mask;
+		start_char = *((guint8*)(note_start) + xmnote_offset);
+		start_value = start_char & xmnote_mask;
+		dy -= start_value;
+
+		for(i = 1; i < height - 1; i++) {
+			int new_value;
+
+			// On effect interpolation, skip lines that allready contain different effects
+			if(t->cursor_item >= 5 && (note_start + i)->fxtype != note_start->fxtype)
+				continue;
+
+			new_value = start_value + (int)((float)i * dy / (height - 1) + (dy >= 0 ? 1.0 : -1.0) * 0.5);
+			new_value &= xmnote_mask;
+			new_value |= (start_char & ~xmnote_mask);
+
+			*((guint8*)(note_start + i) + xmnote_offset) = new_value;
+		}
+
+		tracker_redraw(t);
 	}
-
-	for(i = 1; i < height - 1; i++) {
-	    // Skip lines that allready have effect on them
-	    if((note_start + i)->fxtype)
-		continue;
-
-	    // Copy the effect type into all rows in between
-	    (note_start + i)->fxtype = note_start->fxtype;
-	}
-
-    } else {
-	return;
-    }
-
-    /* Bit-fiddling coming up... */
-
-    dy = *((guint8*)(note_end) + xmnote_offset);
-    dy &= xmnote_mask;
-    start_char = *((guint8*)(note_start) + xmnote_offset);
-    start_value = start_char & xmnote_mask;
-    dy -= start_value;
-
-    for(i = 1; i < height - 1; i++) {
-	int new_value;
-
-        // On effect interpolation, skip lines that allready contain different effects
-        if(t->cursor_item >= 5 && (note_start + i)->fxtype != note_start->fxtype)
-            continue;
-
-	new_value = start_value + (int)((float)i * dy / (height - 1) + (dy >= 0 ? 1.0 : -1.0) * 0.5);
-	new_value &= xmnote_mask;
-	new_value |= (start_char & ~xmnote_mask);
-
-	*((guint8*)(note_start + i) + xmnote_offset) = new_value;
-    }
-
-    tracker_redraw(t);
 }
 
 static void
