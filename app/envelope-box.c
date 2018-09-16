@@ -997,9 +997,9 @@ void envelope_box_set_envelope(EnvelopeBox* e, STEnvelope* env)
 #endif
 
     envelope_box_block_loop_spins(e, TRUE);
-    gtk_toggle_button_set_state(e->enable, env->flags & EF_ON);
-    gtk_toggle_button_set_state(e->sustain, env->flags & EF_SUSTAIN);
-    gtk_toggle_button_set_state(e->loop, env->flags & EF_LOOP);
+    gtk_toggle_button_set_mode(e->enable, env->flags & EF_ON);
+    gtk_toggle_button_set_mode(e->sustain, env->flags & EF_SUSTAIN);
+    gtk_toggle_button_set_mode(e->loop, env->flags & EF_LOOP);
 
     e->length_set_modified = FALSE;
     gtk_spin_button_set_value(e->spin_length, env->num_points);
@@ -1258,7 +1258,7 @@ GtkWidget* envelope_box_new(const gchar* label)
     gtk_widget_show(box2);
 
     thing = gtk_check_button_new_with_label(label);
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), 0);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), 0);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing, "toggled",
@@ -1381,7 +1381,7 @@ GtkWidget* envelope_box_new(const gchar* label)
     gtk_widget_show(box3);
 
     thing = gtk_check_button_new_with_label(_("Sustain"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), 0);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), 0);
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing, "toggled",
@@ -1391,7 +1391,7 @@ GtkWidget* envelope_box_new(const gchar* label)
     gui_put_labelled_spin_button(box3, _("Point"), 0, 11, (GtkWidget**)&e->spin_sustain, handle_spin_sustain, e, TRUE);
 
     thing = gtk_check_button_new_with_label(_("Loop"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), 0);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), 0);
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing, "toggled",

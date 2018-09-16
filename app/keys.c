@@ -429,7 +429,7 @@ keys_list_select(GtkTreeSelection* sel)
         // Set modifier toggles
         mod = groups[cw_currentgroup].keys_edit[row].modifiers;
         for (i = 0; i <= 2; i++) {
-            gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(cw_modtoggles[i]), mod & (1 << i));
+            gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(cw_modtoggles[i]), mod & (1 << i));
         }
 
         cw_currentkey = row;
@@ -592,7 +592,7 @@ void keys_dialog(void)
     gtk_box_pack_start(GTK_BOX(box2), frame, TRUE, TRUE, 0);
 
     box4 = gtk_vbox_new(FALSE, 2);
-    gtk_container_border_width(GTK_CONTAINER(box4), 4);
+    gtk_container_set_border_width(GTK_CONTAINER(box4), 4);
     gtk_container_add(GTK_CONTAINER(frame), box4);
 
     cw_explabel = gtk_label_new("");
@@ -605,7 +605,7 @@ void keys_dialog(void)
     gtk_box_pack_start(GTK_BOX(box2), frame, TRUE, TRUE, 0);
 
     box4 = gtk_vbox_new(FALSE, 2);
-    gtk_container_border_width(GTK_CONTAINER(box4), 4);
+    gtk_container_set_border_width(GTK_CONTAINER(box4), 4);
     gtk_container_add(GTK_CONTAINER(frame), box4);
 
     cw_explabel2 = gtk_label_new("");

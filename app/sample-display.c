@@ -264,7 +264,7 @@ sample_display_realize(GtkWidget* widget)
     g_return_if_fail(widget != NULL);
     g_return_if_fail(IS_SAMPLE_DISPLAY(widget));
 
-    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
+    gtk_widget_set_can_default(widget, GTK_REALIZED);
     s = SAMPLE_DISPLAY(widget);
 
     attributes.x = widget->allocation.x;
@@ -942,7 +942,7 @@ sample_display_class_init(SampleDisplayClass* class)
         c->green = *p++ * 65535 / 255;
         c->blue = *p++ * 65535 / 255;
         c->pixel = (gulong)((c->red & 0xff00) * 256 + (c->green & 0xff00) + (c->blue & 0xff00) / 256);
-        gdk_color_alloc(gdk_colormap_get_system(), c);
+        gdk_colormap_alloc_color(gdk_colormap_get_system(), c, FALSE, TRUE);
     }
 }
 

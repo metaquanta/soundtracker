@@ -260,7 +260,7 @@ void audioconfig_dialog(void)
 
     box2 = gtk_vbox_new(FALSE, 2);
     gtk_container_add(GTK_CONTAINER(frame), box2);
-    gtk_container_border_width(GTK_CONTAINER(box2), 4);
+    gtk_container_set_border_width(GTK_CONTAINER(box2), 4);
 
     thing = gui_stringlist_in_scrolled_window(2, listtitles2, box2, TRUE);
     gui_list_handle_selection(thing, G_CALLBACK(audioconfig_mixer_selected),

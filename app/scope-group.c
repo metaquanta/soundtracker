@@ -91,7 +91,7 @@ void scope_group_set_num_channels(ScopeGroup* s,
 
     // Reset all buttons (enable all channels)
     for (i = 0; i < 32; i++) {
-        gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(s->scopebuttons[i]), 1);
+        gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(s->scopebuttons[i]), 1);
 #ifndef NO_GDK_PIXBUF
         gtk_widget_hide(s->mutedpic[i]);
         if (s->scopes_on)

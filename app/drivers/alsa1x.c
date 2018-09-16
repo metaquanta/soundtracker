@@ -146,7 +146,7 @@ set_highest_possible(GtkWidget** radiobutton, guint number)
     guint i;
 
     for (i = number - 1; i >= 0; i--) {
-        if (GTK_WIDGET_IS_SENSITIVE(radiobutton[i])) {
+        if (gtk_widget_is_sensitive(radiobutton[i])) {
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radiobutton[i]), TRUE);
             break;
         }
@@ -432,7 +432,7 @@ device_test(GtkWidget* w, alsa_driver* d)
 {
     guint chmin, chmax, i;
     gint err;
-    gchar* new_device;
+    const gchar* new_device;
     gboolean needs_conversion, result;
 
     d->can8 = FALSE;
@@ -447,7 +447,7 @@ device_test(GtkWidget* w, alsa_driver* d)
     d->bigendian = FALSE;
 #endif
 
-    new_device = gtk_combo_box_get_active_text(GTK_COMBO_BOX(d->alsa_device));
+    new_device = gtk_entry_get_text(GTK_ENTRY(gtk_bin_get_child(GTK_BIN(d->alsa_device))));
     if (g_ascii_strcasecmp(d->device, new_device)) {
         g_free(d->device);
         d->device = g_strdup(new_device);
@@ -837,7 +837,7 @@ alsa_make_config_widgets(alsa_driver* d)
     gtk_box_pack_end(GTK_BOX(box2), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "clicked",
         G_CALLBACK(device_list), d);
-    d->alsa_device = gtk_combo_box_entry_new_text();
+    d->alsa_device = gtk_combo_box_new_with_entry();
     gtk_widget_show(d->alsa_device);
     gtk_box_pack_end(GTK_BOX(box2), d->alsa_device, FALSE, TRUE, 0);
 

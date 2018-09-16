@@ -1,5 +1,5 @@
 /* clavier.h - GTK+ "Clavier" Widget
- * Copyright (C) 1998 Simon Kågedal
+ * Copyright (C) 1998 Simon Kï¿½gedal
  * Copyright (C) 1999-2001 Michael Krause
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,13 +19,13 @@
 #define __CLAVIER_H__
 
 #include <gdk/gdk.h>
-#include <gtk/gtkdrawingarea.h>
+#include <gtk/gtk.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-#define CLAVIER(obj) GTK_CHECK_CAST(obj, clavier_get_type(), Clavier)
+#define CLAVIER(obj) G_TYPE_CHECK_CLASS_CAST(obj, clavier_get_type(), Clavier)
 #define CLAVIER_CLASS(klass) \
     GTK_CHECK_CLASS_CAST(klass, clavier_get_type, ClavierClass)
 #define IS_CLAVIER(obj) GTK_CHECK_TYPE(obj, clavier_get_type())
@@ -46,8 +46,8 @@ typedef enum {
 struct _ClavierKeyInfo {
     gboolean is_black; /* is it a black key */
 
-    /* these two contains the x value of the right side of the key 
-   * (it's actually y if clavier->dir == CLAVIER_DIR_VERTICAL) 
+    /* these two contains the x value of the right side of the key
+   * (it's actually y if clavier->dir == CLAVIER_DIR_VERTICAL)
    */
 
     gint upper_right_x;
@@ -105,7 +105,7 @@ struct _ClavierClass {
     void (*clavierkey_leave)(Clavier* clavier, gint key);
 };
 
-GtkType clavier_get_type(void);
+GType clavier_get_type(void);
 GtkWidget* clavier_new(void);
 
 void clavier_set_range(Clavier* clavier, gint start, gint end);

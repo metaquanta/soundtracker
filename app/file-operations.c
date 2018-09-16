@@ -349,7 +349,7 @@ void fileops_page_create(GtkNotebook* nb)
     GtkWidget *hbox, *vbox, *thing;
 
     hbox = gtk_hbox_new(FALSE, 4);
-    gtk_container_border_width(GTK_CONTAINER(hbox), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(hbox), 10);
     gtk_notebook_append_page(nb, hbox, gtk_label_new(_("File")));
     gtk_widget_show(hbox);
 

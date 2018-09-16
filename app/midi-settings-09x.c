@@ -394,17 +394,17 @@ create_midi_notebook(midi_prefs settings)
     /* Create the Input page */
 
     page = gtk_vbox_new(FALSE, 2);
-    gtk_container_border_width(GTK_CONTAINER(page), PAGE_BORDER_WIDTH);
+    gtk_container_set_border_width(GTK_CONTAINER(page), PAGE_BORDER_WIDTH);
 
     thing = gtk_check_button_new_with_label(_("Auto connect"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing),
         settings.input.auto_connect);
     gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "toggled",
         G_CALLBACK(input_auto_connect_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Volume"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing),
         settings.input.volume_enabled);
     gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
 
@@ -412,7 +412,7 @@ create_midi_notebook(midi_prefs settings)
         G_CALLBACK(input_volume_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Channel"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing),
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing),
         settings.input.channel_enabled);
     gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "toggled",
@@ -457,7 +457,7 @@ create_midi_notebook(midi_prefs settings)
   /* Create the Output page */
 
   page = gtk_vbox_new(FALSE, 2);
-  gtk_container_border_width(GTK_CONTAINER(page), PAGE_BORDER_WIDTH);
+  gtk_container_set_border_width(GTK_CONTAINER(page), PAGE_BORDER_WIDTH);
 
   thing = gtk_label_new(_("For future development"));
   gtk_box_pack_start(GTK_BOX(page), thing, FALSE, TRUE, 0);
@@ -472,7 +472,7 @@ create_midi_notebook(midi_prefs settings)
     /* Create the Misc page */
 
     page = gtk_vbox_new(FALSE, 2);
-    gtk_container_border_width(GTK_CONTAINER(page), PAGE_BORDER_WIDTH);
+    gtk_container_set_border_width(GTK_CONTAINER(page), PAGE_BORDER_WIDTH);
 
     /* Create the spin button for the debug level. */
 

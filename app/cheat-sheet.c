@@ -99,7 +99,7 @@ void cheat_sheet_dialog(void)
     gui_set_escape_close(cheat_sheet_window);
 
     mainbox = gtk_vbox_new(FALSE, 2);
-    gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
+    gtk_container_set_border_width(GTK_CONTAINER(mainbox), 4);
     gtk_container_add(GTK_CONTAINER(cheat_sheet_window), mainbox);
 
     scrolled_window = gtk_scrolled_window_new(NULL, NULL);
@@ -113,13 +113,13 @@ void cheat_sheet_dialog(void)
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
 
     hbox = gtk_hbutton_box_new();
-    gtk_button_box_set_spacing(GTK_BUTTON_BOX(hbox), 4);
+    gtk_box_set_spacing(GTK_BOX(hbox), 4);
     gtk_button_box_set_layout(GTK_BUTTON_BOX(hbox), GTK_BUTTONBOX_END);
     gtk_box_pack_start(GTK_BOX(mainbox), hbox,
         FALSE, FALSE, 0);
 
     thing = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-    GTK_WIDGET_SET_FLAGS(thing, GTK_CAN_DEFAULT);
+    gtk_widget_set_can_default(thing, GTK_CAN_DEFAULT);
     gtk_window_set_default(GTK_WINDOW(cheat_sheet_window), thing);
     g_signal_connect_swapped(G_OBJECT(thing), "clicked",
         G_CALLBACK(gtk_widget_hide), cheat_sheet_window);
@@ -133,7 +133,7 @@ void cheat_sheet_dialog(void)
 
     gtk_container_add(GTK_CONTAINER(scrolled_window), text);
     gtk_widget_grab_focus(text);
-    gtk_widget_set_usize(text, 46 * 12, 46 * 12);
+    gtk_widget_set_size_request(text, 46 * 12, 46 * 12);
     gtk_widget_show_all(cheat_sheet_window);
 #endif
 }

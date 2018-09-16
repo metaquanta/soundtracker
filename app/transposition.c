@@ -243,7 +243,7 @@ void transposition_dialog(void)
 
     box2 = gtk_vbox_new(FALSE, 2);
     gtk_container_add(GTK_CONTAINER(frame), box2);
-    gtk_container_border_width(GTK_CONTAINER(box2), 4);
+    gtk_container_set_border_width(GTK_CONTAINER(box2), 4);
 
     box1 = gtk_hbox_new(FALSE, 4);
     gtk_box_pack_start(GTK_BOX(box2), box1, FALSE, TRUE, 0);
@@ -269,7 +269,7 @@ void transposition_dialog(void)
 
     box2 = gtk_vbox_new(FALSE, 2);
     gtk_container_add(GTK_CONTAINER(frame), box2);
-    gtk_container_border_width(GTK_CONTAINER(box2), 4);
+    gtk_container_set_border_width(GTK_CONTAINER(box2), 4);
 
     box1 = gtk_hbox_new(FALSE, 4);
     gtk_box_pack_start(GTK_BOX(box2), box1, FALSE, TRUE, 0);

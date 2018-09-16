@@ -22,7 +22,6 @@
 #ifndef _ST_DRIVER_OUT_H
 #define _ST_DRIVER_OUT_H
 
-#include <gdk/gdktypes.h>
 #include <glib.h>
 
 #include "driver.h"

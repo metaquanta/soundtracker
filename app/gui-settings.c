@@ -304,7 +304,7 @@ static void
 color_changed(void)
 {
     gtk_color_selection_get_current_color(GTK_COLOR_SELECTION(colorsel), &tracker->colors[active_col_item]);
-    gdk_color_alloc(gtk_widget_get_colormap(colorsel), &tracker->colors[active_col_item]);
+    gdk_colormap_alloc_color(gtk_widget_get_colormap(colorsel), &tracker->colors[active_col_item], FALSE, TRUE);
     col_sample_paint(col_samples[active_col_item], NULL, active_col_item);
 }
 
@@ -418,55 +418,55 @@ void gui_settings_dialog(void)
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
 
     thing = gtk_check_button_new_with_label(_("Hexadecimal row numbers"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.tracker_hexmode);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), gui_settings.tracker_hexmode);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "toggled",
         G_CALLBACK(gui_settings_hexmode_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Use upper case letters for hex numbers"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.tracker_upcase);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), gui_settings.tracker_upcase);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "toggled",
         G_CALLBACK(gui_settings_upcase_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Asynchronous (IT-style) pattern editing"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.asynchronous_editing);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), gui_settings.asynchronous_editing);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "toggled",
         G_CALLBACK(gui_settings_asyncedit_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Polyphonic try (non-editing) mode"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.try_polyphony);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), gui_settings.try_polyphony);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "toggled",
         G_CALLBACK(gui_settings_trypoly_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Fxx command updates Tempo/BPM sliders"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.tempo_bpm_update);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), gui_settings.tempo_bpm_update);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "toggled",
         G_CALLBACK(gui_settings_tempo_bpm_update_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Switch to tracker after loading/saving"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.auto_switch);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), gui_settings.auto_switch);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "toggled",
         G_CALLBACK(gui_settings_auto_switch_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Save window geometry on exit"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.save_geometry);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), gui_settings.save_geometry);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "toggled",
         G_CALLBACK(gui_settings_save_geometry_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Use note name B instead of H"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.bh);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), gui_settings.bh);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
     g_signal_connect(thing, "toggled",
         G_CALLBACK(gui_settings_bh_toggled), NULL);
 
     thing = gtk_check_button_new_with_label(_("Save and restore permanent channels"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.store_perm);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), gui_settings.store_perm);
     gtk_box_pack_start(GTK_BOX(vbox1), thing, FALSE, TRUE, 0);
     g_signal_connect(G_OBJECT(thing), "toggled",
         G_CALLBACK(gui_settings_perm_toggled), NULL);
@@ -496,7 +496,7 @@ void gui_settings_dialog(void)
     gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
 
     thing = gtk_entry_new();
-    gtk_widget_set_usize(thing, 13 * 3, thing->requisition.height);
+    gtk_widget_set_size_request(thing, 13 * 3, thing->requisition.height);
     gtk_entry_set_max_length((GtkEntry*)thing, 3);
     strncpy(stmp, gui_settings.tracker_line_format, 3);
     stmp[3] = 0;
@@ -506,7 +506,7 @@ void gui_settings_dialog(void)
         G_CALLBACK(gui_settings_tracker_line_note_modified), 0);
 
     thing = gtk_entry_new();
-    gtk_widget_set_usize(thing, 13 * 2, thing->requisition.height);
+    gtk_widget_set_size_request(thing, 13 * 2, thing->requisition.height);
     gtk_entry_set_max_length((GtkEntry*)thing, 2);
     strncpy(stmp, gui_settings.tracker_line_format + 3, 2);
     stmp[2] = 0;
@@ -516,7 +516,7 @@ void gui_settings_dialog(void)
         G_CALLBACK(gui_settings_tracker_line_ins_modified), 0);
 
     thing = gtk_entry_new();
-    gtk_widget_set_usize(thing, 13 * 2, thing->requisition.height);
+    gtk_widget_set_size_request(thing, 13 * 2, thing->requisition.height);
     gtk_entry_set_max_length((GtkEntry*)thing, 2);
     strncpy(stmp, gui_settings.tracker_line_format + 5, 2);
     stmp[2] = 0;
@@ -526,7 +526,7 @@ void gui_settings_dialog(void)
         G_CALLBACK(gui_settings_tracker_line_vol_modified), 0);
 
     thing = gtk_entry_new();
-    gtk_widget_set_usize(thing, 13 * 3, thing->requisition.height);
+    gtk_widget_set_size_request(thing, 13 * 3, thing->requisition.height);
     gtk_entry_set_max_length((GtkEntry*)thing, 3);
     strncpy(stmp, gui_settings.tracker_line_format + 7, 3);
     stmp[3] = 0;

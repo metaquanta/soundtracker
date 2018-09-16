@@ -568,7 +568,6 @@ load_pat(const gchar* fn, const gchar* localname)
         if (!dialog)
             dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
                 _("Error when opening pattern file %s!"), fn);
-
         gtk_dialog_run(GTK_DIALOG(dialog));
         gtk_widget_hide(dialog);
 
@@ -779,7 +778,7 @@ gui_handle_standard_keys(int shift,
             && notebook_current_page != NOTEBOOK_PAGE_MODULE_INFO) {
             if (b) {
                 /* toggle editing mode (only if we haven't been in playing mode) */
-                gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(editing_toggle), !GUI_EDITING);
+                gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(editing_toggle), !GUI_EDITING);
             }
         }
         handled = TRUE;
@@ -788,7 +787,7 @@ gui_handle_standard_keys(int shift,
         if (ctrl || alt || shift)
             break;
         /* toggle editing mode, even if we're in playing mode */
-        gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(editing_toggle), !GUI_EDITING);
+        gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(editing_toggle), !GUI_EDITING);
         handled = TRUE;
         break;
     }
@@ -1181,7 +1180,7 @@ loop:
         gui_ewc_startstop--;
         gui_playing_mode = (a == AUDIO_BACKPIPE_PLAYING_STARTED) ? PLAYING_SONG : PLAYING_PATTERN;
         if (!ASYNCEDIT) {
-            gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(editing_toggle), FALSE);
+            gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(editing_toggle), FALSE);
         }
         gui_enable(0);
         scope_group_start_updating(scopegroup);
@@ -1726,7 +1725,7 @@ int gui_splash(void)
     vbox = gtk_vbox_new(FALSE, 4);
     gtk_container_add(GTK_CONTAINER(gui_splash_window), vbox);
 
-    gtk_container_border_width(GTK_CONTAINER(vbox), 4);
+    gtk_container_set_border_width(GTK_CONTAINER(vbox), 4);
 
     /* Show splash screen if enabled and image available. */
 
@@ -1942,7 +1941,7 @@ int gui_final(int argc,
         return 0;
 
     mainvbox = gtk_vbox_new(FALSE, 4);
-    gtk_container_border_width(GTK_CONTAINER(mainvbox), 4);
+    gtk_container_set_border_width(GTK_CONTAINER(mainvbox), 4);
     gtk_box_pack_start(GTK_BOX(mainvbox0), mainvbox, TRUE, TRUE, 0);
     gtk_widget_show(mainvbox);
 
@@ -2101,7 +2100,7 @@ int gui_final(int argc,
     add_empty_hbox(hbox);
     thing = gtk_toggle_button_new_with_label(_("Measure"));
     gtk_widget_set_tooltip_text(thing, _("Enable row highlighting"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), gui_settings.highlight_rows);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), gui_settings.highlight_rows);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, FALSE, 0);
     g_signal_connect(thing, "toggled",
         G_CALLBACK(gui_highlight_rows_toggled), NULL);
@@ -2206,8 +2205,8 @@ int gui_final(int argc,
     gui_clipping_led_off.green = 0;
     gui_clipping_led_off.blue = 0;
     gui_clipping_led_off.pixel = 0;
-    gdk_color_alloc(colormap, &gui_clipping_led_on);
-    gdk_color_alloc(colormap, &gui_clipping_led_off);
+    gdk_colormap_alloc_color(colormap, &gui_clipping_led_on, FALSE, TRUE);
+    gdk_colormap_alloc_color(colormap, &gui_clipping_led_off, FALSE, TRUE);
     g_signal_connect(thing, "event", G_CALLBACK(gui_clipping_led_event), thing);
     gtk_widget_show(thing);
 
@@ -2238,7 +2237,7 @@ int gui_final(int argc,
     gtk_widget_show(hbox);
 
     editing_toggle = thing = gtk_check_button_new_with_label(_("Editing"));
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(thing), 0);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(thing), 0);
     gtk_box_pack_start(GTK_BOX(hbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(G_OBJECT(thing), "toggled",
@@ -2300,7 +2299,7 @@ int gui_final(int argc,
     gtk_box_pack_start(GTK_BOX(mainvbox), notebook, TRUE, TRUE, 0);
     gtk_notebook_set_tab_pos(GTK_NOTEBOOK(notebook), GTK_POS_TOP);
     gtk_widget_show(notebook);
-    gtk_container_border_width(GTK_CONTAINER(notebook), 0);
+    gtk_container_set_border_width(GTK_CONTAINER(notebook), 0);
     g_signal_connect(notebook, "switch_page",
         G_CALLBACK(notebook_page_switched), NULL);
 
@@ -2320,7 +2319,7 @@ int gui_final(int argc,
 #define WELCOME_MESSAGE _("Welcome to SoundTracker!")
 
     hbox = gtk_hbox_new(FALSE, 2);
-    gtk_container_border_width(GTK_CONTAINER(hbox), 2);
+    gtk_container_set_border_width(GTK_CONTAINER(hbox), 2);
     gtk_box_pack_start(GTK_BOX(mainvbox), hbox, FALSE, TRUE, 0);
     gtk_widget_show(hbox);
 

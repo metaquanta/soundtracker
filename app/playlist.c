@@ -573,7 +573,7 @@ playlist_new(void)
     gtk_widget_show(box);
 
     thing1 = gtk_label_new(NULL);
-    gtk_widget_set_usize(thing1, 2, 1);
+    gtk_widget_set_size_request(thing1, 2, 1);
     gtk_widget_show(thing1);
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
 
@@ -592,7 +592,7 @@ playlist_new(void)
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
 
     thing1 = gtk_label_new(NULL);
-    gtk_widget_set_usize(thing1, 2, 1);
+    gtk_widget_set_size_request(thing1, 2, 1);
     gtk_widget_show(thing1);
     gtk_box_pack_start(GTK_BOX(box), thing1, TRUE, TRUE, 0);
 

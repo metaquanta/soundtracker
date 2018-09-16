@@ -21,10 +21,8 @@
  */
 
 #include "clavier.h"
-#include <gdk/gdkkeysyms.h>
-#include <gtk/gtkmain.h>
-#include <gtk/gtkobject.h> //patch by F.Haferkorn 2006-06-29
-#include <gtk/gtksignal.h>
+#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <stdio.h>
 
 #define XFONTNAME "Fixed 8"
@@ -49,7 +47,7 @@ static void init_colors(GtkWidget* widget)
         c->green = *p++ * 65535 / 255;
         c->blue = *p++ * 65535 / 255;
         c->pixel = (gulong)((c->red & 0xff00) * 256 + (c->green & 0xff00) + (c->blue & 0xff00) / 256);
-        gdk_color_alloc(gtk_widget_get_colormap(widget), c);
+        gdk_colormap_alloc_color(gtk_widget_get_colormap(widget), c, FALSE, TRUE);
     }
 }
 
@@ -88,10 +86,9 @@ static gint clavier_leave_notify(GtkWidget* widget, GdkEventCrossing* event);
 /* Helpers */
 static void draw_key_hint(Clavier*, gint, GdkGC*);
 
-GtkType
-clavier_get_type(void)
+GType clavier_get_type(void)
 {
-    static GtkType clavier_type = 0;
+    static GType clavier_type = 0;
 
     if (!clavier_type) {
         GTypeInfo clavier_info = {
@@ -931,7 +928,7 @@ clavier_realize(GtkWidget* widget)
     g_return_if_fail(IS_CLAVIER(widget));
 
     clavier = CLAVIER(widget);
-    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
+    gtk_widget_set_can_default(widget, GTK_REALIZED);
 
     attributes.window_type = GDK_WINDOW_CHILD;
     attributes.x = widget->allocation.x;
@@ -1026,7 +1023,7 @@ void clavier_set_transpose_base(Clavier* clavier, gint key)
 {
     clavier->transpose_base = key;
 
-    if (GTK_WIDGET_DRAWABLE(clavier))
+    if (gtk_widget_is_drawable(GTK_WIDGET(clavier)))
         gtk_widget_queue_draw(GTK_WIDGET(clavier));
 }
 

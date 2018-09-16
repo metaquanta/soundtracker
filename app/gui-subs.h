@@ -107,7 +107,7 @@ void gui_update_range_adjustment(GtkRange* range,
 static inline void
 gui_set_radio_active(GtkWidget** radiobutton, guint i)
 {
-    if (GTK_WIDGET_IS_SENSITIVE(radiobutton[i]))
+    if (gtk_widget_is_sensitive(radiobutton[i]))
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radiobutton[i]), TRUE);
 }
 

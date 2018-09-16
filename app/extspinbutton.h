@@ -24,7 +24,7 @@
 
 #include <gtk/gtkspinbutton.h>
 
-#define EXTSPINBUTTON(obj) GTK_CHECK_CAST(obj, extspinbutton_get_type(), ExtSpinButton)
+#define EXTSPINBUTTON(obj) G_TYPE_CHECK_CLASS_CAST(obj, extspinbutton_get_type(), ExtSpinButton)
 #define EXTSPINBUTTON_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, extspinbutton_get_type(), ExtSpinButtonClass)
 #define IS_EXTSPINBUTTON(obj) GTK_CHECK_TYPE(obj, extspinbutton_get_type())
 

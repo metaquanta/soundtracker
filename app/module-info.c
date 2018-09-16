@@ -130,7 +130,7 @@ void modinfo_page_create(GtkNotebook* nb)
     int i;
 
     hbox = gtk_hbox_new(TRUE, 10);
-    gtk_container_border_width(GTK_CONTAINER(hbox), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(hbox), 10);
     gtk_notebook_append_page(nb, hbox, gtk_label_new(_("Module Info")));
     gtk_widget_show(hbox);
 
@@ -292,8 +292,8 @@ void modinfo_update_all(void)
 
     gtk_entry_set_text(GTK_ENTRY(songname), xm->utf_name);
 
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(ptmode_toggle), xm->flags & XM_FLAGS_IS_MOD);
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(freqmode_w[xm->flags & XM_FLAGS_AMIGA_FREQ]), TRUE);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(ptmode_toggle), xm->flags & XM_FLAGS_IS_MOD);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(freqmode_w[xm->flags & XM_FLAGS_AMIGA_FREQ]), TRUE);
     xm_set_modified(m);
 }
 

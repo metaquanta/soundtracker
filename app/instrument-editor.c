@@ -216,7 +216,7 @@ void instrument_page_create(GtkNotebook* nb)
     static const gchar** formats[] = { xi_f, NULL };
 
     mainbox = gtk_vbox_new(FALSE, 4);
-    gtk_container_border_width(GTK_CONTAINER(mainbox), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(mainbox), 10);
     gtk_notebook_append_page(nb, mainbox, gtk_label_new(_("Instrument Editor")));
     gtk_widget_show(mainbox);
 
@@ -366,7 +366,7 @@ void instrument_page_create(GtkNotebook* nb)
     box4 = gtk_vbox_new(FALSE, 2);
     gtk_widget_show(box4);
     gtk_container_add(GTK_CONTAINER(frame), box4);
-    gtk_container_border_width(GTK_CONTAINER(box4), 4);
+    gtk_container_set_border_width(GTK_CONTAINER(box4), 4);
 
     curnote_label = thing = gtk_label_new("");
     gtk_widget_show(thing);
@@ -463,7 +463,7 @@ void instrument_editor_update(gboolean full)
         gui_subs_set_slider_value(&instrument_page_sliders[1], current_instrument->vibrate);
         gui_subs_set_slider_value(&instrument_page_sliders[2], current_instrument->vibdepth);
         gui_subs_set_slider_value(&instrument_page_sliders[3], current_instrument->vibsweep);
-        gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(instrument_editor_vibtype_w[current_instrument->vibtype]), TRUE);
+        gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(instrument_editor_vibtype_w[current_instrument->vibtype]), TRUE);
 
         clavier_set_key_labels(CLAVIER(clavier), current_instrument->samplemap);
 

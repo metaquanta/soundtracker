@@ -270,7 +270,7 @@ void sample_editor_page_create(GtkNotebook* nb)
 #endif
 
     box = gtk_vbox_new(FALSE, 2);
-    gtk_container_border_width(GTK_CONTAINER(box), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(box), 10);
     gtk_notebook_append_page(nb, box, gtk_label_new(_("Sample Editor")));
     gtk_widget_show(box);
 
@@ -638,7 +638,7 @@ void sample_editor_update(void)
     gtk_label_set_text(GTK_LABEL(se->label_length), buf);
 
     sample_editor_block_loop_spins(1);
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(loopradio[s->looptype]), TRUE);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(loopradio[s->looptype]), TRUE);
     gtk_spin_button_set_range(GTK_SPIN_BUTTON(spin_loopstart), 0, s->length - 1);
     gtk_spin_button_set_range(GTK_SPIN_BUTTON(spin_loopend), 1, s->length);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_loopstart), (s->loopstart));
@@ -662,7 +662,7 @@ void sample_editor_update(void)
         gtk_widget_set_sensitive(savebutton, 1);
         gtk_widget_set_sensitive(savebutton_rgn, 1);
 #endif
-        gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(resolution_radio[sts->treat_as_8bit ? 0 : 1]), TRUE);
+        gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(resolution_radio[sts->treat_as_8bit ? 0 : 1]), TRUE);
     }
 
     xm_set_modified(m);
@@ -816,7 +816,7 @@ sample_editor_selection_to_loop_clicked(void)
         return;
     }
 
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(loopradio[0]), TRUE);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(loopradio[0]), TRUE);
 
     sample_editor_lock_sample();
     current_sample->sample.loopend = e;
@@ -825,7 +825,7 @@ sample_editor_selection_to_loop_clicked(void)
 
     sample_editor_blocked_set_loop_spins(s, e);
 
-    gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(loopradio[1]), TRUE);
+    gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(loopradio[1]), TRUE);
     xm_set_modified(1);
 }
 
@@ -1920,7 +1920,7 @@ sampling_response(GtkWidget* dialog, gint response, GtkToggleButton* button)
 
     if (button->active) {
         g_signal_handler_block(G_OBJECT(button), toggled_id); /* To prevent data storing on record stop */
-        gtk_toggle_button_set_state(button, FALSE);
+        gtk_toggle_button_set_mode(button, FALSE);
         g_signal_handler_unblock(G_OBJECT(button), toggled_id);
     }
     if (monitoring) {
@@ -2012,7 +2012,7 @@ sample_editor_monitor_clicked(void)
         okbutton = gtk_dialog_add_button(GTK_DIALOG(samplingwindow), GTK_STOCK_OK, GTK_RESPONSE_OK);
 
         mainbox = gtk_dialog_get_content_area(GTK_DIALOG(samplingwindow));
-        gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
+        gtk_container_set_border_width(GTK_CONTAINER(mainbox), 4);
 
         box = gtk_vbox_new(FALSE, 2);
 

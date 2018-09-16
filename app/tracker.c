@@ -1304,7 +1304,7 @@ void tracker_init_colors(Tracker* t)
         c->green = *p++ * 65535 / 255;
         c->blue = *p++ * 65535 / 255;
         c->pixel = (gulong)((c->red & 0xff00) * 256 + (c->green & 0xff00) + (c->blue & 0xff00) / 256);
-        gdk_color_alloc(gtk_widget_get_colormap(GTK_WIDGET(t)), c);
+        gdk_colormap_alloc_color(gtk_widget_get_colormap(GTK_WIDGET(t)), c, FALSE, TRUE);
     }
 
     tracker_apply_colors(t);
@@ -1332,7 +1332,7 @@ tracker_realize(GtkWidget* widget)
     g_return_if_fail(widget != NULL);
     g_return_if_fail(IS_TRACKER(widget));
 
-    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
+    gtk_widget_set_can_default(widget, GTK_REALIZED);
     t = TRACKER(widget);
 
     attributes.x = widget->allocation.x;
@@ -1367,7 +1367,7 @@ tracker_realize(GtkWidget* widget)
         c.blue = *p++ * 65535 / 255;
 
         t->colors[i] = prefs_get_color("settings", color_meanings[i], c);
-        gdk_color_alloc(gtk_widget_get_colormap(widget), &t->colors[i]);
+        gdk_colormap_alloc_color(gtk_widget_get_colormap(widget), &t->colors[i], FALSE, TRUE);
     }
     tracker_apply_colors(t);
 
