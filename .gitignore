@@ -17,3 +17,4 @@ config.status
 app/drivers/libdrivers.a
 app/mixers/libmixers.a
 *.o
+app/soundtracker
