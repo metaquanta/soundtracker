@@ -1,4 +1,7 @@
 2018-09-13  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui-subs.h: gui_info_dialog() is defined.
+
+2018-09-13  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/drivers/oss.c: Some optimization;
 	* app/sample-editor.c: Code cleanup; fixed the bug with zooming
 	to 1 sample.

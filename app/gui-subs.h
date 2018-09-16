@@ -204,6 +204,7 @@ gboolean             gui_ok_cancel_modal              (GtkWidget *window, const 
 void                 gui_message_dialog               (GtkWidget **dialog, const gchar *text, GtkMessageType type, const gchar *title, gboolean need_update);
 #define              gui_warning_dialog(dialog, text, need_update) gui_message_dialog(dialog, text, GTK_MESSAGE_WARNING, N_("Warning"), need_update)
 #define              gui_error_dialog(dialog, text, need_update)   gui_message_dialog(dialog, text, GTK_MESSAGE_ERROR, N_("Error!"), need_update)
+#define              gui_info_dialog(dialog, text, need_update)    gui_message_dialog(dialog, text, GTK_MESSAGE_INFO, N_("Information"), need_update)
 void                 gui_dialog_adjust                (GtkWidget *dialog, gint default_id);
 
 gchar *              gui_filename_to_utf8             (const gchar *old_name);
