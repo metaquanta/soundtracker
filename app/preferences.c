@@ -58,7 +58,7 @@ prefs_check_prefs_dir (void)
 	mkdir(dir, S_IRUSR | S_IWUSR | S_IXUSR);
     strcat(dir, "/tmp");
 	mkdir(dir, S_IRUSR | S_IWUSR | S_IXUSR);
-	gui_warning_dialog(&dialog, N_("A directory called '.soundtracker' has been created in your\nhome directory to store configuration files.\n"), FALSE);
+	gui_info_dialog(&dialog, _("A directory called '.soundtracker' has been created in your\nhome directory to store configuration files.\n"), FALSE);
     }
 }
 
