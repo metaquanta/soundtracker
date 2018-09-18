@@ -12,7 +12,9 @@
 	app/drivers/irix-output.c, app/drivers/jack-output.c: many
 	gettext invocations are checked, added missing and removed
 	duplicated;
-	* app/sample-display.c: code optimization and cleanup.
+	* app/sample-display.c: code optimization and cleanup;
+	* app/extspinbutton.c, app/gui.[ch]: code optimization, made
+	a uniform method to remove focus from a widget.
 
 2018-09-13  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui-subs.h: gui_info_dialog() is defined;

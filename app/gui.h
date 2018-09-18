@@ -122,4 +122,10 @@ void                 gui_popup_menu_attach            (GtkWidget *menu, GtkWidge
 void                 gui_update_title                 (const gchar *filename);
 void                 gui_offset_current_instrument    (int offset);
 void                 gui_offset_current_sample        (int offset);
+
+static inline void
+gui_unset_focus (void)
+{
+	gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
+}
 #endif /* _GUI_H */

@@ -87,7 +87,6 @@ static GtkWidget *mainwindow_upper_hbox, *mainwindow_second_hbox;
 static GtkWidget *notebook;
 static GtkWidget *spin_editpat, *spin_patlen, *spin_numchans;
 static GtkWidget *cursmpl_spin;
-static GtkWidget *pbutton;
 static GtkAdjustment *adj_amplification, *adj_pitchbend;
 static GtkWidget *spin_jump, *curins_spin, *spin_octave;
 static GtkWidget *toggle_lock_editpat;
@@ -219,7 +218,7 @@ measure_close_requested (void)
 {
     gtk_widget_hide(measurewindow);
 /* to make keyboard working immediately after closing the dialog */
-    gtk_widget_grab_focus(pbutton);
+    gui_unset_focus();
     return TRUE;
 }
 
@@ -289,7 +288,7 @@ measure_changed (GtkWidget *widget, gpointer data)
 			gui_settings.highlight_rows_minor_n = measure_msr[measure_chosen].minor;
 			tracker_redraw(tracker);
 /* to make keyboard working immediately after chosing the measure */
-			gtk_widget_grab_focus(pbutton);
+			gui_unset_focus();
 		}
 /* Gtk+ stupidity: when combo box list is popped down, */
 	} else if (measure_chosen == maxmeasure + 1)
@@ -863,7 +862,7 @@ keyevent (GtkWidget *widget,
 		switch(event->keyval) {
 		case GDK_Tab:
 		g_signal_stop_emission_by_name(G_OBJECT(widget), "key-press-event");
-		gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
+		gui_unset_focus();
 		break;
 		case GDK_Return:
 		case GDK_KP_Enter:
@@ -884,7 +883,7 @@ keyevent (GtkWidget *widget,
 				} while(parent);
 			}
 			g_signal_stop_emission_by_name(G_OBJECT(widget), "key-press-event");
-			gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
+			gui_unset_focus();
 			break;
 		}
 	}
@@ -2043,7 +2042,7 @@ gui_final (int argc,
     gtk_widget_show(hbox);
 
     pmw = gtk_image_new_from_file(DATADIR"/"PACKAGE"/play.xpm");
-    pbutton = thing = gtk_button_new();
+    thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
     g_signal_connect(thing, "clicked",
 			G_CALLBACK(play_song), NULL);
@@ -2464,7 +2463,7 @@ gui_final (int argc,
 	}
     }
 
-    gtk_widget_grab_focus(pbutton);
+    gui_unset_focus();
     return 1;
 }
 
