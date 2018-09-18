@@ -130,7 +130,8 @@ sample_display_set_data (SampleDisplay *s,
 	
     s->win_start = 0;
     s->win_length = len;
-    g_signal_emit(G_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], 0, s->win_start, s->win_start + s->win_length);
+	if(s->edit)
+		g_signal_emit(G_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], 0, s->win_start, s->win_start + s->win_length);
 	
     s->sel_start = -1;
     s->old_ss = s->old_se = -1;
@@ -214,7 +215,8 @@ sample_display_set_window (SampleDisplay *s,
 
     s->win_start = start;
     s->win_length = end - start;
-    g_signal_emit(G_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], 0, start, end);
+	if(s->edit)
+		g_signal_emit(G_OBJECT(s), sample_display_signals[SIG_WINDOW_CHANGED], 0, start, end);
 
     gtk_widget_queue_draw(GTK_WIDGET(s));
 }
@@ -902,9 +904,7 @@ sample_display_class_init (SampleDisplayClass *class)
 {
     GObjectClass *object_class;
     GtkWidgetClass *widget_class;
-    int n;
-    const int *p;
-    GdkColor *c;
+    gint n, p;
 
     object_class = G_OBJECT_CLASS(class);
     widget_class = GTK_WIDGET_CLASS(class);
@@ -949,12 +949,14 @@ sample_display_class_init (SampleDisplayClass *class)
     class->loop_changed = NULL;
     class->window_changed = NULL;
 
-    for(n = 0, p = default_colors, c = class->colors; n < SAMPLE_DISPLAYCOL_LAST; n++, c++) {
-	c->red = *p++ * 65535 / 255;
-	c->green = *p++ * 65535 / 255;
-	c->blue = *p++ * 65535 / 255;
-        c->pixel = (gulong)((c->red & 0xff00)*256 + (c->green & 0xff00) + (c->blue & 0xff00)/256);
-        gdk_color_alloc(gdk_colormap_get_system(), c);
+	for(n = 0, p = 0; n < SAMPLE_DISPLAYCOL_LAST; n++, p += 3) {
+		class->colors[n].red = default_colors[p] * 65535 / 255;
+		class->colors[n].green = default_colors[p + 1] * 65535 / 255;
+		class->colors[n].blue = default_colors[p + 2] * 65535 / 255;
+		class->colors[n].pixel = (gulong)((class->colors[n].red & 0xff00) * 256
+		                                + (class->colors[n].green & 0xff00)
+		                                + (class->colors[n].blue & 0xff00) / 256);
+        gdk_color_alloc(gdk_colormap_get_system(), &class->colors[n]);
     }
 }
 

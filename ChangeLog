@@ -5,7 +5,14 @@
 	app/drivers/alsa1x.c: dialogs are revised, optimized and made
 	nicer;
 	* app/preferences.c: in prefs_check_prefs_dir() message is
-	changed from warning to info.
+	changed from warning to info;
+	* app/audio.c, app/cheat-sheet.c, app/gui-subs.c, app/gui.c,
+	app/instrument-editor.c, app/keys.c, app/xm.c,
+	app/drivers/alsa1x.c, app/drivers/file-output.c,
+	app/drivers/irix-output.c, app/drivers/jack-output.c: many
+	gettext invocations are checked, added missing and removed
+	duplicated;
+	* app/sample-display.c: code optimization and cleanup.
 
 2018-09-13  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui-subs.h: gui_info_dialog() is defined;
