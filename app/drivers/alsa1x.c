@@ -747,11 +747,9 @@ static void device_list(GtkWidget *w, alsa_driver *d)
 		                                                        "Select", GTK_RESPONSE_APPLY,
 		                                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
 		gui_dialog_adjust(thing, GTK_RESPONSE_APPLY);
-		gtk_widget_set_size_request(thing, 200, 200);
-		g_signal_connect(thing, "response",
-		                 G_CALLBACK(devices_response), d);
-		g_signal_connect(thing, "delete-event",
-		                 G_CALLBACK(gui_delete_noop), NULL);
+		gtk_widget_set_size_request(thing, -1, 200);
+		gui_dialog_connect_data(thing, G_CALLBACK(devices_response), d);
+
 		d->devices_list = gui_stringlist_in_scrolled_window(2, titles, gtk_dialog_get_content_area(GTK_DIALOG(thing)), TRUE);
 		g_signal_connect_swapped(d->devices_list, "row-activated",
 		                 G_CALLBACK(devices_row_selected), d);

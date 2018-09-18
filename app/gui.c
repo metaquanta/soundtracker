@@ -240,14 +240,10 @@ measure_dialog ()
 	measurewindow = gtk_dialog_new_with_buttons(_("Row highlighting configuration"), GTK_WINDOW(mainwindow),
 	                                            GTK_DIALOG_MODAL, GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
 	gui_dialog_adjust(measurewindow, GTK_RESPONSE_CLOSE);
-    g_signal_connect(measurewindow, "response",
-			G_CALLBACK(measure_close_requested), NULL);
-    vbox = gtk_dialog_get_content_area(GTK_DIALOG(measurewindow));
-
-    g_signal_connect(measurewindow, "delete_event",
-			G_CALLBACK(measure_close_requested), NULL);
+	gui_dialog_connect(measurewindow, G_CALLBACK(measure_close_requested));
 	gtk_window_set_position(GTK_WINDOW(measurewindow), GTK_WIN_POS_MOUSE);
 
+    vbox = gtk_dialog_get_content_area(GTK_DIALOG(measurewindow));
     mainbox = gtk_hbox_new(FALSE, 2);
     
     thing = gtk_label_new(_("Highlight rows (major / minor):"));

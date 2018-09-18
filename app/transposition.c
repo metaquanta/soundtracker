@@ -34,13 +34,6 @@ static GtkWidget *transposition_window = NULL,
     *transposition_instrument_mode_w[2],
     *transposition_instrument_w[2];
 
-static gboolean
-transposition_close_requested (GtkWidget *widget)
-{
-    gtk_widget_hide(widget);
-    return TRUE;
-}
-
 static void
 transposition_for_each (void (*function)(XMNote *track, int patlen, int data),
 			int functiondata)
@@ -226,10 +219,7 @@ transposition_dialog (void)
 
 		transposition_window = gtk_dialog_new_with_buttons(_("Transposition Tools"), GTK_WINDOW(mainwindow),
 		                                                   GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
-    g_signal_connect(transposition_window, "response",//!!!
-			G_CALLBACK(gtk_widget_hide), NULL);
-    g_signal_connect(transposition_window, "delete-event",
-			G_CALLBACK(transposition_close_requested), NULL);
+		gui_dialog_connect(transposition_window, NULL);
 
 		mainbox = gtk_dialog_get_content_area(GTK_DIALOG(transposition_window));
 		gui_dialog_adjust(transposition_window, GTK_RESPONSE_CLOSE);

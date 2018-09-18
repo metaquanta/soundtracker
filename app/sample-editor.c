@@ -1332,9 +1332,10 @@ sample_editor_open_stereo_dialog (GtkWidget **window, GtkWidget **buttons, const
                                   const gchar *title)
 {
 	static const gchar *labels[] = {N_("Mix"), N_("Left"), N_("Right"), N_("2 samples"), NULL};
-	GtkWidget *label, *box1;
 
 	if(!*window) {
+		GtkWidget *thing, *box1;
+
 		*window = gtk_dialog_new_with_buttons(_(title), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
 		                                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, 
 		                                      GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
@@ -1342,14 +1343,18 @@ sample_editor_open_stereo_dialog (GtkWidget **window, GtkWidget **buttons, const
 		box1 = gtk_dialog_get_content_area(GTK_DIALOG(*window));
 		gtk_box_set_spacing(GTK_BOX(box1), 2);
 
-		label = gtk_label_new(_(text));
-		gtk_label_set_justify(GTK_LABEL (label),GTK_JUSTIFY_CENTER);
-		gtk_box_pack_start(GTK_BOX (box1), label, FALSE, TRUE, 0);
-		gtk_widget_show(label);
+		thing = gtk_label_new(_(text));
+		gtk_label_set_justify(GTK_LABEL(thing),GTK_JUSTIFY_CENTER);
+		gtk_box_pack_start(GTK_BOX (box1), thing, FALSE, TRUE, 0);
+		gtk_widget_show(thing);
 
 		make_radio_group(labels, box1, buttons, FALSE, FALSE, NULL);
 		gtk_widget_set_tooltip_text(buttons[3], _("Load left and right channels into the current sample and the next one"));
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[0]), TRUE);
+
+		thing = gtk_hseparator_new();
+		gtk_box_pack_start(GTK_BOX (box1), thing, FALSE, TRUE, 0);
+		gtk_widget_show(thing);
 	} else
 		gtk_window_present(GTK_WINDOW(*window));
 }
@@ -2056,10 +2061,9 @@ sample_editor_monitor_clicked (void)
 		samplingwindow = gtk_dialog_new_with_buttons(_("Sampling Window"), GTK_WINDOW(mainwindow), 0,
 		                                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
 		gtk_window_add_accel_group(GTK_WINDOW(samplingwindow), group);
-		g_signal_connect(samplingwindow, "delete-event",
-		                 G_CALLBACK(gui_delete_noop), NULL);
 
 		okbutton = gtk_dialog_add_button(GTK_DIALOG(samplingwindow), GTK_STOCK_OK, GTK_RESPONSE_OK);
+		gtk_container_set_border_width(GTK_CONTAINER(samplingwindow), 4);
 
 		mainbox = gtk_dialog_get_content_area(GTK_DIALOG(samplingwindow));
 		gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
@@ -2079,8 +2083,7 @@ sample_editor_monitor_clicked (void)
 		toggled_id = g_signal_connect(thing, "toggled",
 		                              G_CALLBACK(record_toggled), NULL);
 		gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, FALSE, 0);
-		g_signal_connect(samplingwindow, "response",
-		                 G_CALLBACK(sampling_response), thing);
+		gui_dialog_connect_data(samplingwindow, G_CALLBACK(sampling_response), thing);
 
 		clearbutton = thing = gtk_button_new_with_label(_("Clear"));
 		g_signal_connect(thing, "clicked",
@@ -2091,6 +2094,9 @@ sample_editor_monitor_clicked (void)
 		clock_set_format(CLOCK(sclock), _("%M:%S"));
 		clock_set_seconds(CLOCK(sclock), 0);
 		gtk_box_pack_start(GTK_BOX(box2), sclock, FALSE, TRUE, 0);
+
+		thing = gtk_hseparator_new();
+		gtk_box_pack_start(GTK_BOX(box), thing, FALSE, FALSE, 4);
 
 		gtk_box_pack_start(GTK_BOX(mainbox), box, TRUE, TRUE, 0);
 		gtk_widget_show_all(samplingwindow);
@@ -2494,10 +2500,7 @@ sample_editor_open_volume_ramp_dialog (void)
                                                 _("Normalize"), 1,
                                                 GTK_STOCK_EXECUTE, 2,
                                                 GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
-    g_signal_connect(volrampwindow, "delete_event",
-			G_CALLBACK(gui_delete_noop), NULL);
-    g_signal_connect(volrampwindow, "response",
-			G_CALLBACK(sample_editor_perform_ramp), NULL);
+	gui_dialog_connect(volrampwindow, G_CALLBACK(sample_editor_perform_ramp));
 
     gui_dialog_adjust(volrampwindow, 2);
     mainbox = gtk_dialog_get_content_area(GTK_DIALOG(volrampwindow));
@@ -2510,7 +2513,7 @@ sample_editor_open_volume_ramp_dialog (void)
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
 
     box1 = gtk_hbox_new(FALSE, 4);
-    gtk_box_pack_start(GTK_BOX(mainbox), box1, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(mainbox), box1, FALSE, TRUE, 4);
 
     gui_put_labelled_spin_button(box1, _("Left [%]:"), -1000, 1000, &sample_editor_volramp_spin_w[0], NULL, NULL, FALSE);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(sample_editor_volramp_spin_w[0]), sample_editor_volramp_last_values[0]);

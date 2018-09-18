@@ -57,12 +57,6 @@ static gui_subs_slider prefs_trackerfreq_slider = {
 };
 
 static void
-gui_settings_close (GtkWidget *configwindow)
-{
-    gtk_widget_hide(configwindow);
-}
-
-static void
 prefs_scopesfreq_changed (int value)
 {
     extern ScopeGroup *scopegroup;
@@ -330,10 +324,7 @@ gui_settings_tracker_colors_dialog (GtkWindow *window)
 	gui_dialog_adjust(dialog, GTK_RESPONSE_APPLY);
     gtk_widget_set_tooltip_text(gtk_dialog_get_widget_for_response(GTK_DIALOG(dialog), GTK_RESPONSE_REJECT), _("Reset tracker colors to standard ST"));
 
-    g_signal_connect(dialog, "response",
-		     G_CALLBACK(colors_dialog_response), NULL);
-    g_signal_connect(dialog, "delete-event",
-			G_CALLBACK(gui_delete_noop), NULL);
+	gui_dialog_connect(dialog, NULL);
 
     table = gtk_table_new(TRACKERCOL_LAST, 5, FALSE);
     for(i = 0; i < TRACKERCOL_LAST; i++) {
@@ -401,10 +392,7 @@ gui_settings_dialog (void)
 
     configwindow = gtk_dialog_new_with_buttons(_("GUI Configuration"), GTK_WINDOW(mainwindow), 0,
                                                GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
-    g_signal_connect(configwindow, "delete_event",
-			G_CALLBACK(gui_delete_noop), NULL);
-    g_signal_connect(configwindow, "response",
-			G_CALLBACK(gui_settings_close), NULL);
+	gui_dialog_connect(configwindow, NULL);
 	gui_dialog_adjust(configwindow, GTK_RESPONSE_CLOSE);
     mainbox = gtk_dialog_get_content_area(GTK_DIALOG(configwindow));
 

@@ -242,10 +242,7 @@ audioconfig_dialog (void)
     
     configwindow = gtk_dialog_new_with_buttons(_("Audio Configuration"), GTK_WINDOW(mainwindow), 0,
                                                GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
-    g_signal_connect(configwindow, "delete_event",
-			G_CALLBACK(gui_delete_noop), NULL);
-    g_signal_connect(configwindow, "response",
-			G_CALLBACK(gtk_widget_hide), NULL);
+	gui_dialog_connect(configwindow, NULL);
 
     mainbox = gtk_dialog_get_content_area(GTK_DIALOG(configwindow));
     gui_dialog_adjust(configwindow, GTK_RESPONSE_CLOSE);
