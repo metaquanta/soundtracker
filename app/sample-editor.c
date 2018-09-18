@@ -2054,7 +2054,7 @@ sample_editor_monitor_clicked (void)
 	}
 
 	if(!samplingwindow) {
-		GtkWidget *mainbox, *thing, *box, *box2;
+		GtkWidget *mainbox, *thing, *box2;
 		GtkAccelGroup *group = gtk_accel_group_new();
 		GClosure *closure;
 
@@ -2067,15 +2067,14 @@ sample_editor_monitor_clicked (void)
 
 		mainbox = gtk_dialog_get_content_area(GTK_DIALOG(samplingwindow));
 		gtk_container_border_width(GTK_CONTAINER(mainbox), 4);
-
-		box = gtk_vbox_new(FALSE, 2);
+		gtk_box_set_spacing(GTK_BOX(mainbox), 2);
 
 		thing = sample_display_new(FALSE);
-		gtk_box_pack_start(GTK_BOX(box), thing, TRUE, TRUE, 0);
+		gtk_box_pack_start(GTK_BOX(mainbox), thing, TRUE, TRUE, 0);
 		monitorscope = SAMPLE_DISPLAY(thing);
 
 		box2 = gtk_hbox_new(FALSE, 4);
-		gtk_box_pack_start(GTK_BOX(box), box2, FALSE, TRUE, 0);
+		gtk_box_pack_start(GTK_BOX(mainbox), box2, FALSE, TRUE, 0);
 
 		thing = gtk_toggle_button_new_with_label(_("Record"));
 		closure = g_cclosure_new_swap(G_CALLBACK(sampling_widget_hide), thing, NULL);
@@ -2096,9 +2095,8 @@ sample_editor_monitor_clicked (void)
 		gtk_box_pack_start(GTK_BOX(box2), sclock, FALSE, TRUE, 0);
 
 		thing = gtk_hseparator_new();
-		gtk_box_pack_start(GTK_BOX(box), thing, FALSE, FALSE, 4);
+		gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, FALSE, 4);
 
-		gtk_box_pack_start(GTK_BOX(mainbox), box, TRUE, TRUE, 0);
 		gtk_widget_show_all(samplingwindow);
 	} else
 		gtk_window_present(GTK_WINDOW(samplingwindow));

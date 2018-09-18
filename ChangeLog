@@ -1,8 +1,9 @@
-2018-09-16  Yury Aliaev  <mutab0r@rambler.ru>
+2018-09-18  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/audioconfig.c, app/gui-settings.c, app/gui-subs.h,
 	app/gui.c, app/keys.c, app/midi-settings-09x.c,
-	app/sample-editor.c, app/tips-dialog.c, app/transposition.c:
-	dialogs are revised, optimized and made nicer.
+	app/sample-editor.c, app/tips-dialog.c, app/transposition.c,
+	app/drivers/alsa1x.c: dialogs are revised, optimized and made
+	nicer.
 
 2018-09-13  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui-subs.h: gui_info_dialog() is defined;
