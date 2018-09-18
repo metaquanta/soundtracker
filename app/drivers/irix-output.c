@@ -170,18 +170,18 @@ irix_open (void *dp)
     ALsetparams(AL_DEFAULT_DEVICE, chpars, 2);
 
     if(!(d->sgi_config = ALnewconfig())) {
-	error_error("ALnewconfig() failed.");
+	error_error(_("ALnewconfig() failed."));
 	goto out;
     }
 	
     if(ALsetwidth(d->sgi_config, AL_SAMPLE_16) < 0) {
-	error_error("16 Bit output not supported.");
+	error_error(_("16 Bit output not supported."));
 	goto out;
     }
     d->sample_factor = 1;
 
     if(ALsetchannels(d->sgi_config, AL_STEREO) < 0) {
-	error_error("Stereo output not supported.");
+	error_error(_("Stereo output not supported."));
 	goto out;
     }
 
@@ -189,7 +189,7 @@ irix_open (void *dp)
 
     alSetQueueSize(d->sgi_config, d->sgi_fragsize);
     if(!(d->sgi_port = ALopenport("soundtracker", "w", d->sgi_config))) {
-	error_error("Couldn't open audio port.");
+	error_error(_("Couldn't open audio port."));
 	goto out;
     }
 

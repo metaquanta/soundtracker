@@ -363,7 +363,7 @@ check_period_sizes (alsa_driver *d)
 	    if(!snd_pcm_hw_params_set_buffer_size(d->soundfd, d->hwparams, 1 << d->buffer_size))
 		break;
 	if(d->buffer_size < 8) {
-	    error_error(N_("Unable to set appropriate buffer size"));
+	    error_error(_("Unable to set appropriate buffer size"));
 	    snd_pcm_close(d->soundfd);
 	    return;
 	}
@@ -530,7 +530,7 @@ device_test (GtkWidget *w, alsa_driver *d)
 	return;
     }
     if(chmin > 2) {
-	error_error("Both mono and stereo are not supported by ALSA device!!!");
+	error_error(_("Both mono and stereo are not supported by ALSA device!!!"));
 	snd_pcm_close(d->soundfd);
 	return;
     }
@@ -597,7 +597,7 @@ device_test (GtkWidget *w, alsa_driver *d)
 	d->bits = 8;
 
 	if(!d->can16 && !d->can8) {
-		error_error("Neither 8 nor 16 bit resolution is not supported by ALSA device!!!");
+		error_error(_("Neither 8 nor 16 bit resolution is not supported by ALSA device!!!"));
 		snd_pcm_close(d->soundfd);
 		return;
 	}
@@ -1248,7 +1248,7 @@ alsa_open (void *dp)
 	    if(!snd_pcm_hw_params_set_buffer_size(d->soundfd, d->hwparams, 1 << d->buffer_size))
 		break;
 	if(d->buffer_size < 8) {
-	    error_error(N_("Unable to set appropriate buffer size"));
+	    error_error(_("Unable to set appropriate buffer size"));
 	    goto out;
 	}
     }

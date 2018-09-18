@@ -288,7 +288,7 @@ jack_driver_activate (void *dp)
 			static GtkWidget *dialog = NULL;
 
 			d->is_active = FALSE;
-			gui_error_dialog(&dialog, N_("Jack driver activation failed."), FALSE);
+			gui_error_dialog(&dialog, _("Jack driver activation failed."), FALSE);
 		} else {
 			d->is_active = TRUE;
 		}

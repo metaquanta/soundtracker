@@ -161,7 +161,7 @@ instrument_editor_load_instrument (const gchar *fn, const gchar *localname)
 	fclose(f);
     } else {
 	static GtkWidget *dialog = NULL;
-	gui_error_dialog(&dialog, N_("Can't open file."), FALSE);
+	gui_error_dialog(&dialog, _("Can't open file."), FALSE);
     }
 
 	instrument_editor_update(TRUE);
@@ -185,14 +185,14 @@ instrument_editor_save_instrument (const gchar *fn, gchar *localname)
 		if(xm_save_xi(instr, f)) {
 			static GtkWidget *dialog = NULL;
 
-			gui_error_dialog(&dialog, N_("Saving instrument failed."), FALSE);
+			gui_error_dialog(&dialog, _("Saving instrument failed."), FALSE);
 			statusbar_update(STATUS_IDLE, FALSE);
 		} else
 			statusbar_update(STATUS_INSTRUMENT_SAVED, FALSE);
 		fclose(f);
 	} else {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Can't open file."), FALSE);
+		gui_error_dialog(&dialog, _("Can't open file."), FALSE);
 	}
 }
 

@@ -1380,15 +1380,15 @@ sample_editor_load_wav_main (const int mode, FILE *f, struct wl *wavload)
 		if((n_cur = modinfo_get_current_sample()) == 127) {
 			static GtkWidget *dialog = NULL;
 
-			gui_warning_dialog(&dialog, N_("You have selected the last sample of the instrument, but going "
-			                               "to load the second stereo channel to the next sample. Please select "
-			                               "a sample slot with lower number or use another loading mode."), FALSE);
+			gui_warning_dialog(&dialog, _("You have selected the last sample of the instrument, but going "
+			                              "to load the second stereo channel to the next sample. Please select "
+			                              "a sample slot with lower number or use another loading mode."), FALSE);
 			return TRUE;
 		}
 		next = &(instrument_editor_get_instrument()->samples[n_cur + 1]);
 		if(next->sample.length) {
-			if(!gui_ok_cancel_modal(mainwindow, N_("The next sample which is about to be overwritten is not empty!\n"
-			                                       "Would you like to overwrite it?")))
+			if(!gui_ok_cancel_modal(mainwindow, _("The next sample which is about to be overwritten is not empty!\n"
+			                                      "Would you like to overwrite it?")))
 				return TRUE;
 		}
 	}
@@ -1782,7 +1782,7 @@ sample_editor_load_wav (const gchar *fn, const gchar *localname)
 #endif
     if(wavload.frameCount > mixer->max_sample_length) {
 	static GtkWidget *dialog = NULL;
-	gui_warning_dialog(&dialog, N_("Sample is too long for current mixer module. Loading anyway."), FALSE);
+	gui_warning_dialog(&dialog, _("Sample is too long for current mixer module. Loading anyway."), FALSE);
     }
 
 #if USE_SNDFILE
@@ -2137,7 +2137,7 @@ sample_editor_sampled (void *src,
 
 		if(!newbuf) {
 			/* It is called from audio thread AFAIK */
-			error_error(N_("Out of memory while sampling!"));
+			error_error(_("Out of memory while sampling!"));
 			sampling = 0;
 			return FALSE;
 		}
@@ -2234,15 +2234,15 @@ sample_editor_ok_clicked (void)
 				if((n_cur = modinfo_get_current_sample()) == 127) {
 					static GtkWidget *dialog = NULL;
 
-					gui_warning_dialog(&dialog, N_("You have selected the last sample of the instrument, but going "
-					                               "to load the second stereo channel to the next sample. Please select "
-					                               "a sample slot with lower number or use another loading mode."), FALSE);
+					gui_warning_dialog(&dialog, _("You have selected the last sample of the instrument, but going "
+					                              "to load the second stereo channel to the next sample. Please select "
+					                              "a sample slot with lower number or use another loading mode."), FALSE);
 					replay = TRUE;
 				}
 				next = &(instrument_editor_get_instrument()->samples[n_cur + 1]);
 				if(next->sample.length)
-					replay = !gui_ok_cancel_modal(mainwindow, N_("The next sample which is about to be overwriten is not empty!\n"
-					                                             "Would you like to overwrite it?"));
+					replay = !gui_ok_cancel_modal(mainwindow, _("The next sample which is about to be overwriten is not empty!\n"
+					                                            "Would you like to overwrite it?"));
 				break;
 			default:
 				return;
@@ -2436,7 +2436,7 @@ sample_editor_ok_clicked (void)
 
     if(recordedlen > mixer->max_sample_length) {
 	static GtkWidget *dialog = NULL;
-	gui_warning_dialog(&dialog, N_("Recorded sample is too long for current mixer module. Using it anyway."), FALSE);
+	gui_warning_dialog(&dialog, _("Recorded sample is too long for current mixer module. Using it anyway."), FALSE);
     }
 
     current_sample->sample.length = recordedlen >> 1;/* Sample size is given in 16-bit words */

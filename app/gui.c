@@ -343,7 +343,7 @@ gui_mixer_play_pattern (int pattern,
 	   write(audio_ctlpipe, &row, sizeof(row)) != sizeof(row) ||
 	   write(audio_ctlpipe, &stop_after_row, sizeof(stop_after_row)) != sizeof(stop_after_row)){
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
 }
 
@@ -354,7 +354,7 @@ gui_mixer_stop_playing (void)
 
 	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i)) {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
 }
 
@@ -366,7 +366,7 @@ gui_mixer_set_songpos (int songpos)
 	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) ||
 	   write(audio_ctlpipe, &songpos, sizeof(songpos)) != sizeof(songpos)) {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
 }
 
@@ -378,7 +378,7 @@ gui_mixer_set_pattern (int pattern)
 	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) ||
 	   write(audio_ctlpipe, &pattern, sizeof(pattern)) !=sizeof(pattern)) {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
 }
 
@@ -399,7 +399,7 @@ gui_save (const gchar *data, gchar *localname, gboolean save_smpls, gboolean swi
 	if(XM_Save(xm, localname, save_smpls)) {
 		static GtkWidget *dialog = NULL;
 
-		gui_error_dialog(&dialog, N_("Saving module failed"), FALSE);
+		gui_error_dialog(&dialog, _("Saving module failed"), FALSE);
 	    statusbar_update(STATUS_IDLE, FALSE);
 	} else {
 	    xm_set_modified(0);
@@ -439,7 +439,7 @@ save_wav (const gchar *fn, const gchar *path)
 	   write(audio_ctlpipe, &l, sizeof(l)) != sizeof(l) ||
 	   write(audio_ctlpipe, path, l + 1) != l + 1) {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
 	wait_for_player();
 }
@@ -1013,7 +1013,7 @@ gui_tempo_changed (int value)
 	   write(audio_ctlpipe, &value, sizeof(value)) != sizeof(value)) {
 		static GtkWidget *dialog = NULL;
 
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
 }
 
@@ -1031,7 +1031,7 @@ gui_bpm_changed (int value)
 	   write(audio_ctlpipe, &value, sizeof(value)) != sizeof(value)) {
 		static GtkWidget *dialog = NULL;
 
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
 }
 
@@ -1045,7 +1045,7 @@ gui_adj_amplification_changed (GtkAdjustment *adj)
 	   write(audio_ctlpipe, &b, sizeof(b)) != sizeof(b)) {
 		static GtkWidget *dialog = NULL;
 
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
 }
 
@@ -1059,7 +1059,7 @@ gui_adj_pitchbend_changed (GtkAdjustment *adj)
 	   write(audio_ctlpipe, &b, sizeof(b)) != sizeof(b)) {
 		static GtkWidget *dialog = NULL;
 
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
 }
 
@@ -1167,7 +1167,7 @@ read_mixer_pipe (gpointer data,
 
 	if(read(source, &a, sizeof(a)) != sizeof(a)) {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
 //    printf("read %d\n", a);
 
@@ -1278,7 +1278,7 @@ play_song (void)
 	   write(audio_ctlpipe, &sp, sizeof(sp)) != sizeof(sp) ||
 	   write(audio_ctlpipe, &pp, sizeof(pp)) != sizeof(pp)) {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
     wait_for_player();
 }
@@ -1315,7 +1315,7 @@ gui_init_xm (int new_xm, gboolean updatechspin)
     i = AUDIO_CTLPIPE_INIT_PLAYER;
 	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i)) {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
     tracker_reset(tracker);
     if(new_xm) {
@@ -1405,7 +1405,7 @@ gui_play_note (int channel,
 	   write(audio_ctlpipe, &instrument, sizeof(instrument)) != sizeof(instrument) ||
 	   write(audio_ctlpipe, &all, sizeof(all)) != sizeof(all)) {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
     gui_ewc_startstop++;
 }
@@ -1431,7 +1431,7 @@ gui_play_note_full (unsigned channel,
     x = count; result |= write(audio_ctlpipe, &x, sizeof(x)) != sizeof(x);
 	if(result) {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
     gui_ewc_startstop++;
 }
@@ -1444,7 +1444,7 @@ gui_play_note_keyoff (int channel)
 	if(write(audio_ctlpipe, &a, sizeof(a)) != sizeof(a) ||
 	   write(audio_ctlpipe, &channel, sizeof(channel)) != sizeof(channel)) {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
 }
 

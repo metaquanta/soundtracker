@@ -992,8 +992,8 @@ keys_init (void)
 	   || !keys_ch_try_automatic_config ('E', -2, 8, keys3 + NUM_SPECIAL + 16, ENCODE_MODIFIERS(1, 0, 1))
 	   || !keys_ch_try_automatic_config ('S', -1, 8, keys3 + NUM_SPECIAL + 24, ENCODE_MODIFIERS(1, 0, 1))) {
 	    // Automatic key configuration unsuccessful. Popup requester.
-	    gui_warning_dialog(&dialog, N_("Automatic key configuration unsuccessful.\nPlease use the Keyboard Configuration dialog\n"
-				 "in the Settings menu."), FALSE);
+	    gui_warning_dialog(&dialog, _("Automatic key configuration unsuccessful.\nPlease use the Keyboard Configuration dialog\n"
+	                                  "in the Settings menu."), FALSE);
 	}
 	keys_load_config();
 
