@@ -498,7 +498,6 @@ oss_open (void *dp)
 	}
 
 	d->size = (d->stereo + 1) * (d->bits / 8) * d->fragsize;
-//    d->sndbuf = calloc(1, (d->stereo + 1) * (d->bits / 8) * d->fragsize);
     d->sndbuf = malloc(d->size);
 
 	if(d->sampling) {

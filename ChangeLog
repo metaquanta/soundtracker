@@ -1,5 +1,6 @@
 2018-09-24  Yury Aliaev  <mutab0r@rambler.ru>
-	* app/gui-settings.c: Bugfix.
+	* app/gui-settings.c: Bugfix;
+	* app/drivers/oss.c: Code cleanup.
 
 2018-09-18  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/audioconfig.c, app/gui-settings.c, app/gui-subs.h,
