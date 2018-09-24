@@ -69,7 +69,7 @@ static void
 sample_display_idle_draw (SampleDisplay *s)
 {
     if(!s->idle_handler) {
-	s->idle_handler = gtk_idle_add((GtkFunction)sample_display_idle_draw_function,
+	s->idle_handler = g_idle_add((GSourceFunc)sample_display_idle_draw_function,
 				       (gpointer)s);
 	g_assert(s->idle_handler != 0);
     }
@@ -669,9 +669,8 @@ sample_display_idle_draw_function (SampleDisplay *s)
 	sample_display_draw_update(GTK_WIDGET(s), &area);
     }
 
-    gtk_idle_remove(s->idle_handler);
     s->idle_handler = 0;
-    return TRUE;
+    return FALSE;
 }
 
 static void

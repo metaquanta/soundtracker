@@ -560,9 +560,8 @@ sample_editor_idle_draw_function (struct SampleEditor *se)
 {
     gtk_label_set_text(GTK_LABEL(se->label_selection), se->label_selection_new_text);
     gtk_label_set_text(GTK_LABEL(se->label_length), se->label_length_new_text);
-    gtk_idle_remove(se->idle_handler);
     se->idle_handler = 0;
-    return TRUE;
+    return FALSE;
 }
 
 static void
@@ -590,7 +589,7 @@ sample_editor_set_selection_label (int start,
        computer is idle. */
 
     if(!se->idle_handler) {
-	se->idle_handler = gtk_idle_add((GtkFunction)sample_editor_idle_draw_function,
+	se->idle_handler = g_idle_add((GSourceFunc)sample_editor_idle_draw_function,
 						  (gpointer)se);
 	g_assert(se->idle_handler != 0);
     }

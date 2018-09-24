@@ -117,7 +117,7 @@ static void
 tracker_idle_draw (Tracker *t)
 {
     if(!t->idle_handler) {
-	t->idle_handler = gtk_idle_add((GtkFunction)tracker_idle_draw_function,
+	t->idle_handler = g_idle_add((GSourceFunc)tracker_idle_draw_function,
 				       (gpointer)t);
 	g_assert(t->idle_handler != 0);
     }
@@ -854,9 +854,8 @@ tracker_idle_draw_function (Tracker *t)
 	tracker_draw_clever(GTK_WIDGET(t), &area);
     }
 
-    gtk_idle_remove(t->idle_handler);
     t->idle_handler = 0;
-    return TRUE;
+    return FALSE;
 }
 
 static void

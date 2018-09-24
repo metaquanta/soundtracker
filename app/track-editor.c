@@ -94,9 +94,8 @@ track_editor_editmode_status_idle_function (void)
 {
     gtk_label_set_text(GTK_LABEL(status_bar), track_editor_editmode_status_ed_buf);
 
-    gtk_idle_remove(track_editor_editmode_status_idle_handler);
     track_editor_editmode_status_idle_handler = 0;
-    return TRUE;
+    return FALSE;
 }
 
 void
@@ -309,8 +308,8 @@ show_editmode_status(void)
     strcat(track_editor_editmode_status_ed_buf, tmp_buf);
 
     if(!track_editor_editmode_status_idle_handler) {
-	track_editor_editmode_status_idle_handler = gtk_idle_add(
-	    (GtkFunction)track_editor_editmode_status_idle_function,
+	track_editor_editmode_status_idle_handler = g_idle_add(
+	    (GSourceFunc)track_editor_editmode_status_idle_function,
 	    NULL);
 	g_assert(track_editor_editmode_status_idle_handler != 0);
     }
