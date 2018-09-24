@@ -323,7 +323,7 @@ gui_settings_tracker_colors_dialog (GtkWindow *window)
 					 GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
 	gui_dialog_adjust(dialog, GTK_RESPONSE_APPLY);
     gtk_widget_set_tooltip_text(gtk_dialog_get_widget_for_response(GTK_DIALOG(dialog), GTK_RESPONSE_REJECT), _("Reset tracker colors to standard ST"));
-	gui_dialog_connect(dialog, NULL);
+	gui_dialog_connect(dialog, G_CALLBACK(colors_dialog_response));
 
     table = gtk_table_new(TRACKERCOL_LAST, 5, FALSE);
     for(i = 0; i < TRACKERCOL_LAST; i++) {

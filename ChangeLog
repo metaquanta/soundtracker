@@ -1,24 +1,27 @@
+2018-09-24  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui-settings.c: Bugfix.
+
 2018-09-18  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/audioconfig.c, app/gui-settings.c, app/gui-subs.h,
 	app/gui.c, app/keys.c, app/midi-settings-09x.c,
 	app/sample-editor.c, app/tips-dialog.c, app/transposition.c,
-	app/drivers/alsa1x.c: dialogs are revised, optimized and made
+	app/drivers/alsa1x.c: Dialogs are revised, optimized and made
 	nicer;
-	* app/preferences.c: in prefs_check_prefs_dir() message is
+	* app/preferences.c: In prefs_check_prefs_dir() message is
 	changed from warning to info;
 	* app/audio.c, app/cheat-sheet.c, app/gui-subs.c, app/gui.c,
 	app/instrument-editor.c, app/keys.c, app/xm.c,
 	app/drivers/alsa1x.c, app/drivers/file-output.c,
-	app/drivers/irix-output.c, app/drivers/jack-output.c: many
+	app/drivers/irix-output.c, app/drivers/jack-output.c: Many
 	gettext invocations are checked, added missing and removed
 	duplicated;
-	* app/sample-display.c: code optimization and cleanup;
-	* app/extspinbutton.c, app/gui.[ch]: code optimization, made
+	* app/sample-display.c: Code optimization and cleanup;
+	* app/extspinbutton.c, app/gui.[ch]: Code optimization, made
 	a uniform method to remove focus from a widget.
 
 2018-09-13  Yury Aliaev  <mutab0r@rambler.ru>
-	* app/gui-subs.h: gui_info_dialog() is defined;
-	* app/menubar.c, app/track-editor.c, app/transposition.c: the
+	* app/gui-subs.h: gui_info_dialog() Is defined;
+	* app/menubar.c, app/track-editor.c, app/transposition.c: The
 	check for editmode is added for some module modifing actions
 	like track/patter pasting, killing notes, transposition etc.
 
