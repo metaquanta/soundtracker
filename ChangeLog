@@ -7,7 +7,8 @@
 	app/xm-player.c, app/xm.h: The usage of xm_set_modified() function
 	is optimized;
 	* app/gui.c: In gui_update_title() title is now updated in idle mode
-	to reduce CPU overhead.
+	to reduce CPU overhead;
+	* app/xm.c, app/main.h: some unused headers are removed.
 
 2018-09-18  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/audioconfig.c, app/gui-settings.c, app/gui-subs.h,

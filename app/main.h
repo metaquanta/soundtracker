@@ -22,8 +22,6 @@
 #ifndef _MAIN_H
 #define _MAIN_H
 
-#include <gtk/gtk.h>
-
 #include "xm.h"
 
 extern XM *xm;

@@ -48,8 +48,6 @@
 #include "recode.h"
 #include "audio.h"
 
-#include "preferences.h"
-
 #define LFSTAT_IS_MODULE 1
 
 static guint16 npertab[60]={
