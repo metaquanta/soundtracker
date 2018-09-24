@@ -32,6 +32,7 @@
 #include <math.h>
 #include <glib/gi18n.h>
 
+#include "gui.h"
 #include "xm-player.h"
 #include "xm.h"
 #include "main.h"

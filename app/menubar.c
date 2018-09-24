@@ -74,12 +74,10 @@ menubar_clear (gboolean all)
 	if(all) {
 		gui_free_xm();
 		gui_new_xm();
-		xm_set_modified(0);
 	} else {
 		gui_play_stop();
 		st_clean_song(xm);
-		gui_init_xm(1, TRUE);
-		xm_set_modified(0);
+		gui_init_xm(1, TRUE, FALSE);
 	}
 }
 
@@ -169,13 +167,13 @@ menubar_handle_cutcopypaste (gpointer a)
 			case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
 			case NOTEBOOK_PAGE_MODULE_INFO:
 				instrument_editor_cut_instrument(curins);
-				xm_set_modified(1);
+				gui_xm_set_modified(1);
 				instrument_editor_update(TRUE);
 				sample_editor_update();
 				break;
 			case NOTEBOOK_PAGE_SAMPLE_EDITOR:
 				sample_editor_copy_cut_common(TRUE, TRUE);
-				xm_set_modified(1);
+				gui_xm_set_modified(1);
 				break;
 			}
 		break;
@@ -202,13 +200,13 @@ menubar_handle_cutcopypaste (gpointer a)
 			case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
 			case NOTEBOOK_PAGE_MODULE_INFO:
 				instrument_editor_paste_instrument(curins);
-				xm_set_modified(1);
+				gui_xm_set_modified(1);
 				instrument_editor_update(TRUE);
 				sample_editor_update();
 				break;
 			case NOTEBOOK_PAGE_SAMPLE_EDITOR:
 				sample_editor_paste_clicked();
-				xm_set_modified(1);
+				gui_xm_set_modified(1);
 				break;
 			}
 	break;

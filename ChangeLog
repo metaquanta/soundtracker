@@ -1,6 +1,11 @@
 2018-09-24  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui-settings.c: Bugfix;
-	* app/drivers/oss.c: Code cleanup.
+	* app/drivers/oss.c: Code cleanup;
+	* app/envelope-box.c, app/gui.[ch], app/instrument-editor.c,
+	app/menubar.c, app/midi-09x.c, app/module-info.c,
+	app/sample-editor.c, app/track-editor.c, app/transposition.c,
+	app/xm-player.c, app/xm.h: The usage of xm_set_modified() function
+	is optimized.
 
 2018-09-18  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/audioconfig.c, app/gui-settings.c, app/gui-subs.h,

@@ -138,7 +138,7 @@ transposition_transpose_notes (GtkWidget *w,
 
     transposition_for_each (transposition_transpose_notes_sub, add);
     tracker_redraw(tracker);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 void
@@ -159,7 +159,7 @@ transposition_transpose_selection (Tracker *t,
 					   height, by, -1);
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     tracker_redraw(t);
 }
 
@@ -171,7 +171,7 @@ transposition_change_instruments (GtkWidget *w,
 
     transposition_for_each (transposition_change_instruments_sub, b);
     tracker_redraw(tracker);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void

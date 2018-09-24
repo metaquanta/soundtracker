@@ -41,7 +41,6 @@
 #include "gui.h"
 #include "gui-subs.h"
 #include "gui-settings.h"
-#include "xm.h"
 #include "st-subs.h"
 #include "audio.h"
 #include "xm-player.h"
@@ -309,7 +308,14 @@ popwin_hide (GtkWidget *widget, GParamSpec *ps, gpointer data)
 void
 gui_update_title (const gchar *filename)
 {
+	static gboolean was_modified = FALSE;
 	gchar *title;
+	gboolean modified = xm_get_modified();
+
+	/* To reduce overhead due to excessive calls of the gui_update_title() */
+	if(filename == NULL && was_modified == modified)
+		return;
+
 	if(filename && g_strcmp0(filename, current_filename)) {
 		if(current_filename){
 			g_free(current_filename);
@@ -321,13 +327,14 @@ gui_update_title (const gchar *filename)
 		gchar *bn;
 
 		bn = g_path_get_basename(current_filename);
-		title = g_strdup_printf("SoundTracker "VERSION": %s%s", xm_get_modified() ? "*" : "", bn);
+		title = g_strdup_printf("SoundTracker "VERSION": %s%s", modified ? "*" : "", bn);
 		g_free(bn);
 	} else
-		title = g_strdup_printf("SoundTracker "VERSION": %s", xm_get_modified() ? "*" : "");
+		title = g_strdup_printf("SoundTracker "VERSION": %s", modified ? "*" : "");
 
-    gtk_window_set_title(GTK_WINDOW(mainwindow), title);
-    g_free(title);
+	gtk_window_set_title(GTK_WINDOW(mainwindow), title);
+	g_free(title);
+	was_modified = modified;
 }
 
 static void
@@ -451,7 +458,7 @@ gui_shrink_callback (XMPattern *data)
 	gui_update_pattern_data();
 	tracker_set_pattern(tracker, NULL);
 	tracker_set_pattern(tracker, data);
-	xm_set_modified(1);
+	gui_xm_set_modified(1);
 }
 
 void
@@ -476,7 +483,7 @@ gui_expand_callback (XMPattern *data)
 	gui_update_pattern_data();
 	tracker_set_pattern(tracker, NULL);
 	tracker_set_pattern(tracker, data);
-	xm_set_modified(1);
+	gui_xm_set_modified(1);
 }
 
 void
@@ -508,7 +515,7 @@ gui_pattern_length_correct (FILE *f, int length, gint reply)
 	if (xm_xp_load (f, length, patt, xm)) {
 	    tracker_set_pattern (tracker, NULL);
 	    tracker_set_pattern (tracker, patt);
-	    xm_set_modified(1);
+	    gui_xm_set_modified(1);
 	}
     case 2: /* Cancel, do nothing */
     default:
@@ -591,7 +598,7 @@ load_pat (const gchar *fn, const gchar *localname)
 			if (xm_xp_load (f, length, patt, xm)) {
 				tracker_set_pattern (tracker, NULL);
 				tracker_set_pattern (tracker, patt);
-				xm_set_modified(1);
+				gui_xm_set_modified(1);
 			}
 		} else {
 			gint response;
@@ -617,14 +624,12 @@ current_instrument_changed (GtkSpinButton *spin)
 {
     int ins;
     
-    int m = xm_get_modified();
     STInstrument *i = &xm->instruments[ins = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
     STSample *s = &i->samples[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
 
     instrument_editor_set_instrument(i, ins);
     sample_editor_set_sample(s);
     modinfo_set_current_instrument(ins);
-    xm_set_modified(m);
 }
 
 static void
@@ -640,7 +645,7 @@ current_instrument_name_changed (void)
     term[0] = 0;
     i->needs_conversion = TRUE;
     modinfo_update_instrument(curins);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -648,13 +653,11 @@ current_sample_changed (GtkSpinButton *spin)
 {
     int smpl;
 
-    int m = xm_get_modified();
     STInstrument *i = &xm->instruments[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))-1];
     STSample *s = &i->samples[smpl = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
 
     sample_editor_set_sample(s);
     modinfo_set_current_sample(smpl);
-    xm_set_modified(m);
 }
 
 static void
@@ -670,7 +673,7 @@ current_sample_name_changed (void)
     term[0] = 0;
     s->needs_conversion = TRUE;
     modinfo_update_sample(cursmpl);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static gboolean
@@ -913,7 +916,7 @@ gui_playlist_restart_position_changed (Playlist *p,
 				       int pos)
 {
     xm->restart_position = pos;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -935,7 +938,7 @@ gui_playlist_entry_changed (Playlist *p,
 	}
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -975,7 +978,7 @@ gui_patlen_changed (GtkSpinButton *spin)
 	st_set_pattern_length(pat, n);
 	tracker_set_pattern(tracker, NULL);
 	tracker_set_pattern(tracker, pat);
-	xm_set_modified(1);
+	gui_xm_set_modified(1);
     }
 }
 
@@ -993,8 +996,7 @@ gui_numchans_changed (GtkSpinButton *spin)
 	gui_play_stop();
 	tracker_set_pattern(tracker, NULL);
 	st_set_num_channels(xm, n);
-	gui_init_xm(0, FALSE);
-	xm_set_modified(1);
+	gui_init_xm(0, FALSE, TRUE);
     }
 }
 
@@ -1003,7 +1005,7 @@ gui_tempo_changed (int value)
 {
     audio_ctlpipe_id i;
     xm->tempo = value;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     if(gui_playing_mode) {
 	event_waiter_start(audio_tempo_ew);
     }
@@ -1021,7 +1023,7 @@ gui_bpm_changed (int value)
 {
     audio_ctlpipe_id i;
     xm->bpm = value;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     if(gui_playing_mode) {
 	event_waiter_start(audio_bpm_ew);
     }
@@ -1133,7 +1135,7 @@ gui_update_player_pos (const audio_player_pos *p)
 	}
     }
 
-    xm_set_modified(m);
+    gui_xm_set_modified(m);
 }
 
 void
@@ -1306,9 +1308,8 @@ gui_play_stop (void)
 }
 
 void
-gui_init_xm (int new_xm, gboolean updatechspin)
+gui_init_xm (int new_xm, gboolean updatechspin, gboolean is_modified)
 {
-    int m = xm_get_modified();
     audio_ctlpipe_id i;
 
     i = AUDIO_CTLPIPE_INIT_PLAYER;
@@ -1337,7 +1338,7 @@ gui_init_xm (int new_xm, gboolean updatechspin)
     if(updatechspin)
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_numchans), xm->num_channels);
     scope_group_set_num_channels(scopegroup, xm->num_channels);
-    xm_set_modified(m);
+    gui_xm_set_modified(is_modified);
 }
 
 void
@@ -1360,7 +1361,7 @@ gui_new_xm (void)
 	fprintf(stderr, "Whooops, having memory problems?\n");
 	exit(1);
     }
-    gui_init_xm(1, TRUE);
+    gui_init_xm(1, TRUE, FALSE);
 }
 
 static void
@@ -1384,7 +1385,7 @@ gui_load_xm (const char *filename, const char *localname)
 	gui_new_xm();
 	statusbar_update(STATUS_IDLE, FALSE);
     } else {
-	gui_init_xm(1, TRUE);
+	gui_init_xm(1, TRUE, FALSE);
 	statusbar_update(STATUS_MODULE_LOADED, FALSE);
 	gui_update_title (filename);
     }
@@ -1473,7 +1474,7 @@ gui_set_current_pattern (int p, gboolean updatespin)
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_editpat), p);
     gui_update_pattern_data();
 
-    xm_set_modified(m);
+    gui_xm_set_modified(m);
 }
 
 void
@@ -1522,7 +1523,6 @@ void
 gui_set_current_instrument (int n)
 {
 	GtkWidget *focus;
-    int m = xm_get_modified();
 
     g_return_if_fail(n >= 1 && n <= 128);
     if(n != gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))) {
@@ -1530,14 +1530,12 @@ gui_set_current_instrument (int n)
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(curins_spin), n);
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), focus);
     }
-    xm_set_modified(m);
 }
 
 void
 gui_set_current_sample (int n)
 {
 	GtkWidget *focus;
-    int m = xm_get_modified();
 
     g_return_if_fail(n >= 0 && n <= 127);
     if(n != gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))) {
@@ -1545,7 +1543,6 @@ gui_set_current_sample (int n)
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(cursmpl_spin), n);
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), focus);
     }
-    xm_set_modified(m);
 }
 
 int

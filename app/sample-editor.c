@@ -669,7 +669,7 @@ sample_editor_update (void)
 	gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(resolution_radio[sts->treat_as_8bit ? 0 : 1]), TRUE);
     }
 
-    xm_set_modified(m);
+    gui_xm_set_modified(m);
 }
 
 gboolean
@@ -781,7 +781,7 @@ sample_editor_spin_volume_changed (GtkSpinButton *spin)
     g_return_if_fail(current_sample != NULL);
 
     current_sample->volume = gtk_spin_button_get_value_as_int(spin);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -790,7 +790,7 @@ sample_editor_spin_panning_changed (GtkSpinButton *spin)
     g_return_if_fail(current_sample != NULL);
 
     current_sample->panning = gtk_spin_button_get_value_as_int(spin) + 128;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -799,7 +799,7 @@ sample_editor_spin_finetune_changed (GtkSpinButton *spin)
     g_return_if_fail(current_sample != NULL);
 
     current_sample->finetune = gtk_spin_button_get_value_as_int(spin);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -808,7 +808,7 @@ sample_editor_spin_relnote_changed (GtkSpinButton *spin)
     g_return_if_fail(current_sample != NULL);
 
     current_sample->relnote = gtk_spin_button_get_value_as_int(spin);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -833,7 +833,7 @@ sample_editor_selection_to_loop_clicked (void)
     sample_editor_blocked_set_loop_spins(s, e);
 
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(loopradio[1]), TRUE);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 
@@ -861,7 +861,7 @@ sample_editor_loop_changed ()
 	sample_editor_blocked_set_display_loop(s, e);
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -883,7 +883,7 @@ sample_editor_display_loop_changed (SampleDisplay *sample_display,
 	sample_editor_unlock_sample();
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -958,7 +958,7 @@ sample_editor_loopradio_changed (void)
 	}
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -975,7 +975,7 @@ sample_editor_resolution_changed (void)
 
     sts->treat_as_8bit = (n == 0);
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -997,7 +997,7 @@ sample_editor_clear_clicked (void)
 
     sample_editor_unlock_sample();
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -1016,7 +1016,7 @@ sample_editor_crop_clicked (void)
 	sample_editor_unlock_sample();
 
 	sample_editor_set_sample(current_sample);
-	xm_set_modified(1);
+	gui_xm_set_modified(1);
 }
 
 static void
@@ -1189,7 +1189,7 @@ sample_editor_copy_cut_common (gboolean copy,
     st_sample_fix_loop(oldsample);
     sample_editor_unlock_sample();
     sample_editor_set_sample(oldsample);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -1294,7 +1294,7 @@ sample_editor_paste_clicked (void)
     sample_editor_update();
     if(update_ie)
 	instrument_editor_update(TRUE);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 
@@ -1321,7 +1321,7 @@ sample_editor_reverse_clicked (void)
 	*q = t;
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     sample_editor_unlock_sample();
     sample_editor_update();
     sample_display_set_selection(sampledisplay, ss, se);
@@ -1556,7 +1556,7 @@ sample_editor_load_wav_main (const int mode, FILE *f, struct wl *wavload)
 
     instrument_editor_update(TRUE);
     sample_editor_update();
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     statusbar_update(STATUS_SAMPLE_LOADED, FALSE);
     goto errnobuf;
 
@@ -2459,7 +2459,7 @@ sample_editor_ok_clicked (void)
 
     instrument_editor_update(TRUE);
     sample_editor_update();
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 /* ==================== VOLUME RAMPING DIALOG =================== */
@@ -2608,7 +2608,7 @@ sample_editor_perform_ramp (GtkWidget *w, gint action,
     }
 
     sample_editor_unlock_sample();
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     sample_editor_update();
     sample_display_set_selection(sampledisplay, ss, se);
 }
@@ -2776,7 +2776,7 @@ sample_editor_trim(gboolean trbeg, gboolean trend, gfloat thrshld)
     sample_editor_unlock_sample();
     
     sample_editor_set_sample(current_sample);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     
     if (reselect == 1 && off > on) 
 	sample_display_set_selection(sampledisplay, start, start + off - on);

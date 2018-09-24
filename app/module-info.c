@@ -50,7 +50,7 @@ ptmode_changed (GtkWidget *widget)
 	xm->flags &= ~XM_FLAGS_IS_MOD;
 	xm->flags |= m * XM_FLAGS_IS_MOD;
     }
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -61,7 +61,7 @@ freqmode_changed (void)
 	xm->flags &= ~XM_FLAGS_AMIGA_FREQ;
 	xm->flags |= m * XM_FLAGS_AMIGA_FREQ;
     }
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 
 }
 
@@ -74,7 +74,7 @@ songname_changed (GtkEntry *entry)
     term = g_utf8_offset_to_pointer(xm->utf_name, 21);
     term[0] = 0;
     xm->needs_conversion = TRUE;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -202,7 +202,7 @@ modinfo_delete_unused_instruments (void)
     for(i = 0; i < sizeof(xm->instruments) / sizeof(xm->instruments[0]); i++) {
 	if(!st_instrument_used_in_song(xm, i + 1)) {
 	    st_clean_instrument(&xm->instruments[i], NULL);
-	    xm_set_modified(1);
+	    gui_xm_set_modified(1);
 	}
     }
 
@@ -300,7 +300,7 @@ modinfo_update_all (void)
 
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(ptmode_toggle), xm->flags & XM_FLAGS_IS_MOD);
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(freqmode_w[xm->flags & XM_FLAGS_AMIGA_FREQ]), TRUE);
-    xm_set_modified(m);
+    gui_xm_set_modified(m);
 }
 
 void
@@ -350,7 +350,7 @@ modinfo_copy_to_unused_pattern (void)
     if(n != -1 && !st_is_empty_pattern(&xm->patterns[c])) {
 	gui_play_stop();
 	st_copy_pattern(&xm->patterns[n], &xm->patterns[c]);
-	xm_set_modified(1);
+	gui_xm_set_modified(1);
 	gui_set_current_pattern(n, TRUE);
     }
 }
@@ -380,7 +380,7 @@ modinfo_pack_patterns (void)
     }
 
     gui_playlist_initialize();
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 // Put patterns in playback order, move unused patterns to the end of the pattern space
@@ -388,7 +388,7 @@ void
 modinfo_reorder_patterns (void)
 {
     modinfo_pack_patterns();
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 // Clear patterns which are not in the playlist
@@ -402,7 +402,7 @@ modinfo_clear_unused_patterns (void)
 	    st_clear_pattern(&xm->patterns[i]);
 
     tracker_redraw(tracker);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 // Optimize -- clear everything unused
@@ -430,6 +430,6 @@ modinfo_optimize_module (void)
 		modinfo_clear_unused_patterns();
 		modinfo_delete_unused_instruments();
 		modinfo_reorder_patterns();
-		xm_set_modified(1);
+		gui_xm_set_modified(1);
 	}
 }
