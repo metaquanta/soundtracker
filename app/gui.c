@@ -121,6 +121,12 @@ static struct measure measure_msr[] = {
     {NULL}
 };
 
+struct title_idle_data
+{
+	gboolean modified;
+	guint handler;
+};
+
 static GtkWidget *measurewindow = NULL;
 //static gint measure_chosen;
     
@@ -305,15 +311,36 @@ popwin_hide (GtkWidget *widget, GParamSpec *ps, gpointer data)
 		measure_dialog();
 }
 
+static gboolean
+gui_update_title_idle_func (struct title_idle_data *data)
+{
+	gchar *title;
+
+	if(current_filename) {
+		gchar *bn;
+
+		bn = g_path_get_basename(current_filename);
+		title = g_strdup_printf("SoundTracker "VERSION": %s%s", data->modified ? "*" : "", bn);
+		g_free(bn);
+	} else
+		title = g_strdup_printf("SoundTracker "VERSION": %s%s", data->modified ? "*" : "", _("<NoName>"));
+	gtk_window_set_title(GTK_WINDOW(mainwindow), title);
+
+	g_free(title);
+	data->handler = 0;
+	return FALSE;
+}
+
 void
 gui_update_title (const gchar *filename)
 {
 	static gboolean was_modified = FALSE;
-	gchar *title;
-	gboolean modified = xm_get_modified();
+	static struct title_idle_data data = {0};
+
+	data.modified = xm_get_modified();
 
 	/* To reduce overhead due to excessive calls of the gui_update_title() */
-	if(filename == NULL && was_modified == modified)
+	if(filename == NULL && was_modified == data.modified)
 		return;
 
 	if(filename && g_strcmp0(filename, current_filename)) {
@@ -322,19 +349,11 @@ gui_update_title (const gchar *filename)
 		}
 		current_filename = g_strdup(filename);
 	}
+	if(!data.handler)
+		data.handler = g_idle_add((GSourceFunc)gui_update_title_idle_func, &data);
+	g_assert(data.handler != 0);
 
-	if(current_filename) {
-		gchar *bn;
-
-		bn = g_path_get_basename(current_filename);
-		title = g_strdup_printf("SoundTracker "VERSION": %s%s", modified ? "*" : "", bn);
-		g_free(bn);
-	} else
-		title = g_strdup_printf("SoundTracker "VERSION": %s", modified ? "*" : "");
-
-	gtk_window_set_title(GTK_WINDOW(mainwindow), title);
-	g_free(title);
-	was_modified = modified;
+	was_modified = data.modified;
 }
 
 static void
