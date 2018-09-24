@@ -11,7 +11,8 @@
 	* app/xm.c, app/main.h: Some unused headers are removed;
 	* app/sample-display.c, app/sample-editor.c, app/track-editor.c,
 	app/tracker.c: Seprecated gtk_idle_add() function is replaced by
-	g_idle_add().
+	g_idle_add();
+	* soundtracker.xml: Cleanup, keybindings are adjusted.
 
 2018-09-18  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/audioconfig.c, app/gui-settings.c, app/gui-subs.h,
