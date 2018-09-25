@@ -677,7 +677,7 @@ audio_set_mixer (st_mixer *newmixer)
 	if(write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) ||
 	   write(audio_ctlpipe, &newmixer, sizeof(newmixer)) != sizeof(newmixer)) {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
 	}
 }
 

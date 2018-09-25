@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Краткая справка по эффектам XM</title>
+</head>
+<body bgcolor="#0a141e" text="#e6e6e6">
+<table border="2" width="100%">
+<tr>
+	<td align="center">
+	<font color="e6c800"><b>Колонка эффектов</b></font>
+	</td>
+	<td align="center">
+	<font color="e6c800"><b>Колонка громкости</b></font>
+	</td>
+</tr>
+<tr>
+	<td align="left" rowspan="2" width="45%">
+		<table border="0">
+			<tr><td>0</td><td></td><td>Арпеджио</td></tr>
+			<tr><td>1</td><td>(*)</td><td>Портаменто вверх</td></tr>
+			<tr><td>2</td><td>(*)</td><td>Портаменто вниз</td></tr>
+			<tr><td>3</td><td>(*)</td><td>Портаменто к ноте</td></tr>
+			<tr><td>4</td><td>(*)</td><td>Вибрато</td></tr>
+			<tr><td>5</td><td>(*)</td><td>Портаменто к ноте + переход громкости</td></tr>
+			<tr><td>6</td><td>(*)</td><td>Вибрато + переход громкости</td></tr>
+			<tr><td>7</td><td>(*)</td><td>Тремоло</td></tr>
+			<tr><td>8</td><td></td><td>Стереопозиция</td></tr>
+			<tr><td>9</td><td></td><td>Смещение сэмпла</td></tr>
+			<tr><td>A</td><td>(*)</td><td>Переход громкости</td></tr>
+			<tr><td>B</td><td></td><td>Переход к позиции</td></tr>
+			<tr><td>C</td><td></td><td>Установка громкости</td></tr>
+			<tr><td>D</td><td></td><td>Обрыв паттерна</td></tr>
+			<tr><td>E1</td><td>(*)</td><td>Плавное портаменто вверх</td></tr>
+			<tr><td>E2</td><td>(*)</td><td>Плавное портаменто вниз</td></tr>
+			<tr><td>E3</td><td></td><td>Установка типа глиссандо</td></tr>
+			<tr><td>E4</td><td></td><td>Установка типа вибрато</td></tr>
+			<tr><td>E5</td><td></td><td>Точная подстройка</td></tr>
+			<tr><td>E6</td><td></td><td>Установка/начало зацикливания паттерна</td></tr>
+			<tr><td>E7</td><td></td><td>Установка типа тремоло</td></tr>
+			<tr><td>E9</td><td></td><td>Повторение ноты</td></tr>
+			<tr><td>EA</td><td>(*)</td><td>Плавное нарастание громкости</td></tr>
+			<tr><td>EB</td><td>(*)</td><td>Плавное спадание громкости</td></tr>
+			<tr><td>EC</td><td></td><td>Обрыв ноты</td></tr>
+			<tr><td>ED</td><td></td><td>Задержка ноты</td></tr>
+			<tr><td>EE</td><td></td><td>Задержка паттерна</td></tr>
+			<tr><td>F</td><td></td><td>Задание темпа/BPM</td></tr>
+			<tr><td>G</td><td></td><td>Установка общей громкости</td></tr>
+			<tr><td>H</td><td>(*)</td><td>Переход общей громкости</td></tr>
+			<tr><td>K</td><td></td><td>Отпускание клавиши</td></tr>
+			<tr><td>L</td><td></td><td>Задание позиции огибающей</td></tr>
+			<tr><td>P</td><td>(*)</td><td>Переход стереопозиции</td></tr>
+			<tr><td>R</td><td>(*)</td><td>Повторение ноты + изменение громкости</td></tr>
+			<tr><td>T</td><td></td><td>Тремор</td></tr>
+			<tr><td>X1</td><td>(*)</td><td>Особо плавное портаменто вверх</td></tr>
+			<tr><td>X2</td><td>(*)</td><td>Особо плавное портаменто вниз</td></tr>
+		</table>
+	</td>
+	<td align="left">
+		<table border="0">
+			<tr><td align="center">0</td><td colspan="2">Ничего</td></tr>
+			<tr><td>0x10 &mdash; 0x50</td><td colspan="2">Громкость = значение - 0x10</td></tr>
+			<tr><td>:</td><td>:</td><td>:</td></tr>
+			<tr><td>0x60 &mdash; 0x6f</td><td colspan="2">Нарастание громкости</td></tr>
+			<tr><td>0x70 &mdash; 0x7f</td><td colspan="2">Спадание громкости</td></tr>
+			<tr><td>0x80 &mdash; 0x6f</td><td colspan="2">Плавное нарастание громкости</td></tr>
+			<tr><td>0x90 &mdash; 0x7f</td><td colspan="2">Плавное спадание громкости</td></tr>
+			<tr><td>0xa0 &mdash; 0xaf</td><td colspan="2">Установка скорости вибрато</td></tr>
+			<tr><td>0xb0 &mdash; 0xbf</td><td colspan="2">Вибрато</td></tr>
+			<tr><td>0xc0 &mdash; 0xcf</td><td colspan="2">Стереопозиция</td></tr>
+			<tr><td>0xd0 &mdash; 0xdf</td><td colspan="2">Смещение стереопозиции влево</td></tr>
+			<tr><td>0xe0 &mdash; 0xef</td><td colspan="2">Смещение стереопозиции вправо</td></tr>
+			<tr><td>0xf0 &mdash; 0xff</td><td colspan="2">Портаменто к ноте</td></tr>
+			<tr><td colspan="3"></td></tr>
+		</table>
+		<table border="0">
+			<tr valign="top"><td width="15%">(*) =</td><td>Если байт данных нулевой, используется последнее ненулевое значение для данной команды.</td></tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td valign="top">Нестандартные эффекты XM &mdash; доступны только в SoundTracker и OpenCP &mdash; не используйте их, если Вам важна совместимость с FastTracker.
+		<br><br>
+		<table border="0" width="100%">
+			<tr><td align="center" colspan="2"><font color="e6c800"><b>Колонка эффекта</b></font></td></tr>
+			<tr><td>Z</td><td>Частота среза ФНЧ</td></tr>
+			<tr><td>Q</td><td>Добротность ФНЧ</td></tr>
+		</table>
+		<br>Для отключения фильтра следует задать Q00 <b>и</b> Zff!
+	</td>
+</tr>
+</table>
+</body></html>

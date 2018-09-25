@@ -262,12 +262,12 @@ file_open (void *dp)
 
     /* In case we're running setuid root... */
 	if(chown(d->filename, getuid(), getgid()) == -1)
-		error_warning("Can't change file ownership.");
+		error_warning(_("Can't change file ownership."));
 
     d->sndbuf_size = 16384;
     d->sndbuf = malloc(d->sndbuf_size);
     if(!d->sndbuf) {
-	error_error("Can't allocate mix buffer.");
+	error_error(_("Can't allocate mix buffer."));
 	goto out;
     }
 

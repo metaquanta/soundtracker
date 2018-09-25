@@ -34,13 +34,6 @@ static GtkWidget *transposition_window = NULL,
     *transposition_instrument_mode_w[2],
     *transposition_instrument_w[2];
 
-static gboolean
-transposition_close_requested (GtkWidget *widget)
-{
-    gtk_widget_hide(widget);
-    return TRUE;
-}
-
 static void
 transposition_for_each (void (*function)(XMNote *track, int patlen, int data),
 			int functiondata)
@@ -145,7 +138,7 @@ transposition_transpose_notes (GtkWidget *w,
 
     transposition_for_each (transposition_transpose_notes_sub, add);
     tracker_redraw(tracker);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 void
@@ -166,7 +159,7 @@ transposition_transpose_selection (Tracker *t,
 					   height, by, -1);
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     tracker_redraw(t);
 }
 
@@ -178,7 +171,7 @@ transposition_change_instruments (GtkWidget *w,
 
     transposition_for_each (transposition_change_instruments_sub, b);
     tracker_redraw(tracker);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -218,95 +211,98 @@ transposition_dialog (void)
 	_("Change 1 -> 2")
     };
 
-	if(transposition_window != NULL) {
-		gtk_window_present(GTK_WINDOW(transposition_window));
-		return;
+	if(GUI_EDITING) {
+		if(transposition_window != NULL) {
+			gtk_window_present(GTK_WINDOW(transposition_window));
+			return;
+		}
+
+		transposition_window = gtk_dialog_new_with_buttons(_("Transposition Tools"), GTK_WINDOW(mainwindow),
+		                                                   GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
+		gui_dialog_connect(transposition_window, NULL);
+
+		mainbox = gtk_dialog_get_content_area(GTK_DIALOG(transposition_window));
+		gui_dialog_adjust(transposition_window, GTK_RESPONSE_CLOSE);
+
+		box1 = gtk_hbox_new(FALSE, 4);
+		gtk_box_pack_start(GTK_BOX(mainbox), box1, FALSE, TRUE, 0);
+
+		thing = gtk_label_new(_("Scope of the operation:"));
+		gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
+		make_radio_group_full(labels1, box1, transposition_scope_w, FALSE, TRUE, NULL, NULL);
+
+		frame = gtk_frame_new(NULL);
+		gtk_frame_set_label(GTK_FRAME(frame), _("Note Transposition"));
+		gtk_box_pack_start(GTK_BOX(mainbox), frame, FALSE, TRUE, 0);
+
+		box2 = gtk_vbox_new(FALSE, 2);
+		gtk_container_add (GTK_CONTAINER(frame), box2);
+		gtk_container_border_width(GTK_CONTAINER(box2), 4);
+
+		box1 = gtk_hbox_new(FALSE, 4);
+		gtk_box_pack_start(GTK_BOX(box2), box1, FALSE, TRUE, 0);
+
+		add_empty_hbox(box1);
+		make_radio_group_full(labels2, box1, transposition_instrument_mode_w, FALSE, TRUE, NULL, NULL);
+		add_empty_hbox(box1);
+
+		box1 = gtk_hbox_new(TRUE, 4);
+		gtk_box_pack_start(GTK_BOX(box2), box1, FALSE, TRUE, 0);
+
+		for(i = 0; i < 4; i++) {
+			thing = gtk_button_new_with_label(labels3[i]);
+			gtk_box_pack_start(GTK_BOX(box1), thing, TRUE, TRUE, 0);
+			g_signal_connect(thing, "clicked",
+			                 G_CALLBACK(transposition_transpose_notes),
+			                 GINT_TO_POINTER(i));
+		}
+
+		frame = gtk_frame_new(NULL);
+		gtk_frame_set_label(GTK_FRAME(frame), _("Instrument Changing"));
+		gtk_box_pack_start(GTK_BOX(mainbox), frame, FALSE, TRUE, 0);
+
+		box2 = gtk_vbox_new(FALSE, 2);
+		gtk_container_add (GTK_CONTAINER(frame), box2);
+		gtk_container_border_width(GTK_CONTAINER(box2), 4);
+
+		box1 = gtk_hbox_new(FALSE, 4);
+		gtk_box_pack_start(GTK_BOX(box2), box1, FALSE, TRUE, 0);
+
+		add_empty_hbox(box1);
+
+		gui_put_labelled_spin_button(box1, _("Instrument 1:"), 1, 128, &transposition_instrument_w[0], NULL, NULL, FALSE);
+
+		thing = gtk_button_new_with_label(_("Current instrument"));
+		gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
+		g_signal_connect(thing, "clicked",
+		                 G_CALLBACK(transposition_current_instrument_clicked), (gpointer)0);
+
+		add_empty_hbox(box1);
+
+		gui_put_labelled_spin_button(box1, _("Instrument 2:"), 1, 128, &transposition_instrument_w[1], NULL, NULL, FALSE);
+
+		thing = gtk_button_new_with_label(_("Current instrument"));
+		gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
+		g_signal_connect(thing, "clicked",
+		                 G_CALLBACK(transposition_current_instrument_clicked), (gpointer)1);
+
+		add_empty_hbox(box1);
+
+		box1 = gtk_hbox_new(TRUE, 4);
+		gtk_box_pack_start(GTK_BOX(box2), box1, FALSE, TRUE, 0);
+
+		for(i = 0; i < 2; i++) {
+			thing = gtk_button_new_with_label(labels4[i]);
+			gtk_box_pack_start(GTK_BOX(box1), thing, TRUE, TRUE, 0);
+			g_signal_connect(thing, "clicked",
+			                 G_CALLBACK(transposition_change_instruments),
+			                 GINT_TO_POINTER(i));
+		}
+
+		gtk_widget_show_all(transposition_window);
+	} else {
+		GtkWidget *dialog = NULL;
+
+		gui_info_dialog(&dialog, N_("Transposition is possible only in editing mode"), FALSE);
 	}
-
-    transposition_window = gtk_dialog_new_with_buttons(_("Transposition Tools"), GTK_WINDOW(mainwindow),
-                                                       GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
-    g_signal_connect(transposition_window, "response",
-			G_CALLBACK(gtk_widget_hide), NULL);
-    g_signal_connect(transposition_window, "delete-event",
-			G_CALLBACK(transposition_close_requested), NULL);
-
-    mainbox = gtk_dialog_get_content_area(GTK_DIALOG(transposition_window));
-    gui_dialog_adjust(transposition_window, GTK_RESPONSE_CLOSE);
-
-    box1 = gtk_hbox_new(FALSE, 4);
-    gtk_box_pack_start(GTK_BOX(mainbox), box1, FALSE, TRUE, 0);
-
-    thing = gtk_label_new(_("Scope of the operation:"));
-    gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    make_radio_group_full(labels1, box1, transposition_scope_w, FALSE, TRUE, NULL, NULL);
-
-    frame = gtk_frame_new(NULL);
-    gtk_frame_set_label(GTK_FRAME(frame), _("Note Transposition"));
-    gtk_box_pack_start(GTK_BOX(mainbox), frame, FALSE, TRUE, 0);
-
-    box2 = gtk_vbox_new(FALSE, 2);
-    gtk_container_add (GTK_CONTAINER(frame), box2);
-    gtk_container_border_width(GTK_CONTAINER(box2), 4);
-
-    box1 = gtk_hbox_new(FALSE, 4);
-    gtk_box_pack_start(GTK_BOX(box2), box1, FALSE, TRUE, 0);
-
-    add_empty_hbox(box1);
-    make_radio_group_full(labels2, box1, transposition_instrument_mode_w, FALSE, TRUE, NULL, NULL);
-    add_empty_hbox(box1);
-
-    box1 = gtk_hbox_new(TRUE, 4);
-    gtk_box_pack_start(GTK_BOX(box2), box1, FALSE, TRUE, 0);
-
-    for(i = 0; i < 4; i++) {
-	thing = gtk_button_new_with_label(labels3[i]);
-	gtk_box_pack_start(GTK_BOX(box1), thing, TRUE, TRUE, 0);
-	g_signal_connect(thing, "clicked",
-			   G_CALLBACK(transposition_transpose_notes),
-			   GINT_TO_POINTER(i));
-    }
-
-    frame = gtk_frame_new(NULL);
-    gtk_frame_set_label(GTK_FRAME(frame), _("Instrument Changing"));
-    gtk_box_pack_start(GTK_BOX(mainbox), frame, FALSE, TRUE, 0);
-
-    box2 = gtk_vbox_new(FALSE, 2);
-    gtk_container_add (GTK_CONTAINER(frame), box2);
-    gtk_container_border_width(GTK_CONTAINER(box2), 4);
-
-    box1 = gtk_hbox_new(FALSE, 4);
-    gtk_box_pack_start(GTK_BOX(box2), box1, FALSE, TRUE, 0);
-
-    add_empty_hbox(box1);
-
-    gui_put_labelled_spin_button(box1, _("Instrument 1:"), 1, 128, &transposition_instrument_w[0], NULL, NULL, FALSE);
-
-    thing = gtk_button_new_with_label(_("Current instrument"));
-    gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    g_signal_connect(thing, "clicked",
-		       G_CALLBACK(transposition_current_instrument_clicked), (gpointer)0);
-
-    add_empty_hbox(box1);
-
-    gui_put_labelled_spin_button(box1, _("Instrument 2:"), 1, 128, &transposition_instrument_w[1], NULL, NULL, FALSE);
-
-    thing = gtk_button_new_with_label(_("Current instrument"));
-    gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
-    g_signal_connect(thing, "clicked",
-		       G_CALLBACK(transposition_current_instrument_clicked), (gpointer)1);
-
-    add_empty_hbox(box1);
-
-    box1 = gtk_hbox_new(TRUE, 4);
-    gtk_box_pack_start(GTK_BOX(box2), box1, FALSE, TRUE, 0);
-
-    for(i = 0; i < 2; i++) {
-	thing = gtk_button_new_with_label(labels4[i]);
-	gtk_box_pack_start(GTK_BOX(box1), thing, TRUE, TRUE, 0);
-	g_signal_connect(thing, "clicked",
-			   G_CALLBACK(transposition_change_instruments),
-			   GINT_TO_POINTER(i));
-    }
-
-    gtk_widget_show_all(transposition_window);
 }

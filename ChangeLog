@@ -1,8 +1,54 @@
+
 2018-09-25  Michael Krause  <mk@soundtracker.org>
 
 	* updated build scripts to more recent autotools and gettext;
 	added ALSA 1.0 check (MIDI code is still at 0.9 and thus not
 	compilable at the moment).
+
+2018-09-24  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui-settings.c: Bugfix;
+	* app/drivers/oss.c: Code cleanup;
+	* app/envelope-box.c, app/gui.[ch], app/instrument-editor.c,
+	app/menubar.c, app/midi-09x.c, app/module-info.c,
+	app/sample-editor.c, app/track-editor.c, app/transposition.c,
+	app/xm-player.c, app/xm.h: The usage of xm_set_modified() function
+	is optimized;
+	* app/gui.c: In gui_update_title() title is now updated in idle mode
+	to reduce CPU overhead;
+	* app/xm.c, app/main.h: Some unused headers are removed;
+	* app/sample-display.c, app/sample-editor.c, app/track-editor.c,
+	app/tracker.c: Seprecated gtk_idle_add() function is replaced by
+	g_idle_add();
+	* soundtracker.xml: Cleanup, keybindings are adjusted.
+
+2018-09-18  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/audioconfig.c, app/gui-settings.c, app/gui-subs.h,
+	app/gui.c, app/keys.c, app/midi-settings-09x.c,
+	app/sample-editor.c, app/tips-dialog.c, app/transposition.c,
+	app/drivers/alsa1x.c: Dialogs are revised, optimized and made
+	nicer;
+	* app/preferences.c: In prefs_check_prefs_dir() message is
+	changed from warning to info;
+	* app/audio.c, app/cheat-sheet.c, app/gui-subs.c, app/gui.c,
+	app/instrument-editor.c, app/keys.c, app/xm.c,
+	app/drivers/alsa1x.c, app/drivers/file-output.c,
+	app/drivers/irix-output.c, app/drivers/jack-output.c: Many
+	gettext invocations are checked, added missing and removed
+	duplicated;
+	* app/sample-display.c: Code optimization and cleanup;
+	* app/extspinbutton.c, app/gui.[ch]: Code optimization, made
+	a uniform method to remove focus from a widget.
+
+2018-09-13  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/gui-subs.h: gui_info_dialog() Is defined;
+	* app/menubar.c, app/track-editor.c, app/transposition.c: The
+	check for editmode is added for some module modifing actions
+	like track/patter pasting, killing notes, transposition etc.
+
+2018-09-13  Yury Aliaev  <mutab0r@rambler.ru>
+	* app/drivers/oss.c: Some optimization;
+	* app/sample-editor.c: Code cleanup; fixed the bug with zooming
+	to 1 sample.
 
 2018-09-10  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c: Loading files with non-ASCII names from the command

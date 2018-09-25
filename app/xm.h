@@ -30,7 +30,6 @@
 #include <glib.h>
 
 #include "mixer.h"
-#include "gui.h"
 
 /* -- XM definitions -- */
 
@@ -172,10 +171,8 @@ xm_set_modified (int val)
 {
 	extern XM *xm;
 
-	if(xm != NULL && xm->modified != val) {
+	if(xm != NULL)
 		xm->modified = val;
-		gui_update_title(NULL);
-	}
 }
 
 void

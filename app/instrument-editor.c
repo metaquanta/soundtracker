@@ -52,28 +52,28 @@ static void
 instrument_page_volfade_changed (int value)
 {
     current_instrument->volfade = value;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
 instrument_page_vibspeed_changed (int value)
 {
     current_instrument->vibrate = value;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
 instrument_page_vibdepth_changed (int value)
 {
     current_instrument->vibdepth = value;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
 instrument_page_vibsweep_changed (int value)
 {
     current_instrument->vibsweep = value;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static gui_subs_slider instrument_page_sliders[] = {
@@ -87,7 +87,7 @@ static void
 instrument_editor_vibtype_changed (void)
 {
     current_instrument->vibtype = find_current_toggle(instrument_editor_vibtype_w, 4);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static gint
@@ -161,12 +161,12 @@ instrument_editor_load_instrument (const gchar *fn, const gchar *localname)
 	fclose(f);
     } else {
 	static GtkWidget *dialog = NULL;
-	gui_error_dialog(&dialog, N_("Can't open file."), FALSE);
+	gui_error_dialog(&dialog, _("Can't open file."), FALSE);
     }
 
 	instrument_editor_update(TRUE);
     sample_editor_set_sample(&instr->samples[0]);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -185,14 +185,14 @@ instrument_editor_save_instrument (const gchar *fn, gchar *localname)
 		if(xm_save_xi(instr, f)) {
 			static GtkWidget *dialog = NULL;
 
-			gui_error_dialog(&dialog, N_("Saving instrument failed."), FALSE);
+			gui_error_dialog(&dialog, _("Saving instrument failed."), FALSE);
 			statusbar_update(STATUS_IDLE, FALSE);
 		} else
 			statusbar_update(STATUS_INSTRUMENT_SAVED, FALSE);
 		fclose(f);
 	} else {
 		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, N_("Can't open file."), FALSE);
+		gui_error_dialog(&dialog, _("Can't open file."), FALSE);
 	}
 }
 
@@ -205,7 +205,7 @@ instrument_editor_clear_current_instrument (void)
 
     instrument_editor_update(TRUE);
     sample_editor_update();
-    xm_set_modified(TRUE);
+    gui_xm_set_modified(TRUE);
 }
 
 void
@@ -475,7 +475,7 @@ instrument_editor_update (gboolean full)
 
 	clavier_set_key_labels(CLAVIER(clavier), current_instrument->samplemap);
 
-	xm_set_modified(m);
+	gui_xm_set_modified(m);
     }
 
     if(full)

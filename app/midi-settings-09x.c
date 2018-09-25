@@ -550,10 +550,7 @@ static GtkWidget *midi_dialog = NULL, *midi_notebook;
   midi_notebook = create_midi_notebook(new_midi_settings);
 
   /* Connect dialog/notebook callbacks. */
-  g_signal_connect(midi_dialog, "response",
-                   G_CALLBACK(dialog_response), midi_notebook);
-  g_signal_connect(midi_dialog, "delete-event",
-                   G_CALLBACK(gui_delete_noop), NULL);
+  gui_dialog_connect_data(midi_dialog, G_CALLBACK(dialog_response), midi_notebook);
 
   /* Add the notebook to the upper part of the dialog box. */
   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(midi_dialog))),

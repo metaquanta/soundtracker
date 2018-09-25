@@ -89,7 +89,7 @@ static void
 extspinbutton_value_changed (GtkSpinButton *spin)
 {
 	if(gtk_widget_has_focus(GTK_WIDGET(spin)))
-		gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
+		gui_unset_focus();
 }
 
 GtkWidget *

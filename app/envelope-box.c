@@ -409,7 +409,7 @@ envelope_box_insert_point (EnvelopeBox *e,
     gtk_spin_button_set_value(e->spin_offset, e->current->points[before].pos);
     gtk_spin_button_set_value(e->spin_value, e->current->points[before].val);
     envelope_box_block_loop_spins(e, FALSE);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 
 #ifdef USE_CANVAS
     // Update Canvas
@@ -449,7 +449,7 @@ envelope_box_delete_point (EnvelopeBox *e,
     gtk_spin_button_set_value(e->spin_offset, e->current->points[nn].pos);
     gtk_spin_button_set_value(e->spin_value, e->current->points[nn].val);
     envelope_box_block_loop_spins(e, FALSE);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 
 #ifdef USE_CANVAS
     // Update Canvas
@@ -561,7 +561,7 @@ envelope_box_move_point (EnvelopeBox *e,
     gtk_spin_button_set_value(e->spin_offset, e->current->points[n].pos);
     gtk_spin_button_set_value(e->spin_value, e->current->points[n].val);
     envelope_box_block_loop_spins(e, FALSE);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 
 #ifdef USE_CANVAS
     // Update Canvas
@@ -993,7 +993,7 @@ void envelope_box_set_envelope(EnvelopeBox *e, STEnvelope *env)
     gtk_spin_button_set_value(e->spin_loop_end, env->loop_end);
     envelope_box_block_loop_spins(e, FALSE);
 
-    xm_set_modified(m);
+    gui_xm_set_modified(m);
 }
 
 static void handle_enable_button(GtkToggleButton *t, EnvelopeBox *e)
@@ -1003,7 +1003,7 @@ static void handle_enable_button(GtkToggleButton *t, EnvelopeBox *e)
 	else
 		e->current->flags &= ~EF_ON;
 
-	xm_set_modified(1);
+	gui_xm_set_modified(1);
 }
 
 static void handle_sustain_button(GtkToggleButton *t, EnvelopeBox *e)
@@ -1021,7 +1021,7 @@ static void handle_sustain_button(GtkToggleButton *t, EnvelopeBox *e)
 #endif
 	}
 
-	xm_set_modified(1);
+	gui_xm_set_modified(1);
 }
 
 static void handle_loop_button(GtkToggleButton *t, EnvelopeBox *e)
@@ -1042,7 +1042,7 @@ static void handle_loop_button(GtkToggleButton *t, EnvelopeBox *e)
 #endif
 	}
 
-	xm_set_modified(1);
+	gui_xm_set_modified(1);
 }
 
 static void handle_spin_sustain(GtkSpinButton *s, EnvelopeBox *e)
@@ -1053,7 +1053,7 @@ static void handle_spin_sustain(GtkSpinButton *s, EnvelopeBox *e)
 		loop_sustain_move(e->sustain_line, e->current->points[e->current->sustain_point].pos);
 #endif
 
-	xm_set_modified(1);
+	gui_xm_set_modified(1);
 }
 
 static void handle_spin_loop_start(GtkSpinButton *s, EnvelopeBox *e)
@@ -1065,7 +1065,7 @@ static void handle_spin_loop_start(GtkSpinButton *s, EnvelopeBox *e)
 		loop_sustain_move(e->loop_start_line, e->current->points[e->current->loop_start].pos);
 #endif
 
-	xm_set_modified(1);
+	gui_xm_set_modified(1);
 }
 
 static void handle_spin_loop_end(GtkSpinButton *s, EnvelopeBox *e)
@@ -1077,7 +1077,7 @@ static void handle_spin_loop_end(GtkSpinButton *s, EnvelopeBox *e)
 		loop_sustain_move(e->loop_end_line, e->current->points[e->current->loop_end].pos);
 #endif
 
-	xm_set_modified(1);
+	gui_xm_set_modified(1);
 }
 
 static void
@@ -1116,7 +1116,7 @@ spin_length_changed (GtkSpinButton *spin,
 	gtk_spin_button_set_range(GTK_SPIN_BUTTON(e->spin_loop_end), 0, newval - 1);
 
 	if(e->length_set_modified)
-		xm_set_modified(TRUE);
+		gui_xm_set_modified(TRUE);
 }
 
 static void
@@ -1132,7 +1132,7 @@ spin_pos_changed (GtkSpinButton *spin,
     gtk_spin_button_set_value(e->spin_offset, e->current->points[p].pos);
     gtk_spin_button_set_value(e->spin_value, e->current->points[p].val);
     envelope_box_block_loop_spins(e, FALSE);
-    xm_set_modified(m);
+    gui_xm_set_modified(m);
 
 #ifdef USE_CANVAS
 	if(e->prev_current < e->current->num_points)

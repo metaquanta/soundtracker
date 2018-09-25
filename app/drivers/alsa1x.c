@@ -363,7 +363,7 @@ check_period_sizes (alsa_driver *d)
 	    if(!snd_pcm_hw_params_set_buffer_size(d->soundfd, d->hwparams, 1 << d->buffer_size))
 		break;
 	if(d->buffer_size < 8) {
-	    error_error(N_("Unable to set appropriate buffer size"));
+	    error_error(_("Unable to set appropriate buffer size"));
 	    snd_pcm_close(d->soundfd);
 	    return;
 	}
@@ -530,7 +530,7 @@ device_test (GtkWidget *w, alsa_driver *d)
 	return;
     }
     if(chmin > 2) {
-	error_error("Both mono and stereo are not supported by ALSA device!!!");
+	error_error(_("Both mono and stereo are not supported by ALSA device!!!"));
 	snd_pcm_close(d->soundfd);
 	return;
     }
@@ -597,7 +597,7 @@ device_test (GtkWidget *w, alsa_driver *d)
 	d->bits = 8;
 
 	if(!d->can16 && !d->can8) {
-		error_error("Neither 8 nor 16 bit resolution is not supported by ALSA device!!!");
+		error_error(_("Neither 8 nor 16 bit resolution is not supported by ALSA device!!!"));
 		snd_pcm_close(d->soundfd);
 		return;
 	}
@@ -747,11 +747,9 @@ static void device_list(GtkWidget *w, alsa_driver *d)
 		                                                        "Select", GTK_RESPONSE_APPLY,
 		                                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
 		gui_dialog_adjust(thing, GTK_RESPONSE_APPLY);
-		gtk_widget_set_size_request(thing, 200, 200);
-		g_signal_connect(thing, "response",
-		                 G_CALLBACK(devices_response), d);
-		g_signal_connect(thing, "delete-event",
-		                 G_CALLBACK(gui_delete_noop), NULL);
+		gtk_widget_set_size_request(thing, -1, 200);
+		gui_dialog_connect_data(thing, G_CALLBACK(devices_response), d);
+
 		d->devices_list = gui_stringlist_in_scrolled_window(2, titles, gtk_dialog_get_content_area(GTK_DIALOG(thing)), TRUE);
 		g_signal_connect_swapped(d->devices_list, "row-activated",
 		                 G_CALLBACK(devices_row_selected), d);
@@ -1250,7 +1248,7 @@ alsa_open (void *dp)
 	    if(!snd_pcm_hw_params_set_buffer_size(d->soundfd, d->hwparams, 1 << d->buffer_size))
 		break;
 	if(d->buffer_size < 8) {
-	    error_error(N_("Unable to set appropriate buffer size"));
+	    error_error(_("Unable to set appropriate buffer size"));
 	    goto out;
 	}
     }
