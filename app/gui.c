@@ -1509,14 +1509,14 @@ offset_current_pattern (int offset)
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_editpat), nv);
 }
 
-inline void
+void
 gui_block_smplname_entry (gboolean block)
 {
 	block ? g_signal_handler_block(G_OBJECT(gui_cursmpl_name), snch_id)
 	      : g_signal_handler_unblock(G_OBJECT(gui_cursmpl_name), snch_id);
 }
 
-inline void
+void
 gui_block_instrname_entry (gboolean block)
 {
 	block ? g_signal_handler_block(G_OBJECT(gui_curins_name), inch_id)

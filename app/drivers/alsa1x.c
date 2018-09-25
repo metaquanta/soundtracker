@@ -26,7 +26,7 @@
 
 #include <config.h>
 
-#if DRIVER_ALSA_09x
+#if DRIVER_ALSA
 
 #include <stdio.h>
 #include <stdlib.h>

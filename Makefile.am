@@ -2,7 +2,7 @@
 
 SUBDIRS = po doc app
 
-EXTRA_DIST = config.rpath m4/ChangeLog  TODO FAQ ABOUT-NLS soundtracker.spec \
+EXTRA_DIST = m4/ChangeLog  config.rpath m4/ChangeLog  TODO FAQ ABOUT-NLS soundtracker.spec \
 	soundtracker.desktop \
 	soundtracker_splash.png flat.xpm sharp.xpm muted.png \
 	downarrow.xpm rightarrow.xpm play.xpm play_cur.xpm stop.xpm lock.xpm \

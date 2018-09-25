@@ -7,7 +7,7 @@ if DRIVER_OSS
   libdrivers_a_SOURCES += oss.c
 endif
 
-if DRIVER_ALSA_09x
+if DRIVER_ALSA
   libdrivers_a_SOURCES += alsa1x.c
 endif
 
@@ -31,6 +31,6 @@ if DRIVER_SDL
   libdrivers_a_SOURCES += sdl-output.c
 endif
 
-INCLUDES = -I.. ${ST_S_JACK_INCLUDES}
+AM_CPPFLAGS = -I.. ${ST_S_JACK_INCLUDES}
 
 EXTRA_DIST = dsound-output.c

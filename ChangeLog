@@ -1,3 +1,9 @@
+2018-09-25  Michael Krause  <mk@soundtracker.org>
+
+	* updated build scripts to more recent autotools and gettext;
+	added ALSA 1.0 check (MIDI code is still at 0.9 and thus not
+	compilable at the moment).
+
 2018-09-10  Yury Aliaev  <mutab0r@rambler.ru>
 	* app/gui.c: Loading files with non-ASCII names from the command
 	line is fixed;

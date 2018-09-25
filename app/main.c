@@ -68,7 +68,7 @@ main (int argc,
 #ifdef DRIVER_OSS
 	driver_out_oss, driver_in_oss,
 #endif
-#ifdef DRIVER_ALSA_09x
+#ifdef DRIVER_ALSA
 	driver_out_alsa1x, driver_in_alsa1x,
 #endif
 #ifdef DRIVER_ESD
@@ -192,7 +192,7 @@ main (int argc,
 					   &driver_out_dsound);
 #endif
 
-#ifdef DRIVER_ALSA_09x
+#ifdef DRIVER_ALSA
     drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
 					   &driver_out_alsa1x);
     drivers[DRIVER_INPUT] = g_list_append(drivers[DRIVER_INPUT],
@@ -237,7 +237,7 @@ main (int argc,
     if(gui_final(argc, argv)) {
 	audioconfig_load_config();
 	track_editor_load_config();
-#if defined(DRIVER_ALSA_09x)
+#if defined(DRIVER_ALSA_MIDI)
 	midi_load_config();
 	midi_init();
 #endif
@@ -256,7 +256,7 @@ main (int argc,
 	gui_settings_save_config_always();
 	tips_dialog_save_settings();
 	track_editor_save_config();
-#if defined(DRIVER_ALSA_09x)
+#if defined(DRIVER_ALSA_MIDI)
 	midi_save_config();
 	midi_fini();
 #endif

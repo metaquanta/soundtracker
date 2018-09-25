@@ -19,7 +19,7 @@
 
 #include <config.h>
 
-#if !defined(DRIVER_ALSA_09x)
+#if !defined(DRIVER_ALSA_MIDI)
 
 #include <gtk/gtk.h>
 
@@ -563,4 +563,4 @@ static GtkWidget *midi_dialog = NULL, *midi_notebook;
 
 } /* midi_settings_dialog() */
 
-#endif /* !defined(DRIVER_ALSA_09x) */
+#endif /* !defined(DRIVER_ALSA_MIDI) */
