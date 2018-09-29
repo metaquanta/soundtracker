@@ -26,18 +26,20 @@
 
 static void
 error_error_common (int level,
-		  const char *text)
+                    const char *text)
 {
     // This uses the mixer backpipe (see decls in audio.h) to collect
     // all errors and warnings in one central place. Decls from
     // audio.h should probably be put into a more general place.
-    int l= strlen(text);
+    int l = strlen(text);
     extern int pipeb[2];
 
-	if(write(pipeb[1], &level, sizeof(level)) != sizeof(level) ||
-	   write(pipeb[1], &l, sizeof(l)) != sizeof(l) ||
-	   write(pipeb[1], text, l + 1) != l + 1);
-		perror("Audio thread: write()");
+    if(write(pipeb[1], &level, sizeof(level)) != sizeof(level) ||
+       write(pipeb[1], &l, sizeof(l)) != sizeof(l) ||
+       write(pipeb[1], text, l + 1) != l + 1)
+    {
+        perror("Audio thread: write()");
+    }
 }
 
 void
