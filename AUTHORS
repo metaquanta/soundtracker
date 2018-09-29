@@ -107,6 +107,11 @@ Miroslav Shatlev	<coding@shaltev.org>
 	(Support up to 128 samples per instrument, clock)
 Frank Haferkorn <WillyFoobar@gmx.de>
 	(various fixes)
+Stéphane K.             <stephanek@brutele.be>
+        (initial gtk2 port)
+Matthew Berardi         <metaquanta@users.sourceforge.net>
+        (various code modernizations)
+
 
 Translations
 =============
