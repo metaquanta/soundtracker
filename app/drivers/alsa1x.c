@@ -1289,6 +1289,23 @@ alsa_open (void *dp)
                                    : N_("Unable to set avail min for capture"), err);
 	    goto out;
     }
+
+    // need to enable timestamping explicitly, otherwise alsa_get_play_time()
+    // will always return zero and the pattern display will not scroll in sync
+    // with the audio output, at least on my (MK's) machine.
+    err = snd_pcm_sw_params_set_tstamp_mode(d->soundfd, d->swparams, SND_PCM_TSTAMP_ENABLE);
+    if (err < 0) {
+            alsa_error(d->playback ? N_("Unable to enable timestamping for playback")
+                                   : N_("Unable to enable timestamping for capture"), err);
+	    goto out;
+    }
+    err = snd_pcm_sw_params_set_tstamp_type(d->soundfd, d->swparams, SND_PCM_TSTAMP_TYPE_MONOTONIC);
+    if (err < 0) {
+            alsa_error(d->playback ? N_("Unable to set timestamp type for playback")
+                                   : N_("Unable to set timestamp type for capture"), err);
+	    goto out;
+    }
+
     /* write the parameters to the playback device */
     err = snd_pcm_sw_params(d->soundfd, d->swparams);
     if (err < 0) {
@@ -1342,15 +1359,27 @@ alsa_open (void *dp)
 static double
 alsa_get_play_time (void *dp)
 {
-	alsa_driver * const d = dp;
-	snd_pcm_status_t *status;
-	snd_timestamp_t tstamp;
+    alsa_driver * const d = dp;
+    double play_time;
 
-	snd_pcm_status_alloca(&status);
-	snd_pcm_status(d->soundfd, status);
-	snd_pcm_status_get_tstamp(status, &tstamp);
+    snd_pcm_status_t *status;
+    snd_pcm_status_alloca(&status);
+    if(!status) {
+        g_message("alsa_get_play_time(): can't allocate status");
+        return 0; 
+    }
+    if(snd_pcm_status(d->soundfd, status)) {
+        g_message("alsa_get_play_time(): can't retrieve status");
+        return 0;
+    }
 
-	return (double)tstamp.tv_sec + (double)tstamp.tv_usec / 1e6 - d->starttime;
+    snd_timestamp_t tstamp;
+    snd_pcm_status_get_tstamp(status, &tstamp);
+    play_time = (double)tstamp.tv_sec + (double)tstamp.tv_usec / 1e6 - d->starttime;
+
+    g_debug("alsa_get_play_time() -> %lf", play_time);
+
+    return play_time;
 }
 
 static inline int

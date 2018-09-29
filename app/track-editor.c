@@ -1383,6 +1383,8 @@ track_editor_handle_column_input (Tracker *t,
 static gint
 tracker_timeout (gpointer data)
 {
+    g_debug("tracker_timeout()");
+
     double display_songtime;
     audio_player_pos *p;
 
@@ -1394,6 +1396,7 @@ tracker_timeout (gpointer data)
     }
 
     display_songtime = current_driver->get_play_time(current_driver_object);
+    g_debug("tracker_timeout() songtime=%lf", display_songtime);
 
     p = time_buffer_get(audio_playerpos_tb, display_songtime);
     if(p) {
@@ -1405,6 +1408,8 @@ tracker_timeout (gpointer data)
 void
 tracker_start_updating (void)
 {
+    g_debug("tracker_start_updating()");
+
     if(gtktimer != -1)
 	return;
 
@@ -1414,6 +1419,8 @@ tracker_start_updating (void)
 void
 tracker_stop_updating (void)
 {
+    g_message("tracker_stop_updating()");
+
     if(gtktimer == -1)
 	return;
 
