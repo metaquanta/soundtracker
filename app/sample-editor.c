@@ -964,13 +964,10 @@ static void
 sample_editor_resolution_changed (void)
 {
     STSample *sts = current_sample;
-    st_mixer_sample_info *s;
     int n = find_current_toggle(resolution_radio, 2);
 
     if(!sts)
 	return;
-
-    s = &sts->sample;
 
     sts->treat_as_8bit = (n == 0);
 

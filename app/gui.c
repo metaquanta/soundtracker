@@ -601,13 +601,11 @@ load_pat (const gchar *fn, const gchar *localname)
 
 	f = fopen(localname, "r");
 	if (!f){
-		gint response;
-
 		if(!dialog)
 			dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
 			                                _("Error when opening pattern file %s!"), fn);
 
-		response = gtk_dialog_run(GTK_DIALOG(dialog));
+		gtk_dialog_run(GTK_DIALOG(dialog));
 		gtk_widget_hide(dialog);
 
 		return;
@@ -1923,7 +1921,7 @@ gui_final (int argc,
 {
     GtkWidget *thing, *mainvbox, *table, *hbox, *frame, *mainvbox0, *pmw, *vbox;
     GdkColormap *colormap;
-    GtkStyle *style;
+    //GtkStyle *style;
     gint i, selected;
     GError *error = NULL;
     GtkListStore *ls;
@@ -2052,7 +2050,7 @@ gui_final (int argc,
     gtk_box_pack_start(GTK_BOX(mainwindow_upper_hbox), table, FALSE, TRUE, 0);
     gtk_widget_show(table);
 
-    style = gui_get_style();
+    /* style = */ gui_get_style();
     hbox = gtk_hbox_new(FALSE, 4);
     gtk_table_attach_defaults(GTK_TABLE(table), hbox, 0, 2, 0, 1);
     gtk_widget_show(hbox);

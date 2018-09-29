@@ -884,7 +884,6 @@ clavier_button_press (GtkWidget *widget, GdkEventButton *event)
 static gint
 clavier_button_release (GtkWidget *widget, GdkEventButton *event)
 {
-  gint key;
   Clavier *clavier;
 
   g_return_val_if_fail (widget != NULL, FALSE);
@@ -892,8 +891,6 @@ clavier_button_release (GtkWidget *widget, GdkEventButton *event)
   g_return_val_if_fail (event != NULL, FALSE);
 
   clavier = CLAVIER (widget);
-
-  key = which_key (clavier, (gint)event->x, (gint)event->y);
 
   release_key (clavier);
 

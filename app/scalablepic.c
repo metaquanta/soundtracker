@@ -93,15 +93,12 @@ static void scalable_pic_init (ScalablePic *sp)
 
 static void scalable_pic_realize (GtkWidget *widget)
 {
-    ScalablePic *sp;
     GdkWindowAttr attributes;
     guint attributes_mask;
     
     g_return_if_fail (widget != NULL);
     g_return_if_fail (IS_SCALABLE_PIC (widget));
-    
-    sp = SCALABLE_PIC (widget);
-    
+        
     GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
     
     attributes.window_type = GDK_WINDOW_CHILD;
