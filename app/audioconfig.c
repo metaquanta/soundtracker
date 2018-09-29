@@ -288,20 +288,20 @@ audioconfig_load_config (void)
     guint i, n[NUM_AUDIO_OBJECTS];
 
     memset(n, 0, sizeof(n));
-	for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
-		guint j;
+    for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
+        guint j;
 
-		if((buf = prefs_get_string("audio-objects", audio_objects[i].shorttitle, NULL))) {
-			for(j = 0, l = drivers[audio_objects[i].type]; l; l = l->next, j++) {
-				if(!strcmp(*((gchar **)l->data), buf)) {
-					*audio_objects[i].driver = l->data;
-					n[i] = j;
-					break;
-				}
-			}
-			g_free(buf);
-		}
-	}
+        if((buf = prefs_get_string("audio-objects", audio_objects[i].shorttitle, NULL))) {
+            for(j = 0, l = drivers[audio_objects[i].type]; l; l = l->next, j++) {
+                if(!strcmp(*((gchar **)l->data), buf)) {
+                    *audio_objects[i].driver = l->data;
+                    n[i] = j;
+                    break;
+                }
+            }
+            g_free(buf);
+        }
+    }
 
     for(i = 0; i < NUM_AUDIO_OBJECTS; i++) {
 	guint j;
@@ -310,14 +310,14 @@ audioconfig_load_config (void)
 
 	g_sprintf(buf, "audio-object-%s", audio_objects[i].shorttitle);
 	audio_driver_objects[i] = g_new(void**,
-					  g_list_length(drivers[audio_objects[i].type]));
+                                        g_list_length(drivers[audio_objects[i].type]));
 	for(j = 0, l = drivers[audio_objects[i].type]; l; j++, l = l->next) {
-		st_driver *driver = l->data;
-		// create driver instance
-		void *a_d_o = audio_driver_objects[i][j] = driver->new();
+            st_driver *driver = l->data;
+            // create driver instance
+            void *a_d_o = audio_driver_objects[i][j] = driver->new();
 
-		if(driver->loadsettings)
-			driver->loadsettings(a_d_o, buf);
+            if(driver->loadsettings)
+                driver->loadsettings(a_d_o, buf);
 	}
 
 	if(!d) {
@@ -328,10 +328,11 @@ audioconfig_load_config (void)
 	}
 
 	// set the current driver's object and activate it if required
-	if(d)
-		*audio_objects[i].driver_object = audio_driver_objects[i][n[i]];
-		if(d->activate)
-			d->activate(audio_driver_objects[i][n[i]]);
+	if(d) {
+            *audio_objects[i].driver_object = audio_driver_objects[i][n[i]];
+            if(d->activate)
+                d->activate(audio_driver_objects[i][n[i]]);
+        }
     }
 #if USE_SNDFILE || AUDIOFILE_VERSION
     audio_file_output_load_config();

@@ -1183,10 +1183,10 @@ read_mixer_pipe (gpointer data,
     if(poll(&pfd, 1, 0) <= 0)
 	return;
 
-	if(read(source, &a, sizeof(a)) != sizeof(a)) {
-		static GtkWidget *dialog = NULL;
-		gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
-	}
+    if(read(source, &a, sizeof(a)) != sizeof(a)) {
+        static GtkWidget *dialog = NULL;
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
+    }
 //    printf("read %d\n", a);
 
     switch(a) {

@@ -536,11 +536,12 @@ device_test (GtkWidget *w, alsa_driver *d)
     }
     if(chmin == 1)
 	d->canmono = TRUE;
-	if(chmax >= 2) {
-		d->canstereo = TRUE;
-		d->stereo = 1;
-	} else
-		d->stereo = 0;
+    
+    if(chmax >= 2) {
+        d->canstereo = TRUE;
+        d->stereo = 1;
+    } else
+        d->stereo = 0;
 
     if(d->can8) {
 	if((err = snd_pcm_hw_params_set_format(d->soundfd, d->hwparams,
@@ -593,14 +594,15 @@ device_test (GtkWidget *w, alsa_driver *d)
 	    }
 	}
 	d->bits = 16;
-    } else
+    } else {
 	d->bits = 8;
+    }
 
-	if(!d->can16 && !d->can8) {
-		error_error(_("Neither 8 nor 16 bit resolution is not supported by ALSA device!!!"));
-		snd_pcm_close(d->soundfd);
-		return;
-	}
+    if(!d->can16 && !d->can8) {
+        error_error("Neither 8 nor 16 bit resolution is supported by ALSA device!");
+        snd_pcm_close(d->soundfd);
+        return;
+    }
 
     snd_pcm_close(d->soundfd);
     update_controls(d);

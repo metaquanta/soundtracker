@@ -1307,14 +1307,14 @@ XM_Save (XM *xm,
     for(i = 0; i < num_instruments; i++)
         is_error |= xm_save_xm_instrument(&xm->instruments[i], f, save_smpls, &illegal_chars);
 
-	if(illegal_chars) {
-		static GtkWidget *dialog = NULL;
-		gui_warning_dialog(&dialog, _("Some characters in either module, instruments or samples names "
-		                              "cannot be stored in XM format. They will be skipped."), FALSE);
-	}
+    if(illegal_chars) {
+        static GtkWidget *dialog = NULL;
+        gui_warning_dialog(&dialog, _("Some characters in either module, instruments or samples names "
+                                      "cannot be stored in XM format. They will be skipped."), FALSE);
+    }
 
-	is_error |= ferror(f);
-	return (fclose(f) != 0) || is_error;
+    is_error |= ferror(f);
+    return (fclose(f) != 0) || is_error;
 }
 
 XM *
@@ -1721,38 +1721,38 @@ xm_xp_save (gchar *name, XMPattern *pattern, XM *xm)
     guint8 pheader[4];
     static guint8 buf[32*256*5];
 
-	if ( !(f = fopen (name, "wb"))) {
-	    static GtkWidget *dialog = NULL;
-	    gui_error_dialog(&dialog, _("Error during saving pattern!"), FALSE);
-	}
-	else {
-	    put_le_16 (pheader+0, 01);//version
-	    put_le_16 (pheader+2, pattern->length);//length
+    if ( !(f = fopen (name, "wb"))) {
+        static GtkWidget *dialog = NULL;
+        gui_error_dialog(&dialog, _("Error during saving pattern!"), FALSE);
+    }
+    else {
+        put_le_16 (pheader+0, 01);//version
+        put_le_16 (pheader+2, pattern->length);//length
 
-	    bp = 0;
-	    for (j = 0; j <= pattern->length - 1; j++)//row
-		for (i = 0; i <= 31; i++){//ch
-		    if ( i <= xm->num_channels - 1){
-			buf[bp + 0] = pattern->channels[i][j].note;
-			buf[bp + 1] = pattern->channels[i][j].instrument;
-			buf[bp + 2] = pattern->channels[i][j].volume;
-			buf[bp + 3] = pattern->channels[i][j].fxtype;
-			buf[bp + 4] = pattern->channels[i][j].fxparam;
-		    } else {
-			buf[bp + 0] = 0;
-			buf[bp + 1] = 0;
-			buf[bp + 2] = 0;
-			buf[bp + 3] = 0;
-			buf[bp + 4] = 0;
-		    }
-		    bp += 5;
-		}
+        bp = 0;
+        for (j = 0; j <= pattern->length - 1; j++)//row
+            for (i = 0; i <= 31; i++){//ch
+                if ( i <= xm->num_channels - 1){
+                    buf[bp + 0] = pattern->channels[i][j].note;
+                    buf[bp + 1] = pattern->channels[i][j].instrument;
+                    buf[bp + 2] = pattern->channels[i][j].volume;
+                    buf[bp + 3] = pattern->channels[i][j].fxtype;
+                    buf[bp + 4] = pattern->channels[i][j].fxparam;
+                } else {
+                    buf[bp + 0] = 0;
+                    buf[bp + 1] = 0;
+                    buf[bp + 2] = 0;
+                    buf[bp + 3] = 0;
+                    buf[bp + 4] = 0;
+                }
+                bp += 5;
+            }
 
-		if( fwrite (pheader, 1, sizeof(pheader), f) != sizeof(pheader) ||
-		    fwrite (buf, 1, bp, f) != bp ) {
-			static GtkWidget *dialog = NULL;
-			gui_error_dialog(&dialog, _("Error during saving pattern!"), FALSE);
-		}
-		fclose (f);
-	}
+        if( fwrite (pheader, 1, sizeof(pheader), f) != sizeof(pheader) ||
+            fwrite (buf, 1, bp, f) != bp ) {
+            static GtkWidget *dialog = NULL;
+            gui_error_dialog(&dialog, _("Error during saving pattern!"), FALSE);
+        }
+        fclose (f);
+    }
 }

@@ -512,48 +512,48 @@ track_editor_do_the_note_key (int notekeymeaning,
     if(!(note >= 0 && note < 96))
 	return;
 
-	if(pressed) {
-		if(note_is_running(note) == -1) {
-			if(gui_settings.try_polyphony &&
-			   (always_poly || (!GTK_TOGGLE_BUTTON(editing_toggle)->active)) &&
-			   gui_playing_mode != PLAYING_SONG &&
-			   gui_playing_mode != PLAYING_PATTERN) {
-				gui_play_note(trychan, note, TRUE);
-				note_running[trychan] = note;
-				/* All 32 channels are using for trying independent on
-				   actual number of channels used */
-				trychan = (trychan + 1) & 31;
-			} else {
-				if(jazz_enabled) {
-					if(GTK_TOGGLE_BUTTON(editing_toggle)->active) {
-						gui_play_note(tracker->cursor_ch, note, FALSE);
-						note_running[tracker->cursor_ch] = note;
-						n = track_editor_find_next_jazz_channel(tracker->cursor_ch);
-						tracker_step_cursor_channel(tracker, n - tracker->cursor_ch);
-					} else {
-						playchan = track_editor_find_next_jazz_channel(playchan);
-						gui_play_note(playchan, note, FALSE);
-						note_running[playchan] = note;
-					}
-				} else {
-					gui_play_note(tracker->cursor_ch, note, FALSE);
-					note_running[tracker->cursor_ch] = note;
-				}
-			}
-		}
-	} else {
-		gint pc;
+    if(pressed) {
+        if(note_is_running(note) == -1) {
+            if(gui_settings.try_polyphony &&
+               (always_poly || (!GTK_TOGGLE_BUTTON(editing_toggle)->active)) &&
+               gui_playing_mode != PLAYING_SONG &&
+               gui_playing_mode != PLAYING_PATTERN) {
+                gui_play_note(trychan, note, TRUE);
+                note_running[trychan] = note;
+                /* All 32 channels are using for trying independent on
+                   actual number of channels used */
+                trychan = (trychan + 1) & 31;
+            } else {
+                if(jazz_enabled) {
+                    if(GTK_TOGGLE_BUTTON(editing_toggle)->active) {
+                        gui_play_note(tracker->cursor_ch, note, FALSE);
+                        note_running[tracker->cursor_ch] = note;
+                        n = track_editor_find_next_jazz_channel(tracker->cursor_ch);
+                        tracker_step_cursor_channel(tracker, n - tracker->cursor_ch);
+                    } else {
+                        playchan = track_editor_find_next_jazz_channel(playchan);
+                        gui_play_note(playchan, note, FALSE);
+                        note_running[playchan] = note;
+                    }
+                } else {
+                    gui_play_note(tracker->cursor_ch, note, FALSE);
+                    note_running[tracker->cursor_ch] = note;
+                }
+            }
+        }
+    } else {
+        gint pc;
 
-		if((pc = note_is_running(note)) != -1) {
-			if(keys_is_key_pressed(xkeysym, modifiers)) {
-				/* this is just an auto-repeat fake keyoff. pooh.
-				   in reality this key is still being held down */
-				return;
-			}
-			gui_play_note_keyoff(pc);
-		}
-		note_running[pc] = -1;
-	}
+        if((pc = note_is_running(note)) != -1) {
+            if(keys_is_key_pressed(xkeysym, modifiers)) {
+                /* this is just an auto-repeat fake keyoff. pooh.
+                   in reality this key is still being held down */
+                return;
+            }
+            gui_play_note_keyoff(pc);
+        }
+        note_running[pc] = -1;
+    }
 }
 
 gboolean
@@ -1419,7 +1419,7 @@ tracker_start_updating (void)
 void
 tracker_stop_updating (void)
 {
-    g_message("tracker_stop_updating()");
+    g_debug("tracker_stop_updating()");
 
     if(gtktimer == -1)
 	return;
