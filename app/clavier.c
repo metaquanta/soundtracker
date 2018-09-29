@@ -27,7 +27,7 @@
 #include <gdk/gdkkeysyms.h>
 #include "clavier.h"
 
-#define XFONTNAME "Fixed 8"
+#define XFONTNAME "Monospace 8"
 
 static const int default_colors[] = {
     255, 0, 0,
@@ -170,35 +170,35 @@ clavier_class_init (ClavierClass *class)
 static void
 clavier_init (Clavier *clavier)
 {
-	PangoFontDescription *desc;
+    PangoFontDescription *desc;
 
-	clavier->context = gtk_widget_create_pango_context(GTK_WIDGET(clavier));
-	clavier->layout = pango_layout_new(clavier->context);
-	clavier->layout2 = pango_layout_new(clavier->context);
-	desc = pango_font_description_from_string("Fixed 8");
-	g_assert(desc != NULL);
-	pango_layout_set_font_description(clavier->layout, desc);
-	pango_layout_set_font_description(clavier->layout2, desc);
-	pango_font_description_free(desc);
+    clavier->context = gtk_widget_create_pango_context(GTK_WIDGET(clavier));
+    clavier->layout = pango_layout_new(clavier->context);
+    clavier->layout2 = pango_layout_new(clavier->context);
+    desc = pango_font_description_from_string(XFONTNAME);
+    g_assert(desc != NULL);
+    pango_layout_set_font_description(clavier->layout, desc);
+    pango_layout_set_font_description(clavier->layout2, desc);
+    pango_font_description_free(desc);
+    
+    pango_layout_set_text(clavier->layout, "0", -1); /* let's just hope this is a non-proportional font */
+    pango_layout_get_pixel_size(clavier->layout, &clavier->fontw, &clavier->fonth);
+    clavier->keylabels = NULL;
 
-	pango_layout_set_text(clavier->layout, "0", -1); /* let's just hope this is a non-proportional font */
-	pango_layout_get_pixel_size(clavier->layout, &clavier->fontw, &clavier->fonth);
-  clavier->keylabels = NULL;
+    clavier->type = CLAVIER_TYPE_SEQUENCER;
+    clavier->dir = CLAVIER_DIR_HORIZONTAL;
+    clavier->key_start = 36;
+    clavier->key_end = 96;
+    clavier->black_key_height = 0.6;
+    clavier->black_key_width = 0.54;
 
-  clavier->type = CLAVIER_TYPE_SEQUENCER;
-  clavier->dir = CLAVIER_DIR_HORIZONTAL;
-  clavier->key_start = 36;
-  clavier->key_end = 96;
-  clavier->black_key_height = 0.6;
-  clavier->black_key_width = 0.54;
+    clavier->is_pressed = FALSE;
+    clavier->key_pressed = 0;
 
-  clavier->is_pressed = FALSE;
-  clavier->key_pressed = 0;
+    clavier->key_info = NULL;
+    clavier->key_info_size = 0;
 
-  clavier->key_info = NULL;
-  clavier->key_info_size = 0;
-
-  clavier->show_middle_c = TRUE;
+    clavier->show_middle_c = TRUE;
 }
 
 static void

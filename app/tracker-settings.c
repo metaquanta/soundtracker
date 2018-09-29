@@ -179,11 +179,11 @@ trackersettings_apply_font (TrackerSettings *ts)
     int sel = ts->clist_selected_row;
 
     if(sel != -1) {
-    gchar *font = g_list_nth_data(trackersettings_fontlist, sel);
+        gchar *font = g_list_nth_data(trackersettings_fontlist, sel);
 	tracker_set_font(ts->tracker, font);
 	if(strcmp(gui_settings.tracker_font, font)) {
-		g_free(gui_settings.tracker_font);
-		gui_settings.tracker_font = g_strdup(font);
+            g_free(gui_settings.tracker_font);
+            gui_settings.tracker_font = g_strdup(font);
 	}
     }
 }
@@ -285,7 +285,7 @@ trackersettings_new (void)
     gui_list_handle_selection(ts->list, 
 			      G_CALLBACK(trackersettings_clist_selected), ts);
 
-	selected = trackersettings_gui_populate_clist(ts);
+    selected = trackersettings_gui_populate_clist(ts);
     gui_list_select(ts->list, selected, TRUE, 0.5);
 
     hbox1 = gtk_hbox_new(TRUE, 4);
@@ -323,10 +323,10 @@ trackersettings_new (void)
     ts->fontsel_dialog = gtk_font_selection_dialog_new(_("Select font..."));
     gtk_window_set_modal(GTK_WINDOW(ts->fontsel_dialog), TRUE);
     g_signal_connect(GTK_FONT_SELECTION_DIALOG(ts->fontsel_dialog)->ok_button, "clicked",
-			G_CALLBACK(trackersettings_add_font_ok), ts);
+                     G_CALLBACK(trackersettings_add_font_ok), ts);
     g_signal_connect(GTK_FONT_SELECTION_DIALOG(ts->fontsel_dialog)->cancel_button, "clicked",
-			G_CALLBACK(trackersettings_add_font_cancel), ts);
-	g_signal_connect_swapped(ts->list, "row-activated", G_CALLBACK(trackersettings_apply_font), ts);
+                     G_CALLBACK(trackersettings_add_font_cancel), ts);
+    g_signal_connect_swapped(ts->list, "row-activated", G_CALLBACK(trackersettings_apply_font), ts);
 
     return GTK_WIDGET(ts);
 }
@@ -343,18 +343,17 @@ trackersettings_set_tracker_widget (TrackerSettings *ts,
 static void
 trackersettings_read_fontlist (void)
 {
-	gchar **fontlist; /* Don't g_strfreev() it because strings are used directly in the font list */
-	gsize length, i;
+    gchar **fontlist; /* Don't g_strfreev() it because strings are used directly in the font list */
+    gsize length, i;
 
-	trackersettings_fontlist = NULL;
+    trackersettings_fontlist = NULL;
 
-	fontlist = prefs_get_str_array("settings", "fonts", &length);
-	for(i = 0; i < length; i++)
-		trackersettings_fontlist = g_list_append(trackersettings_fontlist, fontlist[i]);
+    fontlist = prefs_get_str_array("settings", "fonts", &length);
+    for(i = 0; i < length; i++)
+        trackersettings_fontlist = g_list_append(trackersettings_fontlist, fontlist[i]);
 
-    if(g_list_length(trackersettings_fontlist) == 0) {
-	trackersettings_fontlist = g_list_append(trackersettings_fontlist, "fixed");
-    }
+    if(g_list_length(trackersettings_fontlist) == 0)
+	trackersettings_fontlist = g_list_append(trackersettings_fontlist, "Monospace 10");
 }
 
 void
@@ -363,13 +362,13 @@ trackersettings_write_settings (void)
     GList *l;
     GString *tmp = g_string_new("");
 
-	/* It's simplier here to combine fonts string ourselves and put is as a single string rather than an array */
-	for(l = trackersettings_fontlist; l != NULL; l = l->next) {
-		g_string_append_printf(tmp, "%s;", (gchar*)l->data);
-	}
+    /* It's simplier here to combine fonts string ourselves and put is as a single string rather than an array */
+    for(l = trackersettings_fontlist; l != NULL; l = l->next) {
+        g_string_append_printf(tmp, "%s;", (gchar*)l->data);
+    }
 
-	prefs_put_string("settings", "fonts", tmp->str);
-	g_string_free(tmp, TRUE);
+    prefs_put_string("settings", "fonts", tmp->str);
+    g_string_free(tmp, TRUE);
 }
 
 static void

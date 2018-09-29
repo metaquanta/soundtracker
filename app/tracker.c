@@ -1047,27 +1047,37 @@ gboolean
 tracker_set_font (Tracker *t,
 		  const gchar *fontname)
 {
+    g_debug("tracker_set_font(%s)", fontname);
+
     int fonth, fontw, chanwidth;
     PangoFontDescription *desc;
 
     desc = pango_font_description_from_string(fontname);
+    if(!desc) {
+        // this never seems to be reached...
+        g_message("can't get font description from string %s", fontname);
+        return FALSE;
+    }
+
     pango_layout_set_font_description(t->layout, desc);
     pango_font_description_free(desc);
-						    
-    if(desc) {
-    pango_layout_set_text(t->layout, "--- 00 00 000 ", -1);
+
+    static const char * dummy = "--- 00 00 000 ";
+    pango_layout_set_text(t->layout, dummy, -1);
     pango_layout_get_pixel_size(t->layout, &chanwidth, &fonth);
-    fontw = chanwidth / 14;// Assume we have monospace font :-)
+
+    // apparently there is no simple way to find out at this point whether the
+    // font is monospace, so just assume we're lucky...
+    fontw = chanwidth / strlen(dummy);
     fonth += t->baselineskip;
 
-	/* Some fonts have width 0, for example 'clearlyu' */
-	if(fonth >= 1 && fontw >= 1) {
-	    t->fontw = fontw;
-	    t->fonth = fonth;
-	    t->disp_chanwidth = chanwidth;
-	    tracker_reset(t);
-	    return TRUE;
-	}
+    /* Some fonts have width 0, for example 'clearlyu' */
+    if(fonth >= 1 && fontw >= 1) {
+        t->fontw = fontw;
+        t->fonth = fonth;
+        t->disp_chanwidth = chanwidth;
+        tracker_reset(t);
+        return TRUE;
     }
 
     return FALSE;
@@ -1411,21 +1421,10 @@ tracker_class_init (TrackerClass *class)
 static void
 tracker_init (Tracker *t)
 {
-    PangoFontDescription *desc;
     GtkWidget *widget = GTK_WIDGET(t);
 
     t->context = gtk_widget_create_pango_context(widget);
     t->layout = pango_layout_new(t->context);
-
-    desc = pango_font_description_from_string("Fixed 10");
-    pango_layout_set_font_description(t->layout, desc);
-    pango_font_description_free(desc);
-						    
-    t->baselineskip = 0;
-    pango_layout_set_text(t->layout, "--- 00 00 000 ", -1);
-    pango_layout_get_pixel_size(t->layout, &(t->disp_chanwidth), &(t->fonth));
-    t->fonth += t->baselineskip;
-    t->fontw = t->disp_chanwidth / 14;// Assume we have monospace font :-)
 
     t->oldpos = -1;
     t->curpattern = NULL;
@@ -1439,6 +1438,9 @@ tracker_init (Tracker *t)
     t->sel_end_row = t->sel_end_ch = t->sel_start_row = t->sel_start_ch = -1;
     t->mouse_selecting = 0;
     t->button = -1;
+    
+    // will be overridden next by config reader...
+    tracker_set_font(t, "Monospace 8");
 }
 
 guint

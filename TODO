@@ -1,4 +1,12 @@
 
+improve font selection dialog: show only monospace / fixed-width fonts: GTK+3
+has https://developer.gnome.org/gtk3/stable/GtkFontChooserDialog.html which
+permits installation of a font filter, which gets the PangoFontFamily we can
+filter on.
+
+playing song uses ALSA driver, but playing a single sample (on Sample Editor
+page) tries to open /dev/dsp and fails?!
+
 do we need ChangeLog any longer, now that we're using git?
 
 remove gtkhtml?

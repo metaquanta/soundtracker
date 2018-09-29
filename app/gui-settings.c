@@ -562,7 +562,7 @@ gui_settings_load_config (void)
 	gui_settings.asynchronous_editing = prefs_get_bool(SECTION, "gui-asynchronous-editing", FALSE);
 	gui_settings.try_polyphony = prefs_get_bool(SECTION, "gui-try-polyphony", TRUE);
 	gui_settings.tracker_line_format = prefs_get_string(SECTION, "gui-tracker-line-format", "---0000000");
-	gui_settings.tracker_font = prefs_get_string(SECTION, "tracker-font", "fixed");
+	gui_settings.tracker_font = prefs_get_string(SECTION, "tracker-font", "");
 	gui_settings.tempo_bpm_update = prefs_get_bool(SECTION, "gui-tempo-bpm-update", TRUE);
 	gui_settings.auto_switch = prefs_get_bool(SECTION, "gui-auto-switch", FALSE);
 	gui_settings.gui_display_scopes = prefs_get_bool(SECTION, "gui-display-scopes", TRUE);
@@ -628,7 +628,7 @@ gui_settings_save_config (void)
     prefs_put_bool(SECTION, "gui-asynchronous-editing", gui_settings.asynchronous_editing);
     prefs_put_bool(SECTION, "gui-try-polyphony", gui_settings.try_polyphony);
     prefs_put_string(SECTION, "gui-tracker-line-format", gui_settings.tracker_line_format);
-	prefs_put_string(SECTION, "tracker-font", gui_settings.tracker_font);
+    prefs_put_string(SECTION, "tracker-font", gui_settings.tracker_font);
     prefs_put_bool(SECTION, "gui-tempo-bpm-update", gui_settings.tempo_bpm_update);
     prefs_put_bool(SECTION, "gui-auto-switch", gui_settings.auto_switch);
     prefs_put_bool(SECTION, "gui-display-scopes", gui_settings.gui_display_scopes);
