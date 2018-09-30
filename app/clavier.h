@@ -25,7 +25,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#define CLAVIER(obj) G_TYPE_CHECK_CLASS_CAST(obj, clavier_get_type(), Clavier)
+#define CLAVIER(obj) GTK_CHECK_CAST(obj, clavier_get_type(), Clavier)
 #define CLAVIER_CLASS(klass) \
     GTK_CHECK_CLASS_CAST(klass, clavier_get_type, ClavierClass)
 #define IS_CLAVIER(obj) GTK_CHECK_TYPE(obj, clavier_get_type())

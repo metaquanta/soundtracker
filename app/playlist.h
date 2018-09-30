@@ -26,7 +26,7 @@
 #include <gdk/gdk.h>
 #include <gtk/gtkvbox.h>
 
-#define PLAYLIST(obj) G_TYPE_CHECK_CLASS_CAST(obj, playlist_get_type(), Playlist)
+#define PLAYLIST(obj) GTK_CHECK_CAST(obj, playlist_get_type(), Playlist)
 #define PLAYLIST_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, playlist_get_type(), PlaylistClass)
 #define IS_PLAYLIST(obj) GTK_CHECK_TYPE(obj, playlist_get_type())
 

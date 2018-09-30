@@ -26,7 +26,7 @@
 
 #include "tracker.h"
 
-#define TRACKERSETTINGS(obj) G_TYPE_CHECK_CLASS_CAST(obj, trackersettings_get_type(), TrackerSettings)
+#define TRACKERSETTINGS(obj) GTK_CHECK_CAST(obj, trackersettings_get_type(), TrackerSettings)
 #define TRACKERSETTINGS_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, trackersettings_get_type(), TrackerSettingsClass)
 #define IS_TRACKERSETTINGS(obj) GTK_CHECK_TYPE(obj, trackersettings_get_type())
 

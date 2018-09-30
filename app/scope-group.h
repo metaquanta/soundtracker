@@ -30,7 +30,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #endif
 
-#define SCOPE_GROUP(obj) G_TYPE_CHECK_CLASS_CAST(obj, scope_group_get_type(), ScopeGroup)
+#define SCOPE_GROUP(obj) GTK_CHECK_CAST(obj, scope_group_get_type(), ScopeGroup)
 #define SCOPE_GROUP_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, scope_group_get_type(), ScopeGroupClass)
 #define IS_SCOPE_GROUP(obj) GTK_CHECK_TYPE(obj, scope_group_get_type())
 

@@ -32,7 +32,7 @@
 
 #include "xm.h"
 
-#define ENVELOPE_BOX(obj) G_TYPE_CHECK_CLASS_CAST(obj, envelope_box_get_type(), EnvelopeBox)
+#define ENVELOPE_BOX(obj) GTK_CHECK_CAST(obj, envelope_box_get_type(), EnvelopeBox)
 #define ENVELOPE_BOX_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, envelope_box_get_type(), EnvelopeBoxClass)
 #define IS_ENVELOPE_BOX(obj) GTK_CHECK_TYPE(obj, envelope_box_get_type())
 

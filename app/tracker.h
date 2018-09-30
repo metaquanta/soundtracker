@@ -29,7 +29,7 @@
 
 #include "xm.h"
 
-#define TRACKER(obj) G_TYPE_CHECK_CLASS_CAST(obj, tracker_get_type(), Tracker)
+#define TRACKER(obj) GTK_CHECK_CAST(obj, tracker_get_type(), Tracker)
 #define TRACKER_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, tracker_get_type(), TrackerClass)
 #define IS_TRACKER(obj) GTK_CHECK_TYPE(obj, tracker_get_type())
 

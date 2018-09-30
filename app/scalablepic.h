@@ -33,7 +33,7 @@ extern "C" {
 #endif
 
 #define SCALABLE_PIC(obj) \
-    G_TYPE_CHECK_CLASS_CAST(obj, scalable_pic_get_type(), ScalablePic)
+    GTK_CHECK_CAST(obj, scalable_pic_get_type(), ScalablePic)
 #define SCALABLE_PIC_CLASS(klass) \
     GTK_CHECK_CLASS_CAST(klass, scalable_pic_get_type(), ScalablePicClass)
 #define IS_SCALABLE_PIC(obj) \
