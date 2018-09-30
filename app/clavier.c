@@ -922,7 +922,7 @@ clavier_realize(GtkWidget* widget)
     g_return_if_fail(IS_CLAVIER(widget));
 
     clavier = CLAVIER(widget);
-    gtk_widget_set_can_default(widget, GTK_REALIZED);
+    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
 
     attributes.window_type = GDK_WINDOW_CHILD;
     attributes.x = widget->allocation.x;

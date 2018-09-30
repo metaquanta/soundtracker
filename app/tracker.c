@@ -1331,7 +1331,7 @@ tracker_realize(GtkWidget* widget)
     g_return_if_fail(widget != NULL);
     g_return_if_fail(IS_TRACKER(widget));
 
-    gtk_widget_set_can_default(widget, GTK_REALIZED);
+    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
     t = TRACKER(widget);
 
     attributes.x = widget->allocation.x;

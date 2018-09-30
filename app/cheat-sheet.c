@@ -119,7 +119,7 @@ void cheat_sheet_dialog(void)
         FALSE, FALSE, 0);
 
     thing = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-    gtk_widget_set_can_default(thing, GTK_CAN_DEFAULT);
+    GTK_WIDGET_SET_FLAGS(thing, GTK_CAN_DEFAULT);
     gtk_window_set_default(GTK_WINDOW(cheat_sheet_window), thing);
     g_signal_connect_swapped(G_OBJECT(thing), "clicked",
         G_CALLBACK(gtk_widget_hide), cheat_sheet_window);

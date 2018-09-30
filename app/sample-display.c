@@ -266,7 +266,7 @@ sample_display_realize(GtkWidget* widget)
     g_return_if_fail(widget != NULL);
     g_return_if_fail(IS_SAMPLE_DISPLAY(widget));
 
-    gtk_widget_set_can_default(widget, GTK_REALIZED);
+    GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED);
     s = SAMPLE_DISPLAY(widget);
 
     attributes.x = widget->allocation.x;
