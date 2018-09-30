@@ -31,21 +31,21 @@ extern int player_tempo, player_bpm;
 extern gboolean player_looped;
 extern guint8 curtick;
 
-void        xmplayer_init_module       (void);
-gboolean    xmplayer_init_play_song    (int songpos, int patpos, gboolean initall);
-gboolean    xmplayer_init_play_pattern (int pattern, int patpos, int only1row);
-gboolean    xmplayer_play_note         (int channel, int note, int instrument, gboolean all);
-gboolean    xmplayer_play_note_full    (int channel,
-					int note,
-					STSample *sample,
-					guint32 offset,
-					guint32 count);
-void        xmplayer_play_note_keyoff  (int channel);
-double      xmplayer_play              (void);
-void        xmplayer_stop              (void);
-void        xmplayer_set_songpos       (int songpos);
-void        xmplayer_set_pattern       (int pattern);
-void        xmplayer_set_tempo         (int tempo);
-void        xmplayer_set_bpm           (int bpm);
+void xmplayer_init_module(void);
+gboolean xmplayer_init_play_song(int songpos, int patpos, gboolean initall);
+gboolean xmplayer_init_play_pattern(int pattern, int patpos, int only1row);
+gboolean xmplayer_play_note(int channel, int note, int instrument, gboolean all);
+gboolean xmplayer_play_note_full(int channel,
+    int note,
+    STSample* sample,
+    guint32 offset,
+    guint32 count);
+void xmplayer_play_note_keyoff(int channel);
+double xmplayer_play(void);
+void xmplayer_stop(void);
+void xmplayer_set_songpos(int songpos);
+void xmplayer_set_pattern(int pattern);
+void xmplayer_set_tempo(int tempo);
+void xmplayer_set_bpm(int bpm);
 
 #endif /* _ST_XMPLAYER_H */

@@ -22,35 +22,35 @@
 
 #include <config.h>
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 
 #include <fcntl.h>
-#include <sys/ioctl.h>
-#include <sys/types.h>
 #include <sys/audioio.h>
-#include <unistd.h>
+#include <sys/ioctl.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include <glib.h>
+#include <glib/gi18n.h>
 #include <glib/gprintf.h>
 #include <gtk/gtk.h>
-#include <glib/gi18n.h>
 
 #include "driver-inout.h"
-#include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
+#include "mixer.h"
 #include "preferences.h"
 
 typedef struct sun_driver {
-    GtkWidget *configwidget;
-    GtkWidget *prefs_devaudio_w;
-    GtkWidget *prefs_resolution_w[2];
-    GtkWidget *prefs_channels_w[2];
-    GtkWidget *prefs_mixfreq_w[4];
+    GtkWidget* configwidget;
+    GtkWidget* prefs_devaudio_w;
+    GtkWidget* prefs_resolution_w[2];
+    GtkWidget* prefs_channels_w[2];
+    GtkWidget* prefs_mixfreq_w[4];
     GtkWidget *bufsizespin_w, *bufsizelabel_w, *estimatelabel_w;
 
     int playrate;
@@ -62,11 +62,11 @@ typedef struct sun_driver {
     gboolean realtimecaps;
 
     int soundfd;
-    void *sndbuf;
+    void* sndbuf;
     gpointer polltag;
     int firstpoll;
 
-    gchar *p_devaudio;
+    gchar* p_devaudio;
     int p_resolution;
     int p_channels;
     int p_mixfreq;
@@ -81,23 +81,23 @@ typedef struct sun_driver {
 static const int mixfreqs[] = { 8000, 16000, 22050, 44100, -1 };
 
 static void
-sun_poll_ready_playing (gpointer data,
-			gint source,
-			GdkInputCondition condition)
+sun_poll_ready_playing(gpointer data,
+    gint source,
+    GdkInputCondition condition)
 {
-    sun_driver * const d = data;
+    sun_driver* const d = data;
     static int size;
     static struct timeval tv;
 
-    if(!d->firstpoll) {
-	size = (d->stereo + 1) * (d->bits / 8) * d->bufsize;
-	write(d->soundfd, d->sndbuf, size);
+    if (!d->firstpoll) {
+        size = (d->stereo + 1) * (d->bits / 8) * d->bufsize;
+        write(d->soundfd, d->sndbuf, size);
 
-	if(!d->realtimecaps) {
-	    gettimeofday(&tv, NULL);
-	    d->outtime = tv.tv_sec + tv.tv_usec / 1e6;
-	    d->playtime += (double) d->bufsize / d->playrate;
-	}
+        if (!d->realtimecaps) {
+            gettimeofday(&tv, NULL);
+            d->outtime = tv.tv_sec + tv.tv_usec / 1e6;
+            d->playtime += (double)d->bufsize / d->playrate;
+        }
     }
 
     d->firstpoll = FALSE;
@@ -106,23 +106,23 @@ sun_poll_ready_playing (gpointer data,
 }
 
 static void
-prefs_init_from_structure (sun_driver *d)
+prefs_init_from_structure(sun_driver* d)
 {
     int i;
 
     gtk_toggle_button_set_state(
         GTK_TOGGLE_BUTTON(d->prefs_resolution_w[d->p_resolution / 8 - 1]),
-	TRUE);
+        TRUE);
     gtk_toggle_button_set_state(
         GTK_TOGGLE_BUTTON(d->prefs_channels_w[d->p_channels - 1]),
-	TRUE);
+        TRUE);
 
-    for(i = 0; mixfreqs[i] != -1; i++) {
-	if(d->p_mixfreq == mixfreqs[i])
-	    break;
+    for (i = 0; mixfreqs[i] != -1; i++) {
+        if (d->p_mixfreq == mixfreqs[i])
+            break;
     }
-    if(mixfreqs[i] == -1) {
-	i = 3;
+    if (mixfreqs[i] == -1) {
+        i = 3;
     }
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(d->prefs_mixfreq_w[i]), TRUE);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(d->bufsizespin_w), d->p_bufsize);
@@ -131,40 +131,40 @@ prefs_init_from_structure (sun_driver *d)
 }
 
 static void
-prefs_update_estimate (sun_driver *d)
+prefs_update_estimate(sun_driver* d)
 {
     char buf[128];
-    
+
     g_sprintf(buf, _("Estimated audio delay: %f milliseconds"),
         (double)(1000 * (1 << d->p_bufsize)) / d->p_mixfreq);
     gtk_label_set_text(GTK_LABEL(d->estimatelabel_w), buf);
 }
 
 static void
-prefs_resolution_changed (void *a,
-			  sun_driver *d)
+prefs_resolution_changed(void* a,
+    sun_driver* d)
 {
     d->p_resolution = (find_current_toggle(d->prefs_resolution_w, 2) + 1) * 8;
 }
 
 static void
-prefs_channels_changed (void *a,
-			sun_driver *d)
+prefs_channels_changed(void* a,
+    sun_driver* d)
 {
     d->p_channels = find_current_toggle(d->prefs_channels_w, 2) + 1;
 }
 
 static void
-prefs_mixfreq_changed (void *a,
-		       sun_driver *d)
+prefs_mixfreq_changed(void* a,
+    sun_driver* d)
 {
     d->p_mixfreq = mixfreqs[find_current_toggle(d->prefs_mixfreq_w, 4)];
     prefs_update_estimate(d);
 }
 
 static void
-prefs_bufsize_changed (GtkSpinButton *w,
-			sun_driver *d)
+prefs_bufsize_changed(GtkSpinButton* w,
+    sun_driver* d)
 {
     char buf[30];
 
@@ -176,24 +176,24 @@ prefs_bufsize_changed (GtkSpinButton *w,
 }
 
 static void
-sun_devaudio_changed (void *a,
-		    sun_driver *d)
+sun_devaudio_changed(void* a,
+    sun_driver* d)
 {
-	gchar *buf = gtk_entry_get_text(GTK_ENTRY(d->prefs_devaudio_w);
+        gchar *buf = gtk_entry_get_text(GTK_ENTRY(d->prefs_devaudio_w);
 
 	if(strcmp(buf, d->p_devaudio)) {
-		g_free(d->p_devaudio);
-		d->p_devaudio = g_strdup(buf);
+        g_free(d->p_devaudio);
+        d->p_devaudio = g_strdup(buf);
 	}
 }
 
 static void
-sun_make_config_widgets (sun_driver *d)
+sun_make_config_widgets(sun_driver* d)
 {
     GtkWidget *thing, *mainbox, *box2, *box3;
-    static const char *resolutionlabels[] = { "8 bits", "16 bits", NULL };
-    static const char *channelslabels[] = { "Mono", "Stereo", NULL };
-    static const char *mixfreqlabels[] = { "8000", "16000", "22050", "44100",
+    static const char* resolutionlabels[] = { "8 bits", "16 bits", NULL };
+    static const char* channelslabels[] = { "Mono", "Stereo", NULL };
+    static const char* mixfreqlabels[] = { "8000", "16000", "22050", "44100",
         NULL };
 
     d->configwidget = mainbox = gtk_vbox_new(FALSE, 2);
@@ -202,7 +202,7 @@ sun_make_config_widgets (sun_driver *d)
         _("These changes won't take effect until you restart playing."));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
-    
+
     thing = gtk_hseparator_new();
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
@@ -220,7 +220,7 @@ sun_make_config_widgets (sun_driver *d)
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
     gtk_entry_set_text(GTK_ENTRY(thing), d->p_devaudio);
     g_signal_connect_after(thing, "changed",
-			     G_CALLBACK(sun_devaudio_changed), d);
+        G_CALLBACK(sun_devaudio_changed), d);
     d->prefs_devaudio_w = thing;
 
     box2 = gtk_hbox_new(FALSE, 4);
@@ -232,7 +232,7 @@ sun_make_config_widgets (sun_driver *d)
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
     add_empty_hbox(box2);
     make_radio_group_full(resolutionlabels, box2, d->prefs_resolution_w,
-        FALSE, TRUE, (void(*)())prefs_resolution_changed, d);
+        FALSE, TRUE, (void (*)())prefs_resolution_changed, d);
 
     box2 = gtk_hbox_new(FALSE, 4);
     gtk_widget_show(box2);
@@ -243,7 +243,7 @@ sun_make_config_widgets (sun_driver *d)
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
     add_empty_hbox(box2);
     make_radio_group_full(channelslabels, box2, d->prefs_channels_w,
-        FALSE, TRUE, (void(*)())prefs_channels_changed, d);
+        FALSE, TRUE, (void (*)())prefs_channels_changed, d);
 
     box2 = gtk_hbox_new(FALSE, 4);
     gtk_widget_show(box2);
@@ -254,7 +254,7 @@ sun_make_config_widgets (sun_driver *d)
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
     add_empty_hbox(box2);
     make_radio_group_full(mixfreqlabels, box2, d->prefs_mixfreq_w,
-        FALSE, TRUE, (void(*)())prefs_mixfreq_changed, d);
+        FALSE, TRUE, (void (*)())prefs_mixfreq_changed, d);
 
     box2 = gtk_hbox_new(FALSE, 4);
     gtk_widget_show(box2);
@@ -270,11 +270,12 @@ sun_make_config_widgets (sun_driver *d)
     gtk_widget_show(box3);
 
     d->bufsizespin_w = thing = gtk_spin_button_new(GTK_ADJUSTMENT(
-        gtk_adjustment_new(5.0, 5.0, 15.0, 1.0, 1.0, 0.0)), 0, 0);
+                                                       gtk_adjustment_new(5.0, 5.0, 15.0, 1.0, 1.0, 0.0)),
+        0, 0);
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing, "value-changed",
-			G_CALLBACK(prefs_bufsize_changed), d);
+        G_CALLBACK(prefs_bufsize_changed), d);
 
     d->bufsizelabel_w = thing = gtk_label_new("");
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
@@ -293,18 +294,18 @@ sun_make_config_widgets (sun_driver *d)
     prefs_init_from_structure(d);
 }
 
-static GtkWidget *
-sun_getwidget (void *dp)
+static GtkWidget*
+sun_getwidget(void* dp)
 {
-    sun_driver * const d = dp;
+    sun_driver* const d = dp;
 
     return d->configwidget;
 }
 
-static void *
-sun_new (void)
+static void*
+sun_new(void)
 {
-    sun_driver *d = g_new(sun_driver, 1);
+    sun_driver* d = g_new(sun_driver, 1);
 
     d->p_devaudio = g_strdup("/dev/audio");
     d->p_mixfreq = 44100;
@@ -321,9 +322,9 @@ sun_new (void)
 }
 
 static void
-sun_destroy (void *dp)
+sun_destroy(void* dp)
 {
-    sun_driver * const d = dp;
+    sun_driver* const d = dp;
 
     gtk_widget_destroy(d->configwidget);
 
@@ -331,41 +332,41 @@ sun_destroy (void *dp)
 }
 
 static gboolean
-sun_try_format (sun_driver *d, int fmt, int precision)
+sun_try_format(sun_driver* d, int fmt, int precision)
 {
     audio_encoding_t enc;
- 
-    for(enc.index = 0; ioctl(d->soundfd, AUDIO_GETENC, &enc) == 0;
-        enc.index++) {
+
+    for (enc.index = 0; ioctl(d->soundfd, AUDIO_GETENC, &enc) == 0;
+         enc.index++) {
         if (enc.encoding == fmt && enc.precision == precision) {
-	    d->info.play.encoding = enc.encoding;
-	    d->info.play.precision = enc.precision;
-	    if (ioctl(d->soundfd, AUDIO_SETINFO, &d->info) == 0) {
-	        return TRUE;
-	    } else {
-	        return FALSE;
-	    }
-	}
+            d->info.play.encoding = enc.encoding;
+            d->info.play.precision = enc.precision;
+            if (ioctl(d->soundfd, AUDIO_SETINFO, &d->info) == 0) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        }
     }
-    
+
     return FALSE;
 }
 
 static gboolean
-sun_try_channels (sun_driver *d, int nch)
+sun_try_channels(sun_driver* d, int nch)
 {
     d->info.play.channels = nch;
-    if(ioctl(d->soundfd, AUDIO_SETINFO, &d->info) != 0) {
+    if (ioctl(d->soundfd, AUDIO_SETINFO, &d->info) != 0) {
         return FALSE;
     }
-  
+
     return TRUE;
 }
 
 static void
-sun_release (void *dp)
+sun_release(void* dp)
 {
-    sun_driver * const d = dp;
+    sun_driver* const d = dp;
 
     free(d->sndbuf);
     d->sndbuf = NULL;
@@ -373,79 +374,78 @@ sun_release (void *dp)
     audio_poll_remove(d->polltag);
     d->polltag = NULL;
 
-    if(d->soundfd >= 0) {
-    	ioctl(d->soundfd, AUDIO_FLUSH, NULL);
-	close(d->soundfd);
-	d->soundfd = -1;
+    if (d->soundfd >= 0) {
+        ioctl(d->soundfd, AUDIO_FLUSH, NULL);
+        close(d->soundfd);
+        d->soundfd = -1;
     }
 }
 
 static gboolean
-sun_open (void *dp)
+sun_open(void* dp)
 {
     char buf[256];
-    sun_driver * const d = dp;
+    sun_driver* const d = dp;
     int mf = 0, i;
 
     AUDIO_INITINFO(&d->info);
 
     d->soundfd = open(d->p_devaudio, O_WRONLY);
-    if(d->soundfd < 0) {
-	g_sprintf(buf, _("%s: %s"), d->p_devaudio, strerror(errno));
-	goto out;
-    }
-    
-    d->info.mode = AUMODE_PLAY;
-    if(ioctl(d->soundfd, AUDIO_SETINFO, &d->info) != 0) {
-	g_sprintf(buf, _("%s: Cannot play (%s)"), d->p_devaudio, strerror(errno));
-	goto out;
-    }
-    
-    d->playrate = d->p_mixfreq;
-    d->info.play.sample_rate = d->playrate;
-    if(ioctl(d->soundfd, AUDIO_SETINFO, &d->info) != 0) {
-	g_sprintf(buf, _("%s: Cannot handle %dHz (%s)"), d->p_devaudio,
-	    d->playrate, strerror(errno));
-	goto out;
-    }  
-    
-    d->bits = 0;
-    if(d->p_resolution == 16) {
-	if(sun_try_format(d, AUDIO_ENCODING_SLINEAR_LE, 16)) {
-	    d->bits = 16;
-	    mf = ST_MIXER_FORMAT_S16_LE;
-	} else if(sun_try_format(d, AUDIO_ENCODING_SLINEAR_BE, 16)) {
-	    d->bits = 16;
-	    mf = ST_MIXER_FORMAT_S16_BE;
-	} else if(sun_try_format(d, AUDIO_ENCODING_ULINEAR_LE, 16)) {
-	    d->bits = 16;
-	    mf = ST_MIXER_FORMAT_U16_LE;
-	} else if(sun_try_format(d, AUDIO_ENCODING_ULINEAR_BE, 16)) {
-	    d->bits = 16;
-	    mf = ST_MIXER_FORMAT_U16_BE;
-	}
-    }
-    if(d->bits != 16) {
-	if(sun_try_format(d, AUDIO_ENCODING_SLINEAR, 8)) {
-	    d->bits = 8;
-	    mf = ST_MIXER_FORMAT_S8;
-	} else if(sun_try_format(d, AUDIO_ENCODING_PCM8, 8)) {
-	    d->bits = 8;
-	    mf = ST_MIXER_FORMAT_U8;
-	} else {
-	    g_sprintf(buf, _("%s: Required sound encoding not supported.\n"),
-	        d->p_devaudio);
-	    goto out;
-	}
-    }
-    
-    if(d->p_channels == 2 && sun_try_channels(d, 2)) {
-	d->stereo = 1;
-	mf |= ST_MIXER_FORMAT_STEREO;
-    } else if(sun_try_channels(d, 1)) {
-	d->stereo = 0;
+    if (d->soundfd < 0) {
+        g_sprintf(buf, _("%s: %s"), d->p_devaudio, strerror(errno));
+        goto out;
     }
 
+    d->info.mode = AUMODE_PLAY;
+    if (ioctl(d->soundfd, AUDIO_SETINFO, &d->info) != 0) {
+        g_sprintf(buf, _("%s: Cannot play (%s)"), d->p_devaudio, strerror(errno));
+        goto out;
+    }
+
+    d->playrate = d->p_mixfreq;
+    d->info.play.sample_rate = d->playrate;
+    if (ioctl(d->soundfd, AUDIO_SETINFO, &d->info) != 0) {
+        g_sprintf(buf, _("%s: Cannot handle %dHz (%s)"), d->p_devaudio,
+            d->playrate, strerror(errno));
+        goto out;
+    }
+
+    d->bits = 0;
+    if (d->p_resolution == 16) {
+        if (sun_try_format(d, AUDIO_ENCODING_SLINEAR_LE, 16)) {
+            d->bits = 16;
+            mf = ST_MIXER_FORMAT_S16_LE;
+        } else if (sun_try_format(d, AUDIO_ENCODING_SLINEAR_BE, 16)) {
+            d->bits = 16;
+            mf = ST_MIXER_FORMAT_S16_BE;
+        } else if (sun_try_format(d, AUDIO_ENCODING_ULINEAR_LE, 16)) {
+            d->bits = 16;
+            mf = ST_MIXER_FORMAT_U16_LE;
+        } else if (sun_try_format(d, AUDIO_ENCODING_ULINEAR_BE, 16)) {
+            d->bits = 16;
+            mf = ST_MIXER_FORMAT_U16_BE;
+        }
+    }
+    if (d->bits != 16) {
+        if (sun_try_format(d, AUDIO_ENCODING_SLINEAR, 8)) {
+            d->bits = 8;
+            mf = ST_MIXER_FORMAT_S8;
+        } else if (sun_try_format(d, AUDIO_ENCODING_PCM8, 8)) {
+            d->bits = 8;
+            mf = ST_MIXER_FORMAT_U8;
+        } else {
+            g_sprintf(buf, _("%s: Required sound encoding not supported.\n"),
+                d->p_devaudio);
+            goto out;
+        }
+    }
+
+    if (d->p_channels == 2 && sun_try_channels(d, 2)) {
+        d->stereo = 1;
+        mf |= ST_MIXER_FORMAT_STEREO;
+    } else if (sun_try_channels(d, 1)) {
+        d->stereo = 0;
+    }
 
     d->mf = mf;
 
@@ -453,17 +453,17 @@ sun_open (void *dp)
     d->info.blocksize = 1 << (i & 0xffff);
     d->info.hiwat = ((unsigned)i >> 16) & 0x7fff;
     if (d->info.hiwat == 0) {
-    	d->info.hiwat = 65536;
+        d->info.hiwat = 65536;
     }
     if (ioctl(d->soundfd, AUDIO_SETINFO, &d->info) != 0) {
-	g_sprintf(buf, _("%s: Cannot set block size (%s)"), d->p_devaudio,
-	    strerror(errno));
+        g_sprintf(buf, _("%s: Cannot set block size (%s)"), d->p_devaudio,
+            strerror(errno));
         goto out;
     }
-   
+
     if (ioctl(d->soundfd, AUDIO_GETINFO, &d->info) != 0) {
-	g_sprintf(buf, _("%s: %s"), d->p_devaudio, strerror(errno));
-	goto out;
+        g_sprintf(buf, _("%s: %s"), d->p_devaudio, strerror(errno));
+        goto out;
     }
     d->bufsize = d->info.blocksize;
     d->numbufs = d->info.hiwat;
@@ -477,11 +477,11 @@ sun_open (void *dp)
 
     d->sndbuf = calloc(1, d->bufsize);
 
-    if(d->stereo == 1) {
-	d->bufsize /= 2;
+    if (d->stereo == 1) {
+        d->bufsize /= 2;
     }
-    if(d->bits == 16) {
-	d->bufsize /= 2;
+    if (d->bits == 16) {
+        d->bufsize /= 2;
     }
 
     d->polltag = audio_poll_add(d->soundfd, GDK_INPUT_WRITE,
@@ -491,54 +491,52 @@ sun_open (void *dp)
 
     return TRUE;
 
-  out:
+out:
     error_error(buf);
     sun_release(dp);
     return FALSE;
 }
 
 static double
-sun_get_play_time (void *dp)
+sun_get_play_time(void* dp)
 {
-    sun_driver * const d = dp;
+    sun_driver* const d = dp;
 
-    if(d->realtimecaps) {
+    if (d->realtimecaps) {
         static audio_offset_t ooffs;
 
-	ioctl(d->soundfd, AUDIO_GETOOFFS, &ooffs);
+        ioctl(d->soundfd, AUDIO_GETOOFFS, &ooffs);
 
-	return (double)ooffs.samples /
-	    (d->stereo + 1) / (d->bits / 8) / d->playrate;
+        return (double)ooffs.samples / (d->stereo + 1) / (d->bits / 8) / d->playrate;
     } else {
-	struct timeval tv;
-	double curtime;
+        struct timeval tv;
+        double curtime;
 
-	gettimeofday(&tv, NULL);
-	curtime = tv.tv_sec + tv.tv_usec / 1e6;
+        gettimeofday(&tv, NULL);
+        curtime = tv.tv_sec + tv.tv_usec / 1e6;
 
-	return d->playtime + curtime - d->outtime -
-	    d->numbufs * ((double) d->bufsize / d->playrate);
+        return d->playtime + curtime - d->outtime - d->numbufs * ((double)d->bufsize / d->playrate);
     }
 }
 
 static inline int
-sun_get_play_rate (void *d)
+sun_get_play_rate(void* d)
 {
-    sun_driver * const dp = d;
+    sun_driver* const dp = d;
     return dp->playrate;
 }
 
 static gboolean
-sun_loadsettings (void *dp,
-		  const gchar *f)
+sun_loadsettings(void* dp,
+    const gchar* f)
 {
-	gchar *buf;
-    sun_driver * const d = dp;
+    gchar* buf;
+    sun_driver* const d = dp;
 
-	if((buf = prefs_get_string(f, "sun-devaudio", NULL))) {
-		g_free(d->p_devaudio);
-		d->p_devaudio = buf;
-	}
+    if ((buf = prefs_get_string(f, "sun-devaudio", NULL))) {
+        g_free(d->p_devaudio);
+        d->p_devaudio = buf;
+    }
     d->p_resolution = prefs_get_int(f, "sun-resolution", 16);
     d->p_channels = prefs_get_int(f, "sun-channels", 2);
     d->p_mixfreq = prefs_get_int(f, "sun-mixfreq", 44100);
@@ -550,10 +548,10 @@ sun_loadsettings (void *dp,
 }
 
 static gboolean
-sun_savesettings (void *dp,
-		  const gchar *f)
+sun_savesettings(void* dp,
+    const gchar* f)
 {
-    sun_driver * const d = dp;
+    sun_driver* const d = dp;
 
     prefs_put_string(f, "sun-devaudio", d->p_devaudio);
     prefs_put_int(f, "sun-resolution", d->p_resolution);
@@ -565,21 +563,21 @@ sun_savesettings (void *dp,
 }
 
 st_io_driver driver_out_sun = {
-	"Sun Output",
+    "Sun Output",
 
-	sun_new,
-	sun_destroy,
+    sun_new,
+    sun_destroy,
 
-	sun_open,
-	sun_release,
+    sun_open,
+    sun_release,
 
-	sun_getwidget,
-	sun_loadsettings,
-	sun_savesettings,
+    sun_getwidget,
+    sun_loadsettings,
+    sun_savesettings,
 
-	NULL,
-	NULL,
+    NULL,
+    NULL,
 
-	sun_get_play_time,
-	sun_get_play_rate
+    sun_get_play_time,
+    sun_get_play_rate
 };

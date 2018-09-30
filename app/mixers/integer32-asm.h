@@ -24,37 +24,37 @@
 
 #include <glib.h>
 
-gint32 mixerasm_stereo_16_scopes (gint32 current,     // 8
-				  gint32 increment,   // 12
-				  gint16 *data,       // 16
-				  gint32 *mixed,      // 20
-				  gint16 *scopedata,   // 24
-				  guint32 volume,     // 28
-				  guint32 leftvol,    // 32
-				  guint32 rightvol,   // 36
-				  guint32 count);     // 40
+gint32 mixerasm_stereo_16_scopes(gint32 current, // 8
+    gint32 increment, // 12
+    gint16* data, // 16
+    gint32* mixed, // 20
+    gint16* scopedata, // 24
+    guint32 volume, // 28
+    guint32 leftvol, // 32
+    guint32 rightvol, // 36
+    guint32 count); // 40
 
-gint32 mixerasm_mono_16_scopes (gint32 current,     // 8
-				gint32 increment,   // 12
-				gint16 *data,       // 16
-				gint32 *mixed,      // 20
-				gint16 *scopedata,   // 24
-				guint32 volume,     // 28
-				guint32 count);     // 32
+gint32 mixerasm_mono_16_scopes(gint32 current, // 8
+    gint32 increment, // 12
+    gint16* data, // 16
+    gint32* mixed, // 20
+    gint16* scopedata, // 24
+    guint32 volume, // 28
+    guint32 count); // 32
 
-gint32 mixerasm_stereo_16(gint32 current,     // 8
-			  gint32 increment,   // 12
-			  gint16 *data,       // 16
-			  gint32 *mixed,      // 20
-			  guint32 leftvol,    // 24
-			  guint32 rightvol,   // 28
-			  guint32 count);     // 32
+gint32 mixerasm_stereo_16(gint32 current, // 8
+    gint32 increment, // 12
+    gint16* data, // 16
+    gint32* mixed, // 20
+    guint32 leftvol, // 24
+    guint32 rightvol, // 28
+    guint32 count); // 32
 
-gint32 mixerasm_mono_16(gint32 current,     // 8
-			gint32 increment,   // 12
-			gint16 *data,       // 16
-			gint32 *mixed,      // 20
-			guint32 volume,     // 24
-			guint32 count);     // 28
+gint32 mixerasm_mono_16(gint32 current, // 8
+    gint32 increment, // 12
+    gint16* data, // 16
+    gint32* mixed, // 20
+    guint32 volume, // 24
+    guint32 count); // 28
 
 #endif /* _ST_MIXERASM_H */

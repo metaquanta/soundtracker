@@ -24,60 +24,60 @@
 
 #include <gtk/gtk.h>
 
-#include "tracker.h"
 #include "tracker-settings.h"
+#include "tracker.h"
 
-extern Tracker *tracker;
-extern GtkWidget *trackersettings;
-extern GtkWidget *vscrollbar;
+extern Tracker* tracker;
+extern GtkWidget* trackersettings;
+extern GtkWidget* vscrollbar;
 
-void      tracker_page_create              (GtkNotebook *nb);
+void tracker_page_create(GtkNotebook* nb);
 
-gboolean  track_editor_handle_keys         (int shift,
-					    int ctrl,
-					    int alt,
-					    guint32 keyval,
-					    gboolean pressed);
+gboolean track_editor_handle_keys(int shift,
+    int ctrl,
+    int alt,
+    guint32 keyval,
+    gboolean pressed);
 
-void      track_editor_do_the_note_key     (int note,
-					    gboolean pressed,
-					    guint32 xkeysym,
-					    int modifiers,
-					    gboolean always_poly);
+void track_editor_do_the_note_key(int note,
+    gboolean pressed,
+    guint32 xkeysym,
+    int modifiers,
+    gboolean always_poly);
 
-void      track_editor_toggle_jazz_edit    (GtkCheckMenuItem *b);
-void	  track_editor_toggle_insert_noteoff (GtkCheckMenuItem *b);
+void track_editor_toggle_jazz_edit(GtkCheckMenuItem* b);
+void track_editor_toggle_insert_noteoff(GtkCheckMenuItem* b);
 
-void      track_editor_set_num_channels    (int n);
+void track_editor_set_num_channels(int n);
 
-void      track_editor_load_config         (void);
-void      track_editor_save_config         (void);
+void track_editor_load_config(void);
+void track_editor_save_config(void);
 
 /* Handling of real-time scrolling */
-void      tracker_start_updating      (void);
-void      tracker_stop_updating       (void);
-void      tracker_set_update_freq     (int);
+void tracker_start_updating(void);
+void tracker_stop_updating(void);
+void tracker_set_update_freq(int);
 
 /* c'n'p operations */
 
-void      track_editor_copy_pattern        (GtkWidget *w, Tracker *t);
-void      track_editor_cut_pattern         (GtkWidget *w, Tracker *t);
-void      track_editor_paste_pattern       (GtkWidget *w, Tracker *t);
-void      track_editor_copy_track          (GtkWidget *w, Tracker *t);
-void      track_editor_cut_track           (GtkWidget *w, Tracker *t);
-void      track_editor_paste_track         (GtkWidget *w, Tracker *t);
-void      track_editor_delete_track        (GtkWidget *w, Tracker *t);
-void      track_editor_insert_track        (GtkWidget *w, Tracker *t);
-void      track_editor_kill_notes_track    (GtkWidget *w, Tracker *t);
-void      track_editor_mark_selection      (Tracker *t);
-void      track_editor_clear_mark_selection(GtkWidget *w, Tracker *t);
-void      track_editor_copy_selection      (GtkWidget *w, Tracker *t);
-void      track_editor_cut_selection       (GtkWidget *w, Tracker *t);
-void      track_editor_paste_selection     (GtkWidget *w, Tracker *t);
+void track_editor_copy_pattern(GtkWidget* w, Tracker* t);
+void track_editor_cut_pattern(GtkWidget* w, Tracker* t);
+void track_editor_paste_pattern(GtkWidget* w, Tracker* t);
+void track_editor_copy_track(GtkWidget* w, Tracker* t);
+void track_editor_cut_track(GtkWidget* w, Tracker* t);
+void track_editor_paste_track(GtkWidget* w, Tracker* t);
+void track_editor_delete_track(GtkWidget* w, Tracker* t);
+void track_editor_insert_track(GtkWidget* w, Tracker* t);
+void track_editor_kill_notes_track(GtkWidget* w, Tracker* t);
+void track_editor_mark_selection(Tracker* t);
+void track_editor_clear_mark_selection(GtkWidget* w, Tracker* t);
+void track_editor_copy_selection(GtkWidget* w, Tracker* t);
+void track_editor_cut_selection(GtkWidget* w, Tracker* t);
+void track_editor_paste_selection(GtkWidget* w, Tracker* t);
 
-void      track_editor_interpolate_fx      (GtkWidget *w, Tracker *t);
+void track_editor_interpolate_fx(GtkWidget* w, Tracker* t);
 
-void      track_editor_cmd_mvalue (Tracker *t, gboolean mode);
+void track_editor_cmd_mvalue(Tracker* t, gboolean mode);
 
-void	  track_editor_toggle_permanentness	(Tracker *t, gboolean all);
+void track_editor_toggle_permanentness(Tracker* t, gboolean all);
 #endif /* _TRACK_EDITOR_H */

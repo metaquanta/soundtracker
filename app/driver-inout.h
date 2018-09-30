@@ -22,40 +22,40 @@
 #ifndef _ST_DRIVER_OUT_H
 #define _ST_DRIVER_OUT_H
 
-#include <glib.h>
 #include <gdk/gdktypes.h>
+#include <glib.h>
 
 #include "driver.h"
 
 /* Install / remove poll() handlers, similar to gdk_input_add() */
-gpointer audio_poll_add       (int fd,
-			       GdkInputCondition cond,
-			       GdkInputFunction func,
-			       gpointer data);
-void     audio_poll_remove    (gpointer poll);
+gpointer audio_poll_add(int fd,
+    GdkInputCondition cond,
+    GdkInputFunction func,
+    gpointer data);
+void audio_poll_remove(gpointer poll);
 
 /* Called by the driver to indicate that it accepts new data */
-void     audio_play           (void);
+void audio_play(void);
 
 /* Called by the playing driver to indicate that the samples belonging
    to the specified time are about to be played immediately. (This is
    used to synchronize the oscilloscopes) */
-void     audio_time           (double);
+void audio_time(double);
 
 /* Called by the sampling driver to deliver new data to the audio
    subsystem.  This API is going to be changed, though (the current
    one doesn't permit data other than 16bit/44.1kHz */
-void     audio_sampled        (gint16 *data,
-			       int count);
+void audio_sampled(gint16* data,
+    int count);
 
-void     audio_mix            (void *dest,
-			       guint32 count,
-			       int mixfreq,
-			       int mixformat);
+void audio_mix(void* dest,
+    guint32 count,
+    int mixfreq,
+    int mixformat);
 
-gboolean sample_editor_sampled            (void *dest,
-					   guint32 count,
-					   int mixfreq,
-					   int mixformat);
+gboolean sample_editor_sampled(void* dest,
+    guint32 count,
+    int mixfreq,
+    int mixformat);
 
 #endif /* _ST_DRIVER_OUT_H */

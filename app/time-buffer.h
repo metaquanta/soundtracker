@@ -33,11 +33,11 @@
 
 typedef struct time_buffer time_buffer;
 
-time_buffer *   time_buffer_new          (double maxtimedelta);
-void            time_buffer_destroy      (time_buffer *t);
+time_buffer* time_buffer_new(double maxtimedelta);
+void time_buffer_destroy(time_buffer* t);
 
-gboolean        time_buffer_add          (time_buffer *t, void *item, double time);
-void            time_buffer_clear        (time_buffer *t);
-void *          time_buffer_get          (time_buffer *t, double time);
+gboolean time_buffer_add(time_buffer* t, void* item, double time);
+void time_buffer_clear(time_buffer* t);
+void* time_buffer_get(time_buffer* t, double time);
 
 #endif /* _TIME_BUFFER_H */

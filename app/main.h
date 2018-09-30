@@ -24,6 +24,6 @@
 
 #include "xm.h"
 
-extern XM *xm;
+extern XM* xm;
 
 #endif /* _MAIN_H */

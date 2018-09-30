@@ -27,31 +27,30 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <unistd.h>
 #include <errno.h>
 #include <sys/time.h>
+#include <unistd.h>
 
+#include <esd.h>
 #include <glib.h>
+#include <glib/gi18n.h>
 #include <glib/gprintf.h>
 #include <gtk/gtk.h>
-#include <glib/gi18n.h>
-#include <esd.h>
 
 #include "driver-inout.h"
-#include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
+#include "mixer.h"
 #include "preferences.h"
 
-
 typedef struct esd_driver {
-    GtkWidget *configwidget;
+    GtkWidget* configwidget;
 
     int out_sock, out_bits, out_channels, out_rate;
     int samples_per_frame;
     int mf;
 
-    void *sndbuf;
+    void* sndbuf;
     gpointer polltag;
     int firstpoll;
 
@@ -60,26 +59,26 @@ typedef struct esd_driver {
 } esd_driver;
 
 static void
-esd_poll_ready_playing (gpointer data,
-			gint source,
-			GdkInputCondition condition)
+esd_poll_ready_playing(gpointer data,
+    gint source,
+    GdkInputCondition condition)
 {
-    esd_driver * const d = data;
+    esd_driver* const d = data;
     int w;
     struct timeval tv;
 
-    if(!d->firstpoll) {
-	if((w = write(d->out_sock, d->sndbuf, ESD_BUF_SIZE) != ESD_BUF_SIZE)) {
-	    if(w == -1) {
-		fprintf(stderr, "driver_esd: write() returned -1.\n");
-	    } else {
-		fprintf(stderr, "driver_esd: write not completely done.\n");
-	    }
-	}
+    if (!d->firstpoll) {
+        if ((w = write(d->out_sock, d->sndbuf, ESD_BUF_SIZE) != ESD_BUF_SIZE)) {
+            if (w == -1) {
+                fprintf(stderr, "driver_esd: write() returned -1.\n");
+            } else {
+                fprintf(stderr, "driver_esd: write not completely done.\n");
+            }
+        }
 
-	gettimeofday(&tv, NULL);
-	d->outtime = tv.tv_sec + tv.tv_usec / 1e6;
-	d->playtime += (double) d->samples_per_frame / d->out_rate;
+        gettimeofday(&tv, NULL);
+        d->outtime = tv.tv_sec + tv.tv_usec / 1e6;
+        d->playtime += (double)d->samples_per_frame / d->out_rate;
     }
 
     d->firstpoll = FALSE;
@@ -88,29 +87,29 @@ esd_poll_ready_playing (gpointer data,
 }
 
 static void
-esd_make_config_widgets (esd_driver *d)
+esd_make_config_widgets(esd_driver* d)
 {
     GtkWidget *thing, *mainbox;
 
     d->configwidget = mainbox = gtk_vbox_new(FALSE, 2);
-   
+
     thing = gtk_label_new(_("Note that the ESD output is unusable in\ninteractive mode because of the latency added\nby ESD. Use the OSS or ALSA output plug-ins\nfor serious work."));
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
 }
 
-static GtkWidget *
-esd_getwidget (void *dp)
+static GtkWidget*
+esd_getwidget(void* dp)
 {
-    esd_driver * const d = dp;
+    esd_driver* const d = dp;
 
     return d->configwidget;
 }
 
-static void *
-esd_new (void)
+static void*
+esd_new(void)
 {
-    esd_driver *d = g_new(esd_driver, 1);
+    esd_driver* d = g_new(esd_driver, 1);
 
     d->out_bits = ESD_BITS16;
     d->out_rate = 44100;
@@ -122,9 +121,9 @@ esd_new (void)
 }
 
 static void
-esd_destroy (void *dp)
+esd_destroy(void* dp)
 {
-    esd_driver * const d = dp;
+    esd_driver* const d = dp;
 
     gtk_widget_destroy(d->configwidget);
 
@@ -132,9 +131,9 @@ esd_destroy (void *dp)
 }
 
 static void
-esd_release (void *dp)
+esd_release(void* dp)
 {
-    esd_driver * const d = dp;
+    esd_driver* const d = dp;
 
     free(d->sndbuf);
     d->sndbuf = NULL;
@@ -142,28 +141,28 @@ esd_release (void *dp)
     audio_poll_remove(d->polltag);
     d->polltag = NULL;
 
-    if(d->out_sock >= 0) {
-	esd_close(d->out_sock);
-	d->out_sock = -1;
+    if (d->out_sock >= 0) {
+        esd_close(d->out_sock);
+        d->out_sock = -1;
     }
 }
 
 static gboolean
-esd_open (void *dp)
+esd_open(void* dp)
 {
-    esd_driver * const d = dp;
+    esd_driver* const d = dp;
     int out_format;
 
     out_format = d->out_bits | d->out_channels | ESD_STREAM | ESD_PLAY;
 
     d->out_sock = esd_play_stream_fallback(out_format, d->out_rate, NULL, "SoundTracker ESD Output");
-    if(d->out_sock <= 0) {
-	char buf[256], *error;
-	g_sprintf(buf, _("Couldn't connect to ESD for sound output:\n%s"),
-	          error = g_locale_to_utf8(strerror(errno), -1, NULL, NULL, NULL));
-	error_error(buf);
-	g_free(error);
-	return FALSE;
+    if (d->out_sock <= 0) {
+        char buf[256], *error;
+        g_sprintf(buf, _("Couldn't connect to ESD for sound output:\n%s"),
+            error = g_locale_to_utf8(strerror(errno), -1, NULL, NULL, NULL));
+        error_error(buf);
+        g_free(error);
+        return FALSE;
     }
 
 #ifdef WORDS_BIGENDIAN
@@ -175,10 +174,10 @@ esd_open (void *dp)
     d->mf |= ST_MIXER_FORMAT_STEREO;
 
     d->samples_per_frame = ESD_BUF_SIZE;
-    if(d->out_bits == ESD_BITS16)
-	d->samples_per_frame /= 2;
-    if(d->out_channels == ESD_STEREO)
-	d->samples_per_frame /= 2;
+    if (d->out_bits == ESD_BITS16)
+        d->samples_per_frame /= 2;
+    if (d->out_channels == ESD_STEREO)
+        d->samples_per_frame /= 2;
 
     d->sndbuf = calloc(1, ESD_BUF_SIZE);
 
@@ -190,9 +189,9 @@ esd_open (void *dp)
 }
 
 static double
-esd_get_play_time (void *dp)
+esd_get_play_time(void* dp)
 {
-    esd_driver * const d = dp;
+    esd_driver* const d = dp;
     struct timeval tv;
     double curtime;
 
@@ -203,26 +202,26 @@ esd_get_play_time (void *dp)
 }
 
 static inline int
-esd_get_play_rate (void *d)
+esd_get_play_rate(void* d)
 {
-    esd_driver * const dp = d;
+    esd_driver* const dp = d;
     return dp->out_rate;
 }
 
 static gboolean
-esd_loadsettings (void *dp,
-		  const gchar *f)
+esd_loadsettings(void* dp,
+    const gchar* f)
 {
-//    esd_driver * const d = dp;
+    //    esd_driver * const d = dp;
 
     return TRUE;
 }
 
 static gboolean
-esd_savesettings (void *dp,
-		  const gchar *f)
+esd_savesettings(void* dp,
+    const gchar* f)
 {
-//    esd_driver * const d = dp;
+    //    esd_driver * const d = dp;
 
     return TRUE;
 }

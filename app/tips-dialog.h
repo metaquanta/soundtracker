@@ -25,14 +25,14 @@
 #include <gtk/gtk.h>
 
 /* Open separate tips dialog. */
-void        tips_dialog_open               (void);
+void tips_dialog_open(void);
 
 /* Return dialog main vbox without creating window. An existing tips
    dialog window will be closed. */
-void        tips_box_populate              (GtkWidget *box, gboolean has_separator);
+void tips_box_populate(GtkWidget* box, gboolean has_separator);
 
-void        tips_dialog_load_settings      (void);
-void        tips_dialog_save_settings      (void);
+void tips_dialog_load_settings(void);
+void tips_dialog_save_settings(void);
 
 extern int tips_dialog_last_tip;
 extern int tips_dialog_show_tips;

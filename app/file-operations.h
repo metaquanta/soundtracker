@@ -29,7 +29,7 @@
    dialogs can be shuffled with standalone ones... */
 
 enum {
-    DIALOG_LOAD_MOD = 0,    /* Dialogs of the "File" tab */
+    DIALOG_LOAD_MOD = 0, /* Dialogs of the "File" tab */
     DIALOG_SAVE_MOD,
     DIALOG_SAVE_MOD_AS_WAV,
     DIALOG_SAVE_SONG_AS_XM,
@@ -44,28 +44,28 @@ enum {
     DIALOG_LAST
 };
 
-void            fileops_page_create                (GtkNotebook *nb);
+void fileops_page_create(GtkNotebook* nb);
 
-void            fileops_page_post_create           (void);
+void fileops_page_post_create(void);
 
-void            fileops_dialog_create              (const guint index, const gchar *title, const gchar *path,
-                                                    void(*callback)(), const gboolean is_embedded, const gboolean is_save,
-                                                    const gchar **formats[], const gchar *tip);
+void fileops_dialog_create(const guint index, const gchar* title, const gchar* path,
+    void (*callback)(), const gboolean is_embedded, const gboolean is_save,
+    const gchar** formats[], const gchar* tip);
 
-gboolean        fileops_page_handle_keys           (int shift,
-						    int ctrl,
-						    int alt,
-						    guint32 keyval,
-						    gboolean pressed);
+gboolean fileops_page_handle_keys(int shift,
+    int ctrl,
+    int alt,
+    guint32 keyval,
+    gboolean pressed);
 
-void            fileops_open_dialog                (gpointer index);
+void fileops_open_dialog(gpointer index);
 
-void		fileops_refresh_list 		   (GtkFileSelection *fs,
-						    gboolean grab);
+void fileops_refresh_list(GtkFileSelection* fs,
+    gboolean grab);
 
-void		fileops_tmpclean                   (void);
+void fileops_tmpclean(void);
 
-void            fileops_restore_subpage            (void);
+void fileops_restore_subpage(void);
 
-void            fileops_enter_pressed              (void);
+void fileops_enter_pressed(void);
 #endif /* _FILE_OPERATIONS_H */

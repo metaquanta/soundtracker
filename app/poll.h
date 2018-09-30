@@ -31,21 +31,20 @@
 #else
 
 /* Data structure describing a polling request.  */
-struct pollfd
-  {
-    int fd;			/* File descriptor to poll.  */
-    short int events;		/* Types of events poller cares about.  */
-    short int revents;		/* Types of events that actually occurred.  */
-  };
+struct pollfd {
+    int fd; /* File descriptor to poll.  */
+    short int events; /* Types of events poller cares about.  */
+    short int revents; /* Types of events that actually occurred.  */
+};
 
 /* Event types that can be polled for.  These bits may be set in `events'
    to indicate the interesting event types; they will appear in `revents'
    to indicate the status of the file descriptor.  */
-#define POLLIN		01              /* There is data to read.  */
-#define POLLPRI		02              /* There is urgent data to read.  */
-#define POLLOUT		04              /* Writing now will not block.  */
+#define POLLIN 01 /* There is data to read.  */
+#define POLLPRI 02 /* There is urgent data to read.  */
+#define POLLOUT 04 /* Writing now will not block.  */
 
-int poll(struct pollfd *ufds, unsigned int nfds, int timeout);
+int poll(struct pollfd* ufds, unsigned int nfds, int timeout);
 
 #endif /* HAVE_POLL */
 
@@ -54,8 +53,8 @@ int poll(struct pollfd *ufds, unsigned int nfds, int timeout);
 void pipe_init();
 int pipe_open();
 void pipe_close();
-int pipe_write(int fd, void *buf, int cnt);
-int pipe_read(int fd, void *buf, int cnt);
+int pipe_write(int fd, void* buf, int cnt);
+int pipe_read(int fd, void* buf, int cnt);
 
 #endif /* defined(_WIN32) */
 

@@ -26,39 +26,37 @@
 
 #include "tracker.h"
 
-#define TRACKERSETTINGS(obj)          GTK_CHECK_CAST (obj, trackersettings_get_type (), TrackerSettings)
-#define TRACKERSETTINGS_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, trackersettings_get_type (), TrackerSettingsClass)
-#define IS_TRACKERSETTINGS(obj)       GTK_CHECK_TYPE (obj, trackersettings_get_type ())
+#define TRACKERSETTINGS(obj) GTK_CHECK_CAST(obj, trackersettings_get_type(), TrackerSettings)
+#define TRACKERSETTINGS_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, trackersettings_get_type(), TrackerSettingsClass)
+#define IS_TRACKERSETTINGS(obj) GTK_CHECK_TYPE(obj, trackersettings_get_type())
 
-typedef struct _TrackerSettings       TrackerSettings;
-typedef struct _TrackerSettingsClass  TrackerSettingsClass;
+typedef struct _TrackerSettings TrackerSettings;
+typedef struct _TrackerSettingsClass TrackerSettingsClass;
 
-struct _TrackerSettings
-{
+struct _TrackerSettings {
     GtkVBox widget;
 
-    Tracker *tracker;
+    Tracker* tracker;
     int current_font;
 
-    GtkWidget *list;
+    GtkWidget* list;
     GtkWidget *add_button, *delete_button, *apply_button;
     GtkWidget *up_button, *down_button;
-    GtkWidget *fontsel_dialog;
+    GtkWidget* fontsel_dialog;
 
     gint clist_selected_row;
 };
 
-struct _TrackerSettingsClass
-{
+struct _TrackerSettingsClass {
     GtkVBoxClass parent_class;
 };
 
-guint                                 trackersettings_get_type             (void);
-GtkWidget *                           trackersettings_new                  (void);
-void                                  trackersettings_write_settings       (void);
-void                                  trackersettings_set_tracker_widget   (TrackerSettings *ts, Tracker *t);
+guint trackersettings_get_type(void);
+GtkWidget* trackersettings_new(void);
+void trackersettings_write_settings(void);
+void trackersettings_set_tracker_widget(TrackerSettings* ts, Tracker* t);
 
-void                                  trackersettings_cycle_font_forward   (TrackerSettings *t);
-void                                  trackersettings_cycle_font_backward  (TrackerSettings *t);
-void                                  trackersettings_apply_font           (TrackerSettings *ts);
+void trackersettings_cycle_font_forward(TrackerSettings* t);
+void trackersettings_cycle_font_backward(TrackerSettings* t);
+void trackersettings_apply_font(TrackerSettings* ts);
 #endif /* _TRACKER_SETTINGS_H */

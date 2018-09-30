@@ -24,20 +24,20 @@
 #ifndef __SCALABLE_PIC_H
 #define __SCALABLE_PIC_H
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
 #include <gtk/gtkwidget.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #define SCALABLE_PIC(obj) \
-    GTK_CHECK_CAST (obj, scalable_pic_get_type (), ScalablePic)
+    GTK_CHECK_CAST(obj, scalable_pic_get_type(), ScalablePic)
 #define SCALABLE_PIC_CLASS(klass) \
-    GTK_CHECK_CLASS_CAST (klass, scalable_pic_get_type (), ScalablePicClass)
+    GTK_CHECK_CLASS_CAST(klass, scalable_pic_get_type(), ScalablePicClass)
 #define IS_SCALABLE_PIC(obj) \
-    GTK_CHECK_TYPE (obj, scalable_pic_get_type ())
+    GTK_CHECK_TYPE(obj, scalable_pic_get_type())
 
 typedef struct _ScalablePic {
     GtkWidget widget;
@@ -50,8 +50,8 @@ typedef struct _ScalablePicClass {
 } ScalablePicClass;
 
 /* create a widget containing GdkPixbuf image */
-GtkWidget *scalable_pic_new (GdkPixbuf *pic);
-guint scalable_pic_get_type (void);
+GtkWidget* scalable_pic_new(GdkPixbuf* pic);
+guint scalable_pic_get_type(void);
 
 #ifdef __cplusplus
 }

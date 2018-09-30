@@ -41,38 +41,38 @@
 /* Debug level */
 
 enum {
-  MIDI_DEBUG_OFF = 0,
-  MIDI_DEBUG_BASIC = 1,
-  MIDI_DEBUG_HIGHEST
+    MIDI_DEBUG_OFF = 0,
+    MIDI_DEBUG_BASIC = 1,
+    MIDI_DEBUG_HIGHEST
 };
 
 /* Input preferences (mostly ALSA specifics) */
 
 typedef struct {
-  gboolean auto_connect;
-  gint client;
-  gint port;
-  gboolean channel_enabled;
-  gboolean volume_enabled;
+    gboolean auto_connect;
+    gint client;
+    gint port;
+    gboolean channel_enabled;
+    gboolean volume_enabled;
 } midi_input_prefs;
 
 /* Output preferences (mostly ALSA specifics) */
 
 typedef struct {
-  gint client;
-  gint port;
+    gint client;
+    gint port;
 } midi_output_prefs;
 
 /* Misc. preferences */
 
 typedef struct {
-  gint debug_level; /* one of the MIDI_DEBUG_... enum value */
+    gint debug_level; /* one of the MIDI_DEBUG_... enum value */
 } midi_misc_prefs;
 
 typedef struct {
-  midi_input_prefs input;
-  midi_output_prefs output;
-  midi_misc_prefs misc;
+    midi_input_prefs input;
+    midi_output_prefs output;
+    midi_misc_prefs misc;
 } midi_prefs;
 
 /* Exported variables */

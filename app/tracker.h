@@ -24,17 +24,17 @@
 #define _TRACKER_H
 
 #include <gdk/gdk.h>
-#include <gtk/gtkwidget.h>
 #include <glib/gi18n.h>
+#include <gtk/gtkwidget.h>
 
 #include "xm.h"
 
-#define TRACKER(obj)          GTK_CHECK_CAST (obj, tracker_get_type (), Tracker)
-#define TRACKER_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, tracker_get_type (), TrackerClass)
-#define IS_TRACKER(obj)       GTK_CHECK_TYPE (obj, tracker_get_type ())
+#define TRACKER(obj) GTK_CHECK_CAST(obj, tracker_get_type(), Tracker)
+#define TRACKER_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, tracker_get_type(), TrackerClass)
+#define IS_TRACKER(obj) GTK_CHECK_TYPE(obj, tracker_get_type())
 
-typedef struct _Tracker       Tracker;
-typedef struct _TrackerClass  TrackerClass;
+typedef struct _Tracker Tracker;
+typedef struct _TrackerClass TrackerClass;
 
 enum {
     TRACKERCOL_BG,
@@ -42,7 +42,7 @@ enum {
     TRACKERCOL_BG_MAJHIGH,
     TRACKERCOL_BG_MINHIGH,
     TRACKERCOL_BG_SELECTION,
-    TRACKERCOL_NOTES,	
+    TRACKERCOL_NOTES,
     TRACKERCOL_BARS,
     TRACKERCOL_CHANNUMS,
     TRACKERCOL_CURSOR,
@@ -50,8 +50,7 @@ enum {
     TRACKERCOL_LAST,
 };
 
-struct _Tracker
-{
+struct _Tracker {
     GtkWidget widget;
 
     int disp_rows;
@@ -63,16 +62,16 @@ struct _Tracker
 
     int fonth, fontw;
     int baselineskip;
-    PangoLayout *layout;
-    PangoContext *context;
+    PangoLayout* layout;
+    PangoContext* context;
 
     GdkGC *bg_gc, *bg_cursor_gc, *bg_majhigh_gc, *bg_minhigh_gc, *notes_gc, *misc_gc, *bars_gc;
     GdkColor colors[TRACKERCOL_LAST];
     int enable_backing_store;
-    GdkPixmap *pixmap;
+    GdkPixmap* pixmap;
     guint idle_handler;
 
-    XMPattern *curpattern;
+    XMPattern* curpattern;
     int patpos, oldpos;
     int num_channels;
 
@@ -88,51 +87,50 @@ struct _Tracker
     int button;
 };
 
-struct _TrackerClass
-{
+struct _TrackerClass {
     GtkWidgetClass parent_class;
 
-    void (*patpos)(Tracker *t, int patpos, int patlen, int disprows);
-    void (*xpanning)(Tracker *t, int leftchan, int numchans, int dispchans);
-    void (*mainmenu_blockmark_set)(Tracker *t, int state);
+    void (*patpos)(Tracker* t, int patpos, int patlen, int disprows);
+    void (*xpanning)(Tracker* t, int leftchan, int numchans, int dispchans);
+    void (*mainmenu_blockmark_set)(Tracker* t, int state);
 };
 
-extern const char * const notenames[4][96];
+extern const char* const notenames[4][96];
 
-extern const gchar *color_meanings[];
+extern const gchar* color_meanings[];
 
-guint		tracker_get_type            (void);
-GtkWidget*     	tracker_new                 (void);
+guint tracker_get_type(void);
+GtkWidget* tracker_new(void);
 
-void           	tracker_set_num_channels    (Tracker *t, int);
+void tracker_set_num_channels(Tracker* t, int);
 
-void           	tracker_set_backing_store   (Tracker *t, int on);
-gboolean       	tracker_set_font            (Tracker *t, const gchar *fontname);
-void		tracker_init_colors	    (Tracker *t);
-void		tracker_apply_colors	    (Tracker *t);
+void tracker_set_backing_store(Tracker* t, int on);
+gboolean tracker_set_font(Tracker* t, const gchar* fontname);
+void tracker_init_colors(Tracker* t);
+void tracker_apply_colors(Tracker* t);
 
-void           	tracker_reset               (Tracker *t);
-void           	tracker_redraw              (Tracker *t);
+void tracker_reset(Tracker* t);
+void tracker_redraw(Tracker* t);
 
-void           	tracker_redraw_row          (Tracker *t, int row);
-void           	tracker_redraw_current_row  (Tracker *t);
+void tracker_redraw_row(Tracker* t, int row);
+void tracker_redraw_current_row(Tracker* t);
 
 /* These are the navigation functions. */
-void           	tracker_step_cursor_item    (Tracker *t, int direction);
-void           	tracker_step_cursor_channel (Tracker *t, int direction);
-void            tracker_set_cursor_channel  (Tracker *t, int channel);
-void            tracker_set_cursor_item     (Tracker *t, int item);
-void           	tracker_set_patpos          (Tracker *t, int row);
-void           	tracker_step_cursor_row     (Tracker *t, int direction);
+void tracker_step_cursor_item(Tracker* t, int direction);
+void tracker_step_cursor_channel(Tracker* t, int direction);
+void tracker_set_cursor_channel(Tracker* t, int channel);
+void tracker_set_cursor_item(Tracker* t, int item);
+void tracker_set_patpos(Tracker* t, int row);
+void tracker_step_cursor_row(Tracker* t, int direction);
 
-void           	tracker_set_pattern         (Tracker *t, XMPattern *pattern);
-void           	tracker_set_xpanning        (Tracker *t, int left_channel);
+void tracker_set_pattern(Tracker* t, XMPattern* pattern);
+void tracker_set_xpanning(Tracker* t, int left_channel);
 
 /* Set, get, clear selection markers */
-void		tracker_mark_selection	     (Tracker *t, gboolean enable);
-void            tracker_clear_mark_selection (Tracker *t);
-void		tracker_get_selection_rect   (Tracker *t, int *chStart, int *rowStart, int *nChannel, int *nRows);
-gboolean	tracker_is_valid_selection   (Tracker *t);
-gboolean        tracker_is_in_selection_mode (Tracker *t);
+void tracker_mark_selection(Tracker* t, gboolean enable);
+void tracker_clear_mark_selection(Tracker* t);
+void tracker_get_selection_rect(Tracker* t, int* chStart, int* rowStart, int* nChannel, int* nRows);
+gboolean tracker_is_valid_selection(Tracker* t);
+gboolean tracker_is_in_selection_mode(Tracker* t);
 
 #endif /* _TRACKER_H */

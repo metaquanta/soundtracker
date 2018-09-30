@@ -26,32 +26,32 @@
 #include "mixer.h"
 
 typedef struct tracer_channel {
-    st_mixer_sample_info *sample;
+    st_mixer_sample_info* sample;
 
-    void *data;                   // for updatesample() to see if sample has changed
+    void* data; // for updatesample() to see if sample has changed
     int looptype;
     guint32 length;
 
-    guint32 flags;                // see below
-    float volume;                 // 0.0 ... 1.0
-    float panning;                // 0.0 ... 1.0
-    int direction;                // +1 for forward, -1 for backward
-    guint32 playend;              // for a forced premature end of the sample
+    guint32 flags; // see below
+    float volume; // 0.0 ... 1.0
+    float panning; // 0.0 ... 1.0
+    int direction; // +1 for forward, -1 for backward
+    guint32 playend; // for a forced premature end of the sample
 
-    guint32 positionw;            // current sample position (whole part of 32.32)
-    guint32 positionf;            // current sample position (fractional part of 32.32)
-    guint32 freqw;                // frequency (whole part of 32.32)
-    guint32 freqf;                // frequency (fractional part of 32.32)
+    guint32 positionw; // current sample position (whole part of 32.32)
+    guint32 positionf; // current sample position (fractional part of 32.32)
+    guint32 freqw; // frequency (whole part of 32.32)
+    guint32 freqf; // frequency (fractional part of 32.32)
 
-    float ffreq;                  // filter frequency (0<=x<=1)
-    float freso;                  // filter resonance (0<=x<1)
+    float ffreq; // filter frequency (0<=x<=1)
+    float freso; // filter resonance (0<=x<1)
 } tracer_channel;
 
-#define TR_FLAG_LOOP_UNIDIRECTIONAL       1
-#define TR_FLAG_LOOP_BIDIRECTIONAL        2
-#define TR_FLAG_SAMPLE_RUNNING            4
+#define TR_FLAG_LOOP_UNIDIRECTIONAL 1
+#define TR_FLAG_LOOP_BIDIRECTIONAL 2
+#define TR_FLAG_SAMPLE_RUNNING 4
 
-void			tracer_trace			(int mixfreq, int songpos, int patpos);
-tracer_channel*		tracer_return_channel		(int number);
-void			tracer_setnumch			(int n);
+void tracer_trace(int mixfreq, int songpos, int patpos);
+tracer_channel* tracer_return_channel(int number);
+void tracer_setnumch(int n);
 #endif

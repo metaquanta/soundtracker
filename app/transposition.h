@@ -26,9 +26,9 @@
 
 #include "tracker.h"
 
-void        transposition_dialog                   (void);
+void transposition_dialog(void);
 
-void        transposition_transpose_selection      (Tracker *t,
-						    int by);
+void transposition_transpose_selection(Tracker* t,
+    int by);
 
 #endif /* _ST_TRANSPOSITION_H */

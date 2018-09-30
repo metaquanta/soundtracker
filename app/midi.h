@@ -25,8 +25,8 @@
 #if defined(DRIVER_ALSA_MIDI)
 
 #include <alsa/version.h>
-#if SND_LIB_MAJOR==1 
-# define ALSA_PCM_OLD_HW_PARAMS_API
+#if SND_LIB_MAJOR == 1
+#define ALSA_PCM_OLD_HW_PARAMS_API
 #endif
 #include <alsa/asoundlib.h>
 
@@ -34,8 +34,8 @@
 
 /* Function prototypes */
 
-void midi_init (void);
-void midi_fini (void);
+void midi_init(void);
+void midi_fini(void);
 
 #endif
 

@@ -22,30 +22,30 @@
 #ifndef _SAMPLE_EDITOR_H
 #define _SAMPLE_EDITOR_H
 
-#include <gtk/gtk.h>
-#include "xm.h"
 #include "driver-inout.h"
+#include "xm.h"
+#include <gtk/gtk.h>
 
-void         sample_editor_page_create               (GtkNotebook *nb);
+void sample_editor_page_create(GtkNotebook* nb);
 
-gboolean     sample_editor_handle_keys               (int shift,
-						      int ctrl,
-						      int alt,
-						      guint32 keyval,
-						      gboolean pressed);
+gboolean sample_editor_handle_keys(int shift,
+    int ctrl,
+    int alt,
+    guint32 keyval,
+    gboolean pressed);
 
-void         sample_editor_set_sample                (STSample *);
-void         sample_editor_update                    (void);
+void sample_editor_set_sample(STSample*);
+void sample_editor_update(void);
 
-void         sample_editor_stop_sampling             (void);
+void sample_editor_stop_sampling(void);
 
-void         sample_editor_start_updating            (void);
-void         sample_editor_stop_updating             (void);
+void sample_editor_start_updating(void);
+void sample_editor_stop_updating(void);
 
-void	     sample_editor_copy_cut_common	     (gboolean copy, gboolean spliceout);
-void	     sample_editor_paste_clicked	     (void);
+void sample_editor_copy_cut_common(gboolean copy, gboolean spliceout);
+void sample_editor_paste_clicked(void);
 
-extern st_driver *sampling_driver;
-extern void *sampling_driver_object;
+extern st_driver* sampling_driver;
+extern void* sampling_driver_object;
 
 #endif /* _SAMPLE_EDITOR_H */

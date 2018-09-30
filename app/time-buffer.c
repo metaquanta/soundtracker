@@ -27,8 +27,8 @@
    suboptimal... */
 
 struct time_buffer {
-    GMutex *mutex;
-    GList *list;
+    GMutex* mutex;
+    GList* list;
 };
 
 typedef struct time_buffer_item {
@@ -36,44 +36,42 @@ typedef struct time_buffer_item {
     /* then user data follows */
 } time_buffer_item;
 
-time_buffer *
-time_buffer_new (double maxtimedelta)
+time_buffer*
+time_buffer_new(double maxtimedelta)
 {
-    time_buffer *t = g_new(time_buffer, 1);
+    time_buffer* t = g_new(time_buffer, 1);
 
-    if(t) {
-	t->mutex = g_mutex_new();
-	t->list = NULL;
+    if (t) {
+        t->mutex = g_mutex_new();
+        t->list = NULL;
     }
 
     return t;
 }
 
-void
-time_buffer_destroy (time_buffer *t)
+void time_buffer_destroy(time_buffer* t)
 {
-    if(t) {
-	g_list_free(t->list);
-	g_mutex_free(t->mutex);
-	g_free(t);
+    if (t) {
+        g_list_free(t->list);
+        g_mutex_free(t->mutex);
+        g_free(t);
     }
 }
 
-void
-time_buffer_clear (time_buffer *t)
+void time_buffer_clear(time_buffer* t)
 {
-    while(t->list) {
-	g_free(t->list->data);
-	t->list = g_list_remove_link(t->list, t->list);
+    while (t->list) {
+        g_free(t->list->data);
+        t->list = g_list_remove_link(t->list, t->list);
     }
 }
 
 gboolean
-time_buffer_add (time_buffer *t,
-		 void *item,
-		 double time)
+time_buffer_add(time_buffer* t,
+    void* item,
+    double time)
 {
-    time_buffer_item *a = item;
+    time_buffer_item* a = item;
 
     g_mutex_lock(t->mutex);
     a->time = time;
@@ -83,33 +81,32 @@ time_buffer_add (time_buffer *t,
     return TRUE;
 }
 
-void *
-time_buffer_get (time_buffer *t,
-		 double time)
+void* time_buffer_get(time_buffer* t,
+    double time)
 {
     int i, j, l;
-    void *result = NULL;
-    GList *list;
+    void* result = NULL;
+    GList* list;
 
     g_mutex_lock(t->mutex);
     l = g_list_length(t->list);
 
-    if(l == 0) {
-	g_mutex_unlock(t->mutex);
-	return NULL;
+    if (l == 0) {
+        g_mutex_unlock(t->mutex);
+        return NULL;
     }
 
-    for(i = 0, list = t->list; i < l - 1; i++, list = list->next) {
-     	time_buffer_item *a = list->data;
-	if(time < a->time)
-	    break;
+    for (i = 0, list = t->list; i < l - 1; i++, list = list->next) {
+        time_buffer_item* a = list->data;
+        if (time < a->time)
+            break;
     }
 
-    for(j = 0; j < i - 1; j++) {
-	GList *node = t->list;
-	g_free(node->data);
-	t->list = g_list_remove_link(t->list, node);
-	g_list_free(node);
+    for (j = 0; j < i - 1; j++) {
+        GList* node = t->list;
+        g_free(node->data);
+        t->list = g_list_remove_link(t->list, node);
+        g_list_free(node);
     }
 
     result = t->list->data;

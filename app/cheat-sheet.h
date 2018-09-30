@@ -22,6 +22,6 @@
 #ifndef _ST_CHEAT_SHEET_H
 #define _ST_CHEAT_SHEET_H
 
-void        cheat_sheet_dialog                   (void);
+void cheat_sheet_dialog(void);
 
 #endif /* _ST_CHEAT_SHEET_H */

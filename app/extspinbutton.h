@@ -24,31 +24,29 @@
 
 #include <gtk/gtkspinbutton.h>
 
-#define EXTSPINBUTTON(obj)          GTK_CHECK_CAST (obj, extspinbutton_get_type (), ExtSpinButton)
-#define EXTSPINBUTTON_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, extspinbutton_get_type (), ExtSpinButtonClass)
-#define IS_EXTSPINBUTTON(obj)       GTK_CHECK_TYPE (obj, extspinbutton_get_type ())
+#define EXTSPINBUTTON(obj) GTK_CHECK_CAST(obj, extspinbutton_get_type(), ExtSpinButton)
+#define EXTSPINBUTTON_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, extspinbutton_get_type(), ExtSpinButtonClass)
+#define IS_EXTSPINBUTTON(obj) GTK_CHECK_TYPE(obj, extspinbutton_get_type())
 
-typedef struct _ExtSpinButton       ExtSpinButton;
-typedef struct _ExtSpinButtonClass  ExtSpinButtonClass;
+typedef struct _ExtSpinButton ExtSpinButton;
+typedef struct _ExtSpinButtonClass ExtSpinButtonClass;
 
-struct _ExtSpinButton
-{
+struct _ExtSpinButton {
     GtkSpinButton spin;
 
     gboolean size_hack;
     gint width;
 };
 
-struct _ExtSpinButtonClass
-{
+struct _ExtSpinButtonClass {
     GtkSpinButtonClass parent_class;
 };
 
-guint          extspinbutton_get_type            (void);
-GtkWidget*     extspinbutton_new              	 (GtkAdjustment *adjustment,
-						  gfloat climb_rate,
-						  guint digits,
-						  gboolean in_mainwindow);
-void           extspinbutton_disable_size_hack   (ExtSpinButton *b);
+guint extspinbutton_get_type(void);
+GtkWidget* extspinbutton_new(GtkAdjustment* adjustment,
+    gfloat climb_rate,
+    guint digits,
+    gboolean in_mainwindow);
+void extspinbutton_disable_size_hack(ExtSpinButton* b);
 
 #endif /* _EXTSPINBUTTON_H */

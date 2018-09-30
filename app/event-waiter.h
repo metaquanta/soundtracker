@@ -49,12 +49,12 @@ typedef struct event_waiter event_waiter;
 
    The same applies to Tempo / BPM changes. */
 
-event_waiter *   event_waiter_new          (void);
-void             event_waiter_destroy      (event_waiter *e);
+event_waiter* event_waiter_new(void);
+void event_waiter_destroy(event_waiter* e);
 
-void             event_waiter_reset        (event_waiter *e);
-void             event_waiter_start        (event_waiter *e);
-void             event_waiter_confirm      (event_waiter *e, double readytime);
-gboolean         event_waiter_ready        (event_waiter *e, double currenttime);
+void event_waiter_reset(event_waiter* e);
+void event_waiter_start(event_waiter* e);
+void event_waiter_confirm(event_waiter* e, double readytime);
+gboolean event_waiter_ready(event_waiter* e, double currenttime);
 
 #endif /* _EVENT_WAITER_H */
