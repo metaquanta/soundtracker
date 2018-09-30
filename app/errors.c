@@ -19,14 +19,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <unistd.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "audio.h"
 
 static void
-error_error_common (int level,
-                    const char *text)
+error_error_common(int level,
+    const char* text)
 {
     // This uses the mixer backpipe (see decls in audio.h) to collect
     // all errors and warnings in one central place. Decls from
@@ -34,23 +34,17 @@ error_error_common (int level,
     int l = strlen(text);
     extern int pipeb[2];
 
-    if(write(pipeb[1], &level, sizeof(level)) != sizeof(level) ||
-       write(pipeb[1], &l, sizeof(l)) != sizeof(l) ||
-       write(pipeb[1], text, l + 1) != l + 1)
-    {
+    if (write(pipeb[1], &level, sizeof(level)) != sizeof(level) || write(pipeb[1], &l, sizeof(l)) != sizeof(l) || write(pipeb[1], text, l + 1) != l + 1) {
         perror("Audio thread: write()");
     }
 }
 
-void
-error_error (const char *text)
+void error_error(const char* text)
 {
     error_error_common(AUDIO_BACKPIPE_ERROR_MESSAGE, text);
 }
 
-void
-error_warning (const char *text)
+void error_warning(const char* text)
 {
     error_error_common(AUDIO_BACKPIPE_WARNING_MESSAGE, text);
 }
-

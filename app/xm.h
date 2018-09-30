@@ -33,15 +33,15 @@
 
 /* -- XM definitions -- */
 
-#define XM_PATTERN_NOTE_MIN  0
+#define XM_PATTERN_NOTE_MIN 0
 #define XM_PATTERN_NOTE_MAX 95
 #define XM_PATTERN_NOTE_OFF 97
 
 #define XM_NOTE_VOLUME_MIN 0x10
 #define XM_NOTE_VOLUME_MAX 0x50
 
-#define PITCH_NOTE        (16 * 4 * 4)
-#define PITCH_OCTAVE      (12 * PITCH_NOTE)
+#define PITCH_NOTE (16 * 4 * 4)
+#define PITCH_OCTAVE (12 * PITCH_NOTE)
 
 typedef struct XMNote {
     unsigned char note;
@@ -53,7 +53,7 @@ typedef struct XMNote {
 
 typedef struct XMPattern {
     int length, alloc_length;
-    XMNote *channels[32];
+    XMNote* channels[32];
 } XMPattern;
 
 /* -- Sample definitions -- */
@@ -64,9 +64,9 @@ typedef struct STSample {
     gchar name[23], utf_name[89];
     gboolean needs_conversion;
 
-    guint8 volume;               /* eigenvolume (0..64) */
-    gint8 finetune;              /* finetune (-128 ... 127) */
-    guint8 panning;              /* panning (0 ... 255) */
+    guint8 volume; /* eigenvolume (0..64) */
+    gint8 finetune; /* finetune (-128 ... 127) */
+    guint8 panning; /* panning (0 ... 255) */
     gint8 relnote;
 
     gboolean treat_as_8bit;
@@ -75,9 +75,9 @@ typedef struct STSample {
 /* -- Instrument definitions -- */
 
 /* values for STEnvelope.flags */
-#define EF_ON           1
-#define EF_SUSTAIN      2
-#define EF_LOOP         4
+#define EF_ON 1
+#define EF_SUSTAIN 2
+#define EF_LOOP 4
 
 #define ST_MAX_ENVELOPE_POINTS 12
 
@@ -121,13 +121,12 @@ typedef struct STInstrument {
 typedef struct XM {
     char name[21], utf_name[81];
     gboolean needs_conversion;
-    char modified;                   // indicates necessity of security questions before quitting etc.
+    char modified; // indicates necessity of security questions before quitting etc.
 
-    int flags;                       /* see XM_FLAGS_ defines below */
+    int flags; /* see XM_FLAGS_ defines below */
     int num_channels;
     int tempo;
     int bpm;
-
 
     int song_length;
     int restart_position;
@@ -137,48 +136,47 @@ typedef struct XM {
     STInstrument instruments[128];
 } XM;
 
-#define XM_FLAGS_AMIGA_FREQ               1
-#define XM_FLAGS_IS_MOD                   2
+#define XM_FLAGS_AMIGA_FREQ 1
+#define XM_FLAGS_IS_MOD 2
 
-XM*           File_Load                                (const char *filename);
-XM*           XM_Load                                  (const char *filename,int *status);
-gboolean      XM_Save                                  (XM *xm, const char *filename, gboolean save_smpls);
-XM*           XM_New                                   (void);
-void          XM_Free                                  (XM*);
+XM* File_Load(const char* filename);
+XM* XM_Load(const char* filename, int* status);
+gboolean XM_Save(XM* xm, const char* filename, gboolean save_smpls);
+XM* XM_New(void);
+void XM_Free(XM*);
 
-gboolean      xm_load_xi                               (STInstrument *instr,
-							FILE *f);
-gboolean      xm_save_xi                               (STInstrument *instr,
-							FILE *f);
-gboolean      xm_xp_load_header			       (FILE *f, int *length);
-gboolean      xm_xp_load			       (FILE *f, int length,
-							XMPattern *patt, XM *xm);
-void          xm_xp_save			       (gchar *name, XMPattern *pattern, XM *xm);
+gboolean xm_load_xi(STInstrument* instr,
+    FILE* f);
+gboolean xm_save_xi(STInstrument* instr,
+    FILE* f);
+gboolean xm_xp_load_header(FILE* f, int* length);
+gboolean xm_xp_load(FILE* f, int length,
+    XMPattern* patt, XM* xm);
+void xm_xp_save(gchar* name, XMPattern* pattern, XM* xm);
 
 static inline int
-xm_get_modified (void)
+xm_get_modified(void)
 {
-    extern XM *xm;
-    if(xm != NULL) {
-	return xm->modified;
+    extern XM* xm;
+    if (xm != NULL) {
+        return xm->modified;
     } else {
-	return 0;
+        return 0;
     }
 }
 
 static inline void
-xm_set_modified (int val)
+xm_set_modified(int val)
 {
-	extern XM *xm;
+    extern XM* xm;
 
-	if(xm != NULL)
-		xm->modified = val;
+    if (xm != NULL)
+        xm->modified = val;
 }
 
-void
-xm_freq_note_to_relnote_finetune (float frequency,
-				  unsigned note,
-				  gint8 *relnote,
-				  gint8 *finetune);
+void xm_freq_note_to_relnote_finetune(float frequency,
+    unsigned note,
+    gint8* relnote,
+    gint8* finetune);
 
 #endif /* _XM_H */

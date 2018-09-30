@@ -46,70 +46,69 @@ enum {
     STATUS_SONG_SAVED,
 };
 
-struct menu_callback
-{
-	const gchar *widget_name;
-	void (*fn)(gpointer);
-	gpointer data;
+struct menu_callback {
+    const gchar* widget_name;
+    void (*fn)(gpointer);
+    gpointer data;
 };
 
-extern GtkWidget *status_bar;
-extern GtkWidget *st_clock;
+extern GtkWidget* status_bar;
+extern GtkWidget* st_clock;
 
-void                 statusbar_update                 (int message,
-						       gboolean force_gui_update);
+void statusbar_update(int message,
+    gboolean force_gui_update);
 
-void                 file_selection_save_path         (const gchar *fn,
-                                                       gchar **store);
+void file_selection_save_path(const gchar* fn,
+    gchar** store);
 
-int                  find_current_toggle              (GtkWidget **widgets,
-						       int count);
+int find_current_toggle(GtkWidget** widgets,
+    int count);
 
-void                 add_empty_hbox                   (GtkWidget *tobox);
-void                 add_empty_vbox                   (GtkWidget *tobox);
+void add_empty_hbox(GtkWidget* tobox);
+void add_empty_vbox(GtkWidget* tobox);
 
-void                 make_radio_group                 (const char **labels,
-						       GtkWidget *tobox,
-						       GtkWidget **saveptr,
-						       gint t1,
-						       gint t2,
-						       void (*sigfunc) (void));
-void                 make_radio_group_full            (const char **labels,
-						       GtkWidget *tobox,
-						       GtkWidget **saveptr,
-						       gint t1,
-						       gint t2,
-						       void (*sigfunc) (void),
-						       gpointer data);
-GtkWidget*           make_labelled_radio_group_box    (const char *title,
-						       const char **labels,
-						       GtkWidget **saveptr,
-						       void (*sigfunc) (void));
-GtkWidget*           make_labelled_radio_group_box_full (const char *title,
-						       const char **labels,
-						       GtkWidget **saveptr,
-						       void (*sigfunc) (void),
-						       gpointer data);
+void make_radio_group(const char** labels,
+    GtkWidget* tobox,
+    GtkWidget** saveptr,
+    gint t1,
+    gint t2,
+    void (*sigfunc)(void));
+void make_radio_group_full(const char** labels,
+    GtkWidget* tobox,
+    GtkWidget** saveptr,
+    gint t1,
+    gint t2,
+    void (*sigfunc)(void),
+    gpointer data);
+GtkWidget* make_labelled_radio_group_box(const char* title,
+    const char** labels,
+    GtkWidget** saveptr,
+    void (*sigfunc)(void));
+GtkWidget* make_labelled_radio_group_box_full(const char* title,
+    const char** labels,
+    GtkWidget** saveptr,
+    void (*sigfunc)(void),
+    gpointer data);
 
-void                 gui_put_labelled_spin_button     (GtkWidget *destbox,
-						       const char *title,
-						       int min,
-						       int max,
-						       GtkWidget **spin,
-						       void(*callback)(),
-						       void *callbackdata,
-						       gboolean in_mainwindow);
-void                 gui_update_range_adjustment      (GtkRange *range,
-						       int pos,
-						       int upper,
-						       int window,
-						       void(*func)());
+void gui_put_labelled_spin_button(GtkWidget* destbox,
+    const char* title,
+    int min,
+    int max,
+    GtkWidget** spin,
+    void (*callback)(),
+    void* callbackdata,
+    gboolean in_mainwindow);
+void gui_update_range_adjustment(GtkRange* range,
+    int pos,
+    int upper,
+    int window,
+    void (*func)());
 
 static inline void
-gui_set_radio_active (GtkWidget **radiobutton, guint i)
+gui_set_radio_active(GtkWidget** radiobutton, guint i)
 {
-	if(GTK_WIDGET_IS_SENSITIVE(radiobutton[i]))
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radiobutton[i]), TRUE);
+    if (GTK_WIDGET_IS_SENSITIVE(radiobutton[i]))
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radiobutton[i]), TRUE);
 }
 
 typedef enum {
@@ -118,7 +117,7 @@ typedef enum {
 } gui_subs_slider_type;
 
 typedef struct gui_subs_slider {
-    const char *title;
+    const char* title;
     int min, max;
     void (*changedfunc)(int value);
     gui_subs_slider_type type;
@@ -127,55 +126,55 @@ typedef struct gui_subs_slider {
     gboolean update_without_signal;
 } gui_subs_slider;
 
-GtkWidget *          gui_subs_create_slider           (gui_subs_slider *s,
-                                                       gboolean in_mainwindow);
+GtkWidget* gui_subs_create_slider(gui_subs_slider* s,
+    gboolean in_mainwindow);
 
-void                 gui_subs_set_slider_value        (gui_subs_slider *s,
-                                                       int v);
+void gui_subs_set_slider_value(gui_subs_slider* s,
+    int v);
 
-int                  gui_subs_get_slider_value        (gui_subs_slider *s);
+int gui_subs_get_slider_value(gui_subs_slider* s);
 
-GtkWidget*           gui_combo_new                    (GtkListStore *ls);
+GtkWidget* gui_combo_new(GtkListStore* ls);
 
-gboolean             gui_set_active_combo_item        (GtkWidget *combobox,
-                                                       GtkTreeModel *model,
-                                                       guint item);
+gboolean gui_set_active_combo_item(GtkWidget* combobox,
+    GtkTreeModel* model,
+    guint item);
 
-void                 gui_combo_box_prepend_text_or_set_active (GtkComboBox *combobox,
-                                                               const gchar *text,
-                                                               gboolean force_active);
+void gui_combo_box_prepend_text_or_set_active(GtkComboBox* combobox,
+    const gchar* text,
+    gboolean force_active);
 
-GtkWidget *          gui_list_in_scrolled_window      (const int n, gchar * const *tp,  GtkWidget *hbox,
-                                                       GType *types,
-                                                       gfloat *alignments,
-                                                       gboolean *expands,
-                                                       GtkSelectionMode mode,
-                                                       gboolean expand,
-                                                       gboolean fill);
+GtkWidget* gui_list_in_scrolled_window(const int n, gchar* const* tp, GtkWidget* hbox,
+    GType* types,
+    gfloat* alignments,
+    gboolean* expands,
+    GtkSelectionMode mode,
+    gboolean expand,
+    gboolean fill);
 
-GtkWidget *          gui_stringlist_in_scrolled_window(const int n,
-                                                       gchar * const *tp,
-                                                       GtkWidget *hbox, gboolean expandfill);
+GtkWidget* gui_stringlist_in_scrolled_window(const int n,
+    gchar* const* tp,
+    GtkWidget* hbox, gboolean expandfill);
 
-void                 gui_list_clear                   (GtkWidget *list);
+void gui_list_clear(GtkWidget* list);
 
-void                 gui_list_clear_with_model        (GtkTreeModel *model);
+void gui_list_clear_with_model(GtkTreeModel* model);
 
-GtkTreeModel *       gui_list_freeze                  (GtkWidget *list);
+GtkTreeModel* gui_list_freeze(GtkWidget* list);
 
-void                 gui_list_thaw                    (GtkWidget *list,
-                                                       GtkTreeModel *model);
+void gui_list_thaw(GtkWidget* list,
+    GtkTreeModel* model);
 
 #define GUI_GET_LIST_STORE(list) GTK_LIST_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(list)))
 
-void                 gui_list_handle_selection        (GtkWidget *list,
-                                                       GCallback handler,
-                                                       gpointer data);
+void gui_list_handle_selection(GtkWidget* list,
+    GCallback handler,
+    gpointer data);
 
 static inline gboolean
-gui_list_get_iter (guint n, GtkListStore *tree_model, GtkTreeIter *iter)
+gui_list_get_iter(guint n, GtkListStore* tree_model, GtkTreeIter* iter)
 {
-    gchar *path;
+    gchar* path;
     gboolean result;
 
     path = g_strdup_printf("%u", n);
@@ -184,55 +183,55 @@ gui_list_get_iter (guint n, GtkListStore *tree_model, GtkTreeIter *iter)
     return result;
 }
 
-void                 gui_string_list_set_text        (GtkWidget *list,
-                                                      guint row,
-                                                      guint col,
-                                                      const gchar *string);
+void gui_string_list_set_text(GtkWidget* list,
+    guint row,
+    guint col,
+    const gchar* string);
 
-void                 gui_list_select                  (GtkWidget *list,
-                                                       guint row,
-                                                       gboolean use_align,
-                                                       gfloat align);
+void gui_list_select(GtkWidget* list,
+    guint row,
+    gboolean use_align,
+    gfloat align);
 
-GtkWidget *          gui_button                       (GtkWidget * win,
-						       char *stock,
-						       void *callback,
-						       gpointer userdata,
-						       GtkWidget *box);
+GtkWidget* gui_button(GtkWidget* win,
+    char* stock,
+    void* callback,
+    gpointer userdata,
+    GtkWidget* box);
 
-gboolean             gui_delete_noop                  (void);
-void                 gui_set_escape_close             (GtkWidget *window);
-gboolean             gui_ok_cancel_modal              (GtkWidget *window, const gchar *text);
-void                 gui_message_dialog               (GtkWidget **dialog, const gchar *text, GtkMessageType type, const gchar *title, gboolean need_update);
-#define              gui_warning_dialog(dialog, text, need_update) gui_message_dialog(dialog, text, GTK_MESSAGE_WARNING, N_("Warning"), need_update)
-#define              gui_error_dialog(dialog, text, need_update)   gui_message_dialog(dialog, text, GTK_MESSAGE_ERROR, N_("Error!"), need_update)
-#define              gui_info_dialog(dialog, text, need_update)    gui_message_dialog(dialog, text, GTK_MESSAGE_INFO, N_("Information"), need_update)
-void                 gui_dialog_adjust                (GtkWidget *dialog, gint default_id);
+gboolean gui_delete_noop(void);
+void gui_set_escape_close(GtkWidget* window);
+gboolean gui_ok_cancel_modal(GtkWidget* window, const gchar* text);
+void gui_message_dialog(GtkWidget** dialog, const gchar* text, GtkMessageType type, const gchar* title, gboolean need_update);
+#define gui_warning_dialog(dialog, text, need_update) gui_message_dialog(dialog, text, GTK_MESSAGE_WARNING, N_("Warning"), need_update)
+#define gui_error_dialog(dialog, text, need_update) gui_message_dialog(dialog, text, GTK_MESSAGE_ERROR, N_("Error!"), need_update)
+#define gui_info_dialog(dialog, text, need_update) gui_message_dialog(dialog, text, GTK_MESSAGE_INFO, N_("Information"), need_update)
+void gui_dialog_adjust(GtkWidget* dialog, gint default_id);
 
 static inline void
-gui_dialog_connect (GtkWidget *dialog, GCallback resp_cb)
+gui_dialog_connect(GtkWidget* dialog, GCallback resp_cb)
 {
-	g_signal_connect(dialog, "delete_event",
-	                 G_CALLBACK(gui_delete_noop), NULL);
-	g_signal_connect(dialog, "response",
-	                 resp_cb ? resp_cb : G_CALLBACK(gtk_widget_hide), NULL);
+    g_signal_connect(dialog, "delete_event",
+        G_CALLBACK(gui_delete_noop), NULL);
+    g_signal_connect(dialog, "response",
+        resp_cb ? resp_cb : G_CALLBACK(gtk_widget_hide), NULL);
 }
 
 static inline void
-gui_dialog_connect_data (GtkWidget *dialog, GCallback resp_cb, gpointer data)
+gui_dialog_connect_data(GtkWidget* dialog, GCallback resp_cb, gpointer data)
 {
-	g_signal_connect(dialog, "delete_event",
-	                 G_CALLBACK(gui_delete_noop), NULL);
-	g_signal_connect(dialog, "response",
-	                 resp_cb ? resp_cb : G_CALLBACK(gtk_widget_hide), data);
+    g_signal_connect(dialog, "delete_event",
+        G_CALLBACK(gui_delete_noop), NULL);
+    g_signal_connect(dialog, "response",
+        resp_cb ? resp_cb : G_CALLBACK(gtk_widget_hide), data);
 }
 
-gchar *              gui_filename_to_utf8             (const gchar *old_name);
-gchar *              gui_filename_from_utf8           (const gchar *old_name);
+gchar* gui_filename_to_utf8(const gchar* old_name);
+gchar* gui_filename_from_utf8(const gchar* old_name);
 
-GtkBuilder           *gui_builder_from_file           (const gchar *name, const struct menu_callback cb[]);
+GtkBuilder* gui_builder_from_file(const gchar* name, const struct menu_callback cb[]);
 
-gint                 gui_get_text_entry               (int length,
-                                                       void(*changedfunc)(),
-                                                       GtkWidget **widget);
+gint gui_get_text_entry(int length,
+    void (*changedfunc)(),
+    GtkWidget** widget);
 #endif /* _GUI_SUBS_H */
