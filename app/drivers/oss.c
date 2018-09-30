@@ -24,39 +24,39 @@
 
 #if DRIVER_OSS
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <unistd.h>
 #ifdef HAVE_SYS_SOUNDCARD_H
-# include <sys/soundcard.h>
+#include <sys/soundcard.h>
 #elif HAVE_MACHINE_SOUNDCARD_H
-# include <machine/soundcard.h>
+#include <machine/soundcard.h>
 #elif HAVE_SOUNDCARD_H
-# include <soundcard.h>
+#include <soundcard.h>
 #endif
 #include <sys/time.h>
 
-#include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <gtk/gtk.h>
 
 #include "driver-inout.h"
-#include "mixer.h"
 #include "errors.h"
 #include "gui-subs.h"
+#include "mixer.h"
 #include "preferences.h"
 
 typedef struct oss_driver {
-    GtkWidget *configwidget;
-    GtkWidget *prefs_devdsp_w;
-    GtkWidget *prefs_resolution_w[2];
-    GtkWidget *prefs_channels_w[2];
-    GtkWidget *prefs_mixfreq_w[4];
+    GtkWidget* configwidget;
+    GtkWidget* prefs_devdsp_w;
+    GtkWidget* prefs_resolution_w[2];
+    GtkWidget* prefs_channels_w[2];
+    GtkWidget* prefs_mixfreq_w[4];
     GtkWidget *bufsizespin_w, *bufsizelabel_w, *estimatelabel_w;
 
     int playrate;
@@ -68,13 +68,13 @@ typedef struct oss_driver {
     gboolean realtimecaps;
 
     int soundfd;
-    void *sndbuf;
+    void* sndbuf;
     gpointer polltag;
     gint polltag_i;
     int firstpoll;
 
-    gchar *p_devdsp_saved;
-    const gchar *p_devdsp;
+    gchar* p_devdsp_saved;
+    const gchar* p_devdsp;
     int p_resolution;
     int p_channels;
     int p_mixfreq;
@@ -89,29 +89,29 @@ typedef struct oss_driver {
 static const int mixfreqs[] = { 8000, 16000, 22050, 44100, -1 };
 
 static void
-oss_poll_ready_playing (gpointer data,
-			gint source,
-			GdkInputCondition condition)
+oss_poll_ready_playing(gpointer data,
+    gint source,
+    GdkInputCondition condition)
 {
-    oss_driver * const d = data;
+    oss_driver* const d = data;
     int w;
     struct timeval tv;
 
-    if(!d->firstpoll) {
+    if (!d->firstpoll) {
 
-	if((w = write(d->soundfd, d->sndbuf, d->size) != d->size)) {
-	    if(w == -1) {
-		fprintf(stderr, "driver_oss: write() returned -1.\n");
-	    } else {
-		fprintf(stderr, "driver_oss: write not completely done.\n");
-	    }
-	}
+        if ((w = write(d->soundfd, d->sndbuf, d->size) != d->size)) {
+            if (w == -1) {
+                fprintf(stderr, "driver_oss: write() returned -1.\n");
+            } else {
+                fprintf(stderr, "driver_oss: write not completely done.\n");
+            }
+        }
 
-	if(!d->realtimecaps) {
-	    gettimeofday(&tv, NULL);
-	    d->outtime = tv.tv_sec + tv.tv_usec / 1e6;
-	    d->playtime += (double) d->fragsize / d->playrate;
-	}
+        if (!d->realtimecaps) {
+            gettimeofday(&tv, NULL);
+            d->outtime = tv.tv_sec + tv.tv_usec / 1e6;
+            d->playtime += (double)d->fragsize / d->playrate;
+        }
     }
 
     d->firstpoll = FALSE;
@@ -120,34 +120,34 @@ oss_poll_ready_playing (gpointer data,
 }
 
 static void
-oss_poll_ready_sampling (gpointer data,
-                         gint source,
-                         GdkInputCondition condition)
+oss_poll_ready_sampling(gpointer data,
+    gint source,
+    GdkInputCondition condition)
 {
-	oss_driver * const d = data;
+    oss_driver* const d = data;
 
-	errno = 0;
-	if(read(d->soundfd, d->sndbuf, d->size) != d->size)
-		perror("OSS input: read()");
+    errno = 0;
+    if (read(d->soundfd, d->sndbuf, d->size) != d->size)
+        perror("OSS input: read()");
 
-	if(sample_editor_sampled(d->sndbuf, d->size, d->playrate, d->mf))
-		d->sndbuf = malloc(d->size);
+    if (sample_editor_sampled(d->sndbuf, d->size, d->playrate, d->mf))
+        d->sndbuf = malloc(d->size);
 }
 
 static void
-prefs_init_from_structure (oss_driver *d)
+prefs_init_from_structure(oss_driver* d)
 {
     int i;
 
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(d->prefs_resolution_w[d->p_resolution / 8 - 1]), TRUE);
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(d->prefs_channels_w[d->p_channels - 1]), TRUE);
 
-    for(i = 0; mixfreqs[i] != -1; i++) {
-	if(d->p_mixfreq == mixfreqs[i])
-	    break;
+    for (i = 0; mixfreqs[i] != -1; i++) {
+        if (d->p_mixfreq == mixfreqs[i])
+            break;
     }
-    if(mixfreqs[i] == -1) {
-	i = 3;
+    if (mixfreqs[i] == -1) {
+        i = 3;
     }
     gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(d->prefs_mixfreq_w[i]), TRUE);
 
@@ -157,7 +157,7 @@ prefs_init_from_structure (oss_driver *d)
 }
 
 static void
-prefs_update_estimate (oss_driver *d)
+prefs_update_estimate(oss_driver* d)
 {
     char buf[128];
 
@@ -166,32 +166,32 @@ prefs_update_estimate (oss_driver *d)
 }
 
 static void
-prefs_resolution_changed (void *a,
-			  oss_driver *d)
+prefs_resolution_changed(void* a,
+    oss_driver* d)
 {
     d->p_resolution = (find_current_toggle(d->prefs_resolution_w, 2) + 1) * 8;
 }
 
 static void
-prefs_channels_changed (void *a,
-			oss_driver *d)
+prefs_channels_changed(void* a,
+    oss_driver* d)
 {
     d->p_channels = find_current_toggle(d->prefs_channels_w, 2) + 1;
 }
 
 static void
-prefs_mixfreq_changed (void *a,
-		       oss_driver *d)
+prefs_mixfreq_changed(void* a,
+    oss_driver* d)
 {
-	d->p_mixfreq = mixfreqs[find_current_toggle(d->prefs_mixfreq_w, 4)];
+    d->p_mixfreq = mixfreqs[find_current_toggle(d->prefs_mixfreq_w, 4)];
 
-	if(!d->sampling)
-		prefs_update_estimate(d);
+    if (!d->sampling)
+        prefs_update_estimate(d);
 }
 
 static void
-prefs_fragsize_changed (GtkSpinButton *w,
-			oss_driver *d)
+prefs_fragsize_changed(GtkSpinButton* w,
+    oss_driver* d)
 {
     char buf[64];
 
@@ -199,24 +199,24 @@ prefs_fragsize_changed (GtkSpinButton *w,
 
     sprintf(buf, _("(%d samples)"), 1 << d->p_fragsize);
     gtk_label_set_text(GTK_LABEL(d->bufsizelabel_w), buf);
-	if(!d->sampling)
-		prefs_update_estimate(d);
+    if (!d->sampling)
+        prefs_update_estimate(d);
 }
 
 static void
-oss_devdsp_changed (void *a,
-		    oss_driver *d)
+oss_devdsp_changed(void* a,
+    oss_driver* d)
 {
     d->p_devdsp = gtk_entry_get_text(GTK_ENTRY(d->prefs_devdsp_w));
 }
 
 static void
-oss_make_config_widgets (oss_driver *d)
+oss_make_config_widgets(oss_driver* d)
 {
     GtkWidget *thing, *mainbox, *box2, *box3;
-    static const char *resolutionlabels[] = { "8 bits", "16 bits", NULL };
-    static const char *channelslabels[] = { "Mono", "Stereo", NULL };
-    static const char *mixfreqlabels[] = { "8000", "16000", "22050", "44100", NULL };
+    static const char* resolutionlabels[] = { "8 bits", "16 bits", NULL };
+    static const char* channelslabels[] = { "Mono", "Stereo", NULL };
+    static const char* mixfreqlabels[] = { "8000", "16000", "22050", "44100", NULL };
 
     d->configwidget = mainbox = gtk_vbox_new(FALSE, 2);
 
@@ -224,7 +224,7 @@ oss_make_config_widgets (oss_driver *d)
                                         : N_("These changes won't take effect until you restart playing.")));
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
-    
+
     thing = gtk_hseparator_new();
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
@@ -242,7 +242,7 @@ oss_make_config_widgets (oss_driver *d)
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
     g_signal_connect_after(thing, "changed",
-			     G_CALLBACK(oss_devdsp_changed), d);
+        G_CALLBACK(oss_devdsp_changed), d);
     d->prefs_devdsp_w = thing;
 
     box2 = gtk_hbox_new(FALSE, 4);
@@ -253,7 +253,7 @@ oss_make_config_widgets (oss_driver *d)
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
     add_empty_hbox(box2);
-    make_radio_group_full(resolutionlabels, box2, d->prefs_resolution_w, FALSE, TRUE, (void(*)())prefs_resolution_changed, d);
+    make_radio_group_full(resolutionlabels, box2, d->prefs_resolution_w, FALSE, TRUE, (void (*)())prefs_resolution_changed, d);
 
     box2 = gtk_hbox_new(FALSE, 4);
     gtk_widget_show(box2);
@@ -263,7 +263,7 @@ oss_make_config_widgets (oss_driver *d)
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
     add_empty_hbox(box2);
-    make_radio_group_full(channelslabels, box2, d->prefs_channels_w, FALSE, TRUE, (void(*)())prefs_channels_changed, d);
+    make_radio_group_full(channelslabels, box2, d->prefs_channels_w, FALSE, TRUE, (void (*)())prefs_channels_changed, d);
 
     box2 = gtk_hbox_new(FALSE, 4);
     gtk_widget_show(box2);
@@ -273,7 +273,7 @@ oss_make_config_widgets (oss_driver *d)
     gtk_widget_show(thing);
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
     add_empty_hbox(box2);
-    make_radio_group_full(mixfreqlabels, box2, d->prefs_mixfreq_w, FALSE, TRUE, (void(*)())prefs_mixfreq_changed, d);
+    make_radio_group_full(mixfreqlabels, box2, d->prefs_mixfreq_w, FALSE, TRUE, (void (*)())prefs_mixfreq_changed, d);
 
     box2 = gtk_hbox_new(FALSE, 4);
     gtk_widget_show(box2);
@@ -292,7 +292,7 @@ oss_make_config_widgets (oss_driver *d)
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
     gtk_widget_show(thing);
     g_signal_connect(thing, "value-changed",
-			G_CALLBACK(prefs_fragsize_changed), d);
+        G_CALLBACK(prefs_fragsize_changed), d);
 
     d->bufsizelabel_w = thing = gtk_label_new("");
     gtk_box_pack_start(GTK_BOX(box3), thing, FALSE, TRUE, 0);
@@ -302,29 +302,29 @@ oss_make_config_widgets (oss_driver *d)
     gtk_widget_show(box2);
     gtk_box_pack_start(GTK_BOX(mainbox), box2, FALSE, TRUE, 0);
 
-	if(!d->sampling) {
-		add_empty_hbox(box2);
-		d->estimatelabel_w = thing = gtk_label_new("");
-		gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
-		gtk_widget_show(thing);
-		add_empty_hbox(box2);
-	}
+    if (!d->sampling) {
+        add_empty_hbox(box2);
+        d->estimatelabel_w = thing = gtk_label_new("");
+        gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, TRUE, 0);
+        gtk_widget_show(thing);
+        add_empty_hbox(box2);
+    }
 
     prefs_init_from_structure(d);
 }
 
-static GtkWidget *
-oss_getwidget (void *dp)
+static GtkWidget*
+oss_getwidget(void* dp)
 {
-    oss_driver * const d = dp;
+    oss_driver* const d = dp;
 
     return d->configwidget;
 }
 
-static oss_driver *
-oss_new (gboolean sampling)
+static oss_driver*
+oss_new(gboolean sampling)
 {
-    oss_driver *d = g_new(oss_driver, 1);
+    oss_driver* d = g_new(oss_driver, 1);
 
     d->p_devdsp_saved = g_strdup("/dev/dsp");
     d->p_devdsp = d->p_devdsp_saved;
@@ -342,22 +342,22 @@ oss_new (gboolean sampling)
     return d;
 }
 
-static void *
-oss_new_playback (void)
+static void*
+oss_new_playback(void)
 {
     return oss_new(FALSE);
 }
 
-static void *
-oss_new_sampling (void)
+static void*
+oss_new_sampling(void)
 {
     return oss_new(TRUE);
 }
 
 static void
-oss_destroy (void *dp)
+oss_destroy(void* dp)
 {
-    oss_driver * const d = dp;
+    oss_driver* const d = dp;
 
     gtk_widget_destroy(d->configwidget);
     g_free(d->p_devdsp_saved);
@@ -366,58 +366,58 @@ oss_destroy (void *dp)
 }
 
 static gboolean
-oss_try_format (oss_driver *d, int f)
+oss_try_format(oss_driver* d, int f)
 {
     int format = f;
 
-    if(ioctl(d->soundfd, SNDCTL_DSP_SETFMT, &format) == -1) {
-	perror("SNDCTL_DSP_SETFMT");
-	return FALSE;
-    } 
-    
+    if (ioctl(d->soundfd, SNDCTL_DSP_SETFMT, &format) == -1) {
+        perror("SNDCTL_DSP_SETFMT");
+        return FALSE;
+    }
+
     return format == f;
 }
 
 static gboolean
-oss_try_stereo (oss_driver *d, int f)
+oss_try_stereo(oss_driver* d, int f)
 {
     int format = f;
 
-    if(ioctl(d->soundfd, SNDCTL_DSP_STEREO, &format) == -1) {
-	perror("SNDCTL_DSP_STEREO");
-	return FALSE;
-    }  
-    
+    if (ioctl(d->soundfd, SNDCTL_DSP_STEREO, &format) == -1) {
+        perror("SNDCTL_DSP_STEREO");
+        return FALSE;
+    }
+
     return format == f;
 }
 
 static void
-oss_release (void *dp)
+oss_release(void* dp)
 {
-	oss_driver * const d = dp;
+    oss_driver* const d = dp;
 
-	free(d->sndbuf);
-	d->sndbuf = NULL;
+    free(d->sndbuf);
+    d->sndbuf = NULL;
 
-	if(!d->sampling && d->polltag) {
-		audio_poll_remove(d->polltag);
-		d->polltag = NULL;
-	} else if(d->sampling && d->polltag_i) {
-		gdk_input_remove(d->polltag_i);
-		d->polltag_i = 0;
-	}
+    if (!d->sampling && d->polltag) {
+        audio_poll_remove(d->polltag);
+        d->polltag = NULL;
+    } else if (d->sampling && d->polltag_i) {
+        gdk_input_remove(d->polltag_i);
+        d->polltag_i = 0;
+    }
 
-    if(d->soundfd >= 0) {
-	ioctl(d->soundfd, SNDCTL_DSP_RESET, 0);
-	close(d->soundfd);
-	d->soundfd = -1;
+    if (d->soundfd >= 0) {
+        ioctl(d->soundfd, SNDCTL_DSP_RESET, 0);
+        close(d->soundfd);
+        d->soundfd = -1;
     }
 }
 
 static gboolean
-oss_open (void *dp)
+oss_open(void* dp)
 {
-    oss_driver * const d = dp;
+    oss_driver* const d = dp;
     int mf;
     int i;
     audio_buf_info info;
@@ -425,12 +425,12 @@ oss_open (void *dp)
     /* O_NONBLOCK is required for the es1370 driver in Linux
        2.2.9, for example. It's open() behaviour is not
        OSS-conformant (though Thomas Sailer says it's okay). */
-    if((d->soundfd = open(d->p_devdsp, d->sampling ? O_RDONLY | O_NONBLOCK : O_WRONLY | O_NONBLOCK)) < 0) {
-	char buf[256];
-	sprintf(buf, _("Couldn't open %s for %s:\n%s"), d->p_devdsp,
-	          d->sampling ? "sampling" : "sound output", strerror(errno));
-	error_error(buf);
-	goto out;
+    if ((d->soundfd = open(d->p_devdsp, d->sampling ? O_RDONLY | O_NONBLOCK : O_WRONLY | O_NONBLOCK)) < 0) {
+        char buf[256];
+        sprintf(buf, _("Couldn't open %s for %s:\n%s"), d->p_devdsp,
+            d->sampling ? "sampling" : "sound output", strerror(errno));
+        error_error(buf);
+        goto out;
     }
 
     // Clear O_NONBLOCK again
@@ -438,41 +438,41 @@ oss_open (void *dp)
 
     d->bits = 0;
     mf = 0;
-    if(d->p_resolution == 16) {
-	if(oss_try_format(d, AFMT_S16_LE)) {
-	    d->bits = 16;
-	    mf = ST_MIXER_FORMAT_S16_LE;
-	} else if(oss_try_format(d, AFMT_S16_BE)) {
-	    d->bits = 16;
-	    mf = ST_MIXER_FORMAT_S16_BE;
-	} else if(oss_try_format(d, AFMT_U16_LE)) {
-	    d->bits = 16;
-	    mf = ST_MIXER_FORMAT_U16_LE;
-	} else if(oss_try_format(d, AFMT_U16_BE)) {
-	    d->bits = 16;
-	    mf = ST_MIXER_FORMAT_U16_BE;
-	}
+    if (d->p_resolution == 16) {
+        if (oss_try_format(d, AFMT_S16_LE)) {
+            d->bits = 16;
+            mf = ST_MIXER_FORMAT_S16_LE;
+        } else if (oss_try_format(d, AFMT_S16_BE)) {
+            d->bits = 16;
+            mf = ST_MIXER_FORMAT_S16_BE;
+        } else if (oss_try_format(d, AFMT_U16_LE)) {
+            d->bits = 16;
+            mf = ST_MIXER_FORMAT_U16_LE;
+        } else if (oss_try_format(d, AFMT_U16_BE)) {
+            d->bits = 16;
+            mf = ST_MIXER_FORMAT_U16_BE;
+        }
     }
-    if(d->bits != 16) {
-	if(oss_try_format(d, AFMT_S8)) {
-	    d->bits = 8;
-	    mf = ST_MIXER_FORMAT_S8;
-	} else if(oss_try_format(d, AFMT_U8)) {
-	    d->bits = 8;
-	    mf = ST_MIXER_FORMAT_U8;
-	} else {
-		gchar buf[256];
-		sprintf(buf, _("Required %s format not supported.\n"), d->sampling ? "sampling" : "sound output");
-	    error_error(buf);
-	    goto out;
-	}
+    if (d->bits != 16) {
+        if (oss_try_format(d, AFMT_S8)) {
+            d->bits = 8;
+            mf = ST_MIXER_FORMAT_S8;
+        } else if (oss_try_format(d, AFMT_U8)) {
+            d->bits = 8;
+            mf = ST_MIXER_FORMAT_U8;
+        } else {
+            gchar buf[256];
+            sprintf(buf, _("Required %s format not supported.\n"), d->sampling ? "sampling" : "sound output");
+            error_error(buf);
+            goto out;
+        }
     }
 
-    if(d->p_channels == 2 && oss_try_stereo(d, 1)) {
-	d->stereo = 1;
-	mf |= ST_MIXER_FORMAT_STEREO;
-    } else if(oss_try_stereo(d, 0)) {
-	d->stereo = 0;
+    if (d->p_channels == 2 && oss_try_stereo(d, 1)) {
+        d->stereo = 1;
+        mf |= ST_MIXER_FORMAT_STEREO;
+    } else if (oss_try_stereo(d, 0)) {
+        d->stereo = 0;
     }
 
     d->mf = mf;
@@ -480,96 +480,96 @@ oss_open (void *dp)
     d->playrate = d->p_mixfreq;
     ioctl(d->soundfd, SNDCTL_DSP_SPEED, &d->playrate);
 
-	if(d->sampling) {
-		i = 0x00040000 + d->p_fragsize + d->stereo + (d->bits / 8 - 1);
-		ioctl(d->soundfd, SNDCTL_DSP_SETFRAGMENT, &i);
-		ioctl(d->soundfd, SNDCTL_DSP_GETBLKSIZE, &d->fragsize);
-	} else {
-		i = 0x00020000 + d->p_fragsize + d->stereo + (d->bits / 8 - 1);
-		ioctl(d->soundfd, SNDCTL_DSP_SETFRAGMENT, &i);
+    if (d->sampling) {
+        i = 0x00040000 + d->p_fragsize + d->stereo + (d->bits / 8 - 1);
+        ioctl(d->soundfd, SNDCTL_DSP_SETFRAGMENT, &i);
+        ioctl(d->soundfd, SNDCTL_DSP_GETBLKSIZE, &d->fragsize);
+    } else {
+        i = 0x00020000 + d->p_fragsize + d->stereo + (d->bits / 8 - 1);
+        ioctl(d->soundfd, SNDCTL_DSP_SETFRAGMENT, &i);
 
-		// Find out how many fragments OSS actually uses and how large they are.
-		ioctl(d->soundfd, SNDCTL_DSP_GETOSPACE, &info);
-		d->fragsize = info.fragsize;
-		d->numfrags = info.fragstotal;
+        // Find out how many fragments OSS actually uses and how large they are.
+        ioctl(d->soundfd, SNDCTL_DSP_GETOSPACE, &info);
+        d->fragsize = info.fragsize;
+        d->numfrags = info.fragstotal;
 
-		ioctl(d->soundfd, SNDCTL_DSP_GETCAPS, &i);
-		d->realtimecaps = i & DSP_CAP_REALTIME;
-	}
+        ioctl(d->soundfd, SNDCTL_DSP_GETCAPS, &i);
+        d->realtimecaps = i & DSP_CAP_REALTIME;
+    }
 
-	d->size = (d->stereo + 1) * (d->bits / 8) * d->fragsize;
+    d->size = (d->stereo + 1) * (d->bits / 8) * d->fragsize;
     d->sndbuf = malloc(d->size);
 
-	if(d->sampling) {
-		if(d->stereo == 1) {
-			d->fragsize /= 2;
-		}
-		if(d->bits == 16) {
-			d->fragsize /= 2;
-		}
+    if (d->sampling) {
+        if (d->stereo == 1) {
+            d->fragsize /= 2;
+        }
+        if (d->bits == 16) {
+            d->fragsize /= 2;
+        }
 
-		d->polltag_i = gdk_input_add(d->soundfd, GDK_INPUT_READ, oss_poll_ready_sampling, d);
+        d->polltag_i = gdk_input_add(d->soundfd, GDK_INPUT_READ, oss_poll_ready_sampling, d);
 
-		// At least my ES1370 requires an initial read...
-		if(read(d->soundfd, d->sndbuf, d->fragsize) != d->fragsize)
-		perror("OSS input: read()");
-	} else {
-		d->polltag = audio_poll_add(d->soundfd, GDK_INPUT_WRITE, oss_poll_ready_playing, d);
-		d->firstpoll = TRUE;
-		d->playtime = 0;
-	}
+        // At least my ES1370 requires an initial read...
+        if (read(d->soundfd, d->sndbuf, d->fragsize) != d->fragsize)
+            perror("OSS input: read()");
+    } else {
+        d->polltag = audio_poll_add(d->soundfd, GDK_INPUT_WRITE, oss_poll_ready_playing, d);
+        d->firstpoll = TRUE;
+        d->playtime = 0;
+    }
 
     return TRUE;
 
-  out:
+out:
     oss_release(dp);
     return FALSE;
 }
 
 static double
-oss_get_play_time (void *dp)
+oss_get_play_time(void* dp)
 {
-    oss_driver * const d = dp;
+    oss_driver* const d = dp;
 
-    if(d->realtimecaps) {
-	count_info info;
+    if (d->realtimecaps) {
+        count_info info;
 
-	ioctl(d->soundfd, SNDCTL_DSP_GETOPTR, &info);
+        ioctl(d->soundfd, SNDCTL_DSP_GETOPTR, &info);
 
-	return (double)info.bytes / (d->stereo + 1) / (d->bits / 8) / d->playrate;
+        return (double)info.bytes / (d->stereo + 1) / (d->bits / 8) / d->playrate;
     } else {
-	struct timeval tv;
-	double curtime;
+        struct timeval tv;
+        double curtime;
 
-	gettimeofday(&tv, NULL);
-	curtime = tv.tv_sec + tv.tv_usec / 1e6;
+        gettimeofday(&tv, NULL);
+        curtime = tv.tv_sec + tv.tv_usec / 1e6;
 
-	return d->playtime + curtime - d->outtime - d->numfrags * ((double) d->fragsize / d->playrate);
+        return d->playtime + curtime - d->outtime - d->numfrags * ((double)d->fragsize / d->playrate);
     }
 }
 
 static inline int
-oss_get_play_rate (void *d)
+oss_get_play_rate(void* d)
 {
-    oss_driver * const dp = d;
+    oss_driver* const dp = d;
     return dp->playrate;
 }
 
 static gboolean
-oss_loadsettings (void *dp,
-		  const gchar *f)
+oss_loadsettings(void* dp,
+    const gchar* f)
 {
-    oss_driver * const d = dp;
-    gchar *buf;
+    oss_driver* const d = dp;
+    gchar* buf;
 
-	if((buf = prefs_get_string(f, "oss-devdsp", NULL))) {
-		g_free(d->p_devdsp_saved);
-		d->p_devdsp = d->p_devdsp_saved = buf;
-	}
-	d->p_resolution = prefs_get_int(f, "oss-resolution", d->p_resolution);
-	d->p_channels = prefs_get_int(f, "oss-channels", d->p_channels);
-	d->p_mixfreq = prefs_get_int(f, "oss-mixfreq", d->p_mixfreq);
-	d->p_fragsize = prefs_get_int(f, "oss-fragsize", d->p_fragsize);
+    if ((buf = prefs_get_string(f, "oss-devdsp", NULL))) {
+        g_free(d->p_devdsp_saved);
+        d->p_devdsp = d->p_devdsp_saved = buf;
+    }
+    d->p_resolution = prefs_get_int(f, "oss-resolution", d->p_resolution);
+    d->p_channels = prefs_get_int(f, "oss-channels", d->p_channels);
+    d->p_mixfreq = prefs_get_int(f, "oss-mixfreq", d->p_mixfreq);
+    d->p_fragsize = prefs_get_int(f, "oss-fragsize", d->p_fragsize);
 
     prefs_init_from_structure(d);
 
@@ -577,10 +577,10 @@ oss_loadsettings (void *dp,
 }
 
 static gboolean
-oss_savesettings (void *dp,
-		  const gchar *f)
+oss_savesettings(void* dp,
+    const gchar* f)
 {
-    oss_driver * const d = dp;
+    oss_driver* const d = dp;
 
     prefs_put_string(f, "oss-devdsp", d->p_devdsp);
     prefs_put_int(f, "oss-resolution", d->p_resolution);
@@ -604,8 +604,8 @@ st_driver driver_out_oss = {
     oss_loadsettings,
     oss_savesettings,
 
-	NULL,
-	NULL,
+    NULL,
+    NULL,
 
     oss_get_play_time,
     oss_get_play_rate

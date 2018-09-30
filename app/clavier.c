@@ -22,13 +22,12 @@
 
 #include "clavier.h"
 #include <gdk/gdk.h>
-#include <gtk/gtk.h>
-#include <stdio.h>
-#include <gtk/gtkobject.h> //patch by F.Haferkorn 2006-06-29
-#include <gtk/gtkmain.h>
-#include <gtk/gtksignal.h>
 #include <gdk/gdkkeysyms.h>
-#include "clavier.h"
+#include <gtk/gtk.h>
+#include <gtk/gtkmain.h>
+#include <gtk/gtkobject.h> //patch by F.Haferkorn 2006-06-29
+#include <gtk/gtksignal.h>
+#include <stdio.h>
 
 #define XFONTNAME "Fixed 8"
 
@@ -660,18 +659,12 @@ draw_key(Clavier* clavier, gint key, gboolean pressed)
     prev = (keynum > 0) ? &(clavier->key_info[keynum - 1]) : &first;
 
     if (pressed) {
-      /* if anyone could teach me how colours in gdk actually work
-       * i'd be oh so happy :)
-       */
+        // if anyone could teach me how colours in gdk actually work
+        // i'd be oh so happy :)
 
-        gc = this->is_black ?
-            /*  widget->style->fg_gc[4] :*/
-            /*  widget->style->bg_gc[1];*/
-            widget->style->light_gc[3]
-                            : widget->style->fg_gc[3];
-            /*  widget->style->bg_gc[3] :
-	     *  widget->style->fg_gc[4];
-	     */
+        gc = this->is_black ? widget->style->light_gc[3] : widget->style->fg_gc[3];
+        //                    widget->style->fg_gc[4] : widget->style->bg_gc[1];
+        //                    widget->style->bg_gc[3] : widget->style->fg_gc[4];
     } else {
         gc = this->is_black ? widget->style->black_gc : widget->style->bg_gc[0];
     }
