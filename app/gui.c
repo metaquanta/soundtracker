@@ -823,7 +823,7 @@ keyevent(GtkWidget* widget,
         sample_editor_handle_keys,
         modinfo_page_handle_keys,
     };
-    gboolean pressed = (gboolean)data;
+    gboolean pressed = data != NULL;
     gboolean handled = FALSE;
     gboolean entry_focus = GTK_IS_ENTRY(GTK_WINDOW(mainwindow)->focus_widget);
 
