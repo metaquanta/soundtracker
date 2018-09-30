@@ -199,19 +199,38 @@ GtkWidget* gui_button(GtkWidget* win,
     gpointer userdata,
     GtkWidget* box);
 
+gboolean gui_delete_noop(void);
+void gui_set_escape_close(GtkWidget* window);
 gboolean gui_ok_cancel_modal(GtkWidget* window, const gchar* text);
 void gui_message_dialog(GtkWidget** dialog, const gchar* text, GtkMessageType type, const gchar* title, gboolean need_update);
 #define gui_warning_dialog(dialog, text, need_update) gui_message_dialog(dialog, text, GTK_MESSAGE_WARNING, N_("Warning"), need_update)
 #define gui_error_dialog(dialog, text, need_update) gui_message_dialog(dialog, text, GTK_MESSAGE_ERROR, N_("Error!"), need_update)
+#define gui_info_dialog(dialog, text, need_update) gui_message_dialog(dialog, text, GTK_MESSAGE_INFO, N_("Information"), need_update)
 void gui_dialog_adjust(GtkWidget* dialog, gint default_id);
+
+static inline void
+gui_dialog_connect(GtkWidget* dialog, GCallback resp_cb)
+{
+    g_signal_connect(dialog, "delete_event",
+        G_CALLBACK(gui_delete_noop), NULL);
+    g_signal_connect(dialog, "response",
+        resp_cb ? resp_cb : G_CALLBACK(gtk_widget_hide), NULL);
+}
+
+static inline void
+gui_dialog_connect_data(GtkWidget* dialog, GCallback resp_cb, gpointer data)
+{
+    g_signal_connect(dialog, "delete_event",
+        G_CALLBACK(gui_delete_noop), NULL);
+    g_signal_connect(dialog, "response",
+        resp_cb ? resp_cb : G_CALLBACK(gtk_widget_hide), data);
+}
 
 gchar* gui_filename_to_utf8(const gchar* old_name);
 gchar* gui_filename_from_utf8(const gchar* old_name);
 
 GtkBuilder* gui_builder_from_file(const gchar* name, const struct menu_callback cb[]);
 
-gboolean gui_delete_noop(void);
-void gui_set_escape_close(GtkWidget* window);
 gint gui_get_text_entry(int length,
     void (*changedfunc)(),
     GtkWidget** widget);

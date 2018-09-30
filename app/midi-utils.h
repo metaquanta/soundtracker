@@ -22,7 +22,7 @@
 
 #include <config.h>
 
-#if defined(DRIVER_ALSA_09x)
+#if defined(DRIVER_ALSA_MIDI)
 
 #include <alsa/version.h>
 #if SND_LIB_MAJOR == 1

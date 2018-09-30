@@ -548,10 +548,7 @@ void keys_dialog(void)
         GTK_STOCK_APPLY, GTK_RESPONSE_APPLY,
         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
     gui_dialog_adjust(configwindow, GTK_RESPONSE_OK);
-    g_signal_connect(configwindow, "response",
-        G_CALLBACK(keys_response), NULL);
-    g_signal_connect(configwindow, "delete-event",
-        G_CALLBACK(gui_delete_noop), NULL);
+    gui_dialog_connect(configwindow, G_CALLBACK(keys_response));
 
     mainbox = gtk_dialog_get_content_area(GTK_DIALOG(configwindow));
 
@@ -576,7 +573,7 @@ void keys_dialog(void)
     gtk_widget_show(gc);
 
     box1 = gtk_hbox_new(FALSE, 4);
-    gtk_box_pack_start(GTK_BOX(mainbox), box1, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(mainbox), box1, TRUE, TRUE, 4);
 
     // List at the left side of the window
     thing = gui_stringlist_in_scrolled_window(2, listtitles, box1, FALSE);
@@ -618,7 +615,7 @@ void keys_dialog(void)
     cw_combo = gui_combo_new(ls);
     /* To set appropriate style property */
     gtk_widget_set_name(cw_combo, "keyconfig_combo");
-    gtk_box_pack_start(GTK_BOX(box2), cw_combo, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(box2), cw_combo, FALSE, FALSE, 4);
     g_signal_connect(cw_combo, "changed",
         G_CALLBACK(keys_assignment_changed), NULL);
 
@@ -656,15 +653,15 @@ void keys_dialog(void)
     gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, FALSE, 0);
     g_signal_connect(thing, "clicked",
         G_CALLBACK(keys_learn_all_keys_clicked), NULL);
+
+    thing = gtk_hseparator_new();
+    gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, FALSE, 4);
+
     gtk_widget_show_all(mainbox);
 
     cw_label3 = gtk_label_new(_("Please press the desired key combination!\nClick into left list to cancel"));
     gtk_label_set_justify(GTK_LABEL(cw_label3), GTK_JUSTIFY_CENTER);
     gtk_box_pack_start(GTK_BOX(box2), cw_label3, TRUE, TRUE, 0);
-
-    thing = gtk_hseparator_new();
-    gtk_widget_show(thing);
-    gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 4);
 
     keys_key_group_changed(GTK_COMBO_BOX(gc));
     keys_list_select(gtk_tree_view_get_selection(GTK_TREE_VIEW(cw_list)));
@@ -990,8 +987,8 @@ int keys_init(void)
         || !keys_ch_try_automatic_config('E', -2, 8, keys3 + NUM_SPECIAL + 16, ENCODE_MODIFIERS(1, 0, 1))
         || !keys_ch_try_automatic_config('S', -1, 8, keys3 + NUM_SPECIAL + 24, ENCODE_MODIFIERS(1, 0, 1))) {
         // Automatic key configuration unsuccessful. Popup requester.
-        gui_warning_dialog(&dialog, N_("Automatic key configuration unsuccessful.\nPlease use the Keyboard Configuration dialog\n"
-                                       "in the Settings menu."),
+        gui_warning_dialog(&dialog, _("Automatic key configuration unsuccessful.\nPlease use the Keyboard Configuration dialog\n"
+                                      "in the Settings menu."),
             FALSE);
     }
     keys_load_config();

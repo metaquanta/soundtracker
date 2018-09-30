@@ -1,20 +1,22 @@
-# These are autotools generated
-configure
-autom4te.cache
-config.log
-config.h
-stamp-h1
-Makefile
-.deps
-po/Makefile.in
-po/POTFILES
-config.status
-# Eclipse project files
-.cproject
-.settings
-.project
-# Build artifacts
-app/drivers/libdrivers.a
-app/mixers/libmixers.a
+*~
 *.o
+*.a
+!kb-x86*.a
+*.html
+*.txt
+*.tar.gz
 app/soundtracker
+
+po/*.gmo
+po/en*
+po/POTFILES
+po/Makefile.in
+po/*.sed
+
+Makefile
+config.h
+config.log
+config.status
+.deps
+autom4te.cache
+Makevars.template

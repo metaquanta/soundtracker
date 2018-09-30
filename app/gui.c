@@ -60,7 +60,6 @@
 #include "track-editor.h"
 #include "tracker.h"
 #include "xm-player.h"
-#include "xm.h"
 
 #define XML_FILE DATADIR "/" PACKAGE "/" PACKAGE ".xml"
 
@@ -86,7 +85,6 @@ static GtkWidget *mainwindow_upper_hbox, *mainwindow_second_hbox;
 static GtkWidget* notebook;
 static GtkWidget *spin_editpat, *spin_patlen, *spin_numchans;
 static GtkWidget* cursmpl_spin;
-static GtkWidget* pbutton;
 static GtkAdjustment *adj_amplification, *adj_pitchbend;
 static GtkWidget *spin_jump, *curins_spin, *spin_octave;
 static GtkWidget* toggle_lock_editpat;
@@ -119,6 +117,11 @@ static struct measure measure_msr[] = {
     { "9/8", 18, 2 },
     { "12/8", 24, 2 },
     { NULL }
+};
+
+struct title_idle_data {
+    gboolean modified;
+    guint handler;
 };
 
 static GtkWidget* measurewindow = NULL;
@@ -215,7 +218,7 @@ measure_close_requested(void)
 {
     gtk_widget_hide(measurewindow);
     /* to make keyboard working immediately after closing the dialog */
-    gtk_widget_grab_focus(pbutton);
+    gui_unset_focus();
     return TRUE;
 }
 
@@ -236,14 +239,10 @@ measure_dialog()
     measurewindow = gtk_dialog_new_with_buttons(_("Row highlighting configuration"), GTK_WINDOW(mainwindow),
         GTK_DIALOG_MODAL, GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
     gui_dialog_adjust(measurewindow, GTK_RESPONSE_CLOSE);
-    g_signal_connect(measurewindow, "response",
-        G_CALLBACK(measure_close_requested), NULL);
-    vbox = gtk_dialog_get_content_area(GTK_DIALOG(measurewindow));
-
-    g_signal_connect(measurewindow, "delete_event",
-        G_CALLBACK(measure_close_requested), NULL);
+    gui_dialog_connect(measurewindow, G_CALLBACK(measure_close_requested));
     gtk_window_set_position(GTK_WINDOW(measurewindow), GTK_WIN_POS_MOUSE);
 
+    vbox = gtk_dialog_get_content_area(GTK_DIALOG(measurewindow));
     mainbox = gtk_hbox_new(FALSE, 2);
 
     thing = gtk_label_new(_("Highlight rows (major / minor):"));
@@ -288,7 +287,7 @@ measure_changed(GtkWidget* widget, gpointer data)
             gui_settings.highlight_rows_minor_n = measure_msr[measure_chosen].minor;
             tracker_redraw(tracker);
             /* to make keyboard working immediately after chosing the measure */
-            gtk_widget_grab_focus(pbutton);
+            gui_unset_focus();
         }
         /* Gtk+ stupidity: when combo box list is popped down, */
     } else if (measure_chosen == maxmeasure + 1)
@@ -306,27 +305,48 @@ popwin_hide(GtkWidget* widget, GParamSpec* ps, gpointer data)
         measure_dialog();
 }
 
-void gui_update_title(const gchar* filename)
+static gboolean
+gui_update_title_idle_func(struct title_idle_data* data)
 {
     gchar* title;
+
+    if (current_filename) {
+        gchar* bn;
+
+        bn = g_path_get_basename(current_filename);
+        title = g_strdup_printf("SoundTracker " VERSION ": %s%s", data->modified ? "*" : "", bn);
+        g_free(bn);
+    } else
+        title = g_strdup_printf("SoundTracker " VERSION ": %s%s", data->modified ? "*" : "", _("<NoName>"));
+    gtk_window_set_title(GTK_WINDOW(mainwindow), title);
+
+    g_free(title);
+    data->handler = 0;
+    return FALSE;
+}
+
+void gui_update_title(const gchar* filename)
+{
+    static gboolean was_modified = FALSE;
+    static struct title_idle_data data = { 0 };
+
+    data.modified = xm_get_modified();
+
+    /* To reduce overhead due to excessive calls of the gui_update_title() */
+    if (filename == NULL && was_modified == data.modified)
+        return;
+
     if (filename && g_strcmp0(filename, current_filename)) {
         if (current_filename) {
             g_free(current_filename);
         }
         current_filename = g_strdup(filename);
     }
+    if (!data.handler)
+        data.handler = g_idle_add((GSourceFunc)gui_update_title_idle_func, &data);
+    g_assert(data.handler != 0);
 
-    if (current_filename) {
-        gchar* bn;
-
-        bn = g_path_get_basename(current_filename);
-        title = g_strdup_printf("SoundTracker " VERSION ": %s%s", xm_get_modified() ? "*" : "", bn);
-        g_free(bn);
-    } else
-        title = g_strdup_printf("SoundTracker " VERSION ": %s", xm_get_modified() ? "*" : "");
-
-    gtk_window_set_title(GTK_WINDOW(mainwindow), title);
-    g_free(title);
+    was_modified = data.modified;
 }
 
 static void
@@ -338,7 +358,7 @@ gui_mixer_play_pattern(int pattern,
 
     if (write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) || write(audio_ctlpipe, &pattern, sizeof(pattern)) != sizeof(pattern) || write(audio_ctlpipe, &row, sizeof(row)) != sizeof(row) || write(audio_ctlpipe, &stop_after_row, sizeof(stop_after_row)) != sizeof(stop_after_row)) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
 }
 
@@ -349,7 +369,7 @@ gui_mixer_stop_playing(void)
 
     if (write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i)) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
 }
 
@@ -360,7 +380,7 @@ gui_mixer_set_songpos(int songpos)
 
     if (write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) || write(audio_ctlpipe, &songpos, sizeof(songpos)) != sizeof(songpos)) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
 }
 
@@ -371,7 +391,7 @@ gui_mixer_set_pattern(int pattern)
 
     if (write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) || write(audio_ctlpipe, &pattern, sizeof(pattern)) != sizeof(pattern)) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
 }
 
@@ -392,7 +412,7 @@ gui_save(const gchar* data, gchar* localname, gboolean save_smpls, gboolean swit
     if (XM_Save(xm, localname, save_smpls)) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Saving module failed"), FALSE);
+        gui_error_dialog(&dialog, _("Saving module failed"), FALSE);
         statusbar_update(STATUS_IDLE, FALSE);
     } else {
         xm_set_modified(0);
@@ -429,7 +449,7 @@ save_wav(const gchar* fn, const gchar* path)
 
     if (write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) || write(audio_ctlpipe, &l, sizeof(l)) != sizeof(l) || write(audio_ctlpipe, path, l + 1) != l + 1) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
     wait_for_player();
 }
@@ -442,7 +462,7 @@ gui_shrink_callback(XMPattern* data)
     gui_update_pattern_data();
     tracker_set_pattern(tracker, NULL);
     tracker_set_pattern(tracker, data);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 void gui_shrink_pattern()
@@ -466,7 +486,7 @@ gui_expand_callback(XMPattern* data)
     gui_update_pattern_data();
     tracker_set_pattern(tracker, NULL);
     tracker_set_pattern(tracker, data);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 void gui_expand_pattern()
@@ -497,7 +517,7 @@ gui_pattern_length_correct(FILE* f, int length, gint reply)
         if (xm_xp_load(f, length, patt, xm)) {
             tracker_set_pattern(tracker, NULL);
             tracker_set_pattern(tracker, patt);
-            xm_set_modified(1);
+            gui_xm_set_modified(1);
         }
     case 2: /* Cancel, do nothing */
     default:
@@ -564,10 +584,10 @@ load_pat(const gchar* fn, const gchar* localname)
 
     f = fopen(localname, "r");
     if (!f) {
-
         if (!dialog)
             dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
                 _("Error when opening pattern file %s!"), fn);
+
         gtk_dialog_run(GTK_DIALOG(dialog));
         gtk_widget_hide(dialog);
 
@@ -578,7 +598,7 @@ load_pat(const gchar* fn, const gchar* localname)
             if (xm_xp_load(f, length, patt, xm)) {
                 tracker_set_pattern(tracker, NULL);
                 tracker_set_pattern(tracker, patt);
-                xm_set_modified(1);
+                gui_xm_set_modified(1);
             }
         } else {
             gint response;
@@ -604,14 +624,12 @@ current_instrument_changed(GtkSpinButton* spin)
 {
     int ins;
 
-    int m = xm_get_modified();
     STInstrument* i = &xm->instruments[ins = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin)) - 1];
     STSample* s = &i->samples[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
 
     instrument_editor_set_instrument(i, ins);
     sample_editor_set_sample(s);
     modinfo_set_current_instrument(ins);
-    xm_set_modified(m);
 }
 
 static void
@@ -627,7 +645,7 @@ current_instrument_name_changed(void)
     term[0] = 0;
     i->needs_conversion = TRUE;
     modinfo_update_instrument(curins);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -635,13 +653,11 @@ current_sample_changed(GtkSpinButton* spin)
 {
     int smpl;
 
-    int m = xm_get_modified();
     STInstrument* i = &xm->instruments[gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin)) - 1];
     STSample* s = &i->samples[smpl = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))];
 
     sample_editor_set_sample(s);
     modinfo_set_current_sample(smpl);
-    xm_set_modified(m);
 }
 
 static void
@@ -657,7 +673,7 @@ current_sample_name_changed(void)
     term[0] = 0;
     s->needs_conversion = TRUE;
     modinfo_update_sample(cursmpl);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static gboolean
@@ -807,7 +823,7 @@ keyevent(GtkWidget* widget,
         sample_editor_handle_keys,
         modinfo_page_handle_keys,
     };
-    intptr_t pressed = (intptr_t)data;
+    gboolean pressed = (gboolean)data;
     gboolean handled = FALSE;
     gboolean entry_focus = GTK_IS_ENTRY(GTK_WINDOW(mainwindow)->focus_widget);
 
@@ -849,7 +865,7 @@ keyevent(GtkWidget* widget,
             switch (event->keyval) {
             case GDK_Tab:
                 g_signal_stop_emission_by_name(G_OBJECT(widget), "key-press-event");
-                gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
+                gui_unset_focus();
                 break;
             case GDK_Return:
             case GDK_KP_Enter:
@@ -870,7 +886,7 @@ keyevent(GtkWidget* widget,
                     } while (parent);
                 }
                 g_signal_stop_emission_by_name(G_OBJECT(widget), "key-press-event");
-                gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
+                gui_unset_focus();
                 break;
             }
         }
@@ -900,7 +916,7 @@ gui_playlist_restart_position_changed(Playlist* p,
     int pos)
 {
     xm->restart_position = pos;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -922,7 +938,7 @@ gui_playlist_entry_changed(Playlist* p,
         }
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -962,7 +978,7 @@ gui_patlen_changed(GtkSpinButton* spin)
         st_set_pattern_length(pat, n);
         tracker_set_pattern(tracker, NULL);
         tracker_set_pattern(tracker, pat);
-        xm_set_modified(1);
+        gui_xm_set_modified(1);
     }
 }
 
@@ -980,8 +996,7 @@ gui_numchans_changed(GtkSpinButton* spin)
         gui_play_stop();
         tracker_set_pattern(tracker, NULL);
         st_set_num_channels(xm, n);
-        gui_init_xm(0, FALSE);
-        xm_set_modified(1);
+        gui_init_xm(0, FALSE, TRUE);
     }
 }
 
@@ -990,7 +1005,7 @@ gui_tempo_changed(int value)
 {
     audio_ctlpipe_id i;
     xm->tempo = value;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     if (gui_playing_mode) {
         event_waiter_start(audio_tempo_ew);
     }
@@ -998,7 +1013,7 @@ gui_tempo_changed(int value)
     if (write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) || write(audio_ctlpipe, &value, sizeof(value)) != sizeof(value)) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
 }
 
@@ -1007,7 +1022,7 @@ gui_bpm_changed(int value)
 {
     audio_ctlpipe_id i;
     xm->bpm = value;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     if (gui_playing_mode) {
         event_waiter_start(audio_bpm_ew);
     }
@@ -1015,7 +1030,7 @@ gui_bpm_changed(int value)
     if (write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) || write(audio_ctlpipe, &value, sizeof(value)) != sizeof(value)) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
 }
 
@@ -1028,7 +1043,7 @@ gui_adj_amplification_changed(GtkAdjustment* adj)
     if (write(audio_ctlpipe, &a, sizeof(a)) != sizeof(a) || write(audio_ctlpipe, &b, sizeof(b)) != sizeof(b)) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
 }
 
@@ -1041,7 +1056,7 @@ gui_adj_pitchbend_changed(GtkAdjustment* adj)
     if (write(audio_ctlpipe, &a, sizeof(a)) != sizeof(a) || write(audio_ctlpipe, &b, sizeof(b)) != sizeof(b)) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
 }
 
@@ -1115,7 +1130,7 @@ void gui_update_player_pos(const audio_player_pos* p)
         }
     }
 
-    xm_set_modified(m);
+    gui_xm_set_modified(m);
 }
 
 void gui_clipping_indicator_update(double songtime)
@@ -1147,7 +1162,7 @@ loop:
 
     if (read(source, &a, sizeof(a)) != sizeof(a)) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
     //    printf("read %d\n", a);
 
@@ -1254,7 +1269,7 @@ void play_song(void)
 
     if (write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i) || write(audio_ctlpipe, &sp, sizeof(sp)) != sizeof(sp) || write(audio_ctlpipe, &pp, sizeof(pp)) != sizeof(pp)) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
     wait_for_player();
 }
@@ -1281,15 +1296,14 @@ void gui_play_stop(void)
     wait_for_player();
 }
 
-void gui_init_xm(int new_xm, gboolean updatechspin)
+void gui_init_xm(int new_xm, gboolean updatechspin, gboolean is_modified)
 {
-    int m = xm_get_modified();
     audio_ctlpipe_id i;
 
     i = AUDIO_CTLPIPE_INIT_PLAYER;
     if (write(audio_ctlpipe, &i, sizeof(i)) != sizeof(i)) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
     tracker_reset(tracker);
     if (new_xm) {
@@ -1312,7 +1326,7 @@ void gui_init_xm(int new_xm, gboolean updatechspin)
     if (updatechspin)
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_numchans), xm->num_channels);
     scope_group_set_num_channels(scopegroup, xm->num_channels);
-    xm_set_modified(m);
+    gui_xm_set_modified(is_modified);
 }
 
 void gui_free_xm(void)
@@ -1333,7 +1347,7 @@ void gui_new_xm(void)
         fprintf(stderr, "Whooops, having memory problems?\n");
         exit(1);
     }
-    gui_init_xm(1, TRUE);
+    gui_init_xm(1, TRUE, FALSE);
 }
 
 static void
@@ -1357,7 +1371,7 @@ gui_load_xm(const char* filename, const char* localname)
         gui_new_xm();
         statusbar_update(STATUS_IDLE, FALSE);
     } else {
-        gui_init_xm(1, TRUE);
+        gui_init_xm(1, TRUE, FALSE);
         statusbar_update(STATUS_MODULE_LOADED, FALSE);
         gui_update_title(filename);
     }
@@ -1372,7 +1386,7 @@ void gui_play_note(int channel,
 
     if (write(audio_ctlpipe, &a, sizeof(a)) != sizeof(a) || write(audio_ctlpipe, &channel, sizeof(channel)) != sizeof(channel) || write(audio_ctlpipe, &note, sizeof(note)) != sizeof(note) || write(audio_ctlpipe, &instrument, sizeof(instrument)) != sizeof(instrument) || write(audio_ctlpipe, &all, sizeof(all)) != sizeof(all)) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
     gui_ewc_startstop++;
 }
@@ -1396,7 +1410,7 @@ void gui_play_note_full(unsigned channel,
     result |= write(audio_ctlpipe, &x, sizeof(x)) != sizeof(x);
     if (result) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
     gui_ewc_startstop++;
 }
@@ -1407,7 +1421,7 @@ void gui_play_note_keyoff(int channel)
 
     if (write(audio_ctlpipe, &a, sizeof(a)) != sizeof(a) || write(audio_ctlpipe, &channel, sizeof(channel)) != sizeof(channel)) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Connection with audio thread failed!"), FALSE);
+        gui_error_dialog(&dialog, _("Connection with audio thread failed!"), FALSE);
     }
 }
 
@@ -1436,7 +1450,7 @@ void gui_set_current_pattern(int p, gboolean updatespin)
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_editpat), p);
     gui_update_pattern_data();
 
-    xm_set_modified(m);
+    gui_xm_set_modified(m);
 }
 
 void gui_update_pattern_data(void)
@@ -1465,15 +1479,13 @@ offset_current_pattern(int offset)
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_editpat), nv);
 }
 
-inline void
-gui_block_smplname_entry(gboolean block)
+void gui_block_smplname_entry(gboolean block)
 {
     block ? g_signal_handler_block(G_OBJECT(gui_cursmpl_name), snch_id)
           : g_signal_handler_unblock(G_OBJECT(gui_cursmpl_name), snch_id);
 }
 
-inline void
-gui_block_instrname_entry(gboolean block)
+void gui_block_instrname_entry(gboolean block)
 {
     block ? g_signal_handler_block(G_OBJECT(gui_curins_name), inch_id)
           : g_signal_handler_unblock(G_OBJECT(gui_curins_name), inch_id);
@@ -1482,7 +1494,6 @@ gui_block_instrname_entry(gboolean block)
 void gui_set_current_instrument(int n)
 {
     GtkWidget* focus;
-    int m = xm_get_modified();
 
     g_return_if_fail(n >= 1 && n <= 128);
     if (n != gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(curins_spin))) {
@@ -1490,13 +1501,11 @@ void gui_set_current_instrument(int n)
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(curins_spin), n);
         gtk_window_set_focus(GTK_WINDOW(mainwindow), focus);
     }
-    xm_set_modified(m);
 }
 
 void gui_set_current_sample(int n)
 {
     GtkWidget* focus;
-    int m = xm_get_modified();
 
     g_return_if_fail(n >= 0 && n <= 127);
     if (n != gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(cursmpl_spin))) {
@@ -1504,7 +1513,6 @@ void gui_set_current_sample(int n)
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(cursmpl_spin), n);
         gtk_window_set_focus(GTK_WINDOW(mainwindow), focus);
     }
-    xm_set_modified(m);
 }
 
 int gui_get_current_sample(void)
@@ -1725,7 +1733,7 @@ int gui_splash(void)
     vbox = gtk_vbox_new(FALSE, 4);
     gtk_container_add(GTK_CONTAINER(gui_splash_window), vbox);
 
-    gtk_container_set_border_width(GTK_CONTAINER(vbox), 4);
+    gtk_container_border_width(GTK_CONTAINER(vbox), 4);
 
     /* Show splash screen if enabled and image available. */
 
@@ -1981,12 +1989,13 @@ int gui_final(int argc,
     gtk_box_pack_start(GTK_BOX(mainwindow_upper_hbox), table, FALSE, TRUE, 0);
     gtk_widget_show(table);
 
+    /* style = */ gui_get_style();
     hbox = gtk_hbox_new(FALSE, 4);
     gtk_table_attach_defaults(GTK_TABLE(table), hbox, 0, 2, 0, 1);
     gtk_widget_show(hbox);
 
     pmw = gtk_image_new_from_file(DATADIR "/" PACKAGE "/play.xpm");
-    pbutton = thing = gtk_button_new();
+    thing = gtk_button_new();
     gtk_container_add(GTK_CONTAINER(thing), pmw);
     g_signal_connect(thing, "clicked",
         G_CALLBACK(play_song), NULL);
@@ -2407,7 +2416,7 @@ int gui_final(int argc,
         }
     }
 
-    gtk_widget_grab_focus(pbutton);
+    gui_unset_focus();
     return 1;
 }
 

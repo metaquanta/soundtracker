@@ -1,9 +1,10 @@
 dnl Process this file with autoconf to produce a configure script.
-dnl
-dnl Written for autoconf-2.57 and automake-1.7.2
 
-AC_INIT(app/endian-conv.h)
-AM_INIT_AUTOMAKE(soundtracker, 0.6.8)
+AC_PREREQ([2.69])
+AC_INIT([soundtracker], [0.6.8-git], [soundtracker-discuss@soundtracker.org])
+AC_CONFIG_SRCDIR([app/endian-conv.h])
+AM_INIT_AUTOMAKE([1.15])
+
 AM_CONFIG_HEADER(config.h)
 
 dnl -----------------------------------------------------------------------
@@ -53,6 +54,7 @@ dnl -----------------------------------------------------------------------
 dnl Also add new catalogs to soundtracker.spec (%build)!
 #ALL_LINGUAS="da de es fr gl hr it ja no pl ru sk sl sv"
 AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.19.7])
 
 dnl -----------------------------------------------------------------------
 dnl Test for GTK+ / GooCanvas
@@ -222,8 +224,7 @@ fi
 AM_CONDITIONAL(DRIVER_OSS, test x$oss_support = xyes)
 
 dnl -----------------------------------------------------------------------
-dnl Test for ALSA-lib
-dnl ALSA 0.9.x: snd_pcm_plug_open() in libasound.
+dnl Test for ALSA
 dnl -----------------------------------------------------------------------
 
 AC_ARG_ENABLE(alsa,
@@ -231,15 +232,18 @@ AC_ARG_ENABLE(alsa,
 alsa_support=no)
 
 if test x$alsa_support != xno; then
-  AC_CHECK_LIB(asound,snd_pcm_plug_open,
-    [alsa_support=new
-     AC_DEFINE([DRIVER_ALSA_09x], 1, [Set if new (v0.9) ALSA driver wanted])
-     LIBS="$LIBS -lasound -lm"
-    ],
-  )
+  AM_PATH_ALSA([1.0.0], have_alsa=yes, have_alsa=no)
+  if test x$have_alsa = xyes; then
+    AC_DEFINE([DRIVER_ALSA], 1, [Set if ALSA driver wanted])
+    CFLAGS="$CFLAGS $ALSA_CFLAGS"
+    LIBS="$LIBS $ALSA_LIBS"
+  fi
 fi
 
-AM_CONDITIONAL(DRIVER_ALSA_09x, test x$alsa_support = xnew)
+AM_CONDITIONAL(DRIVER_ALSA, test x$have_alsa = xyes)
+
+dnl MIDI code still at 0.9 API level, need to modernize...
+AM_CONDITIONAL(DRIVER_ALSA_MIDI, false)
 
 dnl -----------------------------------------------------------------------
 dnl Test for ESD
@@ -361,6 +365,10 @@ dnl Other tests
 dnl -----------------------------------------------------------------------
 
 AC_PROG_RANLIB
+
+AC_SEARCH_LIBS([rint], [m], [], [
+  AC_MSG_ERROR([unable to find the rint() function])
+])
 
 AC_C_BIGENDIAN
 

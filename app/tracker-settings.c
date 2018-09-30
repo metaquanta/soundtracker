@@ -347,9 +347,8 @@ trackersettings_read_fontlist(void)
     for (i = 0; i < length; i++)
         trackersettings_fontlist = g_list_append(trackersettings_fontlist, fontlist[i]);
 
-    if (g_list_length(trackersettings_fontlist) == 0) {
-        trackersettings_fontlist = g_list_append(trackersettings_fontlist, "fixed");
-    }
+    if (g_list_length(trackersettings_fontlist) == 0)
+        trackersettings_fontlist = g_list_append(trackersettings_fontlist, "Monospace 10");
 }
 
 void trackersettings_write_settings(void)

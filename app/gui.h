@@ -24,6 +24,7 @@
 
 #include "audio.h"
 #include "gui-subs.h"
+#include "xm.h"
 #include <gtk/gtk.h>
 
 struct STSample;
@@ -100,7 +101,7 @@ void gui_set_jump_value(int value);
 void gui_update_player_pos(const audio_player_pos* p);
 void gui_clipping_indicator_update(double songtime);
 
-void gui_init_xm(int new_xm, gboolean updatechspin);
+void gui_init_xm(int new_xm, gboolean updatechspin, gboolean is_modified);
 void gui_free_xm(void);
 void gui_new_xm(void);
 
@@ -122,4 +123,17 @@ void gui_popup_menu_attach(GtkWidget* menu, GtkWidget* widget, gpointer* user_da
 void gui_update_title(const gchar* filename);
 void gui_offset_current_instrument(int offset);
 void gui_offset_current_sample(int offset);
+
+static inline void
+gui_unset_focus(void)
+{
+    gtk_window_set_focus(GTK_WINDOW(mainwindow), NULL);
+}
+
+static inline void
+gui_xm_set_modified(gboolean is_modified)
+{
+    xm_set_modified(is_modified);
+    gui_update_title(NULL);
+}
 #endif /* _GUI_H */

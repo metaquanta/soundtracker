@@ -19,7 +19,7 @@
 
 #include <config.h>
 
-#if defined(DRIVER_ALSA_09x)
+#if defined(DRIVER_ALSA_MIDI)
 
 #include "midi-settings.h"
 #include "midi-utils.h"
@@ -455,4 +455,4 @@ void midi_print_event(snd_seq_event_t* ev)
 
 } /* midi_print_event() */
 
-#endif /* defined(DRIVER_ALSA_09x) */
+#endif /* defined(DRIVER_ALSA_MIDI) */

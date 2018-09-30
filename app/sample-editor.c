@@ -197,7 +197,6 @@ static void sample_editor_reverse_clicked(void);
 
 static void sample_editor_trim_dialog(void);
 static void sample_editor_trim(gboolean beg, gboolean end, gfloat threshold);
-static void sample_editor_crop(void);
 static void sample_editor_delete(STSample* sample, int start, int end);
 
 static void
@@ -557,9 +556,8 @@ sample_editor_idle_draw_function(struct SampleEditor* se)
 {
     gtk_label_set_text(GTK_LABEL(se->label_selection), se->label_selection_new_text);
     gtk_label_set_text(GTK_LABEL(se->label_length), se->label_length_new_text);
-    gtk_idle_remove(se->idle_handler);
     se->idle_handler = 0;
-    return TRUE;
+    return FALSE;
 }
 
 static void
@@ -587,7 +585,7 @@ sample_editor_set_selection_label(int start,
        computer is idle. */
 
     if (!se->idle_handler) {
-        se->idle_handler = gtk_idle_add((GtkFunction)sample_editor_idle_draw_function,
+        se->idle_handler = g_idle_add((GSourceFunc)sample_editor_idle_draw_function,
             (gpointer)se);
         g_assert(se->idle_handler != 0);
     }
@@ -665,7 +663,7 @@ void sample_editor_update(void)
         gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(resolution_radio[sts->treat_as_8bit ? 0 : 1]), TRUE);
     }
 
-    xm_set_modified(m);
+    gui_xm_set_modified(m);
 }
 
 gboolean
@@ -774,7 +772,7 @@ sample_editor_spin_volume_changed(GtkSpinButton* spin)
     g_return_if_fail(current_sample != NULL);
 
     current_sample->volume = gtk_spin_button_get_value_as_int(spin);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -783,7 +781,7 @@ sample_editor_spin_panning_changed(GtkSpinButton* spin)
     g_return_if_fail(current_sample != NULL);
 
     current_sample->panning = gtk_spin_button_get_value_as_int(spin) + 128;
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -792,7 +790,7 @@ sample_editor_spin_finetune_changed(GtkSpinButton* spin)
     g_return_if_fail(current_sample != NULL);
 
     current_sample->finetune = gtk_spin_button_get_value_as_int(spin);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -801,7 +799,7 @@ sample_editor_spin_relnote_changed(GtkSpinButton* spin)
     g_return_if_fail(current_sample != NULL);
 
     current_sample->relnote = gtk_spin_button_get_value_as_int(spin);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -826,7 +824,7 @@ sample_editor_selection_to_loop_clicked(void)
     sample_editor_blocked_set_loop_spins(s, e);
 
     gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(loopradio[1]), TRUE);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -853,7 +851,7 @@ sample_editor_loop_changed()
         sample_editor_blocked_set_display_loop(s, e);
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -875,7 +873,7 @@ sample_editor_display_loop_changed(SampleDisplay* sample_display,
         sample_editor_unlock_sample();
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -950,7 +948,7 @@ sample_editor_loopradio_changed(void)
         }
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -964,7 +962,7 @@ sample_editor_resolution_changed(void)
 
     sts->treat_as_8bit = (n == 0);
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -986,13 +984,26 @@ sample_editor_clear_clicked(void)
 
     sample_editor_unlock_sample();
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
 sample_editor_crop_clicked(void)
 {
-    sample_editor_crop();
+    int start = sampledisplay->sel_start, end = sampledisplay->sel_end;
+
+    if (current_sample == NULL || start == -1)
+        return;
+
+    int l = current_sample->sample.length;
+
+    sample_editor_lock_sample();
+    sample_editor_delete(current_sample, 0, start);
+    sample_editor_delete(current_sample, end - start, l - start);
+    sample_editor_unlock_sample();
+
+    sample_editor_set_sample(current_sample);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -1052,9 +1063,27 @@ sample_editor_zoom_out_clicked(void)
 static void
 sample_editor_zoom_to_selection_clicked(void)
 {
+    gint ss, se, sl;
+
     if (current_sample == NULL || current_sample->sample.data == NULL || sampledisplay->sel_start == -1)
         return;
-    sample_display_set_window(sampledisplay, sampledisplay->sel_start, sampledisplay->sel_end);
+
+    sl = current_sample->sample.length;
+    if (sl <= 2)
+        return;
+
+    ss = sampledisplay->sel_start;
+    se = sampledisplay->sel_end;
+    /* There's no sence in zooming to one sample, but this causes some problems.
+	   In order to avoid this we restrict the minimal zoom size to 2 samples */
+    if (se <= ss + 1)
+        se = ss + 2;
+    if (se >= sl) {
+        ss -= (se - sl);
+        se = sl;
+    }
+
+    sample_display_set_window(sampledisplay, ss, se);
 }
 
 void sample_editor_copy_cut_common(gboolean copy,
@@ -1145,7 +1174,7 @@ void sample_editor_copy_cut_common(gboolean copy,
     st_sample_fix_loop(oldsample);
     sample_editor_unlock_sample();
     sample_editor_set_sample(oldsample);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -1249,7 +1278,7 @@ void sample_editor_paste_clicked(void)
     sample_editor_update();
     if (update_ie)
         instrument_editor_update(TRUE);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -1275,7 +1304,7 @@ sample_editor_reverse_clicked(void)
         *q = t;
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     sample_editor_unlock_sample();
     sample_editor_update();
     sample_display_set_selection(sampledisplay, ss, se);
@@ -1286,9 +1315,10 @@ sample_editor_open_stereo_dialog(GtkWidget** window, GtkWidget** buttons, const 
     const gchar* title)
 {
     static const gchar* labels[] = { N_("Mix"), N_("Left"), N_("Right"), N_("2 samples"), NULL };
-    GtkWidget *label, *box1;
 
     if (!*window) {
+        GtkWidget *thing, *box1;
+
         *window = gtk_dialog_new_with_buttons(_(title), GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL,
             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
             GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
@@ -1296,14 +1326,18 @@ sample_editor_open_stereo_dialog(GtkWidget** window, GtkWidget** buttons, const 
         box1 = gtk_dialog_get_content_area(GTK_DIALOG(*window));
         gtk_box_set_spacing(GTK_BOX(box1), 2);
 
-        label = gtk_label_new(_(text));
-        gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_CENTER);
-        gtk_box_pack_start(GTK_BOX(box1), label, FALSE, TRUE, 0);
-        gtk_widget_show(label);
+        thing = gtk_label_new(_(text));
+        gtk_label_set_justify(GTK_LABEL(thing), GTK_JUSTIFY_CENTER);
+        gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
+        gtk_widget_show(thing);
 
         make_radio_group(labels, box1, buttons, FALSE, FALSE, NULL);
         gtk_widget_set_tooltip_text(buttons[3], _("Load left and right channels into the current sample and the next one"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[0]), TRUE);
+
+        thing = gtk_hseparator_new();
+        gtk_box_pack_start(GTK_BOX(box1), thing, FALSE, TRUE, 0);
+        gtk_widget_show(thing);
     } else
         gtk_window_present(GTK_WINDOW(*window));
 }
@@ -1329,16 +1363,16 @@ sample_editor_load_wav_main(const int mode, FILE* f, struct wl* wavload)
         if ((n_cur = modinfo_get_current_sample()) == 127) {
             static GtkWidget* dialog = NULL;
 
-            gui_warning_dialog(&dialog, N_("You have selected the last sample of the instrument, but going "
-                                           "to load the second stereo channel to the next sample. Please select "
-                                           "a sample slot with lower number or use another loading mode."),
+            gui_warning_dialog(&dialog, _("You have selected the last sample of the instrument, but going "
+                                          "to load the second stereo channel to the next sample. Please select "
+                                          "a sample slot with lower number or use another loading mode."),
                 FALSE);
             return TRUE;
         }
         next = &(instrument_editor_get_instrument()->samples[n_cur + 1]);
         if (next->sample.length) {
-            if (!gui_ok_cancel_modal(mainwindow, N_("The next sample which is about to be overwritten is not empty!\n"
-                                                    "Would you like to overwrite it?")))
+            if (!gui_ok_cancel_modal(mainwindow, _("The next sample which is about to be overwritten is not empty!\n"
+                                                   "Would you like to overwrite it?")))
                 return TRUE;
         }
     }
@@ -1503,7 +1537,7 @@ sample_editor_load_wav_main(const int mode, FILE* f, struct wl* wavload)
 
     instrument_editor_update(TRUE);
     sample_editor_update();
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     statusbar_update(STATUS_SAMPLE_LOADED, FALSE);
     goto errnobuf;
 
@@ -1729,7 +1763,7 @@ sample_editor_load_wav(const gchar* fn, const gchar* localname)
 #endif
     if (wavload.frameCount > mixer->max_sample_length) {
         static GtkWidget* dialog = NULL;
-        gui_warning_dialog(&dialog, N_("Sample is too long for current mixer module. Loading anyway."), FALSE);
+        gui_warning_dialog(&dialog, _("Sample is too long for current mixer module. Loading anyway."), FALSE);
     }
 
 #if USE_SNDFILE
@@ -1999,29 +2033,27 @@ sample_editor_monitor_clicked(void)
     }
 
     if (!samplingwindow) {
-        GtkWidget *mainbox, *thing, *box, *box2;
+        GtkWidget *mainbox, *thing, *box2;
         GtkAccelGroup* group = gtk_accel_group_new();
         GClosure* closure;
 
         samplingwindow = gtk_dialog_new_with_buttons(_("Sampling Window"), GTK_WINDOW(mainwindow), 0,
             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
         gtk_window_add_accel_group(GTK_WINDOW(samplingwindow), group);
-        g_signal_connect(samplingwindow, "delete-event",
-            G_CALLBACK(gui_delete_noop), NULL);
 
         okbutton = gtk_dialog_add_button(GTK_DIALOG(samplingwindow), GTK_STOCK_OK, GTK_RESPONSE_OK);
+        gtk_container_set_border_width(GTK_CONTAINER(samplingwindow), 4);
 
         mainbox = gtk_dialog_get_content_area(GTK_DIALOG(samplingwindow));
         gtk_container_set_border_width(GTK_CONTAINER(mainbox), 4);
-
-        box = gtk_vbox_new(FALSE, 2);
+        gtk_box_set_spacing(GTK_BOX(mainbox), 2);
 
         thing = sample_display_new(FALSE);
-        gtk_box_pack_start(GTK_BOX(box), thing, TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(mainbox), thing, TRUE, TRUE, 0);
         monitorscope = SAMPLE_DISPLAY(thing);
 
         box2 = gtk_hbox_new(FALSE, 4);
-        gtk_box_pack_start(GTK_BOX(box), box2, FALSE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(mainbox), box2, FALSE, TRUE, 0);
 
         thing = gtk_toggle_button_new_with_label(_("Record"));
         closure = g_cclosure_new_swap(G_CALLBACK(sampling_widget_hide), thing, NULL);
@@ -2029,8 +2061,7 @@ sample_editor_monitor_clicked(void)
         toggled_id = g_signal_connect(thing, "toggled",
             G_CALLBACK(record_toggled), NULL);
         gtk_box_pack_start(GTK_BOX(box2), thing, FALSE, FALSE, 0);
-        g_signal_connect(samplingwindow, "response",
-            G_CALLBACK(sampling_response), thing);
+        gui_dialog_connect_data(samplingwindow, G_CALLBACK(sampling_response), thing);
 
         clearbutton = thing = gtk_button_new_with_label(_("Clear"));
         g_signal_connect(thing, "clicked",
@@ -2083,7 +2114,7 @@ sample_editor_sampled(void* src,
 
         if (!newbuf) {
             /* It is called from audio thread AFAIK */
-            error_error(N_("Out of memory while sampling!"));
+            error_error(_("Out of memory while sampling!"));
             sampling = 0;
             return FALSE;
         }
@@ -2179,16 +2210,16 @@ sample_editor_ok_clicked(void)
                 if ((n_cur = modinfo_get_current_sample()) == 127) {
                     static GtkWidget* dialog = NULL;
 
-                    gui_warning_dialog(&dialog, N_("You have selected the last sample of the instrument, but going "
-                                                   "to load the second stereo channel to the next sample. Please select "
-                                                   "a sample slot with lower number or use another loading mode."),
+                    gui_warning_dialog(&dialog, _("You have selected the last sample of the instrument, but going "
+                                                  "to load the second stereo channel to the next sample. Please select "
+                                                  "a sample slot with lower number or use another loading mode."),
                         FALSE);
                     replay = TRUE;
                 }
                 next = &(instrument_editor_get_instrument()->samples[n_cur + 1]);
                 if (next->sample.length)
-                    replay = !gui_ok_cancel_modal(mainwindow, N_("The next sample which is about to be overwriten is not empty!\n"
-                                                                 "Would you like to overwrite it?"));
+                    replay = !gui_ok_cancel_modal(mainwindow, _("The next sample which is about to be overwriten is not empty!\n"
+                                                                "Would you like to overwrite it?"));
                 break;
             default:
                 return;
@@ -2382,7 +2413,7 @@ sample_editor_ok_clicked(void)
 
     if (recordedlen > mixer->max_sample_length) {
         static GtkWidget* dialog = NULL;
-        gui_warning_dialog(&dialog, N_("Recorded sample is too long for current mixer module. Using it anyway."), FALSE);
+        gui_warning_dialog(&dialog, _("Recorded sample is too long for current mixer module. Using it anyway."), FALSE);
     }
 
     current_sample->sample.length = recordedlen >> 1; /* Sample size is given in 16-bit words */
@@ -2405,7 +2436,7 @@ sample_editor_ok_clicked(void)
 
     instrument_editor_update(TRUE);
     sample_editor_update();
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 /* ==================== VOLUME RAMPING DIALOG =================== */
@@ -2444,10 +2475,7 @@ sample_editor_open_volume_ramp_dialog(void)
         _("Normalize"), 1,
         GTK_STOCK_EXECUTE, 2,
         GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
-    g_signal_connect(volrampwindow, "delete_event",
-        G_CALLBACK(gui_delete_noop), NULL);
-    g_signal_connect(volrampwindow, "response",
-        G_CALLBACK(sample_editor_perform_ramp), NULL);
+    gui_dialog_connect(volrampwindow, G_CALLBACK(sample_editor_perform_ramp));
 
     gui_dialog_adjust(volrampwindow, 2);
     mainbox = gtk_dialog_get_content_area(GTK_DIALOG(volrampwindow));
@@ -2460,7 +2488,7 @@ sample_editor_open_volume_ramp_dialog(void)
     gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, TRUE, 0);
 
     box1 = gtk_hbox_new(FALSE, 4);
-    gtk_box_pack_start(GTK_BOX(mainbox), box1, FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(mainbox), box1, FALSE, TRUE, 4);
 
     gui_put_labelled_spin_button(box1, _("Left [%]:"), -1000, 1000, &sample_editor_volramp_spin_w[0], NULL, NULL, FALSE);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(sample_editor_volramp_spin_w[0]), sample_editor_volramp_last_values[0]);
@@ -2557,7 +2585,7 @@ sample_editor_perform_ramp(GtkWidget* w, gint action,
     }
 
     sample_editor_unlock_sample();
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
     sample_editor_update();
     sample_display_set_selection(sampledisplay, ss, se);
 }
@@ -2736,29 +2764,10 @@ sample_editor_trim(gboolean trbeg, gboolean trend, gfloat thrshld)
     sample_editor_unlock_sample();
 
     sample_editor_set_sample(current_sample);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 
     if (reselect == 1 && off > on)
         sample_display_set_selection(sampledisplay, start, start + off - on);
-}
-
-static void
-sample_editor_crop()
-{
-    int start = sampledisplay->sel_start, end = sampledisplay->sel_end;
-
-    if (current_sample == NULL || start == -1)
-        return;
-
-    int l = current_sample->sample.length;
-
-    sample_editor_lock_sample();
-    sample_editor_delete(current_sample, 0, start);
-    sample_editor_delete(current_sample, end - start, l - start);
-    sample_editor_unlock_sample();
-
-    sample_editor_set_sample(current_sample);
-    xm_set_modified(1);
 }
 
 /* deletes the portion of *sample data from start to end-1 */

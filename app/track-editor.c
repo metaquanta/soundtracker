@@ -94,9 +94,8 @@ track_editor_editmode_status_idle_function(void)
 {
     gtk_label_set_text(GTK_LABEL(status_bar), track_editor_editmode_status_ed_buf);
 
-    gtk_idle_remove(track_editor_editmode_status_idle_handler);
     track_editor_editmode_status_idle_handler = 0;
-    return TRUE;
+    return FALSE;
 }
 
 void show_editmode_status(void)
@@ -336,8 +335,8 @@ void show_editmode_status(void)
     strcat(track_editor_editmode_status_ed_buf, tmp_buf);
 
     if (!track_editor_editmode_status_idle_handler) {
-        track_editor_editmode_status_idle_handler = gtk_idle_add(
-            (GtkFunction)track_editor_editmode_status_idle_function,
+        track_editor_editmode_status_idle_handler = g_idle_add(
+            (GSourceFunc)track_editor_editmode_status_idle_function,
             NULL);
         g_assert(track_editor_editmode_status_idle_handler != 0);
     }
@@ -541,7 +540,7 @@ void track_editor_do_the_note_key(int notekeymeaning,
                 gui_play_note(trychan, note, TRUE);
                 note_running[trychan] = note;
                 /* All 32 channels are using for trying independent on
-				   actual number of channels used */
+                   actual number of channels used */
                 trychan = (trychan + 1) & 31;
             } else {
                 if (jazz_enabled) {
@@ -567,7 +566,7 @@ void track_editor_do_the_note_key(int notekeymeaning,
         if ((pc = note_is_running(note)) != -1) {
             if (keys_is_key_pressed(xkeysym, modifiers)) {
                 /* this is just an auto-repeat fake keyoff. pooh.
-				   in reality this key is still being held down */
+                   in reality this key is still being held down */
                 return;
             }
             gui_play_note_keyoff(pc);
@@ -633,7 +632,7 @@ track_editor_handle_keys(int shift,
                                         note->note = i;
                                         note->instrument = gui_get_current_instrument();
                                         tracker_redraw_current_row(t);
-                                        xm_set_modified(1);
+                                        gui_xm_set_modified(1);
                                     }
                                 } else if (!keys_is_key_pressed(keyval,
                                                ENCODE_MODIFIERS(shift, ctrl, alt))) { // Release key
@@ -650,7 +649,7 @@ track_editor_handle_keys(int shift,
                                             note->note = 97;
                                             note->instrument = 0;
                                             tracker_redraw_current_row(t);
-                                            xm_set_modified(1);
+                                            gui_xm_set_modified(1);
                                         }
                                     }
                                 }
@@ -660,7 +659,7 @@ track_editor_handle_keys(int shift,
                                 note->instrument = gui_get_current_instrument();
                                 tracker_redraw_current_row(t);
                                 tracker_step_cursor_row(t, gui_get_current_jump_value());
-                                xm_set_modified(1);
+                                gui_xm_set_modified(1);
                             }
                         }
                     }
@@ -677,7 +676,7 @@ track_editor_handle_keys(int shift,
                         note->instrument = 0;
                         tracker_redraw_current_row(t);
                         tracker_step_cursor_row(t, gui_get_current_jump_value());
-                        xm_set_modified(1);
+                        gui_xm_set_modified(1);
                     }
                     show_editmode_status();
                 }
@@ -843,7 +842,7 @@ track_editor_handle_keys(int shift,
 
             tracker_redraw_current_row(t);
             tracker_step_cursor_row(t, gui_get_current_jump_value());
-            xm_set_modified(1);
+            gui_xm_set_modified(1);
             handled = TRUE;
         }
         break;
@@ -861,7 +860,7 @@ track_editor_handle_keys(int shift,
             note->fxparam = 0;
 
             tracker_redraw_current_row(t);
-            xm_set_modified(1);
+            gui_xm_set_modified(1);
             handled = TRUE;
         }
         break;
@@ -882,7 +881,7 @@ track_editor_handle_keys(int shift,
                 note->fxparam = 0;
 
                 tracker_redraw_current_row(t);
-                xm_set_modified(1);
+                gui_xm_set_modified(1);
                 handled = TRUE;
             }
         }
@@ -923,38 +922,42 @@ void track_editor_copy_pattern(GtkWidget* w, Tracker* t)
 
 void track_editor_cut_pattern(GtkWidget* w, Tracker* t)
 {
-    XMPattern* p = t->curpattern;
+    if (GUI_EDITING) {
+        XMPattern* p = t->curpattern;
 
-    if (pattern_buffer) {
-        st_free_pattern_channels(pattern_buffer);
-        free(pattern_buffer);
+        if (pattern_buffer) {
+            st_free_pattern_channels(pattern_buffer);
+            free(pattern_buffer);
+        }
+        pattern_buffer = st_dup_pattern(p);
+        st_clear_pattern(p);
+        gui_xm_set_modified(1);
+        tracker_redraw(t);
     }
-    pattern_buffer = st_dup_pattern(p);
-    st_clear_pattern(p);
-    xm_set_modified(1);
-    tracker_redraw(t);
 }
 
 void track_editor_paste_pattern(GtkWidget* w, Tracker* t)
 {
-    XMPattern* p = t->curpattern;
-    int i;
+    if (GUI_EDITING) {
+        XMPattern* p = t->curpattern;
+        int i;
 
-    if (!pattern_buffer)
-        return;
-    for (i = 0; i < 32; i++) {
-        free(p->channels[i]);
-        p->channels[i] = st_dup_track(pattern_buffer->channels[i], pattern_buffer->length);
+        if (!pattern_buffer)
+            return;
+        for (i = 0; i < 32; i++) {
+            free(p->channels[i]);
+            p->channels[i] = st_dup_track(pattern_buffer->channels[i], pattern_buffer->length);
+        }
+        p->alloc_length = pattern_buffer->length;
+        if (p->length != pattern_buffer->length) {
+            p->length = pattern_buffer->length;
+            gui_update_pattern_data();
+            tracker_reset(t);
+        } else {
+            tracker_redraw(t);
+        }
+        gui_xm_set_modified(1);
     }
-    p->alloc_length = pattern_buffer->length;
-    if (p->length != pattern_buffer->length) {
-        p->length = pattern_buffer->length;
-        gui_update_pattern_data();
-        tracker_reset(t);
-    } else {
-        tracker_redraw(t);
-    }
-    xm_set_modified(1);
 }
 
 void track_editor_copy_track(GtkWidget* w, Tracker* t)
@@ -972,66 +975,76 @@ void track_editor_copy_track(GtkWidget* w, Tracker* t)
 
 void track_editor_cut_track(GtkWidget* w, Tracker* t)
 {
-    int l = t->curpattern->length;
-    XMNote* n = t->curpattern->channels[t->cursor_ch];
+    if (GUI_EDITING) {
+        int l = t->curpattern->length;
+        XMNote* n = t->curpattern->channels[t->cursor_ch];
 
-    if (track_buffer) {
-        free(track_buffer);
+        if (track_buffer) {
+            free(track_buffer);
+        }
+        track_buffer_length = l;
+        track_buffer = st_dup_track(n, l);
+        st_clear_track(n, l);
+        gui_xm_set_modified(1);
+        tracker_redraw(t);
     }
-    track_buffer_length = l;
-    track_buffer = st_dup_track(n, l);
-    st_clear_track(n, l);
-    xm_set_modified(1);
-    tracker_redraw(t);
 }
 
 void track_editor_paste_track(GtkWidget* w, Tracker* t)
 {
-    int l = t->curpattern->length;
-    XMNote* n = t->curpattern->channels[t->cursor_ch];
-    int i;
+    if (GUI_EDITING) {
+        int l = t->curpattern->length;
+        XMNote* n = t->curpattern->channels[t->cursor_ch];
+        int i;
 
-    if (!track_buffer)
-        return;
-    i = track_buffer_length;
-    if (l < i)
-        i = l;
-    while (i--)
-        n[i] = track_buffer[i];
-    xm_set_modified(1);
-    tracker_redraw(t);
+        if (!track_buffer)
+            return;
+        i = track_buffer_length;
+        if (l < i)
+            i = l;
+        while (i--)
+            n[i] = track_buffer[i];
+        gui_xm_set_modified(1);
+        tracker_redraw(t);
+    }
 }
 
 void track_editor_delete_track(GtkWidget* w, Tracker* t)
 {
-    st_pattern_delete_track(t->curpattern, t->cursor_ch);
-    xm_set_modified(1);
-    tracker_redraw(t);
+    if (GUI_EDITING) {
+        st_pattern_delete_track(t->curpattern, t->cursor_ch);
+        gui_xm_set_modified(1);
+        tracker_redraw(t);
+    }
 }
 
 void track_editor_insert_track(GtkWidget* w, Tracker* t)
 {
-    st_pattern_insert_track(t->curpattern, t->cursor_ch);
-    xm_set_modified(1);
-    tracker_redraw(t);
+    if (GUI_EDITING) {
+        st_pattern_insert_track(t->curpattern, t->cursor_ch);
+        gui_xm_set_modified(1);
+        tracker_redraw(t);
+    }
 }
 
 void track_editor_kill_notes_track(GtkWidget* w, Tracker* t)
 {
-    int i;
-    XMNote* note;
+    if (GUI_EDITING) {
+        int i;
+        XMNote* note;
 
-    for (i = t->patpos; i < t->curpattern->length; i++) {
-        note = &t->curpattern->channels[t->cursor_ch][i];
-        note->note = 0;
-        note->instrument = 0;
-        note->volume = 0;
-        note->fxtype = 0;
-        note->fxparam = 0;
+        for (i = t->patpos; i < t->curpattern->length; i++) {
+            note = &t->curpattern->channels[t->cursor_ch][i];
+            note->note = 0;
+            note->instrument = 0;
+            note->volume = 0;
+            note->fxtype = 0;
+            note->fxparam = 0;
+        }
+
+        gui_xm_set_modified(1);
+        tracker_redraw(t);
     }
-
-    xm_set_modified(1);
-    tracker_redraw(t);
 }
 
 void track_editor_cmd_mvalue(Tracker* t, gboolean mode)
@@ -1075,7 +1088,7 @@ void track_editor_cmd_mvalue(Tracker* t, gboolean mode)
         }
 
         tracker_step_cursor_row(t, gui_get_current_jump_value());
-        xm_set_modified(1);
+        gui_xm_set_modified(1);
         tracker_redraw(t);
     }
 }
@@ -1135,134 +1148,140 @@ void track_editor_copy_selection(GtkWidget* w, Tracker* t)
 
 void track_editor_cut_selection(GtkWidget* w, Tracker* t)
 {
-    track_editor_copy_cut_selection_common(t, TRUE);
-    menubar_block_mode_set(FALSE);
-    xm_set_modified(1);
-    tracker_redraw(t);
+    if (GUI_EDITING) {
+        track_editor_copy_cut_selection_common(t, TRUE);
+        menubar_block_mode_set(FALSE);
+        gui_xm_set_modified(1);
+        tracker_redraw(t);
+    }
 }
 
 void track_editor_paste_selection(GtkWidget* w, Tracker* t)
 {
-    int i;
+    if (GUI_EDITING) {
+        int i;
 
-    if (block_buffer.length > t->curpattern->length)
-        return;
+        if (block_buffer.length > t->curpattern->length)
+            return;
 
-    for (i = 0; i < 32; i++) {
-        st_paste_track_into_track_wrap(block_buffer.channels[i],
-            t->curpattern->channels[(t->cursor_ch + i) % xm->num_channels],
-            t->curpattern->length,
-            t->patpos,
-            block_buffer.length);
+        for (i = 0; i < 32; i++) {
+            st_paste_track_into_track_wrap(block_buffer.channels[i],
+                t->curpattern->channels[(t->cursor_ch + i) % xm->num_channels],
+                t->curpattern->length,
+                t->patpos,
+                block_buffer.length);
+        }
+
+        gui_xm_set_modified(1);
+        /* I'm not sure if it's a good idea (Olivier GLORIEUX) */
+        tracker_set_patpos(t, (t->patpos + block_buffer.length) % t->curpattern->length);
+        tracker_redraw(t);
     }
-
-    xm_set_modified(1);
-    /* I'm not sure if it's a good idea (Olivier GLORIEUX) */
-    tracker_set_patpos(t, (t->patpos + block_buffer.length) % t->curpattern->length);
-    tracker_redraw(t);
 }
 
 void track_editor_interpolate_fx(GtkWidget* w, Tracker* t)
 {
-    int height, width, chStart, rowStart;
-    int xmnote_offset;
-    guint8 xmnote_mask;
-    XMNote *note_start, *note_end;
-    int i;
-    int dy;
-    int start_value, start_char;
+    if (GUI_EDITING) {
+        int height, width, chStart, rowStart;
+        int xmnote_offset;
+        guint8 xmnote_mask;
+        XMNote *note_start, *note_end;
+        int i;
+        int dy;
+        int start_value, start_char;
 
-    if (!tracker_is_valid_selection(t))
-        return;
-
-    tracker_get_selection_rect(t, &chStart, &rowStart, &width, &height);
-    if (width != 1 || t->cursor_ch != chStart)
-        return;
-
-    note_start = &t->curpattern->channels[t->cursor_ch][rowStart];
-    note_end = &t->curpattern->channels[t->cursor_ch][rowStart + height - 1];
-
-    if (t->cursor_item == 3 || t->cursor_item == 4) {
-        // Interpolate volume column
-        xmnote_offset = (void*)(&note_start->volume) - (void*)note_start;
-
-        switch (note_start->volume & 0xf0) {
-        case 0x10:
-        case 0x20:
-        case 0x30:
-        case 0x40:
-        case 0x50:
-            if ((note_end->volume & 0xf0) < 0x10 || (note_end->volume & 0xf0) > 0x50)
-                return;
-            xmnote_mask = 0xff;
-            break;
-            //	case 0xc0:
-            //	    if((note_end->volume & 0xf0) != 0xc0)
-            //		return;
-            //	    xmnote_mask = 0x0f;
-            //	    break;
-        default:
-            if ((note_end->volume & 0xf0) != (note_start->volume & 0xf0))
-                return;
-            /* let's do at least _some_thing */
-            xmnote_mask = 0x0f;
-            break;
-        }
-
-    } else if (t->cursor_item >= 5) {
-        // Interpolate effects column
-        xmnote_offset = (void*)&note_start->fxparam - (void*)note_start;
-
-        if (note_start->fxtype != note_end->fxtype)
+        if (!tracker_is_valid_selection(t))
             return;
 
-        switch (note_start->fxtype) {
-            // The Axx for example needs special treatment here
-            //	case 0xc: case 'Z'-'A'+10:
-            //	    xmnote_mask = 0xff;
-            //	    break;
-        default:
-            /* let's do at least _some_thing */
-            xmnote_mask = 0xff;
-            break;
+        tracker_get_selection_rect(t, &chStart, &rowStart, &width, &height);
+        if (width != 1 || t->cursor_ch != chStart)
+            return;
+
+        note_start = &t->curpattern->channels[t->cursor_ch][rowStart];
+        note_end = &t->curpattern->channels[t->cursor_ch][rowStart + height - 1];
+
+        if (t->cursor_item == 3 || t->cursor_item == 4) {
+            // Interpolate volume column
+            xmnote_offset = (void*)(&note_start->volume) - (void*)note_start;
+
+            switch (note_start->volume & 0xf0) {
+            case 0x10:
+            case 0x20:
+            case 0x30:
+            case 0x40:
+            case 0x50:
+                if ((note_end->volume & 0xf0) < 0x10 || (note_end->volume & 0xf0) > 0x50)
+                    return;
+                xmnote_mask = 0xff;
+                break;
+                //	case 0xc0:
+                //	    if((note_end->volume & 0xf0) != 0xc0)
+                //		return;
+                //	    xmnote_mask = 0x0f;
+                //	    break;
+            default:
+                if ((note_end->volume & 0xf0) != (note_start->volume & 0xf0))
+                    return;
+                /* let's do at least _some_thing */
+                xmnote_mask = 0x0f;
+                break;
+            }
+
+        } else if (t->cursor_item >= 5) {
+            // Interpolate effects column
+            xmnote_offset = (void*)&note_start->fxparam - (void*)note_start;
+
+            if (note_start->fxtype != note_end->fxtype)
+                return;
+
+            switch (note_start->fxtype) {
+                // The Axx for example needs special treatment here
+                //	case 0xc: case 'Z'-'A'+10:
+                //	    xmnote_mask = 0xff;
+                //	    break;
+            default:
+                /* let's do at least _some_thing */
+                xmnote_mask = 0xff;
+                break;
+            }
+
+            for (i = 1; i < height - 1; i++) {
+                // Skip lines that allready have effect on them
+                if ((note_start + i)->fxtype)
+                    continue;
+
+                // Copy the effect type into all rows in between
+                (note_start + i)->fxtype = note_start->fxtype;
+            }
+
+        } else {
+            return;
         }
+
+        /* Bit-fiddling coming up... */
+
+        dy = *((guint8*)(note_end) + xmnote_offset);
+        dy &= xmnote_mask;
+        start_char = *((guint8*)(note_start) + xmnote_offset);
+        start_value = start_char & xmnote_mask;
+        dy -= start_value;
 
         for (i = 1; i < height - 1; i++) {
-            // Skip lines that allready have effect on them
-            if ((note_start + i)->fxtype)
+            int new_value;
+
+            // On effect interpolation, skip lines that allready contain different effects
+            if (t->cursor_item >= 5 && (note_start + i)->fxtype != note_start->fxtype)
                 continue;
 
-            // Copy the effect type into all rows in between
-            (note_start + i)->fxtype = note_start->fxtype;
+            new_value = start_value + (int)((float)i * dy / (height - 1) + (dy >= 0 ? 1.0 : -1.0) * 0.5);
+            new_value &= xmnote_mask;
+            new_value |= (start_char & ~xmnote_mask);
+
+            *((guint8*)(note_start + i) + xmnote_offset) = new_value;
         }
 
-    } else {
-        return;
+        tracker_redraw(t);
     }
-
-    /* Bit-fiddling coming up... */
-
-    dy = *((guint8*)(note_end) + xmnote_offset);
-    dy &= xmnote_mask;
-    start_char = *((guint8*)(note_start) + xmnote_offset);
-    start_value = start_char & xmnote_mask;
-    dy -= start_value;
-
-    for (i = 1; i < height - 1; i++) {
-        int new_value;
-
-        // On effect interpolation, skip lines that allready contain different effects
-        if (t->cursor_item >= 5 && (note_start + i)->fxtype != note_start->fxtype)
-            continue;
-
-        new_value = start_value + (int)((float)i * dy / (height - 1) + (dy >= 0 ? 1.0 : -1.0) * 0.5);
-        new_value &= xmnote_mask;
-        new_value |= (start_char & ~xmnote_mask);
-
-        *((guint8*)(note_start + i) + xmnote_offset) = new_value;
-    }
-
-    tracker_redraw(t);
 }
 
 static void
@@ -1289,7 +1308,7 @@ track_editor_handle_semidec_column_input(Tracker* t,
         tracker_step_cursor_row(t, gui_get_current_jump_value());
     else
         tracker_step_cursor_item(t, 1);
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static void
@@ -1322,7 +1341,7 @@ track_editor_handle_hex_column_input(Tracker* t,
         }
     }
 
-    xm_set_modified(1);
+    gui_xm_set_modified(1);
 }
 
 static gboolean
@@ -1352,7 +1371,7 @@ track_editor_handle_column_input(Tracker* t,
             tracker_step_cursor_row(t, gui_get_current_jump_value());
         else
             tracker_step_cursor_item(t, 1);
-        xm_set_modified(1);
+        gui_xm_set_modified(1);
         return TRUE;
     }
 
@@ -1382,6 +1401,8 @@ track_editor_handle_column_input(Tracker* t,
 static gint
 tracker_timeout(gpointer data)
 {
+    g_debug("tracker_timeout()");
+
     double display_songtime;
     audio_player_pos* p;
 
@@ -1393,6 +1414,7 @@ tracker_timeout(gpointer data)
     }
 
     display_songtime = current_driver->get_play_time(current_driver_object);
+    g_debug("tracker_timeout() songtime=%lf", display_songtime);
 
     p = time_buffer_get(audio_playerpos_tb, display_songtime);
     if (p) {
@@ -1403,6 +1425,8 @@ tracker_timeout(gpointer data)
 
 void tracker_start_updating(void)
 {
+    g_debug("tracker_start_updating()");
+
     if (gtktimer != -1)
         return;
 
@@ -1411,6 +1435,8 @@ void tracker_start_updating(void)
 
 void tracker_stop_updating(void)
 {
+    g_debug("tracker_stop_updating()");
+
     if (gtktimer == -1)
         return;
 

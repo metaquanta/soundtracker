@@ -34,9 +34,9 @@ error_error_common(int level,
     int l = strlen(text);
     extern int pipeb[2];
 
-    if (write(pipeb[1], &level, sizeof(level)) != sizeof(level) || write(pipeb[1], &l, sizeof(l)) != sizeof(l) || write(pipeb[1], text, l + 1) != l + 1)
-        ;
-    perror("Audio thread: write()");
+    if (write(pipeb[1], &level, sizeof(level)) != sizeof(level) || write(pipeb[1], &l, sizeof(l)) != sizeof(l) || write(pipeb[1], text, l + 1) != l + 1) {
+        perror("Audio thread: write()");
+    }
 }
 
 void error_error(const char* text)

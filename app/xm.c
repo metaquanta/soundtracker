@@ -47,8 +47,6 @@
 #include "xm-player.h"
 #include "xm.h"
 
-#include "preferences.h"
-
 #define LFSTAT_IS_MODULE 1
 
 static guint16 npertab[60] = {
@@ -192,7 +190,7 @@ xm_load_xm_pattern(XMPattern* pat,
     if (fread(ph, 1, sizeof(ph), f) != sizeof(ph)) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Pattern header reading error."), FALSE);
+        gui_error_dialog(&dialog, _("Pattern header reading error."), FALSE);
         return 0;
     }
 
@@ -225,7 +223,7 @@ xm_load_xm_pattern(XMPattern* pat,
             if (!xm_load_xm_note(&pat->channels[i][j], f)) {
                 static GtkWidget* dialog = NULL;
 
-                gui_error_dialog(&dialog, N_("Error loading notes."), FALSE);
+                gui_error_dialog(&dialog, _("Error loading notes."), FALSE);
                 return 0;
             }
         }
@@ -330,7 +328,7 @@ xm_load_xm_samples(STSample samples[],
         if (fread(sh, 1, sizeof(sh), f) != sizeof(sh)) {
             static GtkWidget* dialog = NULL;
 
-            gui_error_dialog(&dialog, N_("Sample header reading error"), FALSE);
+            gui_error_dialog(&dialog, _("Sample header reading error"), FALSE);
             return FALSE;
         }
         s->sample.length = get_le_32(sh + 0);
@@ -374,7 +372,7 @@ xm_load_xm_samples(STSample samples[],
             if (fread(d16, 1, 2 * s->sample.length, f) != 2 * s->sample.length) {
                 static GtkWidget* dialog = NULL;
 
-                gui_error_dialog(&dialog, N_("Sample data reading error"), FALSE);
+                gui_error_dialog(&dialog, _("Sample data reading error"), FALSE);
                 return FALSE;
             }
             le_16_array_to_host_order(d16, s->sample.length);
@@ -392,7 +390,7 @@ xm_load_xm_samples(STSample samples[],
             if (fread(d8, 1, s->sample.length, f) != s->sample.length) {
                 static GtkWidget* dialog = NULL;
 
-                gui_error_dialog(&dialog, N_("Sample data reading error"), FALSE);
+                gui_error_dialog(&dialog, _("Sample data reading error"), FALSE);
                 return FALSE;
             }
 
@@ -527,7 +525,7 @@ xm_load_xm_instrument(STInstrument* instr,
     if (fread(a, 1, sizeof(a), f) != sizeof(a)) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Instrument header reading error"), FALSE);
+        gui_error_dialog(&dialog, _("Instrument header reading error"), FALSE);
         return 0;
     }
     iheader_size = get_le_32(a);
@@ -545,7 +543,7 @@ xm_load_xm_instrument(STInstrument* instr,
     if (num_samples > 128) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("XM Load Error: Number of samples in instrument > 128.\n"), FALSE);
+        gui_error_dialog(&dialog, _("XM Load Error: Number of samples in instrument > 128.\n"), FALSE);
         return 0;
     }
 
@@ -556,32 +554,32 @@ xm_load_xm_instrument(STInstrument* instr,
         if (fread(a, 1, 4, f) != 4) {
             static GtkWidget* dialog = NULL;
 
-            gui_error_dialog(&dialog, N_("Instrument header reading error"), FALSE);
+            gui_error_dialog(&dialog, _("Instrument header reading error"), FALSE);
             return 0;
         }
         if (get_le_32(a) != 40) {
             static GtkWidget* dialog = NULL;
 
-            gui_error_dialog(&dialog, N_("XM Load Error: Sample header size != 40.\n"), FALSE);
+            gui_error_dialog(&dialog, _("XM Load Error: Sample header size != 40.\n"), FALSE);
             return 0;
         }
         if (fread(instr->samplemap, 1, 96, f) != 96) {
             static GtkWidget* dialog = NULL;
 
-            gui_error_dialog(&dialog, N_("Sample map reading error"), FALSE);
+            gui_error_dialog(&dialog, _("Sample map reading error"), FALSE);
             return 0;
         }
         if (fread(instr->vol_env.points, 1, 48, f) != 48) {
             static GtkWidget* dialog = NULL;
 
-            gui_error_dialog(&dialog, N_("Volume envelope points reading error"), FALSE);
+            gui_error_dialog(&dialog, _("Volume envelope points reading error"), FALSE);
             return 0;
         }
         le_16_array_to_host_order((gint16*)instr->vol_env.points, 24);
         if (fread(instr->pan_env.points, 1, 48, f) != 48) {
             static GtkWidget* dialog = NULL;
 
-            gui_error_dialog(&dialog, N_("Panning envelope points reading error"), FALSE);
+            gui_error_dialog(&dialog, _("Panning envelope points reading error"), FALSE);
             return 0;
         }
         le_16_array_to_host_order((gint16*)instr->pan_env.points, 24);
@@ -589,7 +587,7 @@ xm_load_xm_instrument(STInstrument* instr,
         if (fread(b, 1, sizeof(b), f) != sizeof(b)) {
             static GtkWidget* dialog = NULL;
 
-            gui_error_dialog(&dialog, N_("Envelope parameters reading error"), FALSE);
+            gui_error_dialog(&dialog, _("Envelope parameters reading error"), FALSE);
             return 0;
         }
         instr->vol_env.num_points = b[0];
@@ -650,21 +648,21 @@ xm_load_xi(STInstrument* instr,
     if (fread(a, 1, 21, f) != 21) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Instrument header reading error"), FALSE);
+        gui_error_dialog(&dialog, _("Instrument header reading error"), FALSE);
         return FALSE;
     }
     a[21] = 0;
     if (strcmp((char*)a, "Extended Instrument: ")) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("File is no XI instrument."), FALSE);
+        gui_error_dialog(&dialog, _("The file is not an XI instrument."), FALSE);
         return 0;
     }
 
     if (fread(a, 1, 22, f) != 22) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Instrument header reading error"), FALSE);
+        gui_error_dialog(&dialog, _("Instrument header reading error"), FALSE);
         return FALSE;
     }
     memcpy(instr->name, (char*)a, 22);
@@ -676,7 +674,7 @@ xm_load_xi(STInstrument* instr,
     if (fread(a, 1, 23, f) != 23) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Instrument header reading error"), FALSE);
+        gui_error_dialog(&dialog, _("Instrument header reading error"), FALSE);
         return FALSE;
     }
     if (get_le_16(a + 21) != 0x0102) {
@@ -690,20 +688,20 @@ xm_load_xi(STInstrument* instr,
     if (fread(instr->samplemap, 1, 96, f) != 96) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Instrument sample map reading error"), FALSE);
+        gui_error_dialog(&dialog, _("Instrument sample map reading error"), FALSE);
         return FALSE;
     }
     if (fread(instr->vol_env.points, 1, 48, f) != 48) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Instrument volume envelope points reading error"), FALSE);
+        gui_error_dialog(&dialog, _("Instrument volume envelope points reading error"), FALSE);
         return FALSE;
     }
     le_16_array_to_host_order((gint16*)instr->vol_env.points, 24);
     if (fread(instr->pan_env.points, 1, 48, f) != 48) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Instrument panning envelope points reading error"), FALSE);
+        gui_error_dialog(&dialog, _("Instrument panning envelope points reading error"), FALSE);
         return FALSE;
     }
     le_16_array_to_host_order((gint16*)instr->pan_env.points, 24);
@@ -711,7 +709,7 @@ xm_load_xi(STInstrument* instr,
     if (fread(b, 1, 16, f) != 16) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Instrument envelope parameters reading error"), FALSE);
+        gui_error_dialog(&dialog, _("Instrument envelope parameters reading error"), FALSE);
         return FALSE;
     }
     instr->vol_env.num_points = b[0];
@@ -744,7 +742,7 @@ xm_load_xi(STInstrument* instr,
     if (fread(a, 1, 24, f) != 24) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Instrument header reading error"), FALSE);
+        gui_error_dialog(&dialog, _("Instrument header reading error"), FALSE);
         return FALSE;
     }
     num_samples = get_le_16(a + 22);
@@ -812,8 +810,8 @@ xm_save_xi(STInstrument* instr,
     if (illegal_chars) {
         static GtkWidget* dialog = NULL;
 
-        gui_warning_dialog(&dialog, N_("Some characters instrument or samples names "
-                                       "cannot be stored in XM format. They will be skipped."),
+        gui_warning_dialog(&dialog, _("Some characters instrument or samples names "
+                                      "cannot be stored in XM format. They will be skipped."),
             FALSE);
     }
 
@@ -978,7 +976,7 @@ xm_load_mod(FILE* f, int* status)
     if (fread(xm->name, 1, 20, f) != 20) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Module header reading error."), FALSE);
+        gui_error_dialog(&dialog, _("Module header reading error."), FALSE);
         goto ende;
     }
 
@@ -989,7 +987,7 @@ xm_load_mod(FILE* f, int* status)
         if (fread(buf, 1, 22, f) != 22) {
             static GtkWidget* dialog = NULL;
 
-            gui_error_dialog(&dialog, N_("Instrument header reading error."), FALSE);
+            gui_error_dialog(&dialog, _("Instrument header reading error."), FALSE);
             goto ende;
         }
         buf[22] = 0;
@@ -998,7 +996,7 @@ xm_load_mod(FILE* f, int* status)
         if (fread(sh[i], 1, 8, f) != 8) {
             static GtkWidget* dialog = NULL;
 
-            gui_error_dialog(&dialog, N_("Sample header reading error."), FALSE);
+            gui_error_dialog(&dialog, _("Sample header reading error."), FALSE);
             goto ende;
         }
     }
@@ -1006,7 +1004,7 @@ xm_load_mod(FILE* f, int* status)
     if (fread(mh, 1, 2, f) != 2) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Module header reading error."), FALSE);
+        gui_error_dialog(&dialog, _("Module header reading error."), FALSE);
         goto ende;
     }
     xm->song_length = mh[0];
@@ -1014,13 +1012,13 @@ xm_load_mod(FILE* f, int* status)
     if (fread(xm->pattern_order_table, 1, 128, f) != 128) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Pattern order table reading error."), FALSE);
+        gui_error_dialog(&dialog, _("Pattern order table reading error."), FALSE);
         goto ende;
     }
     if (fread(mh, 1, 4, f) != 4) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Module header reading error."), FALSE);
+        gui_error_dialog(&dialog, _("Module header reading error."), FALSE);
         goto ende;
     }
 
@@ -1057,7 +1055,7 @@ xm_load_mod(FILE* f, int* status)
     if (!xm_load_patterns(xm->patterns, n + 1, xm->num_channels, f, xm_load_mod_pattern)) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Error while loading patterns."), FALSE);
+        gui_error_dialog(&dialog, _("Error while loading patterns."), FALSE);
         goto ende;
     }
 
@@ -1100,7 +1098,7 @@ xm_load_mod(FILE* f, int* status)
             if (fread((char*)s->sample.data + s->sample.length, 1, s->sample.length, f) != s->sample.length) {
                 static GtkWidget* dialog = NULL;
 
-                gui_error_dialog(&dialog, N_("Sample data reading error."), FALSE);
+                gui_error_dialog(&dialog, _("Sample data reading error."), FALSE);
                 goto ende;
             }
             st_convert_sample((char*)s->sample.data + s->sample.length,
@@ -1133,7 +1131,7 @@ XM* XM_Load(const char* filename, int* status)
     if (!f) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Can't open file"), FALSE);
+        gui_error_dialog(&dialog, _("Can't open file"), FALSE);
         return NULL;
     }
 
@@ -1148,12 +1146,12 @@ XM* XM_Load(const char* filename, int* status)
 
     if (get_le_32(xh + 60) != 276) {
         static GtkWidget* dialog = NULL;
-        gui_warning_dialog(&dialog, N_("XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n"), FALSE);
+        gui_warning_dialog(&dialog, _("XM header length != 276. Maybe a pre-0.0.12 SoundTracker module? :-)\n"), FALSE);
     }
 
     if (get_le_16(xh + 58) != 0x0104) { /* TODO replace with confirmation dialog */
         static GtkWidget* dialog = NULL;
-        gui_warning_dialog(&dialog, N_("Version != 0x0104. The results may be unpredictable"), FALSE);
+        gui_warning_dialog(&dialog, _("Version != 0x0104. The results may be unpredictable"), FALSE);
     }
 
     *status |= LFSTAT_IS_MODULE; /* see notes in File_Load() about
@@ -1179,7 +1177,7 @@ XM* XM_Load(const char* filename, int* status)
     if (xm->num_channels > 32 || xm->num_channels < 1) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Invalid number of channels in XM (only 1..32 allowed)."), FALSE);
+        gui_error_dialog(&dialog, _("Invalid number of channels in XM (only 1..32 allowed)."), FALSE);
         goto ende;
     }
 
@@ -1195,14 +1193,14 @@ XM* XM_Load(const char* filename, int* status)
     if (fread(xm->pattern_order_table, 1, 256, f) != 256) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Error while loading pattern order table."), FALSE);
+        gui_error_dialog(&dialog, _("Error while loading pattern order table."), FALSE);
         goto ende;
     }
 
     if (!xm_load_patterns(xm->patterns, num_patterns, xm->num_channels, f, xm_load_xm_pattern)) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Error while loading patterns."), FALSE);
+        gui_error_dialog(&dialog, _("Error while loading patterns."), FALSE);
         goto ende;
     }
 
@@ -1210,7 +1208,7 @@ XM* XM_Load(const char* filename, int* status)
         if (!xm_load_xm_instrument(&xm->instruments[i], f)) {
             static GtkWidget* dialog = NULL;
 
-            gui_error_dialog(&dialog, N_("Error while loading instruments."), FALSE);
+            gui_error_dialog(&dialog, _("Error while loading instruments."), FALSE);
             goto ende;
         }
     }
@@ -1296,8 +1294,8 @@ XM_Save(XM* xm,
 
     if (illegal_chars) {
         static GtkWidget* dialog = NULL;
-        gui_warning_dialog(&dialog, N_("Some characters in either module, instruments or samples names "
-                                       "cannot be stored in XM format. They will be skipped."),
+        gui_warning_dialog(&dialog, _("Some characters in either module, instruments or samples names "
+                                      "cannot be stored in XM format. They will be skipped."),
             FALSE);
     }
 
@@ -1629,7 +1627,7 @@ XM* File_Load(const char* filename)
      */
     if (!(status & LFSTAT_IS_MODULE)) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Not FastTracker XM and not supported MOD format!"), FALSE);
+        gui_error_dialog(&dialog, _("Not FastTracker XM and not supported MOD format!"), FALSE);
     }
 
     g_free(str);
@@ -1647,19 +1645,19 @@ xm_xp_load_header(FILE* f, int* length)
     if (fread(pheader, 1, sizeof(pheader), f) != 4) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Error when file reading or unexpected end of file"), FALSE);
+        gui_error_dialog(&dialog, _("Error when file reading or unexpected end of file"), FALSE);
         return FALSE;
     }
     if ((version = pheader[0] + (pheader[1] << 8)) != 1) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Incorrect or unsupported version of pattern file!"), FALSE);
+        gui_error_dialog(&dialog, _("Incorrect or unsupported version of pattern file!"), FALSE);
         return FALSE;
     }
     if (((*length = pheader[2] + (pheader[3] << 8)) < 0) || (*length > 256)) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Incorrect pattern length!"), FALSE);
+        gui_error_dialog(&dialog, _("Incorrect pattern length!"), FALSE);
         return FALSE;
     }
     return TRUE;
@@ -1674,7 +1672,7 @@ xm_xp_load(FILE* f, int length, XMPattern* patt, XM* xm)
     if (fread(buf, 1, length * 32 * 5, f) != length * 32 * 5) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("Error when file reading or unexpected end of file"), FALSE);
+        gui_error_dialog(&dialog, _("Error when file reading or unexpected end of file"), FALSE);
         return FALSE;
     }
     for (j = 0; j <= MIN(length, patt->length) - 1; j++) {
@@ -1704,7 +1702,7 @@ void xm_xp_save(gchar* name, XMPattern* pattern, XM* xm)
 
     if (!(f = fopen(name, "wb"))) {
         static GtkWidget* dialog = NULL;
-        gui_error_dialog(&dialog, N_("Error during saving pattern!"), FALSE);
+        gui_error_dialog(&dialog, _("Error during saving pattern!"), FALSE);
     } else {
         put_le_16(pheader + 0, 01); //version
         put_le_16(pheader + 2, pattern->length); //length
@@ -1730,7 +1728,7 @@ void xm_xp_save(gchar* name, XMPattern* pattern, XM* xm)
 
         if (fwrite(pheader, 1, sizeof(pheader), f) != sizeof(pheader) || fwrite(buf, 1, bp, f) != bp) {
             static GtkWidget* dialog = NULL;
-            gui_error_dialog(&dialog, N_("Error during saving pattern!"), FALSE);
+            gui_error_dialog(&dialog, _("Error during saving pattern!"), FALSE);
         }
         fclose(f);
     }

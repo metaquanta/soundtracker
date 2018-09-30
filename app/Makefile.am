@@ -46,7 +46,7 @@ if !NO_GDK_PIXBUF
   soundtracker_SOURCES += scalablepic.c scalablepic.h
 endif
 
-if DRIVER_ALSA_09x
+if DRIVER_ALSA_MIDI
   soundtracker_SOURCES += midi-09x.c midi-utils-09x.c \
 	midi.h midi-settings.h midi-utils.h
 endif
@@ -82,4 +82,4 @@ endif
 
 stdir = $(datadir)/soundtracker
 
-INCLUDES = -DLOCALEDIR=\"$(datadir)/locale\"
+AM_CPPFLAGS = -DLOCALEDIR=\"$(datadir)/locale\"

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
@@ -196,15 +196,6 @@
     <property name="visible">True</property>
     <property name="stock">gtk-new</property>
   </object>
-  <object class="GtkImage" id="image4">
-    <property name="visible">True</property>
-    <property name="yalign">0.52999997138977051</property>
-    <property name="stock">gtk-save-as</property>
-  </object>
-  <object class="GtkImage" id="image5">
-    <property name="visible">True</property>
-    <property name="stock">gtk-save-as</property>
-  </object>
   <object class="GtkWindow" id="mainwindow">
     <signal name="delete_event" handler="quit_requested"/>
     <child>
@@ -223,7 +214,7 @@
                     <property name="visible">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="file_open">
-                        <property name="label">_Open…</property>
+                        <property name="label">_Open&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image6</property>
@@ -243,7 +234,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="file_save_as">
-                        <property name="label">Save _as…</property>
+                        <property name="label">Save _as&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image7</property>
@@ -258,7 +249,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="file_save_wav">
-                        <property name="label" translatable="yes">Save Module as _WAV…</property>
+                        <property name="label" translatable="yes">Save Module as _WAV&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image2</property>
@@ -267,7 +258,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="file_save_xm">
-                        <property name="label" translatable="yes">Save _XM without samples…</property>
+                        <property name="label" translatable="yes">Save _XM without samples&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image3</property>
@@ -401,7 +392,7 @@
                     <child>
                       <object class="GtkMenuItem" id="menuitem21">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Transp_osition…</property>
+                        <property name="label" translatable="yes">Transp_osition&#x2026;</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="transposition_dialog"/>
                       </object>
@@ -602,7 +593,7 @@
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">Transpose half-note up</property>
                                 <property name="use_underline">True</property>
-                                <accelerator key="q" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                                <accelerator key="equal" signal="activate" modifiers="GDK_MOD1_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -610,7 +601,7 @@
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">Transpose half-note down</property>
                                 <property name="use_underline">True</property>
-                                <accelerator key="a" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                                <accelerator key="minus" signal="activate" modifiers="GDK_MOD1_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -618,7 +609,7 @@
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">Transpose octave up</property>
                                 <property name="use_underline">True</property>
-                                <accelerator key="q" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_MOD1_MASK"/>
+                                <accelerator key="plus" signal="activate" modifiers="GDK_MOD1_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -626,7 +617,7 @@
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">Transpose octave down</property>
                                 <property name="use_underline">True</property>
-                                <accelerator key="a" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_MOD1_MASK"/>
+                                <accelerator key="underscore" signal="activate" modifiers="GDK_MOD1_MASK"/>
                               </object>
                             </child>
                           </object>
@@ -647,7 +638,7 @@
                     <property name="visible">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="pattern_load">
-                        <property name="label" translatable="yes">_Load Pattern…</property>
+                        <property name="label" translatable="yes">_Load Pattern&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image11</property>
@@ -656,7 +647,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="pattern_save">
-                        <property name="label" translatable="yes">_Save Current Pattern…</property>
+                        <property name="label" translatable="yes">_Save Current Pattern&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image12</property>
@@ -770,7 +761,7 @@
                     <property name="visible">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="instrument_load">
-                        <property name="label" translatable="yes">_Load XI…</property>
+                        <property name="label" translatable="yes">_Load XI&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image13</property>
@@ -779,7 +770,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="instrument_save">
-                        <property name="label" translatable="yes">_Save XI…</property>
+                        <property name="label" translatable="yes">_Save XI&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image14</property>
@@ -904,7 +895,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="menuitem56">
-                        <property name="label" translatable="yes">_Keyboard Configuration…</property>
+                        <property name="label" translatable="yes">_Keyboard Configuration&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image17</property>
@@ -914,7 +905,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="menuitem57">
-                        <property name="label" translatable="yes">_Audio Configuration…</property>
+                        <property name="label" translatable="yes">_Audio Configuration&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image18</property>
@@ -924,7 +915,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="menuitem58">
-                        <property name="label" translatable="yes">_GUI Configuration…</property>
+                        <property name="label" translatable="yes">_GUI Configuration&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image19</property>
@@ -934,7 +925,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="settings_midi">
-                        <property name="label" translatable="yes">_MIDI Configuration…</property>
+                        <property name="label" translatable="yes">_MIDI Configuration&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image20</property>
@@ -987,7 +978,7 @@
                     <property name="visible">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem10">
-                        <property name="label">_About…</property>
+                        <property name="label">_About&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="image">image22</property>
@@ -1002,7 +993,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="menuitem71">
-                        <property name="label" translatable="yes">Show _Tips…</property>
+                        <property name="label" translatable="yes">Show _Tips&#x2026;</property>
                         <property name="visible">True</property>
                         <property name="image">image23</property>
                         <property name="use_stock">False</property>
@@ -1034,19 +1025,16 @@
   </object>
   <object class="GtkImage" id="image2">
     <property name="visible">True</property>
-    <property name="yalign">0.52999997138977051</property>
     <property name="stock">gtk-save-as</property>
     <property name="icon-size">1</property>
   </object>
   <object class="GtkImage" id="image3">
     <property name="visible">True</property>
-    <property name="yalign">0.46000000834465027</property>
     <property name="stock">gtk-save-as</property>
     <property name="icon-size">1</property>
   </object>
   <object class="GtkImage" id="image6">
     <property name="visible">True</property>
-    <property name="xalign">0.43999999761581421</property>
     <property name="stock">gtk-open</property>
     <property name="icon-size">1</property>
   </object>
@@ -1130,7 +1118,6 @@
   </object>
   <object class="GtkImage" id="image23">
     <property name="visible">True</property>
-    <property name="yalign">0.4699999988079071</property>
     <property name="stock">gtk-help</property>
     <property name="icon-size">1</property>
   </object>

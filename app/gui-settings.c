@@ -57,12 +57,6 @@ static gui_subs_slider prefs_trackerfreq_slider = {
 };
 
 static void
-gui_settings_close(GtkWidget* configwindow)
-{
-    gtk_widget_hide(configwindow);
-}
-
-static void
 prefs_scopesfreq_changed(int value)
 {
     extern ScopeGroup* scopegroup;
@@ -304,7 +298,7 @@ static void
 color_changed(void)
 {
     gtk_color_selection_get_current_color(GTK_COLOR_SELECTION(colorsel), &tracker->colors[active_col_item]);
-    gdk_colormap_alloc_color(gtk_widget_get_colormap(colorsel), &tracker->colors[active_col_item], FALSE, TRUE);
+    gdk_color_alloc(gtk_widget_get_colormap(colorsel), &tracker->colors[active_col_item]);
     col_sample_paint(col_samples[active_col_item], NULL, active_col_item);
 }
 
@@ -327,11 +321,7 @@ gui_settings_tracker_colors_dialog(GtkWindow* window)
         GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
     gui_dialog_adjust(dialog, GTK_RESPONSE_APPLY);
     gtk_widget_set_tooltip_text(gtk_dialog_get_widget_for_response(GTK_DIALOG(dialog), GTK_RESPONSE_REJECT), _("Reset tracker colors to standard ST"));
-
-    g_signal_connect(dialog, "response",
-        G_CALLBACK(colors_dialog_response), NULL);
-    g_signal_connect(dialog, "delete-event",
-        G_CALLBACK(gui_delete_noop), NULL);
+    gui_dialog_connect(dialog, G_CALLBACK(colors_dialog_response));
 
     table = gtk_table_new(TRACKERCOL_LAST, 5, FALSE);
     for (i = 0; i < TRACKERCOL_LAST; i++) {
@@ -398,10 +388,7 @@ void gui_settings_dialog(void)
 
     configwindow = gtk_dialog_new_with_buttons(_("GUI Configuration"), GTK_WINDOW(mainwindow), 0,
         GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
-    g_signal_connect(configwindow, "delete_event",
-        G_CALLBACK(gui_delete_noop), NULL);
-    g_signal_connect(configwindow, "response",
-        G_CALLBACK(gui_settings_close), NULL);
+    gui_dialog_connect(configwindow, NULL);
     gui_dialog_adjust(configwindow, GTK_RESPONSE_CLOSE);
     mainbox = gtk_dialog_get_content_area(GTK_DIALOG(configwindow));
 
@@ -571,7 +558,7 @@ void gui_settings_load_config(void)
     gui_settings.asynchronous_editing = prefs_get_bool(SECTION, "gui-asynchronous-editing", FALSE);
     gui_settings.try_polyphony = prefs_get_bool(SECTION, "gui-try-polyphony", TRUE);
     gui_settings.tracker_line_format = prefs_get_string(SECTION, "gui-tracker-line-format", "---0000000");
-    gui_settings.tracker_font = prefs_get_string(SECTION, "tracker-font", "fixed");
+    gui_settings.tracker_font = prefs_get_string(SECTION, "tracker-font", "");
     gui_settings.tempo_bpm_update = prefs_get_bool(SECTION, "gui-tempo-bpm-update", TRUE);
     gui_settings.auto_switch = prefs_get_bool(SECTION, "gui-auto-switch", FALSE);
     gui_settings.gui_display_scopes = prefs_get_bool(SECTION, "gui-display-scopes", TRUE);

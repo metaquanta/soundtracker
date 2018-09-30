@@ -29,7 +29,6 @@
 
 #include <glib.h>
 
-#include "gui.h"
 #include "mixer.h"
 
 /* -- XM definitions -- */
@@ -171,10 +170,8 @@ xm_set_modified(int val)
 {
     extern XM* xm;
 
-    if (xm != NULL && xm->modified != val) {
+    if (xm != NULL)
         xm->modified = val;
-        gui_update_title(NULL);
-    }
 }
 
 void xm_freq_note_to_relnote_finetune(float frequency,

@@ -33,6 +33,7 @@
 #include <string.h>
 
 #include "audio.h"
+#include "gui.h"
 #include "main.h"
 #include "xm-player.h"
 #include "xm.h"

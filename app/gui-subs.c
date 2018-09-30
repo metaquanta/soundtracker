@@ -329,7 +329,7 @@ void gui_list_thaw(GtkWidget* list, GtkTreeModel* model)
 
 static gboolean hover_changed(GtkTreeView* widget, GdkEvent* event, gpointer data)
 {
-    intptr_t is_hover = (intptr_t)data;
+    gboolean is_hover = data != NULL;
     gtk_tree_view_set_hover_selection(widget, is_hover);
     return FALSE;
 }
@@ -443,10 +443,10 @@ void gui_message_dialog(GtkWidget** dialog, const gchar* text, GtkMessageType ty
 {
     if (!*dialog) {
         *dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow), GTK_DIALOG_MODAL, type,
-            GTK_BUTTONS_CLOSE, "%s", _(text));
+            GTK_BUTTONS_CLOSE, "%s", text);
         gtk_window_set_title(GTK_WINDOW(*dialog), _(title));
     } else if (need_update) {
-        gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(*dialog), _(text));
+        gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(*dialog), text);
     }
 
     gtk_dialog_run(GTK_DIALOG(*dialog));
