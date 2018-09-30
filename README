@@ -1,10 +1,3 @@
-This is an attempt to port SoundTracker to 64bit machines with modern, 
-maintained libraries. It's a work in progress. It now builds and loads
-without dumping core, but it doesn't yet function correctly.
-
-Forked from https://sourceforge.net/projects/soundtracker/
-
-
 
 	      Back to the roots -- this is the Real SoundTracker
 	--------------------------------------------------------------
