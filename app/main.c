@@ -65,6 +65,9 @@ int main(int argc,
     extern void
         driver_out_dummy,
         driver_in_dummy,
+#ifdef DRIVER_OSS
+        driver_out_oss, driver_in_oss,
+#endif
 #ifdef DRIVER_ALSA_09x
         driver_out_alsa1x, driver_in_alsa1x,
 #endif
@@ -161,9 +164,28 @@ int main(int argc,
 					   &driver_out_test);
 #endif
 
+#ifdef DRIVER_OSS
+    drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
+        &driver_out_oss);
+    drivers[DRIVER_INPUT] = g_list_append(drivers[DRIVER_INPUT],
+        &driver_in_oss);
+#endif
+
+#ifdef DRIVER_SGI
+    drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
+        &driver_out_irix);
+#endif
+
 #ifdef DRIVER_JACK
     drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
         &driver_out_jack);
+#endif
+
+#ifdef DRIVER_SUN
+    drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
+        &driver_out_sun);
+    drivers[DRIVER_INPUT] = g_list_append(drivers[DRIVER_INPUT],
+        &driver_in_sun);
 #endif
 
 #ifdef _WIN32
@@ -176,6 +198,11 @@ int main(int argc,
         &driver_out_alsa1x);
     drivers[DRIVER_INPUT] = g_list_append(drivers[DRIVER_INPUT],
         &driver_in_alsa1x);
+#endif
+
+#ifdef DRIVER_ESD
+    drivers[DRIVER_OUTPUT] = g_list_append(drivers[DRIVER_OUTPUT],
+        &driver_out_esd);
 #endif
 
 #ifdef DRIVER_SDL

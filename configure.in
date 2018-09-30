@@ -19,21 +19,21 @@ if test $GCC != yes; then
 fi
 
 CFLAGS="$CFLAGS -Wall -DG_DISABLE_DEPRECATED"
-#
-#dnl -----------------------------------------------------------------------
-#dnl Test for GAS
-#dnl -----------------------------------------------------------------------
-#
-#AC_ARG_ENABLE(asm,
-#[  --disable-asm           Disable use of assembler optimizations],
-#asm_support=no)
-#
-#AM_CONDITIONAL(NO_ASM, test x$asm_support = xno)
-#AM_PROG_AS
-#
-#if test x$asm_support = xno; then
-#  AC_DEFINE([NO_ASM], 1, [Set if no assembler support is wanted])
-#fi
+
+dnl -----------------------------------------------------------------------
+dnl Test for GAS
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(asm,
+[  --disable-asm           Disable use of assembler optimizations],
+asm_support=no)
+
+AM_CONDITIONAL(NO_ASM, test x$asm_support = xno)
+AM_PROG_AS
+
+if test x$asm_support = xno; then
+  AC_DEFINE([NO_ASM], 1, [Set if no assembler support is wanted])
+fi
 
 dnl -----------------------------------------------------------------------
 dnl Test for poll()
@@ -192,6 +192,36 @@ AC_CHECK_HEADERS(dlfcn.h)
 AC_CHECK_FUNCS(setresuid)
 
 dnl -----------------------------------------------------------------------
+dnl Test for OSS headers
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(oss,
+[  --disable-oss           Disable OSS driver (default = try)],
+oss_support=no)
+
+if test x$oss_support != xno; then
+  AC_CHECK_HEADERS(sys/soundcard.h machine/soundcard.h soundcard.h)
+  if test "${ac_cv_header_sys_soundcard_h}" = "yes" || \
+     test "${ac_cv_header_machine_soundcard_h}" = "yes" || \
+     test "${ac_cv_header_soundcard_h}" = "yes"; then
+     oss_support=yes
+     AC_DEFINE([DRIVER_OSS], 1, [Set if OSS driver wanted])
+     case `uname` in
+        OpenBSD*)
+        LIBS="$LIBS -lossaudio"
+        ;;
+	NetBSD*)
+        AC_CHECK_LIB(ossaudio, _oss_ioctl, LIBS="$LIBS -lossaudio")
+	;;
+     esac
+  else
+    oss_support=no
+  fi
+fi
+
+AM_CONDITIONAL(DRIVER_OSS, test x$oss_support = xyes)
+
+dnl -----------------------------------------------------------------------
 dnl Test for ALSA-lib
 dnl ALSA 0.9.x: snd_pcm_plug_open() in libasound.
 dnl -----------------------------------------------------------------------
@@ -210,6 +240,26 @@ if test x$alsa_support != xno; then
 fi
 
 AM_CONDITIONAL(DRIVER_ALSA_09x, test x$alsa_support = xnew)
+
+dnl -----------------------------------------------------------------------
+dnl Test for ESD
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(esd,
+[  --disable-esd           Disable ESD driver (default = try)],
+esd_support=no)
+
+if test x$esd_support != xno; then
+  AM_PATH_ESD(0.2.8, have_esd=yes, have_esd=no)
+  AC_CHECK_FUNCS(esd_play_stream)
+  if test x$have_esd = xyes; then
+    AC_DEFINE([DRIVER_ESD], 1, [Set if ESD driver wanted])
+    CFLAGS="$CFLAGS $ESD_CFLAGS"
+    LIBS="$LIBS $ESD_LIBS"
+  fi
+fi
+
+AM_CONDITIONAL(DRIVER_ESD, test x$have_esd = xyes)
 
 dnl -----------------------------------------------------------------------
 dnl Test for JACK
@@ -241,6 +291,51 @@ if test x$jack_support != xno; then
 fi
 
 AM_CONDITIONAL(DRIVER_JACK, test x$jack_support = xyes)
+
+dnl -----------------------------------------------------------------------
+dnl Test for SGI audio
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(sgi,
+[  --disable-sgi           Disable SGI driver (default = try)],
+sgi_support=no)
+
+case `uname` in
+  IRIX*)
+    if test x$sgi_support != xno; then
+    AC_CHECK_HEADER(dmedia/audio.h)
+    if test $ac_cv_header_dmedia_audio_h = yes
+    then
+      AC_CHECK_LIB(audio,ALseterrorhandler,driver_sgi=yes)
+      if test $driver_sgi = yes
+      then
+        AC_DEFINE([DRIVER_SGI], 1, [Set if SGI driver wanted])
+        LIBS="$LIBS -laudio"
+	irix_support=yes
+      fi
+    fi
+  fi
+  ;;
+esac
+
+AM_CONDITIONAL(DRIVER_IRIX, test x$irix_support = xyes)
+
+dnl -----------------------------------------------------------------------
+dnl Test for Sun audio
+dnl -----------------------------------------------------------------------
+
+AC_ARG_ENABLE(sun,
+[  --disable-sun           Disable Sun driver (default = try)],
+sun_support=no)
+
+if test x$sun_support != xno; then
+  AC_CHECK_HEADERS(sys/audioio.h)
+  if test "${ac_cv_header_sys_audioio_h}" = "yes"; then
+    AC_DEFINE([DRIVER_SUN], 1, [Set if Sun audio driver wanted])
+  fi
+fi
+
+AM_CONDITIONAL(DRIVER_SUN, test "${ac_cv_header_sys_audioio_h}" = "yes")
 
 dnl -----------------------------------------------------------------------
 dnl Test for SDL audio
