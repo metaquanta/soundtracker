@@ -1,5 +1,5 @@
 /* clavier.h - GTK+ "Clavier" Widget
- * Copyright (C) 1998 Simon Kï¿½gedal
+ * Copyright (C) 1998 Simon Kågedal
  * Copyright (C) 1999-2001 Michael Krause
  *
  * This program is free software; you can redistribute it and/or modify
@@ -46,9 +46,8 @@ typedef enum {
 struct _ClavierKeyInfo {
     gboolean is_black; /* is it a black key */
 
-    /* these two contains the x value of the right side of the key
-   * (it's actually y if clavier->dir == CLAVIER_DIR_VERTICAL)
-   */
+    // these two contains the x value of the right side of the key
+    // (it's actually y if clavier->dir == CLAVIER_DIR_VERTICAL)
 
     gint upper_right_x;
     gint lower_right_x; /* not valid if is_black==TRUE */

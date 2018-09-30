@@ -1,5 +1,5 @@
 /* clavier.c - GTK+ "Clavier" Widget -- based on clavier-0.1.3
- * Copyright (C) 1998 Simon Kï¿½gedal
+ * Copyright (C) 1998 Simon Kågedal
  * Copyright (C) 1999-2001 Michael Krause
  * Copytight (C) 2006 Yury Aliaev (Gtk+-2 porting)
  *
@@ -17,19 +17,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * created 1998-04-18 Simon Kï¿½gedal
+ * created 1998-04-18 Simon Kågedal
  */
 
 #include "clavier.h"
-#include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtk.h>
 #include <gtk/gtkmain.h>
 #include <gtk/gtkobject.h> //patch by F.Haferkorn 2006-06-29
 #include <gtk/gtksignal.h>
 #include <stdio.h>
 
-#define XFONTNAME "Fixed 8"
+#define XFONTNAME "Monospace 8"
 
 static const int default_colors[] = {
     255,

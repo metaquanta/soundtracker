@@ -535,6 +535,7 @@ device_test(GtkWidget* w, alsa_driver* d)
     }
     if (chmin == 1)
         d->canmono = TRUE;
+
     if (chmax >= 2) {
         d->canstereo = TRUE;
         d->stereo = 1;

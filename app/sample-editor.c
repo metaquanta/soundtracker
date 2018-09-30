@@ -2073,7 +2073,9 @@ sample_editor_monitor_clicked(void)
         clock_set_seconds(CLOCK(sclock), 0);
         gtk_box_pack_start(GTK_BOX(box2), sclock, FALSE, TRUE, 0);
 
-        gtk_box_pack_start(GTK_BOX(mainbox), thing, TRUE, TRUE, 0);
+        thing = gtk_hseparator_new();
+        gtk_box_pack_start(GTK_BOX(mainbox), thing, FALSE, FALSE, 4);
+
         gtk_widget_show_all(samplingwindow);
     } else
         gtk_window_present(GTK_WINDOW(samplingwindow));
