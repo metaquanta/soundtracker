@@ -15,4 +15,4 @@ endif
 
 libmixers_a_SOURCES = $(MIXERSOURCES)
 
-INCLUDES = -I..
+AM_CPPFLAGS = -I..

@@ -1,4 +1,4 @@
-/* config.h.in.  Generated from configure.in by autoheader.  */
+/* config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* Define if building universal (internal helper macro) */
 #undef AC_APPLE_UNIVERSAL_BUILD
@@ -9,8 +9,8 @@
 /* Data directory */
 #undef DATADIR
 
-/* Set if new (v0.9) ALSA driver wanted */
-#undef DRIVER_ALSA_09x
+/* Set if ALSA driver wanted */
+#undef DRIVER_ALSA
 
 /* Set if ESD driver wanted */
 #undef DRIVER_ESD
@@ -63,6 +63,9 @@
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the `asound' library (-lasound). */
+#undef HAVE_LIBASOUND
 
 /* Define to 1 if you have the <machine/soundcard.h> header file. */
 #undef HAVE_MACHINE_SOUNDCARD_H

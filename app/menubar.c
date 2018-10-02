@@ -72,12 +72,10 @@ menubar_clear(gboolean all)
     if (all) {
         gui_free_xm();
         gui_new_xm();
-        xm_set_modified(0);
     } else {
         gui_play_stop();
         st_clean_song(xm);
-        gui_init_xm(1, TRUE);
-        xm_set_modified(0);
+        gui_init_xm(1, TRUE, FALSE);
     }
 }
 
@@ -128,7 +126,7 @@ void menubar_save_settings_now(void)
     keys_save_config();
     audioconfig_save_config();
     trackersettings_write_settings();
-#if defined(DRIVER_ALSA_09x)
+#if defined(DRIVER_ALSA_MIDI)
     midi_save_config();
 #endif
     prefs_save();
@@ -151,22 +149,23 @@ void menubar_handle_cutcopypaste(gpointer a)
 
     switch (i) {
     case 0: //Cut
-        switch (notebook_current_page) {
-        case NOTEBOOK_PAGE_TRACKER:
-            track_editor_cut_selection(NULL, t);
-            break;
-        case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
-        case NOTEBOOK_PAGE_MODULE_INFO:
-            instrument_editor_cut_instrument(curins);
-            xm_set_modified(1);
-            instrument_editor_update(TRUE);
-            sample_editor_update();
-            break;
-        case NOTEBOOK_PAGE_SAMPLE_EDITOR:
-            sample_editor_copy_cut_common(TRUE, TRUE);
-            xm_set_modified(1);
-            break;
-        }
+        if (GUI_EDITING)
+            switch (notebook_current_page) {
+            case NOTEBOOK_PAGE_TRACKER:
+                track_editor_cut_selection(NULL, t);
+                break;
+            case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
+            case NOTEBOOK_PAGE_MODULE_INFO:
+                instrument_editor_cut_instrument(curins);
+                gui_xm_set_modified(1);
+                instrument_editor_update(TRUE);
+                sample_editor_update();
+                break;
+            case NOTEBOOK_PAGE_SAMPLE_EDITOR:
+                sample_editor_copy_cut_common(TRUE, TRUE);
+                gui_xm_set_modified(1);
+                break;
+            }
         break;
     case 1: //Copy
         switch (notebook_current_page) {
@@ -183,51 +182,54 @@ void menubar_handle_cutcopypaste(gpointer a)
         }
         break;
     case 2: //Paste
-        switch (notebook_current_page) {
-        case NOTEBOOK_PAGE_TRACKER:
-            track_editor_paste_selection(NULL, t);
-            break;
-        case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
-        case NOTEBOOK_PAGE_MODULE_INFO:
-            instrument_editor_paste_instrument(curins);
-            xm_set_modified(1);
-            instrument_editor_update(TRUE);
-            sample_editor_update();
-            break;
-        case NOTEBOOK_PAGE_SAMPLE_EDITOR:
-            sample_editor_paste_clicked();
-            xm_set_modified(1);
-            break;
-        }
+        if (GUI_EDITING)
+            switch (notebook_current_page) {
+            case NOTEBOOK_PAGE_TRACKER:
+                track_editor_paste_selection(NULL, t);
+                break;
+            case NOTEBOOK_PAGE_INSTRUMENT_EDITOR:
+            case NOTEBOOK_PAGE_MODULE_INFO:
+                instrument_editor_paste_instrument(curins);
+                gui_xm_set_modified(1);
+                instrument_editor_update(TRUE);
+                sample_editor_update();
+                break;
+            case NOTEBOOK_PAGE_SAMPLE_EDITOR:
+                sample_editor_paste_clicked();
+                gui_xm_set_modified(1);
+                break;
+            }
         break;
     }
 }
 
 void menubar_handle_edit_menu(gpointer a)
 {
-    Tracker* t = tracker;
+    if (GUI_EDITING) {
+        Tracker* t = tracker;
 
-    switch (GPOINTER_TO_INT(a)) {
-    case 0:
-        track_editor_cmd_mvalue(t, TRUE); /* increment CMD value */
-        break;
-    case 1:
-        track_editor_cmd_mvalue(t, FALSE); /* decrement CMD value */
-        break;
-    case 2:
-        transposition_transpose_selection(t, +1);
-        break;
-    case 3:
-        transposition_transpose_selection(t, -1);
-        break;
-    case 4:
-        transposition_transpose_selection(t, +12);
-        break;
-    case 5:
-        transposition_transpose_selection(t, -12);
-        break;
-    default:
-        break;
+        switch (GPOINTER_TO_INT(a)) {
+        case 0:
+            track_editor_cmd_mvalue(t, TRUE); /* increment CMD value */
+            break;
+        case 1:
+            track_editor_cmd_mvalue(t, FALSE); /* decrement CMD value */
+            break;
+        case 2:
+            transposition_transpose_selection(t, +1);
+            break;
+        case 3:
+            transposition_transpose_selection(t, -1);
+            break;
+        case 4:
+            transposition_transpose_selection(t, +12);
+            break;
+        case 5:
+            transposition_transpose_selection(t, -12);
+            break;
+        default:
+            break;
+        }
     }
 }
 
@@ -251,7 +253,7 @@ void menubar_init_prefs()
     GtkWidget* record_keyreleases = gui_get_widget("edit_record_keyreleases");
     GtkWidget* display_scopes = gui_get_widget("settings_display_scopes");
     GtkWidget* backing_store = gui_get_widget("settings_tracker_flicker_free");
-#if !defined(DRIVER_ALSA_09x)
+#if !defined(DRIVER_ALSA_MIDI)
     GtkWidget* settings_midi = gui_get_widget("settings_midi");
 #endif
 #if USE_SNDFILE == 0 && !defined(AUDIOFILE_VERSION)
@@ -275,7 +277,7 @@ void menubar_init_prefs()
 #if USE_SNDFILE == 0 && !defined(AUDIOFILE_VERSION)
     gtk_widget_set_sensitive(savewav, FALSE);
 #endif
-#if !defined(DRIVER_ALSA_09x)
+#if !defined(DRIVER_ALSA_MIDI)
     gtk_widget_set_sensitive(settings_midi, FALSE);
 #endif
 #if !defined(USE_GTKHTML)

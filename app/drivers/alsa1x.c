@@ -26,7 +26,7 @@
 
 #include <config.h>
 
-#if DRIVER_ALSA_09x
+#if DRIVER_ALSA
 
 #include <errno.h>
 #include <stdio.h>
@@ -362,7 +362,7 @@ check_period_sizes(alsa_driver* d)
             if (!snd_pcm_hw_params_set_buffer_size(d->soundfd, d->hwparams, 1 << d->buffer_size))
                 break;
         if (d->buffer_size < 8) {
-            error_error(N_("Unable to set appropriate buffer size"));
+            error_error(_("Unable to set appropriate buffer size"));
             snd_pcm_close(d->soundfd);
             return;
         }
@@ -529,12 +529,13 @@ device_test(GtkWidget* w, alsa_driver* d)
         return;
     }
     if (chmin > 2) {
-        error_error("Both mono and stereo are not supported by ALSA device!!!");
+        error_error(_("Both mono and stereo are not supported by ALSA device!!!"));
         snd_pcm_close(d->soundfd);
         return;
     }
     if (chmin == 1)
         d->canmono = TRUE;
+
     if (chmax >= 2) {
         d->canstereo = TRUE;
         d->stereo = 1;
@@ -594,11 +595,12 @@ device_test(GtkWidget* w, alsa_driver* d)
             }
         }
         d->bits = 16;
-    } else
+    } else {
         d->bits = 8;
+    }
 
     if (!d->can16 && !d->can8) {
-        error_error("Neither 8 nor 16 bit resolution is not supported by ALSA device!!!");
+        error_error("Neither 8 nor 16 bit resolution is supported by ALSA device!");
         snd_pcm_close(d->soundfd);
         return;
     }
@@ -750,11 +752,9 @@ static void device_list(GtkWidget* w, alsa_driver* d)
             "Select", GTK_RESPONSE_APPLY,
             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
         gui_dialog_adjust(thing, GTK_RESPONSE_APPLY);
-        gtk_widget_set_size_request(thing, 200, 200);
-        g_signal_connect(thing, "response",
-            G_CALLBACK(devices_response), d);
-        g_signal_connect(thing, "delete-event",
-            G_CALLBACK(gui_delete_noop), NULL);
+        gtk_widget_set_size_request(thing, -1, 200);
+        gui_dialog_connect_data(thing, G_CALLBACK(devices_response), d);
+
         d->devices_list = gui_stringlist_in_scrolled_window(2, titles, gtk_dialog_get_content_area(GTK_DIALOG(thing)), TRUE);
         g_signal_connect_swapped(d->devices_list, "row-activated",
             G_CALLBACK(devices_row_selected), d);
@@ -1253,7 +1253,7 @@ alsa_open(void* dp)
             if (!snd_pcm_hw_params_set_buffer_size(d->soundfd, d->hwparams, 1 << d->buffer_size))
                 break;
         if (d->buffer_size < 8) {
-            error_error(N_("Unable to set appropriate buffer size"));
+            error_error(_("Unable to set appropriate buffer size"));
             goto out;
         }
     }
@@ -1297,6 +1297,25 @@ alsa_open(void* dp)
             err);
         goto out;
     }
+
+    // need to enable timestamping explicitly, otherwise alsa_get_play_time()
+    // will always return zero and the pattern display will not scroll in sync
+    // with the audio output, at least on my (MK's) machine.
+    err = snd_pcm_sw_params_set_tstamp_mode(d->soundfd, d->swparams, SND_PCM_TSTAMP_ENABLE);
+    if (err < 0) {
+        alsa_error(d->playback ? N_("Unable to enable timestamping for playback")
+                               : N_("Unable to enable timestamping for capture"),
+            err);
+        goto out;
+    }
+    err = snd_pcm_sw_params_set_tstamp_type(d->soundfd, d->swparams, SND_PCM_TSTAMP_TYPE_MONOTONIC);
+    if (err < 0) {
+        alsa_error(d->playback ? N_("Unable to set timestamp type for playback")
+                               : N_("Unable to set timestamp type for capture"),
+            err);
+        goto out;
+    }
+
     /* write the parameters to the playback device */
     err = snd_pcm_sw_params(d->soundfd, d->swparams);
     if (err < 0) {
@@ -1354,14 +1373,26 @@ static double
 alsa_get_play_time(void* dp)
 {
     alsa_driver* const d = dp;
+    double play_time;
+
     snd_pcm_status_t* status;
-    snd_timestamp_t tstamp;
-
     snd_pcm_status_alloca(&status);
-    snd_pcm_status(d->soundfd, status);
-    snd_pcm_status_get_tstamp(status, &tstamp);
+    if (!status) {
+        g_message("alsa_get_play_time(): can't allocate status");
+        return 0;
+    }
+    if (snd_pcm_status(d->soundfd, status)) {
+        g_message("alsa_get_play_time(): can't retrieve status");
+        return 0;
+    }
 
-    return (double)tstamp.tv_sec + (double)tstamp.tv_usec / 1e6 - d->starttime;
+    snd_timestamp_t tstamp;
+    snd_pcm_status_get_tstamp(status, &tstamp);
+    play_time = (double)tstamp.tv_sec + (double)tstamp.tv_usec / 1e6 - d->starttime;
+
+    g_debug("alsa_get_play_time() -> %lf", play_time);
+
+    return play_time;
 }
 
 static inline int

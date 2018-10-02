@@ -640,7 +640,7 @@ static void midi_process_note_on(snd_seq_ev_note_t* pnote)
 
         /* Don't forget: the XM has been changed... */
 
-        xm_set_modified(1);
+        gui_xm_set_modified(1);
 
     } else {
         /* Decrement the number of note on.

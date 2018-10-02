@@ -27,7 +27,7 @@
 #include <gtk/gtksignal.h>
 #include <stdio.h>
 
-#define XFONTNAME "Fixed 8"
+#define XFONTNAME "Monospace 8"
 
 static const int default_colors[] = {
     255,
@@ -173,7 +173,7 @@ clavier_init(Clavier* clavier)
     clavier->context = gtk_widget_create_pango_context(GTK_WIDGET(clavier));
     clavier->layout = pango_layout_new(clavier->context);
     clavier->layout2 = pango_layout_new(clavier->context);
-    desc = pango_font_description_from_string("Fixed 8");
+    desc = pango_font_description_from_string(XFONTNAME);
     g_assert(desc != NULL);
     pango_layout_set_font_description(clavier->layout, desc);
     pango_layout_set_font_description(clavier->layout2, desc);
@@ -840,7 +840,6 @@ clavier_button_press(GtkWidget* widget, GdkEventButton* event)
 static gint
 clavier_button_release(GtkWidget* widget, GdkEventButton* event)
 {
-    gint key;
     Clavier* clavier;
 
     g_return_val_if_fail(widget != NULL, FALSE);
@@ -848,8 +847,6 @@ clavier_button_release(GtkWidget* widget, GdkEventButton* event)
     g_return_val_if_fail(event != NULL, FALSE);
 
     clavier = CLAVIER(widget);
-
-    key = which_key(clavier, (gint)event->x, (gint)event->y);
 
     release_key(clavier);
 

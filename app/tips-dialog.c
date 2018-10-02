@@ -143,10 +143,7 @@ void tips_dialog_open()
         tips_dialog = gtk_dialog_new_with_buttons(_("SoundTracker Tip of the day"), GTK_WINDOW(mainwindow), 0,
             GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
         gui_dialog_adjust(tips_dialog, GTK_RESPONSE_CLOSE);
-        g_signal_connect(tips_dialog, "response",
-            G_CALLBACK(gtk_widget_hide), NULL);
-        g_signal_connect(tips_dialog, "delete_event",
-            G_CALLBACK(gui_delete_noop), NULL);
+        gui_dialog_connect(tips_dialog, NULL);
 
         tips_box_populate(gtk_dialog_get_content_area(GTK_DIALOG(tips_dialog)), TRUE);
         gtk_widget_show(tips_dialog);

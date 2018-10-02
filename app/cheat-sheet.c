@@ -72,7 +72,7 @@ void cheat_sheet_dialog(void)
     if (!linguas[i]) {
         static GtkWidget* dialog = NULL;
 
-        gui_error_dialog(&dialog, N_("No Cheat Sheet pages are found!"), FALSE);
+        gui_error_dialog(&dialog, _("No Cheat Sheet pages are found!"), FALSE);
         return;
     }
 
